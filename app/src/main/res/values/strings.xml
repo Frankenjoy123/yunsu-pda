@@ -126,5 +126,6 @@
     <string name="cancel_authorize_message">当前PDA的打包和物流功能将不可用，需要重新回到授权界面进行授权</string>
     <string name="not_authorize_message">当前PDA的授权已在服务平台取消，需要重新回到授权界面进行授权</string>
     <string name="confirm">确认</string>
+    <string name="confirm_cancel_authorize">解除授权</string>
 
 </resources>
