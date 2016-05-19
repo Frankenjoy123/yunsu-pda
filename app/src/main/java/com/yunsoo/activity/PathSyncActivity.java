@@ -99,7 +99,7 @@ public class PathSyncActivity extends BaseActivity implements DataServiceImpl.Da
         titleBar.setOnRightButtonClickedListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (fileNames!=null&&fileNames.size()>0){
+                if (fileNames!=null&&fileNames.size()>0  && !FileManager.getInstance().isAllFileUpload(status)){
                     String[] titleArray = new String[]{getString(R.string.off_line_upload),
                             getString(R.string.wifi_upload)};
                     AlertDialog dialog = new AlertDialog.Builder(PathSyncActivity.this)
@@ -162,7 +162,7 @@ public class PathSyncActivity extends BaseActivity implements DataServiceImpl.Da
                     int index=((FileUpLoadService) service).getIndex();
                     status.set(index,2);
                     adapter.notifyDataSetChanged();
-                    if (index==status.size()-1){
+                    if ( !FileManager.getInstance().isAllFileUpload(status)){
                         hideLoading();
                     }
                 }

@@ -8,6 +8,8 @@ import com.yunsoo.util.Constants;
 
 import org.json.JSONException;
 
+import java.util.List;
+
 /**
  * Created by Frank zhou on 2015/7/15.
  */
@@ -57,5 +59,14 @@ public class FileManager extends BaseManager{
         SharedPreferences preferences = context.getSharedPreferences(Constants.Preference.PREF_FILE,
                 Context.MODE_PRIVATE);
         return preferences.getInt(Constants.Preference.PATH_FILE_LAST_INDEX, 0);
+    }
+
+    public boolean isAllFileUpload(List<Integer> status){
+        for (int i: status){
+            if (i!=2){
+                return false;
+            }
+        }
+        return true;
     }
 }
