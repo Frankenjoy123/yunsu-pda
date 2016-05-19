@@ -1,0 +1,94 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.yunsoo.activity.GlobalSettingActivity">
+
+    <com.yunsoo.view.TitleBar
+        android:id="@+id/global_setting_title_bar"
+        layout="@layout/title_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+
+    <RelativeLayout
+        android:id="@+id/rl_check_version"
+        android:layout_width="match_parent"
+        android:layout_height="45.0dip"
+        android:layout_below="@+id/global_setting_title_bar"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/item_bg">
+
+        <ImageView
+            android:id="@+id/iv_setting_pic1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/icon_upgrade" />
+
+        <TextView
+            android:id="@+id/tv_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10.0dip"
+            android:layout_toRightOf="@id/iv_setting_pic1"
+            android:text="@string/current_version"
+            android:textColor="#ff484e43"
+            android:textSize="16.0dp" />
+
+        <TextView
+            android:id="@+id/tv_current_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="1.1"
+            android:textColor="#555"
+            android:textSize="16dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_authorize_status"
+        android:layout_width="match_parent"
+        android:layout_height="45.0dip"
+        android:layout_below="@+id/rl_check_version"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/item_bg">
+
+        <ImageView
+            android:id="@+id/iv_authorize_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_cache" />
+
+        <TextView
+            android:id="@+id/tv_authorize_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10.0dip"
+            android:layout_toRightOf="@id/iv_authorize_status"
+            android:text="@string/authorize_status"
+            android:textColor="#ff484e43"
+            android:textSize="16.0dp" />
+
+
+        <CheckBox
+            android:id="@+id/cb_authorize_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,28 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.yunsoo.activity.PathSyncActivity">
+    <com.yunsoo.view.TitleBar
+        android:id="@+id/path_sync_title_bar"
+        layout="@layout/title_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <ListView
+        android:id="@+id/lv_path_sync"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/path_sync_title_bar"
+        ></ListView>
+
+    <TextView
+        android:id="@+id/tv_path_empty_tip"
+        android:text="@string/has_no_path_sync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="20sp"
+        />
+
+</RelativeLayout>

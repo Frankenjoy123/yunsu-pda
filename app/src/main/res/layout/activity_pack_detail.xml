@@ -1,0 +1,50 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${relativePackage}.${activityClass}" >
+    <com.yunsoo.view.TitleBar
+        android:id="@+id/packDetail_title_bar"
+        layout="@layout/title_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <LinearLayout
+
+        android:id="@+id/ll_packhis"
+         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/packDetail_title_bar"
+        android:orientation="horizontal">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/pack"/>
+        <TextView 
+            android:id="@+id/tv_packageID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textSize="20sp"
+            
+            />
+        
+    </LinearLayout>
+    
+    <ListView 
+        android:id="@+id/lv_productInPack"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_below="@id/ll_packhis"
+        android:layout_marginTop="5dp"
+        >
+        
+        
+    </ListView>
+    
+    
+
+</RelativeLayout>

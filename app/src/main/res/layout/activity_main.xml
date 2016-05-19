@@ -1,0 +1,29 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    tools:context="com.yunsoo.activity.MainActivity" >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+
+        android:gravity="center">
+        <include
+            android:id="@+id/rl_yunsoo_pack"
+            layout="@layout/action_item_layout_top_bottom" />
+
+        <include
+            android:id="@+id/rl_yunsoo_path"
+            layout="@layout/action_item_layout_bottom" />
+
+        <include
+            android:id="@+id/rl_settting"
+            layout="@layout/action_item_layout_bottom" />
+
+        </LinearLayout>
+
+</RelativeLayout>

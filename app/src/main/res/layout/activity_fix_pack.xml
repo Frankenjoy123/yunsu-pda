@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.yunsoo.activity.FixPackActivity">
+
+    <com.yunsoo.view.TitleBar
+        android:id="@+id/fix_title_bar"
+        layout="@layout/title_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+    <LinearLayout
+        android:id="@+id/ll_fix_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fix_title_bar"
+        android:orientation="horizontal">
+
+        <TextView android:text="@string/pack_barcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/tv_right_pack_barcode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="20sp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_fix_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_centerInParent="true"
+        android:visibility="visible"
+        android:text="@string/fix_tip"
+        />
+
+    <ListView
+        android:id="@+id/lv_fix_products"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll_fix_top"
+        ></ListView>
+
+    <EditText
+        android:id="@+id/et_get_packCode"
+        android:editable="false"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text=" "/>
+
+    <EditText
+        android:id="@+id/et_get_productCode"
+        android:editable="false"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text=" "/>
+
+
+</RelativeLayout>

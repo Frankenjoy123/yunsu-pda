@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${relativePackage}.${activityClass}" >
+    <com.yunsoo.view.TitleBar
+        android:id="@+id/pathHistory_title_bar"
+        layout="@layout/title_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+
+            <ListView 
+	        android:id="@+id/lv_pathHistory"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+                android:layout_below="@+id/pathHistory_title_bar"
+
+        ></ListView>
+
+</RelativeLayout>

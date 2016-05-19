@@ -1,0 +1,56 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.yunsoo.activity.PathActivity" >
+    	    <com.yunsoo.view.TitleBar
+        android:id="@+id/title_bar"
+        layout="@layout/title_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+		<LinearLayout
+		    android:id="@+id/ll_path"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentBottom="true"
+		    android:gravity="center"
+		    android:orientation="horizontal" >
+
+	    <Button
+		        android:id="@+id/btn_pathHistory"
+		        android:layout_width="80dp"
+		        android:layout_height="wrap_content"
+            android:background="@drawable/btn_bg"
+            android:textColor="@color/clear_color"
+		        android:text="今日已扫" /> 
+
+		    <Button
+		        android:id="@+id/btn_submitPath"
+		        android:layout_width="80dp"
+		        android:layout_height="wrap_content"
+		        android:layout_marginLeft="20dp"
+		        android:text="提交"
+                android:background="@drawable/btn_bg"
+                android:textColor="@color/clear_color"/>
+		</LinearLayout>
+
+        <ListView 
+	        android:id="@+id/lv_path"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"    
+	        android:layout_above="@id/ll_path"  
+	        android:layout_below="@id/title_bar"
+        ></ListView>
+        
+        <EditText 
+            android:id="@+id/et_path"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            
+            android:editable="false"
+            />
+
+</RelativeLayout>

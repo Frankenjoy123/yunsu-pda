@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<navigationModel
+  ns = "http://schemas.android.com?import=com.android.tools.idea.editors.navigation.model.*">
+  <locations  
+    class = "java.util.ArrayList">
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.yunsoo.activity.ListActivity"/>
+      <point      
+        x = "1744"      
+        y = "1480"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.yunsoo.activity.PackDetail"/>
+      <point      
+        x = "1768"      
+        y = "100"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.yunsoo.activity.FixPackActivity"/>
+      <point      
+        x = "24"      
+        y = "1352"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.yunsoo.activity.AuthorizeActivity"/>
+      <point      
+        x = "944"      
+        y = "1484"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.yunsoo.activity.PackMainActivity"/>
+      <point      
+        x = "2000"      
+        y = "1912"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.yunsoo.activity.PackedHistoryActivity"/>
+      <point      
+        x = "500"      
+        y = "100"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.yunsoo.activity.ScanActivity"/>
+      <point      
+        x = "1760"      
+        y = "1920"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.yunsoo.activity.PathActivity"/>
+      <point      
+        x = "750"      
+        y = "1730"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.yunsoo.activity.SettingActivity"/>
+      <point      
+        x = "800"      
+        y = "1780"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.yunsoo.activity.MainActivity"/>
+      <point      
+        x = "850"      
+        y = "1830"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.yunsoo.activity.PathHistoryActivity"/>
+      <point      
+        x = "900"      
+        y = "1880"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.yunsoo.activity.PathMainActivity"/>
+      <point      
+        x = "950"      
+        y = "1930"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.yunsoo.activity.WelcomeActivity"/>
+      <point      
+        x = "1000"      
+        y = "1980"/>
+    </statePointEntry>
+    <statePointEntry>
+      <state      
+        class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
+        className = "com.yunsoo.activity.PackSyncActivity"/>
+      <point      
+        x = "1050"      
+        y = "2030"/>
+    </statePointEntry>
+  </locations>
+</navigationModel>
