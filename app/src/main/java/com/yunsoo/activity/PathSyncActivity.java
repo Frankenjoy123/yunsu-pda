@@ -177,6 +177,7 @@ public class PathSyncActivity extends BaseActivity implements DataServiceImpl.Da
             for(int i=0;i<files.length;i++){
                 status.set(i,1);
                 FileUpLoadService fileUpLoadService=new FileUpLoadService(files[i].getAbsolutePath());
+                fileUpLoadService.setFileType(FileUpLoadService.PATH_FILE);
                 fileUpLoadService.setIndex(i);
                 fileUpLoadService.setDelegate(this);
                 fileUpLoadService.start();
