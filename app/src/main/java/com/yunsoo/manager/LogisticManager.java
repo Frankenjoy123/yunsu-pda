@@ -6,6 +6,7 @@ import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
 import com.yunsoo.entity.AuthUser;
+import com.yunsoo.entity.OrgAgency;
 import com.yunsoo.util.Constants;
 
 import org.json.JSONArray;
@@ -24,7 +25,7 @@ public class LogisticManager extends BaseManager {
 
     private List<Map<Integer,String>> actionList;
 
-    private List<String> organizationAgencyList;
+    private List<OrgAgency> agencies;
 
     public static LogisticManager initializeInstance(Context context) {
 
@@ -41,7 +42,7 @@ public class LogisticManager extends BaseManager {
 
     public LogisticManager() {
         this.actionList = new ArrayList<>();
-        this.organizationAgencyList=new ArrayList<>();
+        this.agencies=new ArrayList<>();
     }
 
     public List<Map<Integer, String>> getActionList() {
@@ -57,8 +58,9 @@ public class LogisticManager extends BaseManager {
         return actionList;
     }
 
-    public List<String> getOrganizationAgencyList() {
-        return organizationAgencyList;
+
+    public List<OrgAgency> getAgencies() {
+        return agencies;
     }
 
     public void saveLogisticAction(JSONObject object){
@@ -94,17 +96,22 @@ public class LogisticManager extends BaseManager {
     public void saveOrganizationAgency(JSONObject object){
         JSONArray array=object.optJSONArray("array");
         JSONArray recordArray=new JSONArray();
-        organizationAgencyList.clear();
+        agencies.clear();
         for (int i=0;i<array.length();i++){
             JSONObject orgAgencyObject=array.optJSONObject(i);
             JSONObject recordObject=new JSONObject();
+            String id=orgAgencyObject.optString("id");
             String name=orgAgencyObject.optString("name");
             try {
+                recordObject.put("id",id);
                 recordObject.put("name",name);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            organizationAgencyList.add(name);
+            OrgAgency agency=new OrgAgency();
+            agency.setId(id);
+            agency.setName(name);
+            agencies.add(agency);
             recordArray.put(recordObject);
         }
 
@@ -150,8 +157,12 @@ public class LogisticManager extends BaseManager {
                 JSONArray recordArray=new JSONArray(orgAgencyInfo);
                 for (int i=0;i<recordArray.length();i++){
                     JSONObject orgAgencyObject=recordArray.optJSONObject(i);
+                    String id=orgAgencyObject.optString("id");
                     String name=orgAgencyObject.optString("name");
-                    organizationAgencyList.add(name);
+                    OrgAgency agency=new OrgAgency();
+                    agency.setId(id);
+                    agency.setName(name);
+                    agencies.add(agency);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

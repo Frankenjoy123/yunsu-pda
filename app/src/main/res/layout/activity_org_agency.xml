@@ -10,11 +10,18 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
 
+    <EditText
+        android:id="@+id/search_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/org_agency_title_bar"
+        android:layout_gravity="center_horizontal" />
+
     <ListView
         android:id="@+id/lv_org_agency"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/org_agency_title_bar"
+        android:layout_below="@+id/search_edit_text"
         ></ListView>
 
 </RelativeLayout>
