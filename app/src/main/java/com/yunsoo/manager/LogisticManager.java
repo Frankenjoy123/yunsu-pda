@@ -24,6 +24,8 @@ public class LogisticManager extends BaseManager {
 
     private List<Map<Integer,String>> actionList;
 
+    private List<String> organizationAgencyList;
+
     public static LogisticManager initializeInstance(Context context) {
 
         if (logisticManager == null) {
@@ -39,6 +41,7 @@ public class LogisticManager extends BaseManager {
 
     public LogisticManager() {
         this.actionList = new ArrayList<>();
+        this.organizationAgencyList=new ArrayList<>();
     }
 
     public List<Map<Integer, String>> getActionList() {
@@ -52,6 +55,10 @@ public class LogisticManager extends BaseManager {
             actionList.add(map2);
         }
         return actionList;
+    }
+
+    public List<String> getOrganizationAgencyList() {
+        return organizationAgencyList;
     }
 
     public void saveLogisticAction(JSONObject object){
@@ -84,6 +91,28 @@ public class LogisticManager extends BaseManager {
         editor.commit();
     }
 
+    public void saveOrganizationAgency(JSONObject object){
+        JSONArray array=object.optJSONArray("array");
+        JSONArray recordArray=new JSONArray();
+        organizationAgencyList.clear();
+        for (int i=0;i<array.length();i++){
+            JSONObject orgAgencyObject=array.optJSONObject(i);
+            JSONObject recordObject=new JSONObject();
+            String name=orgAgencyObject.optString("name");
+            try {
+                recordObject.put("name",name);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            organizationAgencyList.add(name);
+            recordArray.put(recordObject);
+        }
+
+        Editor editor = context.getSharedPreferences(Constants.Preference.PREF_LOGISTIC, Context.MODE_PRIVATE).edit();
+        editor.putString(Constants.Preference.LOGISTIC_ORG_AGENCY, recordArray.toString());
+        editor.commit();
+    }
+
 
     public static LogisticManager getInstance() {
         if (logisticManager == null) {
@@ -109,6 +138,20 @@ public class LogisticManager extends BaseManager {
                     Map map=new HashMap();
                     map.put(id,name);
                     actionList.add(map);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        String orgAgencyInfo = preferences.getString(Constants.Preference.LOGISTIC_ORG_AGENCY, null);
+        if (orgAgencyInfo!=null){
+            try {
+                JSONArray recordArray=new JSONArray(orgAgencyInfo);
+                for (int i=0;i<recordArray.length();i++){
+                    JSONObject orgAgencyObject=recordArray.optJSONObject(i);
+                    String name=orgAgencyObject.optString("name");
+                    organizationAgencyList.add(name);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

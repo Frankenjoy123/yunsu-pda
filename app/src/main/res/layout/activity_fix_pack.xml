@@ -41,11 +41,11 @@
         />
 
     <ListView
-        android:id="@+id/lv_fix_products"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/ll_fix_top"
-        ></ListView>
+    android:id="@+id/lv_fix_products"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/ll_fix_top"
+    ></ListView>
 
     <EditText
         android:id="@+id/et_get_packCode"

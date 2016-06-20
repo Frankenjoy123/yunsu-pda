@@ -20,6 +20,7 @@ public final class Constants {
 
         public final static String PREF_LOGISTIC="logistic";
         public final static String LOGISTIC_ACTION="logistic_action";
+		public final static String LOGISTIC_ORG_AGENCY="organization_agency";
 
         public final static String PREF_FILE="file_in";
         public final static String PACK_FILE_LAST_INDEX="pack_file_index";

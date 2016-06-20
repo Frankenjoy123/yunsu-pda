@@ -19,6 +19,7 @@ import com.yunsoo.service.AuthLoginService;
 import com.yunsoo.service.AuthorizeService;
 import com.yunsoo.service.DataServiceImpl;
 import com.yunsoo.service.LogisticActionService;
+import com.yunsoo.service.OrganizationAgencyService;
 import com.yunsoo.util.ToastMessageHelper;
 
 import org.json.JSONException;
@@ -117,6 +118,9 @@ public class AuthorizeActivity extends BaseActivity implements DataServiceImpl.D
 
                         LogisticActionService actionService=new LogisticActionService();
                         actionService.start();
+
+                        OrganizationAgencyService organizationAgencyService=new OrganizationAgencyService();
+                        organizationAgencyService.start();
 
                     } catch (JSONException e) {
                         e.printStackTrace();

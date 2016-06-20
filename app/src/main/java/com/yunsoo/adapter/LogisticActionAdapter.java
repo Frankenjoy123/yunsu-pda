@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.yunsoo.activity.OrgAgencyActivity;
 import com.yunsoo.activity.PathActivity;
 import com.yunsoo.activity.R;
 import com.yunsoo.activity.R.drawable;
@@ -93,10 +94,11 @@ public class LogisticActionAdapter extends BaseAdapter
                 int action_id=actions.get(finalPosition).keySet().iterator().next();
                 String action_name=actions.get(finalPosition).get(action_id);
 
-                Intent intent=new Intent(activity, PathActivity.class);
+                Intent intent=new Intent(activity, OrgAgencyActivity.class);
                 intent.putExtra(LogisticActionAdapter.ACTION_ID,action_id);
                 intent.putExtra(LogisticActionAdapter.ACTION_NAME,action_name);
                 activity.startActivity(intent);
+
             }
         });
 

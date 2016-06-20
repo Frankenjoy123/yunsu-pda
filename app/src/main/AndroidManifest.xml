@@ -123,6 +123,10 @@
             android:name=".GlobalSettingActivity"
             android:label="@string/title_activity_global_setting" >
         </activity>
+        <activity
+            android:name=".OrgAgencyActivity"
+            android:label="@string/title_activity_org_agency" >
+        </activity>
     </application>
 
 </manifest>
