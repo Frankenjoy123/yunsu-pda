@@ -56,10 +56,18 @@ public class FileUpLoadService extends DataServiceImpl {
     protected JSONObject method() throws ServerAuthException, ServerGeneralException, LocalGeneralException,
             NetworkNotAvailableException, Exception {
         Log.d("ZXW","FileUpLoadService start");
-        if (fileType.equals(FileUpLoadService.PACK_FILE)){
-            url="/package/file";
-        }else if (fileType.equals(FileUpLoadService.PATH_FILE)){
-            url="/logistics/file";
+//        if (fileType.equals(FileUpLoadService.PACK_FILE)){
+//            url="/package/file";
+//        }else if (fileType.equals(FileUpLoadService.PATH_FILE)){
+//            url="/logistics/file";
+//        }
+//        url="/taskfile/form";
+        String[] arrName=filePath.split("/");
+        if (arrName.length>0){
+            String fileName=arrName[arrName.length-1];
+            url="/taskfile?file_name="+fileName;
+        }else {
+            url="/taskfile";
         }
         return RequestManager.PostByFile(url,filePath);
 

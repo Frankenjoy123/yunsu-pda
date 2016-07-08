@@ -62,6 +62,7 @@
         <activity
             android:name=".PathActivity"
             android:label="@string/title_activity_path"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -87,11 +88,13 @@
         <activity
             android:name=".FixPackActivity"
             android:label="@string/title_activity_fix_pack"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".AuthorizeActivity"
             android:label="@string/title_activity_authorize"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -121,11 +124,14 @@
         </activity>
         <activity
             android:name=".GlobalSettingActivity"
-            android:label="@string/title_activity_global_setting" >
+            android:label="@string/title_activity_global_setting"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".OrgAgencyActivity"
-            android:label="@string/title_activity_org_agency" >
+            android:label="@string/title_activity_org_agency"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

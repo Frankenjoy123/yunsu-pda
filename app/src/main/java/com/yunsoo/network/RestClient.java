@@ -12,6 +12,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.FileEntity;
 import org.apache.http.entity.StringEntity;
 
 import org.apache.http.entity.mime.FormBodyPart;
@@ -140,22 +141,14 @@ public class RestClient {
                         Log.e("TODO", params.get(0).getValue());
                     } else if (filePost) {
                         String sFilePath = params.get(0).getValue();
-                        // httpPost.setEntity(new FileEntity(new File(sFilePath), "binary/octet-stream"));
-//                        httpPost.setEntity(new FileEntity(new File(sFilePath), "text/plain; charset=\"UTF-8\""));
-                        File file = new File(sFilePath);
-                        MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-                        FileBody fileBody = new FileBody(file);
-                        entity.addPart("file", fileBody);
-                        httpPost.setEntity(entity);
-                        httpPost.setHeader(entity.getContentType());
-
-
-//                        MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+//                         httpPost.setEntity(new FileEntity(new File(sFilePath), "binary/octet-stream"));
+                        httpPost.setEntity(new FileEntity(new File(sFilePath), "text/plain; charset=\"UTF-8\""));
 //                        File file = new File(sFilePath);
-//                        entity.addPart(new FormBodyPart("file", new FileBody(file, file.getName(), "text/plain", "UTF-8")));
+//                        MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+//                        FileBody fileBody = new FileBody(file);
+//                        entity.addPart("file", fileBody);
+//                        httpPost.setEntity(entity);
 //                        httpPost.setHeader(entity.getContentType());
-
-                        httpPost.setEntity(entity);
 
                     } else {
                         httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));

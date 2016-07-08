@@ -82,4 +82,6 @@ public final class Constants {
 
     public static final String PATH_SYNC_SUCCESS_FOLDER="/path/sync_success";
 
+	public static final String BLANK=" ";
+
 }

@@ -64,6 +64,7 @@ public class LogisticManager extends BaseManager {
     }
 
     public void saveLogisticAction(JSONObject object){
+        Log.d("Org",object.toString());
         JSONArray array=object.optJSONArray("array");
         JSONArray recordArray=new JSONArray();
         actionList.clear();

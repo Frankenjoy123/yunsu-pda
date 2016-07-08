@@ -16,10 +16,8 @@
     <EditText
         android:id="@+id/et_authorize_code"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_below="@+id/tv_no_authorize"
-        android:editable="false"
-
         android:gravity="center_horizontal"
         />
 

@@ -43,6 +43,7 @@ public class AuthorizeActivity extends BaseActivity implements DataServiceImpl.D
     }
 
     private void bindScanAuthorize() {
+        et_authorize_code.requestFocus();
         et_authorize_code.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

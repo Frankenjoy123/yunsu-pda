@@ -59,7 +59,6 @@ public class FixPackActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fix_pack);
-//        correctString="";
         getActionBar().hide();
         dataBaseHelper=new MyDataBaseHelper(this, Constants.SQ_DATABASE,null,1);
         titleBar=(TitleBar) findViewById(R.id.fix_title_bar);
@@ -110,6 +109,7 @@ public class FixPackActivity extends Activity {
         et_get_packCode= (EditText) findViewById(R.id.et_get_packCode);
         et_get_productCode= (EditText) findViewById(R.id.et_get_productCode);
         et_get_packCode.requestFocus();
+        et_get_productCode.clearFocus();
         bindPackBarcodeChanged();
         bindProductBarcodeChanged();
         bindListViewEvent();

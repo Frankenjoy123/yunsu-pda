@@ -21,13 +21,17 @@ import com.yunsoo.service.FileUpLoadService;
 import com.yunsoo.service.PermanentTokenLoginService;
 import com.yunsoo.sqlite.MyDataBaseHelper;
 import com.yunsoo.util.Constants;
+import com.yunsoo.util.YSFile;
 import com.yunsoo.view.TitleBar;
 
 import org.json.JSONObject;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +47,12 @@ public class PackSyncActivity extends BaseActivity implements DataServiceImpl.Da
 
     private List<String> fileNames;
     private List<Integer> status;
+
+    public static final String EXT_TF = "TF"; //task file
+    private static final String VER_1_0 = "1.0";
+
+    private FileOutputStream fos;
+    private BufferedOutputStream bos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,25 +222,27 @@ public class PackSyncActivity extends BaseActivity implements DataServiceImpl.Da
                     }
 
                     if (cursor!=null&&cursor.getCount()>0){
+                        YSFile ysFile=new YSFile(YSFile.EXT_TF);
+                        ysFile.putHeader("file_type","package");
 
                         StringBuilder builder=new StringBuilder();
-
                         while (cursor.moveToNext()){
                             if (cursor.isLast()){
                                 maxIndex=cursor.getInt(0);
                                 SQLiteManager.getInstance().savePackLastId(maxIndex);
                             }
                             builder.append(cursor.getString(3));
-                            builder.append(",");
+                            builder.append(Constants.BLANK);
                             builder.append(cursor.getString(1));
-                            builder.append(",");
+                            builder.append(":");
                             builder.append(cursor.getString(2));
                             builder.append("\r\n");
                         }
-
+                        ysFile.setContent(builder.toString().getBytes(Charset.forName("UTF-8")));
                         dataBaseHelper.close();
 
-                        try {
+
+                        try{
 
                             String folderName = android.os.Environment.getExternalStorageDirectory() +
                                     Constants.YUNSOO_FOLDERNAME+Constants.PACK_SYNC_TASK_FOLDER;
@@ -242,17 +254,19 @@ public class PackSyncActivity extends BaseActivity implements DataServiceImpl.Da
                             fileNameBuilder.append(DeviceManager.getInstance().getDeviceId());
                             fileNameBuilder.append("_");
                             fileNameBuilder.append(FileManager.getInstance().getPackFileLastIndex() + 1);
-                            fileNameBuilder.append(".txt");
+                            fileNameBuilder.append(".tf");
 
                             File file=new File(pack_task_folder,fileNameBuilder.toString());
 
-                            BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
+//                            BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
+//                            bw.write(bw);
+//                            bw.flush();
 
-                            bw.write(builder.toString());
-                            bw.flush();
-
+                            fos = new FileOutputStream(file);
+                            bos = new BufferedOutputStream(fos);
+                            bos.write(ysFile.toBytes());
+                            bos.flush();
                             FileManager.getInstance().savePackFileIndex(FileManager.getInstance().getPackFileLastIndex() + 1);
-
 
                         } catch (Exception ex) {
                             ex.printStackTrace();

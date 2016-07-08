@@ -73,6 +73,7 @@ public class ScanActivity extends Activity {
     EditText editText;
     private EditText package_key_EditText;
     private TextView finish_package_text;
+    private TextView tv_show_key;
     
     private LinearLayout linearLayout_standard;
     
@@ -135,7 +136,7 @@ public class ScanActivity extends Activity {
         linearLayout_standard=(LinearLayout) findViewById(R.id.ll_standard);
         btn_getPackages=(Button) findViewById(R.id.btn_getPackages);
         tv_note_scan_pack= (TextView) findViewById(R.id.tv_note_scan);
-
+        tv_show_key= (TextView) findViewById(R.id.tv_show_key);
         bindGetHistoryPackages();
 
 
@@ -293,7 +294,6 @@ public class ScanActivity extends Activity {
     private void bindTextChanged(){
 		editText= (EditText) findViewById(R.id.et_get_product_key);
 		editText.requestFocus();
-		
 		package_key_EditText.clearFocus();
 		editText.addTextChangedListener(new TextWatcher() {
 			
@@ -328,6 +328,7 @@ public class ScanActivity extends Activity {
                             }
                         }
                     }
+                    tv_show_key.setText("产品码："+replaceBlank(getLastString(string)));
 					ListItem item=new ListItem();
 					item.setTitle(replaceBlank(getLastString(string)));
 					listItems.add(item);
@@ -376,6 +377,7 @@ public class ScanActivity extends Activity {
 				
 				String string=new StringBuilder(s.toString()).toString();
                 String pack_key=replaceBlank(getLastString(string));
+                tv_show_key.setText("包装码："+pack_key);
                 StringBuilder builder=new StringBuilder();
 				for (int i = 0; i < listItems.size(); i++) {
 					ListItem item=listItems.get(i);
@@ -387,7 +389,7 @@ public class ScanActivity extends Activity {
 				}
 
                 try {
-                    SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                    SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                     Date date=new Date();
                     MyAsyncTask task=new MyAsyncTask(ScanActivity.this);
                     task.execute(pack_key,builder.toString(),dateFormat.format(date));
