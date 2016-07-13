@@ -1,0 +1,68 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.yunsoo.activity.OffLineUploadActivity"
+    >
+
+    <com.yunsoo.view.TitleBar
+        android:id="@+id/off_line_upload_title_bar"
+        layout="@layout/title_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+    <RelativeLayout
+        android:layout_below="@id/off_line_upload_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_off_line_help"
+            android:text="@string/off_line_help"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+
+            />
+
+        <TextView
+            android:id="@+id/tv_off_line_step_1"
+            android:layout_below="@+id/tv_off_line_help"
+            android:text="@string/off_line_step_1"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/tv_off_line_step_2"
+            android:layout_below="@+id/tv_off_line_step_1"
+            android:text="@string/off_line_step_2"
+
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/tv_off_line_step_3"
+            android:layout_below="@+id/tv_off_line_step_2"
+            android:text="@string/off_line_step_3"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"/>
+
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

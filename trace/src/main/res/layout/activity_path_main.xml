@@ -1,0 +1,35 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.yunsoo.activity.PathMainActivity"
+    android:gravity="center"
+    >
+
+    <ListView
+        android:id="@+id/lv_action"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:dividerHeight="20dp"
+        android:divider="@color/app_bg_color"
+        android:layout_centerInParent="true"
+        ></ListView>
+
+    <LinearLayout
+        android:layout_below="@+id/lv_action"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+    >
+
+
+    <include
+        android:id="@+id/rl_path_sync"
+        layout="@layout/action_item_layout_bottom" />
+
+    <include
+        android:id="@+id/rl_path_setting"
+        layout="@layout/action_item_layout_bottom" />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+     <color name="result_view">#b0000000</color>
+      <color name="viewfinder_mask">#60000000</color>
+      <color name="possible_result_points">#c0ffff00</color> 
+       <color name="clear_color">#FFFFFF</color>   
+        <color name="headline_color">#666666</color>
+        <color name="scan_frame_color">#4BC5FE</color>
+        <color name="scan_current_color">#0078D5</color>
+         <color name="scan_past_color">#999</color>
+ <color name="titlebar_bg">#47ABEF</color>
+
+    <color name="app_color">#0078D5</color>
+    <color name="white">#fff</color>
+    <color name="button_border">#0078D5</color>
+    <color name="normal_btn_border_color">#47ABEF</color>
+    <color name="normal_btn_color">#61B6F1</color>
+    <color name="normal_btn_press_color">#265B7F</color>
+
+    <color name="app_bg_color">#ECECEC</color>
+    <color name="action_press_color">#60A1A1A1</color>
+    <color name="red_btn_normal_color">#EC7272</color>
+    <color name="red_btn_press_color">#E65135</color>
+</resources>

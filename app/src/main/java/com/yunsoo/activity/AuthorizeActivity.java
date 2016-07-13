@@ -33,6 +33,8 @@ public class AuthorizeActivity extends BaseActivity implements DataServiceImpl.D
     private String accessToken;
     private String permanentToken;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

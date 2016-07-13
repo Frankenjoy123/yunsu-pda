@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+
+    <LinearLayout android:orientation="horizontal"
+        android:layout_width="fill_parent" android:layout_height="wrap_content" 
+        android:gravity="center_horizontal">
+
+		<Button android:id="@+id/btnRemoveAll" android:layout_width="0dp" android:layout_weight="0.5"
+			android:layout_height="wrap_content" android:text="清空"/>
+		
+		        <Button android:id="@+id/finish_btn" android:layout_width="0dp" android:layout_weight="0.5"
+			android:layout_height="wrap_content" android:text="返回" />
+	</LinearLayout>
+
+	<ListView android:id="@+id/lvDynamic" android:layout_width="fill_parent"
+		android:layout_height="0dp" android:divider="#00000000" android:layout_weight=".70"
+        android:scrollbars="vertical"
+        android:transcriptMode="alwaysScroll" />
+
+     <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="35px"
+        android:textStyle="bold"
+        android:id="@+id/textView" />
+</LinearLayout>
