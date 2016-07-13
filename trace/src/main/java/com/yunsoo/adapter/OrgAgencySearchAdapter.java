@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.yunsoo.activity.PathActivity;
 import com.yunsoo.activity.R;
 import com.yunsoo.entity.OrgAgency;
+import com.yunsoo.util.Constants;
 
 import java.util.List;
 
@@ -23,10 +24,10 @@ import java.util.List;
 public class OrgAgencySearchAdapter extends SearchAdapter<OrgAgency>{
 
     LayoutInflater inflater;
-    private int actionId;
+    private String actionId;
     private String actionName;
 
-    public void setActionId(int actionId) {
+    public void setActionId(String actionId) {
         this.actionId = actionId;
     }
 
@@ -55,21 +56,32 @@ public class OrgAgencySearchAdapter extends SearchAdapter<OrgAgency>{
             @Override
             public void onClick(View v) {
 
-                StringBuilder builder=new StringBuilder("确认选择");
-                builder.append(filteredContainer.get(i).getName());
-                builder.append("作为经销商吗？");
-                AlertDialog dialog = new AlertDialog.Builder(context).setTitle(R.string.choose_org_agency).setMessage(builder.toString())
-                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent intent = new Intent(context, PathActivity.class);
-                                intent.putExtra(LogisticActionAdapter.ACTION_ID,actionId);
-                                intent.putExtra(LogisticActionAdapter.ACTION_NAME,actionName);
-                                context.startActivity(intent);
-                            }
-                        }).setNegativeButton(R.string.no, null).create();
-                dialog.setCancelable(false);
-                dialog.show();
+                Intent intent = new Intent(context, PathActivity.class);
+                intent.putExtra(LogisticActionAdapter.ACTION_ID,actionId);
+                intent.putExtra(LogisticActionAdapter.ACTION_NAME,actionName);
+                intent.putExtra(Constants.Logistic.AGENCY_ID,filteredContainer.get(i).getId());
+                intent.putExtra(Constants.Logistic.AGENCY_NAME,filteredContainer.get(i).getName());
+                context.startActivity(intent);
+                Activity activity= (Activity) context;
+                activity.finish();
+
+//                StringBuilder builder=new StringBuilder("确认选择");
+//                builder.append(filteredContainer.get(i).getName());
+//                builder.append("作为经销商吗？");
+//                AlertDialog dialog = new AlertDialog.Builder(context).setTitle(R.string.choose_org_agency).setMessage(builder.toString())
+//                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                Intent intent = new Intent(context, PathActivity.class);
+//                                intent.putExtra(LogisticActionAdapter.ACTION_ID,actionId);
+//                                intent.putExtra(LogisticActionAdapter.ACTION_NAME,actionName);
+//                                context.startActivity(intent);
+//                                Activity activity= (Activity) context;
+//                                activity.finish();
+//                            }
+//                        }).setNegativeButton(R.string.no, null).create();
+//                dialog.setCancelable(false);
+//                dialog.show();
 
             }
         });

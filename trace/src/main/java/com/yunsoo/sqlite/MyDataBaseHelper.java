@@ -13,7 +13,7 @@ public class MyDataBaseHelper extends SQLiteOpenHelper{
     final String CREATE_PACK_TABLE_SQL =
             "create table pack(_id integer primary key autoincrement , pack_key unique, product_keys,last_save_time)";
     final String CREATE_PATH_TABLE_SQL =
-            "create table path(_id integer primary key autoincrement , pack_key, action_id integer,last_save_time)";
+            "create table path(_id integer primary key autoincrement , pack_key, action_id,last_save_time)";
     public MyDataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }

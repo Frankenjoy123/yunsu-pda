@@ -23,6 +23,7 @@ import com.yunsoo.manager.LogisticManager;
 import com.yunsoo.manager.SessionManager;
 import com.yunsoo.service.DataServiceImpl;
 import com.yunsoo.service.PermanentTokenLoginService;
+import com.yunsoo.util.Constants;
 import com.yunsoo.util.ToastMessageHelper;
 
 import org.json.JSONObject;
@@ -37,7 +38,7 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
     ListView lv_action;
     private LogisticActionAdapter actionAdapter;
 
-    List<Map<Integer,String>> actions;
+    List<Map<String,String>> actions;
     private String permanentToken;
     private String accessToken;
     private String api;
@@ -59,16 +60,14 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
         try {
             lv_action= (ListView) findViewById(R.id.lv_action);
             actionAdapter=new LogisticActionAdapter(this);
-            actions=LogisticManager.getInstance().getActionList();
-//            if (actions==null||actions.size()<1){
-//                actions=new ArrayList<>();
-//                Map<Integer, String> map1=new HashMap();
-//                map1.put(100,"入库");
-//                Map<Integer, String> map2=new HashMap();
-//                map2.put(200,"出库");
-//                actions.add(map1);
-//                actions.add(map2);
-//            }
+            actions=new ArrayList<>();
+            Map<String, String> map1=new HashMap();
+            map1.put(Constants.Logistic.INBOUND_CODE, Constants.Logistic.INBOUND);
+            Map<String, String> map2=new HashMap();
+            map2.put(Constants.Logistic.OUTBOUND_CODE,Constants.Logistic.OUTBOUND);
+            actions.add(map1);
+            actions.add(map2);
+
             actionAdapter.setActions(actions);
             lv_action.setAdapter(actionAdapter);
 

@@ -105,13 +105,10 @@ public abstract class BaseActivity extends Activity implements DataServiceImpl.D
                 hideLoading();
                 if (service instanceof PermanentTokenLoginService){
                     AuthUser authUser=SessionManager.getInstance().getAuthUser();
-                    AuthUser tempAuthUser=new AuthUser();
-                    tempAuthUser.setApi(authUser.getApi());
-                    tempAuthUser.setPermanentToken(authUser.getPermanentToken());
                     LoginResult loginResult=new LoginResult();
                     loginResult.populate(data);
-                    tempAuthUser.setAccessToken(loginResult.getAccessToken());
-                    SessionManager.getInstance().saveLoginCredential(tempAuthUser);
+                    authUser.setAccessToken(loginResult.getAccessToken());
+                    SessionManager.getInstance().saveLoginCredential(authUser);
                     SessionManager.getInstance().restore();
                 }
             }

@@ -13,6 +13,8 @@ public class AuthUser implements JSONEntity {
 
     private String api;
 
+    private String orgId;
+
     public AuthUser() {
     }
 
@@ -20,12 +22,14 @@ public class AuthUser implements JSONEntity {
         this.accessToken = user.getAccessToken();
         this.permanentToken =user.getPermanentToken();
         this.api=user.getApi();
+        this.orgId=user.getOrgId();
     }
 
     public void populate(JSONObject object) {
         accessToken = object.optString("accessToken");
         permanentToken =object.optString("permanentToken");
         api=object.optString("api");
+        orgId=object.optString("orgId");
     }
 
     public String toJsonString() throws JSONException {
@@ -33,7 +37,16 @@ public class AuthUser implements JSONEntity {
         object.put("accessToken", accessToken);
         object.put("permanentToken", permanentToken);
         object.put("api", api);
+        object.put("orgId",orgId);
         return object.toString();
+    }
+
+    public String getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
     }
 
     public String getApi() {

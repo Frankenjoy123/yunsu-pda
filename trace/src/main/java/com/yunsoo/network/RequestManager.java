@@ -2,6 +2,7 @@ package com.yunsoo.network;
 
 import android.util.Log;
 
+import com.yunsoo.entity.AuthUser;
 import com.yunsoo.exception.ServerAuthException;
 import com.yunsoo.exception.ServerGeneralException;
 import com.yunsoo.manager.DeviceManager;
@@ -60,7 +61,8 @@ public class RequestManager {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
 		Log.d(TAG, "Request started: at " + format.format(new Date()));
 		JSONObject jsonObject = null;
-
+		AuthUser authUser=SessionManager.getInstance().getAuthUser();
+		String api=authUser.getApi();
 		RestClient restClient = new RestClient(SessionManager.getInstance().getAuthUser().getApi() + url);
 		restClient.SetIsJsonContent(false);
 		restClient.setIsFilePost(true);

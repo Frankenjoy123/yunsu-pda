@@ -93,11 +93,12 @@ public class AuthorizeActivity extends BaseActivity implements DataServiceImpl.D
                     loginResult.populate(data);
                     accessToken=loginResult.getAccessToken();
                     permanentToken=loginResult.getPermanentToken();
-                    AuthUser authUser=new AuthUser();
-                    authUser.setApi(api);
-                    authUser.setAccessToken(accessToken);
-                    authUser.setPermanentToken(permanentToken);
-                    SessionManager.getInstance().saveLoginCredential(authUser);
+                    AuthUser authUser=SessionManager.getInstance().getAuthUser();
+                    AuthUser temp=new AuthUser();
+                    temp.setApi(api);
+                    temp.setAccessToken(accessToken);
+                    temp.setPermanentToken(permanentToken);
+                    SessionManager.getInstance().saveLoginCredential(temp);
                     SessionManager.getInstance().restore();
                     try {
                         JSONObject object=new JSONObject(content);
@@ -119,8 +120,8 @@ public class AuthorizeActivity extends BaseActivity implements DataServiceImpl.D
                         service.setDelegate(AuthorizeActivity.this);
                         service.start();
 
-                        LogisticActionService actionService=new LogisticActionService();
-                        actionService.start();
+//                        LogisticActionService actionService=new LogisticActionService();
+//                        actionService.start();
 
                         OrganizationAgencyService organizationAgencyService=new OrganizationAgencyService();
                         organizationAgencyService.start();
@@ -133,6 +134,16 @@ public class AuthorizeActivity extends BaseActivity implements DataServiceImpl.D
 
                 if(service instanceof AuthorizeService){
                     SharedPreferences preferences=getSharedPreferences("yunsoo_pda",MODE_PRIVATE);
+                    String orgId=data.optString("org_id");
+                    SessionManager manager=SessionManager.getInstance();
+                    AuthUser authUser=manager.getAuthUser();
+                    AuthUser temp=new AuthUser();
+                    temp.setOrgId(orgId);
+                    temp.setAccessToken(authUser.getAccessToken());
+                    temp.setPermanentToken(authUser.getPermanentToken());
+                    temp.setApi(authUser.getApi());
+                    manager.saveLoginCredential(temp);
+                    SessionManager.getInstance().restore();
                     SharedPreferences.Editor editor=preferences.edit();
                     editor.putBoolean("isAuthorize",true);
                     editor.commit();

@@ -11,8 +11,12 @@ public final class Constants {
 
 	public final static class Logistic
 	{
-		public final static String INBOUND = "1";
-		public final static String OUTBOUND = "2";
+		public final static String INBOUND_CODE = "inbound";
+		public final static String OUTBOUND_CODE = "outbound";
+		public final static String INBOUND = "入库";
+		public final static String OUTBOUND = "出库";
+		public static final String AGENCY_ID="agency_id";
+		public static final String AGENCY_NAME="agency_name";
 	}
 	
 	public final static class Cache {

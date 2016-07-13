@@ -1,1 +1,1 @@
-include ':app', ':imagetest', ':common',':trace'
+include  ':imagetest', ':common',':trace'

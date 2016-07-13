@@ -42,7 +42,7 @@ import java.util.UUID;
 public class PathActivity extends Activity {
 	SharedPreferences preferences;
 	SharedPreferences.Editor editor;
-	
+
 	private String uniqueId;
     
     TitleBar titleBar;
@@ -59,8 +59,10 @@ public class PathActivity extends Activity {
 	
 	private MyDataBaseHelper dataBaseHelper;
 
-    private int actionId;
+    private String actionId;
     private String actionName;
+    private String agencyId;
+    private String agencyName;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +74,10 @@ public class PathActivity extends Activity {
 
     private void init() {
 
-        actionId=getIntent().getIntExtra(LogisticActionAdapter.ACTION_ID,0);
+        actionId=getIntent().getStringExtra(LogisticActionAdapter.ACTION_ID);
         actionName=getIntent().getStringExtra(LogisticActionAdapter.ACTION_NAME);
+        agencyId=getIntent().getStringExtra(Constants.Logistic.AGENCY_ID);
+        agencyName=getIntent().getStringExtra(Constants.Logistic.AGENCY_NAME);
 
         dataBaseHelper=new MyDataBaseHelper(this, Constants.SQ_DATABASE,null,1);
         preferences=getSharedPreferences("pathActivityPre", Context.MODE_PRIVATE);
@@ -154,6 +158,7 @@ public class PathActivity extends Activity {
                                 SQLiteOperation.insertPathData(dataBaseHelper.getWritableDatabase(),
                                         keys.get(i),actionId,dateFormat.format(date));
                             }
+                            dataBaseHelper.close();
                             keys.clear();
                             runOnUiThread(new Runnable() {
                                 @Override

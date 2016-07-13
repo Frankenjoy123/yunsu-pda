@@ -16,6 +16,7 @@ import com.yunsoo.activity.R;
 import com.yunsoo.activity.R.drawable;
 import com.yunsoo.activity.R.id;
 import com.yunsoo.activity.R.layout;
+import com.yunsoo.util.Constants;
 
 import java.security.KeyStore;
 import java.util.Iterator;
@@ -31,18 +32,18 @@ public class LogisticActionAdapter extends BaseAdapter
 
     public static final String ACTION_ID="action_id";
     public static final String ACTION_NAME="action_name";
-    List<Map<Integer,String>> actions;
+    List<Map<String, String>> actions;
 
     LayoutInflater inflater;
     Activity activity;
-    private int actionId;
+    private String actionId;
     private String actionName;
 
     public LogisticActionAdapter(Activity activity) {
         this.activity=activity;
         this.inflater = activity.getLayoutInflater();
     }
-    public void setActions(List<Map<Integer, String>> actions) {
+    public void setActions(List<Map<String, String>> actions) {
         this.actions = actions;
     }
 
@@ -79,10 +80,10 @@ public class LogisticActionAdapter extends BaseAdapter
         holder.tv_action.setText(actionName+"扫描");
 
         switch (actionName){
-            case "入库":
+            case Constants.Logistic.INBOUND:
                 holder.iv_action.setImageResource(drawable.ic_box_in);
                 break;
-            case "出库":
+            case Constants.Logistic.OUTBOUND:
                 holder.iv_action.setImageResource(drawable.ic_box_out);
                 break;
         }
@@ -91,7 +92,7 @@ public class LogisticActionAdapter extends BaseAdapter
         holder.rl_action_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int action_id=actions.get(finalPosition).keySet().iterator().next();
+                String action_id=actions.get(finalPosition).keySet().iterator().next();
                 String action_name=actions.get(finalPosition).get(action_id);
 
                 Intent intent=new Intent(activity, OrgAgencyActivity.class);

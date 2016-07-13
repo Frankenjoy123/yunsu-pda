@@ -3,17 +3,26 @@ package com.yunsoo.manager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
 import android.util.Log;
 
 import com.yunsoo.entity.AuthUser;
 import com.yunsoo.entity.OrgAgency;
+import com.yunsoo.sqlite.MyDataBaseHelper;
 import com.yunsoo.util.Constants;
+import com.yunsoo.util.YSFile;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +31,7 @@ import java.util.Map;
 public class LogisticManager extends BaseManager {
 
     private static LogisticManager logisticManager;
-
-    private List<Map<Integer,String>> actionList;
+    private List<Map<String,String>> actionList;
 
     private List<OrgAgency> agencies;
 
@@ -45,13 +53,13 @@ public class LogisticManager extends BaseManager {
         this.agencies=new ArrayList<>();
     }
 
-    public List<Map<Integer, String>> getActionList() {
+    public List<Map<String, String>> getActionList() {
         if (actionList==null||actionList.size()<1){
             actionList=new ArrayList<>();
-            Map<Integer, String> map1=new HashMap();
-            map1.put(100,"入库");
-            Map<Integer, String> map2=new HashMap();
-            map2.put(200,"出库");
+            Map<String, String> map1=new HashMap();
+            map1.put(Constants.Logistic.INBOUND_CODE,Constants.Logistic.INBOUND);
+            Map<String, String> map2=new HashMap();
+            map2.put(Constants.Logistic.OUTBOUND_CODE,Constants.Logistic.OUTBOUND);
             actionList.add(map1);
             actionList.add(map2);
         }
@@ -169,6 +177,83 @@ public class LogisticManager extends BaseManager {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void createLogisticFile(Context context) {
+        List<Map<String,String>> actionList=LogisticManager.getInstance().getActionList();
+        MyDataBaseHelper dataBaseHelper = new MyDataBaseHelper(context, Constants.SQ_DATABASE, null, 1);
+        Cursor cursor= null;
+
+        for (int i=0;i<actionList.size();i++){
+            String actionId=actionList.get(i).keySet().iterator().next();
+            do {
+                try {
+                    cursor = dataBaseHelper.getReadableDatabase()
+                            .rawQuery("select * from path where _id>? and action_id=? limit 1000",
+                                    new String[]{String.valueOf(SQLiteManager.getInstance().getPathLastId(actionId)), String.valueOf(actionId)});
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (cursor!=null&&cursor.getCount()>0){
+                    YSFile ysFile=new YSFile(YSFile.EXT_TF);
+                    ysFile.putHeader("file_type","trace");
+                    ysFile.putHeader("org_id",SessionManager.getInstance().getAuthUser().getOrgId());
+                    ysFile.putHeader("count","22");
+                    ysFile.putHeader("action",actionId);
+                    ysFile.putHeader("source","agent_id");
+
+
+                    SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                    Date date=new Date();
+                    ysFile.putHeader("date",dateFormat.format(date));
+
+                    StringBuilder builder=new StringBuilder();
+                    while (cursor.moveToNext()){
+                        builder.append(cursor.getString(1));
+                        if (cursor.isLast()){
+                            int maxIndex = cursor.getInt(0);
+                            SQLiteManager.getInstance().savePathLastId(actionId,maxIndex);
+                        }else {
+                            builder.append(",");
+                        }
+                    }
+                    ysFile.setContent(builder.toString().getBytes(Charset.forName("UTF-8")));
+
+                    dataBaseHelper.close();
+
+                    try {
+
+                        String folderName = android.os.Environment.getExternalStorageDirectory() +
+                                Constants.YUNSOO_FOLDERNAME+Constants.PATH_SYNC_TASK_FOLDER;
+                        File path_task_folder = new File(folderName);
+                        if (!path_task_folder.exists())
+                            path_task_folder.mkdirs();
+
+                        StringBuilder fileNameBuilder=new StringBuilder("Path_");
+                        fileNameBuilder.append(DeviceManager.getInstance().getDeviceId());
+                        fileNameBuilder.append("_");
+                        fileNameBuilder.append(FileManager.getInstance().getPathFileLastIndex() + 1);
+                        fileNameBuilder.append(".tf");
+
+                        File file=new File(path_task_folder,fileNameBuilder.toString());
+                        FileOutputStream fos = new FileOutputStream(file);
+                        BufferedOutputStream bos = new BufferedOutputStream(fos);
+                        bos.write(ysFile.toBytes());
+                        bos.flush();
+                        bos.close();
+                        fos.close();
+
+                        FileManager.getInstance().savePathFileIndex(FileManager.getInstance().getPathFileLastIndex() + 1);
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+            while (cursor!=null&&cursor.getCount()==1000);
+        }
+
     }
 
 }

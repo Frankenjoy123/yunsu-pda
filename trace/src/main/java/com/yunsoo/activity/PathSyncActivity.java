@@ -1,9 +1,9 @@
 package com.yunsoo.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -12,30 +12,20 @@ import android.widget.TextView;
 import com.yunsoo.adapter.FileSyncAdapter;
 import com.yunsoo.exception.BaseException;
 import com.yunsoo.exception.ServerAuthException;
-import com.yunsoo.manager.DeviceManager;
 import com.yunsoo.manager.FileManager;
 import com.yunsoo.manager.LogisticManager;
-import com.yunsoo.manager.SQLiteManager;
 import com.yunsoo.manager.SessionManager;
 import com.yunsoo.service.DataServiceImpl;
 import com.yunsoo.service.FileUpLoadService;
 import com.yunsoo.service.PermanentTokenLoginService;
 import com.yunsoo.sqlite.MyDataBaseHelper;
 import com.yunsoo.util.Constants;
-import com.yunsoo.util.YSFile;
 import com.yunsoo.view.TitleBar;
 
 import org.json.JSONObject;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +44,7 @@ public class PathSyncActivity extends BaseActivity implements DataServiceImpl.Da
     private List<String> fileNames;
     private List<Integer> status;
 
-    private List<Map<Integer,String>> actionList;
+    private List<Map<String,String>> actionList;
 
 
 
@@ -62,15 +52,14 @@ public class PathSyncActivity extends BaseActivity implements DataServiceImpl.Da
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_path_sync);
-
         getActionBar().hide();
-
+        final Context context=this;
         init();
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                createFile();
+                LogisticManager.getInstance().createLogisticFile(context);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -220,79 +209,6 @@ public class PathSyncActivity extends BaseActivity implements DataServiceImpl.Da
         }
     }
 
-    private void createFile() {
-        actionList=LogisticManager.getInstance().getActionList();
-        dataBaseHelper=new MyDataBaseHelper(this, Constants.SQ_DATABASE,null,1);
-        Cursor cursor= null;
 
-        for (int i=0;i<actionList.size();i++){
-            int actionId=actionList.get(i).keySet().iterator().next();
-            do {
-                try {
-                    cursor = dataBaseHelper.getReadableDatabase()
-                            .rawQuery("select * from path where _id>? and action_id=? limit 1000",
-                                    new String[]{String.valueOf(SQLiteManager.getInstance().getPathLastId(actionId)), String.valueOf(actionId)});
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                if (cursor!=null&&cursor.getCount()>0){
-                    YSFile ysFile=new YSFile(YSFile.EXT_TF);
-                    ysFile.putHeader("file_type","package");
-                    ysFile.putHeader("action", String.valueOf(actionId));
-//                    ysFile.putHeader("agent_id","current");
-                    SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                    Date date=new Date();
-                    ysFile.putHeader("date",dateFormat.format(date));
-
-                    StringBuilder builder=new StringBuilder();
-                    while (cursor.moveToNext()){
-                        builder.append(cursor.getString(1));
-                        if (cursor.isLast()){
-                            maxIndex=cursor.getInt(0);
-                            SQLiteManager.getInstance().savePathLastId(actionId,maxIndex);
-                        }else {
-                            builder.append(",");
-                        }
-                    }
-                    ysFile.setContent(builder.toString().getBytes(Charset.forName("UTF-8")));
-
-                    dataBaseHelper.close();
-
-                    try {
-
-                        String folderName = android.os.Environment.getExternalStorageDirectory() +
-                                Constants.YUNSOO_FOLDERNAME+Constants.PATH_SYNC_TASK_FOLDER;
-                        File path_task_folder = new File(folderName);
-                        if (!path_task_folder.exists())
-                            path_task_folder.mkdirs();
-
-                        StringBuilder fileNameBuilder=new StringBuilder("Path_");
-                        fileNameBuilder.append(DeviceManager.getInstance().getDeviceId());
-                        fileNameBuilder.append("_");
-                        fileNameBuilder.append(FileManager.getInstance().getPathFileLastIndex() + 1);
-                        fileNameBuilder.append(".tf");
-
-                        File file=new File(path_task_folder,fileNameBuilder.toString());
-                        FileOutputStream fos = new FileOutputStream(file);
-                        BufferedOutputStream bos = new BufferedOutputStream(fos);
-                        bos.write(ysFile.toBytes());
-                        bos.flush();
-                        bos.close();
-                        fos.close();
-
-                        FileManager.getInstance().savePathFileIndex(FileManager.getInstance().getPathFileLastIndex() + 1);
-
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }
-            while (cursor!=null&&cursor.getCount()==1000);
-        }
-
-
-
-    }
 
 }

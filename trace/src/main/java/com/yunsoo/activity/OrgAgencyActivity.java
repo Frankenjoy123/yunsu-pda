@@ -30,7 +30,7 @@ public class OrgAgencyActivity extends Activity {
 
     private void init(){
         getActionBar().hide();
-        int actionId = getIntent().getIntExtra(LogisticActionAdapter.ACTION_ID, 0);
+        String actionId = getIntent().getStringExtra(LogisticActionAdapter.ACTION_ID);
         String actionName = getIntent().getStringExtra(LogisticActionAdapter.ACTION_NAME);
         listView= (ListView) findViewById(R.id.lv_org_agency);
         titleBar=(TitleBar) findViewById(R.id.org_agency_title_bar);

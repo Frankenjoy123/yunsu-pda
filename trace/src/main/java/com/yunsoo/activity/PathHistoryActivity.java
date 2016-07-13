@@ -26,7 +26,7 @@ public class PathHistoryActivity extends Activity {
 
     private MyDataBaseHelper dataBaseHelper;
     private String actionName;
-    private int actionId;
+    private String actionId;
 
 	
 	@Override
@@ -34,7 +34,7 @@ public class PathHistoryActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_path_history);
         actionName=getIntent().getStringExtra(LogisticActionAdapter.ACTION_NAME);
-        actionId=getIntent().getIntExtra(LogisticActionAdapter.ACTION_ID,0);
+        actionId=getIntent().getStringExtra(LogisticActionAdapter.ACTION_ID);
 
         dataBaseHelper=new MyDataBaseHelper(this, Constants.SQ_DATABASE,null,1);
         getActionBar().hide();

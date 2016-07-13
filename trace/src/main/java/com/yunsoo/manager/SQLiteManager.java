@@ -49,7 +49,7 @@ public class SQLiteManager extends BaseManager {
 //        editor.commit();
 //    }
 
-    public  void savePathLastId(int actionId,int id){
+    public  void savePathLastId(String actionId,int id){
         SharedPreferences.Editor editor = dataBaseManager.context.getSharedPreferences(Constants.Preference.PREF_SQLITE, Context.MODE_PRIVATE).edit();
         editor.putInt(Constants.Preference.SQ_PATH_LAST_ID+"_"+actionId, id);
         editor.commit();
@@ -61,7 +61,7 @@ public class SQLiteManager extends BaseManager {
 //        return preferences.getInt(Constants.Preference.SQ_PATH_LAST_ID, 0);
 //    }
 
-    public  int getPathLastId(int actionId){
+    public  int getPathLastId(String actionId){
         SharedPreferences preferences = dataBaseManager.context.getSharedPreferences(Constants.Preference.PREF_SQLITE,
                 Context.MODE_PRIVATE);
         return preferences.getInt(Constants.Preference.SQ_PATH_LAST_ID+"_"+actionId, 0);
