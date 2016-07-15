@@ -9,13 +9,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import com.yunsoo.manager.SessionManager;
+import com.yunsoo.manager.SettingManager;
 import com.yunsoo.view.TitleBar;
 
 public class GlobalSettingActivity extends Activity {
     private TitleBar titleBar;
     private Button btn_authorize_status;
+    private TextView tv_time_gap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,8 @@ public class GlobalSettingActivity extends Activity {
         titleBar.setMode(TitleBar.TitleBarMode.LEFT_BUTTON);
         titleBar.setDisplayAsBack(true);
         btn_authorize_status = (Button) findViewById(R.id.btn_authorize_status);
+        tv_time_gap= (TextView) findViewById(R.id.tv_time_gap);
+        tv_time_gap.setText("每隔"+ SettingManager.getInstance().getSyncRateMin()+"分钟");
     }
 
     private void setAuthorizeStatus() {

@@ -23,8 +23,13 @@
 
 
     <include
-        android:id="@+id/rl_path_sync"
+        android:id="@+id/rl_data_report"
         layout="@layout/action_item_layout_bottom" />
+
+
+    <!--<include-->
+        <!--android:id="@+id/rl_path_sync"-->
+        <!--layout="@layout/action_item_layout_bottom" />-->
 
     <include
         android:id="@+id/rl_path_setting"

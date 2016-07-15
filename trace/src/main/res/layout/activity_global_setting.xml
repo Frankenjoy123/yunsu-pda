@@ -62,14 +62,19 @@
             android:textColor="#ff484e43"
             android:textSize="16.0dp" />
 
-        <CheckBox
-            android:id="@+id/cb_auto_sync"
+        <TextView
+
+            android:id="@+id/tv_time_gap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:checked="true"
-            />
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:text="@string/auto_sync"
+            android:textColor="#ff484e43"
+            android:textSize="16.0dp" />
+
+        <ImageView style="@style/right_action_style" />
 
     </RelativeLayout>
 

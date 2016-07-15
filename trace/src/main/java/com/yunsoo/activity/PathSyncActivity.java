@@ -59,7 +59,7 @@ public class PathSyncActivity extends BaseActivity implements DataServiceImpl.Da
         new Thread(new Runnable() {
             @Override
             public void run() {
-                LogisticManager.getInstance().createLogisticFile(context);
+//                LogisticManager.getInstance().createLogisticFile(context);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

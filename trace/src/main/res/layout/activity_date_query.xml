@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.yunsoo.activity.DateQueryActivity">
+
+    <com.yunsoo.view.TitleBar
+        android:id="@+id/data_report_title_bar"
+        layout="@layout/title_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+
+    <RelativeLayout
+        android:id="@+id/rl_query_date"
+        android:layout_below="@+id/data_report_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_bg_bottom"
+        android:clickable="true"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_calendar" />
+
+        <TextView
+            android:id="@+id/tv_query_date"
+            style="@style/text_style.light"
+            android:layout_centerInParent="true"
+            android:text="@string/settings"
+            />
+
+        <ImageView style="@style/right_action_style" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

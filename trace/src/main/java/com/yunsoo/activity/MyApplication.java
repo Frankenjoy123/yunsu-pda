@@ -8,6 +8,7 @@ import com.yunsoo.manager.FileManager;
 import com.yunsoo.manager.LogisticManager;
 import com.yunsoo.manager.SQLiteManager;
 import com.yunsoo.manager.SessionManager;
+import com.yunsoo.manager.SettingManager;
 import com.yunsoo.network.CacheService;
 import com.yunsoo.network.NetworkManager;
 
@@ -21,6 +22,10 @@ public class MyApplication extends Application{
         Context appContext=this;
         SessionManager sessionManager = SessionManager.initializeIntance(appContext);
         sessionManager.restore();
+
+        SettingManager settingManager=SettingManager.initializeInstance(appContext);
+        settingManager.restore();
+
         DeviceManager deviceManager= DeviceManager.initializeIntance(appContext);
         NetworkManager.initializeIntance(appContext).isNetworkConnected();
 

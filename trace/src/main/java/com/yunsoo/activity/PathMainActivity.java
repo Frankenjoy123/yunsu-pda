@@ -23,6 +23,7 @@ import com.yunsoo.manager.LogisticManager;
 import com.yunsoo.manager.SessionManager;
 import com.yunsoo.service.DataServiceImpl;
 import com.yunsoo.service.PermanentTokenLoginService;
+import com.yunsoo.service.background.SyncFileService;
 import com.yunsoo.util.Constants;
 import com.yunsoo.util.ToastMessageHelper;
 
@@ -49,10 +50,16 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_path_main);
+        startSyncFileService();
         initAction();
         getActionBar().hide();
         setupActionItems();
         checkAuthorizeStatus();
+    }
+
+    private void startSyncFileService() {
+        Intent intent=new Intent(this, SyncFileService.class);
+        startService(intent);
     }
 
     private void initAction() {
@@ -71,20 +78,14 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
             actionAdapter.setActions(actions);
             lv_action.setAdapter(actionAdapter);
 
-            lv_action.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                }
-            });
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void setupActionItems() {
-        buildViewContent(this.findViewById(R.id.rl_path_sync), R.drawable.ic_synchronize, R.string.sync_path);
+//        buildViewContent(this.findViewById(R.id.rl_path_sync), R.drawable.ic_synchronize, R.string.sync_path);
+        buildViewContent(this.findViewById(R.id.rl_data_report), R.drawable.ic_data_report, R.string.data_report);
         buildViewContent(this.findViewById(R.id.rl_path_setting), R.drawable.ic_my_settings, R.string.settings);
     }
 
@@ -99,9 +100,13 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.rl_path_sync:
-                Intent intent1=new Intent(PathMainActivity.this,PathSyncActivity.class);
-                startActivity(intent1);
+//            case R.id.rl_path_sync:
+//                Intent intent1=new Intent(PathMainActivity.this,PathSyncActivity.class);
+//                startActivity(intent1);
+//                break;
+            case R.id.rl_data_report:
+                Intent intent=new Intent(PathMainActivity.this,DateQueryActivity.class);
+                startActivity(intent);
                 break;
             case R.id.rl_path_setting:
                 Intent intent2=new Intent(PathMainActivity.this,GlobalSettingActivity.class);
@@ -136,6 +141,7 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
             tempAuthUser.setAccessToken(newAccessToken);
             tempAuthUser.setApi(api);
             tempAuthUser.setPermanentToken(permanentToken);
+            tempAuthUser.setOrgId(SessionManager.getInstance().getAuthUser().getOrgId());
             SessionManager.getInstance().saveLoginCredential(tempAuthUser);
         }
 

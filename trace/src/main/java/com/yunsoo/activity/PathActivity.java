@@ -19,11 +19,13 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yunsoo.adapter.LogisticActionAdapter;
 import com.yunsoo.adapter.PathAdapter;
 import com.yunsoo.fileOpreation.FileOperation;
+import com.yunsoo.service.ServiceExecutor;
 import com.yunsoo.sqlite.MyDataBaseHelper;
 import com.yunsoo.sqlite.SQLiteOperation;
 import com.yunsoo.util.Constants;
@@ -47,15 +49,13 @@ public class PathActivity extends Activity {
     
     TitleBar titleBar;
     EditText et_path;
-    List<String> keys;
+    List<String> keys=new ArrayList<String>();
     PathAdapter adaper;
     ListView lv_path;
 	Builder builder;
-	Button btnSubmit;
 	
 	private boolean isFirstWrite=true;
 	private String prevFileName;
-	private Button btnPathHistory;
 	
 	private MyDataBaseHelper dataBaseHelper;
 
@@ -63,6 +63,9 @@ public class PathActivity extends Activity {
     private String actionName;
     private String agencyId;
     private String agencyName;
+
+    private TextView tv_agency_name;
+    private TextView tv_count_value;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,11 +76,15 @@ public class PathActivity extends Activity {
 	}
 
     private void init() {
-
         actionId=getIntent().getStringExtra(LogisticActionAdapter.ACTION_ID);
         actionName=getIntent().getStringExtra(LogisticActionAdapter.ACTION_NAME);
         agencyId=getIntent().getStringExtra(Constants.Logistic.AGENCY_ID);
         agencyName=getIntent().getStringExtra(Constants.Logistic.AGENCY_NAME);
+
+        tv_agency_name= (TextView) findViewById(R.id.tv_agency_name);
+        tv_count_value= (TextView) findViewById(R.id.tv_count_value);
+        tv_agency_name.setText(agencyName);
+        tv_count_value.setText("已扫"+String.valueOf(keys.size())+"包");
 
         dataBaseHelper=new MyDataBaseHelper(this, Constants.SQ_DATABASE,null,1);
         preferences=getSharedPreferences("pathActivityPre", Context.MODE_PRIVATE);
@@ -95,20 +102,11 @@ public class PathActivity extends Activity {
         uniqueId = deviceUuid.toString();
 
         getActionBar().hide();
-        keys=new ArrayList<String>();
         titleBar=(TitleBar) findViewById(R.id.title_bar);
         titleBar.setMode(TitleBar.TitleBarMode.LEFT_BUTTON);
         titleBar.setDisplayAsBack(true);
         titleBar.setTitle(actionName+"扫描");
 
-        btnSubmit=(Button) findViewById(R.id.btn_submitPath);
-        if(keys==null|| keys.size()==0){
-            btnSubmit.setEnabled(false);
-        }
-        else {
-            btnSubmit.setEnabled(false);
-        }
-        bindSubmit();
         lv_path=(ListView) findViewById(R.id.lv_path);
         adaper=new PathAdapter(this, getResources());
         adaper.setKeyList(keys);
@@ -116,64 +114,36 @@ public class PathActivity extends Activity {
         lv_path.setAdapter(adaper);
         bindTextChanged();
 
-        btnPathHistory=(Button) findViewById(R.id.btn_pathHistory);
-        btnPathHistory.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                Intent intent=new Intent(PathActivity.this,PathHistoryActivity.class);
-                intent.putExtra(LogisticActionAdapter.ACTION_NAME,actionName);
-                intent.putExtra(LogisticActionAdapter.ACTION_ID,actionId);
-                startActivity(intent);
-            }
-        });
     }
 
 
+
+	private void submitToDB(final String packKey) {
+        ServiceExecutor.getInstance().execute(new Runnable() {
+            @Override
+            public void run() {
+                final SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                final Date date=new Date();
+                SQLiteOperation.insertPathData(dataBaseHelper.getWritableDatabase(),
+                        packKey,actionId,agencyId,Constants.DB.NOT_SYNC,dateFormat.format(date));
+            }
+        });
+	}
+
     @Override
-	protected void onPause() {
+    protected void onPause() {
 
-		editor.putString("prevFileName", prevFileName);
-		editor.commit();
-		super.onPause();
-	}
-	
-	
-	
-	private void bindSubmit() {
+        editor.putString("prevFileName", prevFileName);
+        editor.commit();
+        dataBaseHelper.close();
+        super.onPause();
+    }
 
-        final SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        final Date date=new Date();
-		btnSubmit.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				if(!keys.isEmpty()){
-
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            for (int i = 0; i < keys.size(); i++) {
-                                SQLiteOperation.insertPathData(dataBaseHelper.getWritableDatabase(),
-                                        keys.get(i),actionId,dateFormat.format(date));
-                            }
-                            dataBaseHelper.close();
-                            keys.clear();
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    btnSubmit.setEnabled(false);
-                                    adaper.notifyDataSetChanged();
-                                }
-                            });
-
-                        }
-                    }).start();
-				}
-			}
-		});
-	}
+    @Override
+    protected void onStop() {
+        dataBaseHelper.close();
+        super.onStop();
+    }
 
     @Override
     public void finish() {
@@ -203,6 +173,7 @@ public class PathActivity extends Activity {
 			@Override
 			public void afterTextChanged(Editable s) {
 				String string=new StringBuilder(s).toString();
+                String formatKey=StringUtils.replaceBlank(StringUtils.getLastString(string));
 				try {
 
 					if(string.isEmpty()||string=="\n"){
@@ -210,8 +181,9 @@ public class PathActivity extends Activity {
 					}
                     if (keys != null && keys.size() > 0) {
                         for (int i = 0; i < keys.size(); i++) {
-                            if (StringUtils.replaceBlank(StringUtils.getLastString(string))
-                            		.equals(StringUtils.getLastString(StringUtils.replaceBlank(keys.get(i))))) {
+                            String historyFormatKey=StringUtils.getLastString(StringUtils.replaceBlank(keys.get(i)));
+                            if (formatKey.equals(historyFormatKey))
+                            {
                                 Toast toast = Toast.makeText(getApplicationContext(),
                                        getString(R.string.key_exist) , Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.CENTER , 0, 0);
@@ -220,16 +192,11 @@ public class PathActivity extends Activity {
                             }
                         }
                     }
-                    keys.add(StringUtils.replaceBlank(StringUtils.getLastString(string)));
-                    if (keys==null||keys.size()==0){
-                        btnSubmit.setEnabled(false);
-                    }
-                    else {
-                        btnSubmit.setEnabled(true);
-                    }
 
+                    submitToDB(formatKey);
+                    keys.add(StringUtils.replaceBlank(StringUtils.getLastString(string)));
+                    tv_count_value.setText("已扫"+String.valueOf(keys.size())+"包");
                     adaper.notifyDataSetChanged();
-					
 					
 				} catch (Exception e) {
 					// TODO: handle exception

@@ -18,6 +18,19 @@ public final class Constants {
 		public static final String AGENCY_ID="agency_id";
 		public static final String AGENCY_NAME="agency_name";
 	}
+
+	public final static class DB
+	{
+		public final static String PATH_TABLE="path";
+		public final static String PACK_TABLE="pack";
+		public final static String AGENCY_COLUMN="agency";
+		public final static String ACTION_ID_COLUMN="action_id";
+		public final static String PACK_KEY_COLUMN="pack_key";
+		public final static String TIME_COLUMN="lat_save_time";
+		public final static String STATUS_COLUMN="status";
+		public final static String SYNC="sync";
+		public final static String NOT_SYNC="not_sync";
+	}
 	
 	public final static class Cache {
 		public final static String CACHE_SDCARD_IMAGE_PATH = "/image";
@@ -27,6 +40,9 @@ public final class Constants {
 
 	public final static class Preference {
 		public final static String PREF_LOGIN = "login";
+
+		public final static String SETTING="setting";
+		public final static String SYNC_RATE="sync_rate";
 
         public final static String PREF_LOGISTIC="logistic";
         public final static String LOGISTIC_ACTION="logistic_action";
@@ -95,5 +111,7 @@ public final class Constants {
 	public static final String BLANK=" ";
 
 	public static final String APP_ID_VALUE="2m9h243c7uw40njbh98";
+
+	public static final int SYNC_RATE=1;
 
 }

@@ -17,24 +17,28 @@
 		    android:layout_height="wrap_content"
 		    android:layout_alignParentBottom="true"
 		    android:gravity="center"
-		    android:orientation="horizontal" >
+		    android:orientation="horizontal"
+			android:background="@color/titlebar_bg"
+			>
 
-	    <Button
-		        android:id="@+id/btn_pathHistory"
-		        android:layout_width="80dp"
-		        android:layout_height="wrap_content"
-            android:background="@drawable/btn_bg"
-            android:textColor="@color/clear_color"
-		        android:text="今日已扫" /> 
 
-		    <Button
-		        android:id="@+id/btn_submitPath"
-		        android:layout_width="80dp"
-		        android:layout_height="wrap_content"
-		        android:layout_marginLeft="20dp"
-		        android:text="提交"
-                android:background="@drawable/btn_bg"
-                android:textColor="@color/clear_color"/>
+			<TextView
+				android:id="@+id/tv_agency_name"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/scan_count"
+				android:textColor="#fff"
+				android:textSize="20sp" />
+
+			<TextView
+				android:id="@+id/tv_count_value"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="222"
+				android:layout_marginLeft="15dp"
+				android:textColor="#fff"
+				android:textSize="20sp" />
+
 		</LinearLayout>
 
         <ListView 

@@ -8,6 +8,8 @@ import com.yunsoo.util.Constants;
 
 import org.json.JSONException;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,6 +37,25 @@ public class FileManager extends BaseManager{
             Log.d(TAG, "FileManager has not been initialized");
         }
         return fileManager;
+    }
+
+    public List<String> getPackFileNames() {
+        List<String> fileNames = null;
+        try {
+            String folderName = android.os.Environment.getExternalStorageDirectory() +
+                    Constants.YUNSOO_FOLDERNAME+Constants.PATH_SYNC_TASK_FOLDER;
+            File pack_task_folder = new File(folderName);
+            String[] packFiles= pack_task_folder.list();
+            fileNames=new ArrayList<>();
+            if (packFiles!=null&&packFiles.length>0){
+                for (int i=0;i<packFiles.length;i++){
+                    fileNames.add(packFiles[i]);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileNames;
     }
 
     public void savePackFileIndex(int index) {

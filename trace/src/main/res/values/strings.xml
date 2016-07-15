@@ -60,7 +60,7 @@
 
     <string name="off_line_upload">离线上传</string>
     <string name="wifi_upload">WIFI上传(推荐)</string>
-    
+
     <string name="check_pack_repeat">该包装码已被扫描，请检查是否重复</string>
 
     <string name="settings">设置</string>
@@ -71,14 +71,14 @@
     <string name="title_activity_packed_history">打包历史</string>
     <string name="title_activity_pack_detail">包内详情</string>
     <string name="title_activity_setting">SettingActivity</string>
-    <string name="standard" >规格：</string>
-    <string name="per" >个/箱</string>
+    <string name="standard">规格：</string>
+    <string name="per">个/箱</string>
     <string name="proceeding">正在进行:0/5</string>
     <string name="please_scan_package_key">该包已装满，请扫描包装码</string>
     <string name="please_scan_product_key">请扫产品码</string>
-    <string name="today_count" >今日已打包：0箱</string>
-    <string name="pack_count" >计数：</string>
-    <string name="count_unit" >箱</string>
+    <string name="today_count">今日已打包：0箱</string>
+    <string name="pack_count">计数：</string>
+    <string name="count_unit">箱</string>
     <string name="pack_barcode">包装码</string>
     <string name="pack">包装</string>
     <string name="product_barcode">产品码</string>
@@ -120,7 +120,8 @@
     <string name="authorize_status">是否授权</string>
     <string name="clear_cache">清除历史数据</string>
     <string name="current_version">当前版本</string>
-    <string name="auto_sync">自动同步</string>
+    <string name="auto_sync">自动同步时间</string>
+    <string name="scan_count">扫描计数</string>
 
     <string name="cancel_authorize">取消授权</string>
     <string name="not_authorize">PDA授权已被取消</string>
@@ -131,6 +132,11 @@
     <string name="title_activity_org_agency">OrgAgencyActivity</string>
 
     <string name="choose_org_agency">选择经销商</string>
+
+    <string name="data_report">数据报表</string>
+    <string name="start_time">开始时间</string>
+    <string name="end_time">结束时间</string>
+    <string name="query">查询</string>
 
 
 </resources>
