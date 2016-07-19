@@ -37,9 +37,24 @@
             android:text="@string/settings"
             />
 
-        <ImageView style="@style/right_action_style" />
+        <ImageView style="@style/down_action_style" />
 
     </RelativeLayout>
+
+    <ListView
+        android:id="@+id/lv_yunsu_report"
+        android:layout_below="@+id/rl_query_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="false"></ListView>
+
+    <TextView
+        android:id="@+id/tv_empty_note"
+     style="@style/text_style_report"
+        android:text="@string/no_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
+        />
 
 
 </RelativeLayout>

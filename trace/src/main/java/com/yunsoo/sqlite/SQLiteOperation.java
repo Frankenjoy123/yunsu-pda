@@ -4,10 +4,13 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.yunsoo.entity.OrgAgency;
 import com.yunsoo.util.Constants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Frank zhou on 2015/7/14.
@@ -23,7 +26,21 @@ public class SQLiteOperation {
         db.execSQL("insert into path values(null,?,?,?,?,?)",new String[]{pack_key,action_id,agency,null,time});
     }
     public static void insertPathData(SQLiteDatabase db,String pack_key,String action_id,String agency,String status,String time){
-        db.execSQL("insert into path values(null,?,?,?,?,?)",new String[]{pack_key,action_id,agency,status,time});
+        List<String> keyList=queryKey(db,pack_key,null,null,Constants.DB.NOT_SYNC);
+        if (keyList!=null && keyList.size()>0){
+            checkNotSyncDate(db,pack_key,action_id,agency,time);
+        }else {
+            db.execSQL("insert into path values(null,?,?,?,?,?)",new String[]{pack_key,action_id,agency,status,time});
+        }
+    }
+
+    public static void checkNotSyncDate(SQLiteDatabase db,String pack_key,String action_id,String agency,String time){
+        ContentValues values=new ContentValues();
+        values.put(Constants.DB.ACTION_ID_COLUMN,action_id);
+        values.put(Constants.DB.AGENCY_COLUMN,agency);
+        values.put(Constants.DB.TIME_COLUMN,time);
+        db.update(Constants.DB.PATH_TABLE,values,"pack_key=? and status=?",new String[]{pack_key,Constants.DB.NOT_SYNC});
+
     }
 
     public static void updatePathData(SQLiteDatabase db,String pack_key,String status){
@@ -56,15 +73,15 @@ public class SQLiteOperation {
         List<String> args=new ArrayList<>();
         String[] argArr = new String[0];
         if (pack_key!=null){
-            builder.append(Constants.DB.PACK_KEY_COLUMN+" =? "+"AND");
+            builder.append(Constants.DB.PACK_KEY_COLUMN+" =? "+" AND ");
             args.add(pack_key);
         }
         if (action_id!=null){
-            builder.append(Constants.DB.ACTION_ID_COLUMN+" =? "+"AND");
+            builder.append(Constants.DB.ACTION_ID_COLUMN+" =? "+" AND ");
             args.add(action_id);
         }
         if (agency!=null){
-            builder.append(Constants.DB.AGENCY_COLUMN+" =? "+"AND");
+            builder.append(Constants.DB.AGENCY_COLUMN+" =? "+" AND ");
             args.add(agency);
         }
         if (status!=null){
@@ -129,6 +146,38 @@ public class SQLiteOperation {
             }
         }
         return keyList;
+    }
+
+    public static Map<String,OrgAgency>  queryOrgAgentCount(SQLiteDatabase db, String date){
+        Map<String , OrgAgency> orgAgencyMap=new HashMap<>();
+//        Cursor c = db.rawQuery("select agency , action_id , count(*) as count  from path where date(last_save_time)=? and status=? group by agency , action_id", new String[]{date,Constants.DB.SYNC});
+
+        Cursor c = db.rawQuery("select agency , action_id , count(*) as count  from path where date(last_save_time)=? group by agency , action_id", new String[]{date});
+
+        if (c!=null){
+            while(c.moveToNext()){
+                OrgAgency orgAgency;
+                String agency=c.getString(0);
+                if (orgAgencyMap.containsKey(agency)){
+                    orgAgency=orgAgencyMap.get(agency);
+                }else {
+                    orgAgency=new OrgAgency();
+                    orgAgency.setId(agency);
+                }
+                String action=c.getString(1);
+                int count=c.getInt(2);
+                switch (action){
+                    case Constants.Logistic.INBOUND_CODE:
+                        orgAgency.setInbound_count(count);
+                        break;
+                    case Constants.Logistic.OUTBOUND_CODE:
+                        orgAgency.setOutbound_count(count);
+                        break;
+                }
+                orgAgencyMap.put(agency,orgAgency);
+            }
+        }
+        return orgAgencyMap;
     }
 
 

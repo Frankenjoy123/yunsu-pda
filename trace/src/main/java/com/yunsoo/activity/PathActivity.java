@@ -124,6 +124,7 @@ public class PathActivity extends Activity {
             public void run() {
                 final SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 final Date date=new Date();
+
                 SQLiteOperation.insertPathData(dataBaseHelper.getWritableDatabase(),
                         packKey,actionId,agencyId,Constants.DB.NOT_SYNC,dateFormat.format(date));
             }

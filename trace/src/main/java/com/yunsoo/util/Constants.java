@@ -26,7 +26,7 @@ public final class Constants {
 		public final static String AGENCY_COLUMN="agency";
 		public final static String ACTION_ID_COLUMN="action_id";
 		public final static String PACK_KEY_COLUMN="pack_key";
-		public final static String TIME_COLUMN="lat_save_time";
+		public final static String TIME_COLUMN="last_save_time";
 		public final static String STATUS_COLUMN="status";
 		public final static String SYNC="sync";
 		public final static String NOT_SYNC="not_sync";
@@ -112,6 +112,6 @@ public final class Constants {
 
 	public static final String APP_ID_VALUE="2m9h243c7uw40njbh98";
 
-	public static final int SYNC_RATE=1;
+	public static final int SYNC_RATE=5;
 
 }

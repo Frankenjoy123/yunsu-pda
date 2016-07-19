@@ -6,13 +6,24 @@ import android.content.DialogInterface;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.yunsoo.activity.R;
+import com.yunsoo.adapter.ReportAdapter;
+import com.yunsoo.entity.OrgAgency;
+import com.yunsoo.manager.LogisticManager;
+import com.yunsoo.manager.SessionManager;
+import com.yunsoo.service.ServiceExecutor;
+import com.yunsoo.sqlite.MyDataBaseHelper;
+import com.yunsoo.sqlite.SQLiteOperation;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yunsu on 2016/7/15.
@@ -30,30 +41,82 @@ public class DateTimePickDialogUtil {
         this.activity = activity;
     }
 
-    public AlertDialog dateTimePicKDialog(final TextView textView) {
-        LinearLayout dateTimeLayout = (LinearLayout) activity
+    public AlertDialog dateTimePicKDialog(final TextView textView, final ListView listView) {
+        final LinearLayout dateTimeLayout = (LinearLayout) activity
                 .getLayoutInflater().inflate(R.layout.common_date_time, null);
         datePicker = (DatePicker) dateTimeLayout.findViewById(R.id.datepicker);
-        init(datePicker);
+        init(datePicker,textView);
 
         ad = new AlertDialog.Builder(activity)
                 .setTitle("选择日期")
                 .setView(dateTimeLayout)
-                .setPositiveButton("设置", new DialogInterface.OnClickListener() {
+                .setPositiveButton("查询", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         StringBuilder builder=new StringBuilder();
-                        builder.append(datePicker.getYear()+"年");
-                        builder.append((datePicker.getMonth()+1)+"月");
-                        builder.append(datePicker.getDayOfMonth()+"日");
+                        String year= String.valueOf(datePicker.getYear());
+                        int month=datePicker.getMonth()+1;
+                        String monthString;
+                        if (month<10){
+                            monthString="0"+month;
+                        }else {
+                            monthString= String.valueOf(month);
+                        }
+                        int day=datePicker.getDayOfMonth();
+                        String dayString;
+                        if (day<10){
+                            dayString="0"+day;
+                        }else {
+                            dayString= String.valueOf(day);
+                        }
+
+                        builder.append(year+"年");
+                        builder.append(monthString+"月");
+                        builder.append(dayString+"日");
                         textView.setText(builder.toString());
+                        final String queryDate=year+"-"+monthString+"-"+dayString;
+                        executeQueryReport(queryDate,activity,listView);
                     }
                 })
                 .setNegativeButton("取消", null).show();
         return ad;
     }
 
-    public void init(DatePicker datePicker) {
-        Calendar calendar = Calendar.getInstance();
+    public static void executeQueryReport(final String queryDate, final Activity activity, final ListView listView){
+
+        final MyDataBaseHelper dataBaseHelper=new MyDataBaseHelper(activity, Constants.SQ_DATABASE,null,1);
+        ServiceExecutor.getInstance().execute(new Runnable() {
+            @Override
+            public void run() {
+                final Map<String , OrgAgency> agencyMap= SQLiteOperation.queryOrgAgentCount(dataBaseHelper.getReadableDatabase(),queryDate);
+                dataBaseHelper.close();
+                final List<OrgAgency> orgAgencyList=new ArrayList<OrgAgency>();
+                List<OrgAgency> sourceList=LogisticManager.getInstance().getAgencies();
+                for (Map.Entry<String, OrgAgency> entry:
+                        agencyMap.entrySet()) {
+                    String agencyId=  entry.getKey();
+                    for(int i=0;i<sourceList.size();i++){
+                        OrgAgency agency=sourceList.get(i);
+                        if (agency.getId().equals(agencyId)){
+                            entry.getValue().setName(agency.getName());
+                        }
+                    }
+                    orgAgencyList.add(entry.getValue());
+                }
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ReportAdapter adapter=new ReportAdapter(activity);
+                        adapter.setOrgAgencyList(orgAgencyList);
+                        listView.setAdapter(adapter);
+                    }
+                });
+            }
+        });
+
+    }
+
+    public void init(DatePicker datePicker, TextView tv_date) {
+        Calendar calendar = getDateCalendar((String) tv_date.getText());
         datePicker.init(calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH), null);
@@ -90,6 +153,22 @@ public class DateTimePickDialogUtil {
 
         calendar.set(currentYear, currentMonth, currentDay, currentHour,
                 currentMinute);
+        return calendar;
+    }
+
+    private Calendar getDateCalendar(String date){
+
+        Calendar calendar = Calendar.getInstance();
+        String yearStr = spliteString(date, "年", "index", "front"); // 年份
+        String monthAndDay = spliteString(date, "年", "index", "back"); // 月日
+        String monthStr = spliteString(monthAndDay, "月", "index", "front"); // 月
+        String dayStr = spliteString(monthAndDay, "月", "index", "back"); // 日
+        dayStr=spliteString(dayStr,"日","index","front");
+        int currentYear = Integer.valueOf(yearStr.trim()).intValue();
+        int currentMonth = Integer.valueOf(monthStr.trim()).intValue() - 1;
+        int currentDay = Integer.valueOf(dayStr.trim()).intValue();
+
+        calendar.set(currentYear, currentMonth, currentDay);
         return calendar;
     }
 
