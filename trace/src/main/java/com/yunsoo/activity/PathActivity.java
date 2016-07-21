@@ -40,6 +40,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PathActivity extends Activity {
 	SharedPreferences preferences;
@@ -173,35 +175,53 @@ public class PathActivity extends Activity {
 			
 			@Override
 			public void afterTextChanged(Editable s) {
-				String string=new StringBuilder(s).toString();
-                String formatKey=StringUtils.replaceBlank(StringUtils.getLastString(string));
-				try {
+                String string=new StringBuilder(s).toString();
+                Pattern pattern = null;
+                switch (BuildConfig.FLAVOR){
+                    case Constants.Favor.KANGCAI:
+                        pattern=Pattern.compile("^https?:\\/\\/[\\w\\-\\.]+\\.yunsu\\.co(?:\\:\\d+)?(?:\\/p)?\\/([^\\/]+)\\/?$");
+                        break;
+                    default:
+                        pattern=Pattern.compile("^https?:\\/\\/[\\w\\-\\.]+\\.yunsu\\.co(?:\\:\\d+)?(?:\\/p)?\\/([^\\/]+)\\/?$");
+                }
+                Matcher matcher=pattern.matcher(string);
+                if (matcher.find()){
+                    String formatKey=StringUtils.replaceBlank(StringUtils.getLastString(string));
+                    try {
 
-					if(string.isEmpty()||string=="\n"){
-						return;
-					}
-                    if (keys != null && keys.size() > 0) {
-                        for (int i = 0; i < keys.size(); i++) {
-                            String historyFormatKey=StringUtils.getLastString(StringUtils.replaceBlank(keys.get(i)));
-                            if (formatKey.equals(historyFormatKey))
-                            {
-                                Toast toast = Toast.makeText(getApplicationContext(),
-                                       getString(R.string.key_exist) , Toast.LENGTH_SHORT);
-                                toast.setGravity(Gravity.CENTER , 0, 0);
-                                toast.show();
-                                return;
+                        if(string.isEmpty()||string=="\n"){
+                            return;
+                        }
+                        if (keys != null && keys.size() > 0) {
+                            for (int i = 0; i < keys.size(); i++) {
+                                String historyFormatKey=StringUtils.getLastString(StringUtils.replaceBlank(keys.get(i)));
+                                if (formatKey.equals(historyFormatKey))
+                                {
+                                    Toast toast = Toast.makeText(getApplicationContext(),
+                                            getString(R.string.key_exist) , Toast.LENGTH_SHORT);
+                                    toast.setGravity(Gravity.CENTER , 0, 0);
+                                    toast.show();
+                                    return;
+                                }
                             }
                         }
-                    }
 
-                    submitToDB(formatKey);
-                    keys.add(StringUtils.replaceBlank(StringUtils.getLastString(string)));
-                    tv_count_value.setText("已扫"+String.valueOf(keys.size())+"包");
-                    adaper.notifyDataSetChanged();
-					
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
+                        submitToDB(formatKey);
+                        keys.add(0,StringUtils.replaceBlank(StringUtils.getLastString(string)));
+                        tv_count_value.setText("已扫"+String.valueOf(keys.size())+"包");
+                        adaper.notifyDataSetChanged();
+
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                    }
+                }else {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            getString(R.string.key_not_verify) , Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER , 0, 0);
+                    toast.show();
+                }
+
+
 				
 			}
 		});

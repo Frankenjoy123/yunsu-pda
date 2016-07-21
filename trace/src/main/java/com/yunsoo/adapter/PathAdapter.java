@@ -54,11 +54,13 @@ public class PathAdapter extends BaseAdapter
             TextView textviewNum = ((TextView) linearLayout
                     .findViewById(id.pathTextviewNum));
 
+            int index=keyList.size()-position;
+
             String tmpText = "";
-            if(position + 1 < 10)
-                tmpText = "0" + String.valueOf(position + 1);
+            if(index < 10)
+                tmpText = "0" + String.valueOf(index);
             else
-                tmpText = String.valueOf(position + 1);
+                tmpText = String.valueOf(index);
 
             textviewNum.setText(tmpText);
 

@@ -94,8 +94,12 @@ public class LogisticActionAdapter extends BaseAdapter
             public void onClick(View v) {
                 String action_id=actions.get(finalPosition).keySet().iterator().next();
                 String action_name=actions.get(finalPosition).get(action_id);
-
-                Intent intent=new Intent(activity, OrgAgencyActivity.class);
+                Intent intent=null;
+                if (action_id.equals(Constants.Logistic.INBOUND_CODE)){
+                    intent=new Intent(activity, PathActivity.class);
+                }else if (action_id.equals(Constants.Logistic.OUTBOUND_CODE)){
+                    intent=new Intent(activity, OrgAgencyActivity.class);
+                }
                 intent.putExtra(LogisticActionAdapter.ACTION_ID,action_id);
                 intent.putExtra(LogisticActionAdapter.ACTION_NAME,action_name);
                 activity.startActivity(intent);

@@ -9,6 +9,11 @@ public final class Constants {
 		
 	}
 
+	public final static class Favor
+	{
+		public static final String KANGCAI="KangCai";
+	}
+
 	public final static class Logistic
 	{
 		public final static String INBOUND_CODE = "inbound";

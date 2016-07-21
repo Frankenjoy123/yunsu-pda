@@ -182,68 +182,92 @@ public class LogisticManager extends BaseManager {
     }
 
     public static void createLogisticFile(Context context) {
-
         MyDataBaseHelper dataBaseHelper = new MyDataBaseHelper(context, Constants.SQ_DATABASE, null, 1);
         SQLiteDatabase db = dataBaseHelper.getReadableDatabase();
         List<String> actionList2 = SQLiteOperation.queryDistinctAction(db);
         List<String> agencyList = SQLiteOperation.queryDistinctAgency(db);
-
-        if (actionList2!=null&&actionList2.size()>0&&agencyList!=null&&agencyList.size()>0){
+        List<String> keyList=null;
+        if (actionList2!=null&&actionList2.size()>0){
             for (int i=0;i<actionList2.size();i++){
-                for (int j=0;j<agencyList.size();j++){
-                    List<String> keyList=SQLiteOperation.queryPackKeyByActionAndAgency(db,actionList2.get(i),agencyList.get(j));
-                    if (keyList!=null&&keyList.size()>0){
-                        YSFile ysFile=new YSFile(YSFile.EXT_TF);
-                        ysFile.putHeader("file_type","trace");
-                        ysFile.putHeader("org_id",SessionManager.getInstance().getAuthUser().getOrgId());
-                        ysFile.putHeader("count", String.valueOf(keyList.size()));
-                        ysFile.putHeader("action",actionList2.get(i));
-                        ysFile.putHeader("source","agent_id");
-                        ysFile.putHeader("agent_id",agencyList.get(j));
-                        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-                        Date date=new Date();
-                        ysFile.putHeader("date",dateFormat.format(date));
-
-                        StringBuilder builder=new StringBuilder();
-                        for(String key : keyList){
-                            builder.append(key);
-                            builder.append("\r\n");
-                            SQLiteOperation.updatePathData(db,key,Constants.DB.SYNC);
-                        }
-                        ysFile.setContent(builder.toString().getBytes(Charset.forName("UTF-8")));
-
-                        try {
-
-                            String folderName = android.os.Environment.getExternalStorageDirectory() +
-                                    Constants.YUNSOO_FOLDERNAME+Constants.PATH_SYNC_TASK_FOLDER;
-                            File path_task_folder = new File(folderName);
-                            if (!path_task_folder.exists())
-                                path_task_folder.mkdirs();
-
-                            StringBuilder fileNameBuilder=new StringBuilder("Path_");
-                            fileNameBuilder.append(DeviceManager.getInstance().getDeviceId());
-                            fileNameBuilder.append("_");
-                            fileNameBuilder.append(FileManager.getInstance().getPathFileLastIndex() + 1);
-                            fileNameBuilder.append(".tf");
-
-                            File file=new File(path_task_folder,fileNameBuilder.toString());
-                            FileOutputStream fos = new FileOutputStream(file);
-                            BufferedOutputStream bos = new BufferedOutputStream(fos);
-                            bos.write(ysFile.toBytes());
-                            bos.flush();
-                            bos.close();
-                            fos.close();
-
-                            FileManager.getInstance().savePathFileIndex(FileManager.getInstance().getPathFileLastIndex() + 1);
-
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
+                if (actionList2.get(i).equals(Constants.Logistic.INBOUND_CODE)){
+                    keyList=SQLiteOperation.queryPackKeyByAction(db,Constants.Logistic.INBOUND_CODE);
+                    buildYSFile(db,actionList2.get(i),keyList);
+                }else if (actionList2.get(i).equals(Constants.Logistic.OUTBOUND_CODE)){
+                    if (agencyList!=null&&agencyList.size()>0){
+                        for (int j=0;j<agencyList.size();j++){
+                            keyList=SQLiteOperation.queryPackKeyByActionAndAgency(db,actionList2.get(i),agencyList.get(j));
+                            buildYSFile(db,actionList2.get(i),agencyList.get(j),keyList);
                         }
                     }
+
                 }
             }
         }
         db.close();
+    }
 
+
+    private static void buildYSFile(SQLiteDatabase db,String actionId,String agencyId,List<String> keyList){
+        if (actionId!=null&&keyList!=null&&keyList.size()>0){
+            YSFile ysFile=new YSFile(YSFile.EXT_TF);
+            ysFile.putHeader("file_type","trace");
+            ysFile.putHeader("org_id",SessionManager.getInstance().getAuthUser().getOrgId());
+            ysFile.putHeader("count", String.valueOf(keyList.size()));
+            ysFile.putHeader("action",actionId);
+            if (actionId.equals(Constants.Logistic.INBOUND_CODE)){
+                ysFile.putHeader("source","storage_name");
+                ysFile.putHeader("storage_name","default");
+            }else if (actionId.equals(Constants.Logistic.OUTBOUND_CODE)){
+                if (agencyId!=null){
+                    ysFile.putHeader("source","agent_id");
+                    ysFile.putHeader("agent_id",agencyId);
+                }
+            }
+            SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            Date date=new Date();
+            ysFile.putHeader("date",dateFormat.format(date));
+
+            StringBuilder builder=new StringBuilder();
+            for(String key : keyList){
+                builder.append(key);
+                builder.append("\r\n");
+                SQLiteOperation.updatePathData(db,key,Constants.DB.SYNC);
+            }
+            ysFile.setContent(builder.toString().getBytes(Charset.forName("UTF-8")));
+
+            try {
+
+                String folderName = android.os.Environment.getExternalStorageDirectory() +
+                        Constants.YUNSOO_FOLDERNAME+Constants.PATH_SYNC_TASK_FOLDER;
+                File path_task_folder = new File(folderName);
+                if (!path_task_folder.exists())
+                    path_task_folder.mkdirs();
+
+                StringBuilder fileNameBuilder=new StringBuilder("Path_");
+                fileNameBuilder.append(actionId);
+                fileNameBuilder.append("_");
+                fileNameBuilder.append(DeviceManager.getInstance().getDeviceId());
+                fileNameBuilder.append("_");
+                fileNameBuilder.append(FileManager.getInstance().getPathFileLastIndex() + 1);
+                fileNameBuilder.append(".tf");
+
+                File file=new File(path_task_folder,fileNameBuilder.toString());
+                FileOutputStream fos = new FileOutputStream(file);
+                BufferedOutputStream bos = new BufferedOutputStream(fos);
+                bos.write(ysFile.toBytes());
+                bos.flush();
+                bos.close();
+                fos.close();
+
+                FileManager.getInstance().savePathFileIndex(FileManager.getInstance().getPathFileLastIndex() + 1);
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private static void buildYSFile(SQLiteDatabase db,String actionId,List<String> keyList){
+        buildYSFile(db,actionId,null,keyList);
     }
 }

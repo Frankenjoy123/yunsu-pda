@@ -113,7 +113,9 @@ public class SQLiteOperation {
         if (cursor!=null){
             while(cursor.moveToNext()){
                 String agency = cursor.getString(cursor.getColumnIndex(Constants.DB.ACTION_ID_COLUMN));
-                actionList.add(agency);
+                if (agency!=null){
+                    actionList.add(agency);
+                }
             }
         }
         return actionList;
@@ -127,7 +129,9 @@ public class SQLiteOperation {
         if (cursor!=null){
             while(cursor.moveToNext()){
                 String agency = cursor.getString(cursor.getColumnIndex(Constants.DB.AGENCY_COLUMN));
-                agencyList.add(agency);
+                if (agency!=null){
+                    agencyList.add(agency);
+                }
             }
         }
         return agencyList;
@@ -138,6 +142,21 @@ public class SQLiteOperation {
         Cursor cursor=db.query(true, Constants.DB.PATH_TABLE,new String[]{Constants.DB.PACK_KEY_COLUMN},
                 Constants.DB.STATUS_COLUMN+" =? AND "+Constants.DB.AGENCY_COLUMN+" =? AND "+Constants.DB.ACTION_ID_COLUMN+" =? "
                 ,new String[]{Constants.DB.NOT_SYNC,agency,action},null,null,null,null);
+        List<String> keyList= new ArrayList<>();
+        if (cursor!=null){
+            while(cursor.moveToNext()){
+                String key = cursor.getString(cursor.getColumnIndex(Constants.DB.PACK_KEY_COLUMN));
+                keyList.add(key);
+            }
+        }
+        return keyList;
+    }
+
+    public static List<String>  queryPackKeyByAction(SQLiteDatabase db,String action){
+//        Cursor c = db.rawQuery("select * from user where username=?",new Stirng[]{"Jack Johnson"});
+        Cursor cursor=db.query(true, Constants.DB.PATH_TABLE,new String[]{Constants.DB.PACK_KEY_COLUMN},
+                Constants.DB.STATUS_COLUMN+" =? AND "+Constants.DB.ACTION_ID_COLUMN+" =? "
+                ,new String[]{Constants.DB.NOT_SYNC,action},null,null,null,null);
         List<String> keyList= new ArrayList<>();
         if (cursor!=null){
             while(cursor.moveToNext()){

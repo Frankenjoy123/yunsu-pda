@@ -1,9 +1,22 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config_debug {
+            keyAlias 'debugKey'
+            keyPassword '123456'
+            storeFile file('key/debugKey.jks')
+            storePassword '123456'
+        }
+        config_release {
+            keyAlias 'releaseKey'
+            keyPassword '123456'
+            storeFile file('key/releaseKey.jks')
+            storePassword '123456'
+        }
+    }
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
-
     defaultConfig {
         applicationId "com.yunsu.trace"
         minSdkVersion 15
@@ -13,21 +26,57 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            zipAlignEnabled true
+            debuggable false
+            jniDebuggable false
+            signingConfig signingConfigs.config_release
+            renderscriptDebuggable false
+            proguardFile 'C:/XQS/yunsu-pda/trace/proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+            jniDebuggable true
+            signingConfig signingConfigs.config_debug
+            renderscriptDebuggable true
+            proguardFile 'C:/XQS/yunsu-pda/trace/proguard-rules.pro'
         }
     }
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+    productFlavors {
+        KangCai {
+            minSdkVersion 15
+            applicationId 'com.yunsu.trace.kangcai'
+            targetSdkVersion 21
+            versionCode 1
+            versionName '1.0'
+            buildConfigField "int", "PATTERN_CODE", "1"
+        }
+        flavor2 {
+            minSdkVersion 15
+            applicationId 'com.yunsu.trace.two'
+            proguardFile 'C:/XQS/yunsu-pda/trace/proguard-rules.pro'
+            signingConfig signingConfigs.config_release
+            targetSdkVersion 21
+            versionCode 1
+            versionName '1.0'
+            buildConfigField "int", "PATTERN_TYPE", "2"
+        }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.1.1'
-    compile 'com.idescout.sql:sqlscout-server:1.0'
-    //avoscloud-sdk 为 LeanCloud基础包
-//    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    // Stetho core
+    compile 'com.facebook.stetho:stetho:1.3.1'
+    //If you want to add a network helper
+    compile 'com.facebook.stetho:stetho-okhttp3:1.3.1'
 }
