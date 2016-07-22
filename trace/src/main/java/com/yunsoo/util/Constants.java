@@ -117,6 +117,6 @@ public final class Constants {
 
 	public static final String APP_ID_VALUE="2m9h243c7uw40njbh98";
 
-	public static final int SYNC_RATE=5;
+	public static final int SYNC_RATE=10;
 
 }

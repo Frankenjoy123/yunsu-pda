@@ -25,6 +25,8 @@ public class MyApplication extends Application{
         super.onCreate();
         Context appContext=this;
 
+        SQLiteManager.initializeIntance(appContext);
+
         SessionManager sessionManager = SessionManager.initializeIntance(appContext);
         sessionManager.restore();
 

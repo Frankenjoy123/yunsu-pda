@@ -18,7 +18,7 @@
         android:layout_below="@+id/data_report_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/item_bg_bottom"
+        android:background="@drawable/item_bg_no_stroke_line"
         android:clickable="true"
         android:padding="10dp">
 
@@ -41,20 +41,76 @@
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_inbound"
+        android:layout_below="@+id/rl_query_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/item_bg_top_line"
+        >
+        <TextView
+            android:id="@+id/tv_report_inbound"
+            android:text="@string/total_inbound"
+            android:textSize="18dp"
+            android:layout_marginLeft="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tv_report_inbound_count"
+            android:textSize="18dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text="10包"
+            android:layout_toRightOf="@+id/tv_report_inbound"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_outbound"
+        android:layout_below="@+id/ll_inbound"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/item_bg_bottom_line"
+        >
+        <TextView
+            android:id="@+id/tv_report_outbound"
+            android:text="@string/total_outbound"
+            android:textSize="18dp"
+            android:layout_marginLeft="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tv_report_outbound_count"
+            android:textSize="18dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text="10包"
+            android:layout_toRightOf="@+id/tv_report_outbound"
+            />
+
+    </LinearLayout>
+
     <ListView
         android:id="@+id/lv_yunsu_report"
-        android:layout_below="@+id/rl_query_date"
+        android:layout_below="@+id/ll_outbound"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="false"></ListView>
 
-    <TextView
-        android:id="@+id/tv_empty_note"
-     style="@style/text_style_report"
-        android:text="@string/no_content"
-        android:layout_centerInParent="true"
-        android:gravity="center_horizontal"
-        />
+    <!--<TextView-->
+        <!--android:id="@+id/tv_empty_note"-->
+     <!--style="@style/text_style_report"-->
+        <!--android:text="@string/no_content"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--/>-->
 
 
 </RelativeLayout>

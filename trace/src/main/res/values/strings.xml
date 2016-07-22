@@ -134,6 +134,8 @@
 
     <string name="choose_org_agency">选择经销商</string>
     <string name="agency">经销商：</string>
+    <string name="total_inbound">总计入库：</string>
+    <string name="total_outbound">总计出库：</string>
     <string name="inbound">入库：</string>
     <string name="outbound">出库：</string>
 

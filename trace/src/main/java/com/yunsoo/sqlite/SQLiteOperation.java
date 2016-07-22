@@ -3,6 +3,7 @@ package com.yunsoo.sqlite;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Switch;
 
 import com.yunsoo.entity.OrgAgency;
 import com.yunsoo.util.Constants;
@@ -169,34 +170,36 @@ public class SQLiteOperation {
 
     public static Map<String,OrgAgency>  queryOrgAgentCount(SQLiteDatabase db, String date){
         Map<String , OrgAgency> orgAgencyMap=new HashMap<>();
-//        Cursor c = db.rawQuery("select agency , action_id , count(*) as count  from path where date(last_save_time)=? and status=? group by agency , action_id", new String[]{date,Constants.DB.SYNC});
-
         Cursor c = db.rawQuery("select agency , action_id , count(*) as count  from path where date(last_save_time)=? group by agency , action_id", new String[]{date});
 
         if (c!=null){
             while(c.moveToNext()){
-                OrgAgency orgAgency;
-                String agency=c.getString(0);
-                if (orgAgencyMap.containsKey(agency)){
-                    orgAgency=orgAgencyMap.get(agency);
-                }else {
-                    orgAgency=new OrgAgency();
-                    orgAgency.setId(agency);
-                }
                 String action=c.getString(1);
-                int count=c.getInt(2);
-                switch (action){
-                    case Constants.Logistic.INBOUND_CODE:
-                        orgAgency.setInbound_count(count);
-                        break;
-                    case Constants.Logistic.OUTBOUND_CODE:
-                        orgAgency.setOutbound_count(count);
-                        break;
+                if (action.equals(Constants.Logistic.OUTBOUND_CODE)){
+                    String agency=c.getString(0);
+                    OrgAgency orgAgency=new OrgAgency();;
+                    orgAgency.setId(agency);
+                    int count=c.getInt(2);
+                    orgAgency.setOutbound_count(count);
+                    orgAgencyMap.put(agency,orgAgency);
                 }
-                orgAgencyMap.put(agency,orgAgency);
             }
         }
         return orgAgencyMap;
+    }
+
+    public static Map<String,Integer>  queryInOutCount(SQLiteDatabase db, String date){
+        Map<String,Integer> countMap=new HashMap<>();
+        Cursor c = db.rawQuery("select  action_id , count(*) as count  from path where date(last_save_time)=? group by action_id", new String[]{date});
+        if (c!=null){
+
+            while (c.moveToNext()){
+                String action=c.getString(0);
+                int count=c.getInt(1);
+                countMap.put(action,count);
+            }
+        }
+        return countMap;
     }
 
 

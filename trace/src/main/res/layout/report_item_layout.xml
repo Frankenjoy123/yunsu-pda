@@ -27,11 +27,6 @@
                 />
 
             <TextView
-                android:text="@string/inbound"
-                style="@style/text_style_report" />
-
-
-            <TextView
                 android:text="@string/outbound"
                 style="@style/text_style_report" />
 
@@ -47,11 +42,6 @@
                 android:id="@+id/tv_report_agency_name"
                 style="@style/text_style_report"
                 android:text="杭州经销商"
-                />
-            <TextView
-                android:id="@+id/tv_inbound_count"
-                style="@style/text_style_report"
-                android:text="10包"
                 />
             <TextView
                 android:id="@+id/tv_outbound_count"

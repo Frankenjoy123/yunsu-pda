@@ -11,11 +11,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yunsoo.adapter.ReportAdapter;
+import com.yunsoo.entity.OrgAgency;
+import com.yunsoo.manager.LogisticManager;
+import com.yunsoo.service.ServiceExecutor;
+import com.yunsoo.sqlite.SQLiteOperation;
 import com.yunsoo.util.DateTimePickDialogUtil;
 import com.yunsoo.view.TitleBar;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class DateQueryActivity extends Activity {
 
@@ -25,6 +30,8 @@ public class DateQueryActivity extends Activity {
     private RelativeLayout rl_query_date;
     private ListView listView;
     private TextView tv_empty_note;
+    private TextView inTextView;
+    private TextView outTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +48,13 @@ public class DateQueryActivity extends Activity {
         titleBar.setTitle(getString(R.string.data_report));
         titleBar.setMode(TitleBar.TitleBarMode.LEFT_BUTTON);
         titleBar.setDisplayAsBack(true);
+
+        inTextView= (TextView) findViewById(R.id.tv_report_inbound_count);
+        outTextView= (TextView) findViewById(R.id.tv_report_outbound_count);
+
         listView= (ListView) findViewById(R.id.lv_yunsu_report);
-        tv_empty_note= (TextView) findViewById(R.id.tv_empty_note);
-        listView.setEmptyView(tv_empty_note);
+//        tv_empty_note= (TextView) findViewById(R.id.tv_empty_note);
+//        listView.setEmptyView(tv_empty_note);
         tv_query_date = (TextView) findViewById(R.id.tv_query_date);
         rl_query_date= (RelativeLayout) findViewById(R.id.rl_query_date);
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
@@ -54,13 +65,13 @@ public class DateQueryActivity extends Activity {
             public void onClick(View view) {
                 DateTimePickDialogUtil dateTimePicKDialog = new DateTimePickDialogUtil(
                         DateQueryActivity.this);
-                dateTimePicKDialog.dateTimePicKDialog(tv_query_date,listView);
+                dateTimePicKDialog.dateTimePicKDialog(tv_query_date,listView,inTextView,outTextView);
             }
         });
     }
 
     private void initListView() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        DateTimePickDialogUtil.executeQueryReport(simpleDateFormat.format(new Date()),this,listView);
+        DateTimePickDialogUtil.executeQueryReport(simpleDateFormat.format(new Date()),this,listView,inTextView,outTextView);
     }
 }

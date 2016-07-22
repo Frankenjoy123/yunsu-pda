@@ -63,20 +63,17 @@ public class ReportAdapter extends BaseAdapter
             view=inflater.inflate(layout.report_item_layout,viewGroup,false);
             ViewHolder holder=new ViewHolder();
             holder.tv_report_agency_name = (TextView) view.findViewById(id.tv_report_agency_name);
-            holder.tv_inbound_count= (TextView) view.findViewById(id.tv_inbound_count);
             holder.tv_outbound_count= (TextView) view.findViewById(id.tv_outbound_count);
             view.setTag(holder);
         }
         ViewHolder holder= (ViewHolder) view.getTag();
         holder.tv_report_agency_name.setText(orgAgencyList.get(i).getName());
-        holder.tv_inbound_count.setText(String.valueOf(orgAgencyList.get(i).getInbound_count())+"包");
         holder.tv_outbound_count.setText(String.valueOf(orgAgencyList.get(i).getOutbound_count())+"包");
         return view;
     }
 
     private final static class ViewHolder {
         TextView tv_report_agency_name;
-        TextView tv_inbound_count;
         TextView tv_outbound_count;
     }
 

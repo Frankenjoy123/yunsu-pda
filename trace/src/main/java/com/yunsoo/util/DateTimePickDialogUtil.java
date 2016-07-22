@@ -41,7 +41,7 @@ public class DateTimePickDialogUtil {
         this.activity = activity;
     }
 
-    public AlertDialog dateTimePicKDialog(final TextView textView, final ListView listView) {
+    public AlertDialog dateTimePicKDialog(final TextView textView, final ListView listView, final TextView tv_in_count, final TextView tv_out_count) {
         final LinearLayout dateTimeLayout = (LinearLayout) activity
                 .getLayoutInflater().inflate(R.layout.common_date_time, null);
         datePicker = (DatePicker) dateTimeLayout.findViewById(R.id.datepicker);
@@ -74,20 +74,21 @@ public class DateTimePickDialogUtil {
                         builder.append(dayString+"日");
                         textView.setText(builder.toString());
                         final String queryDate=year+"-"+monthString+"-"+dayString;
-                        executeQueryReport(queryDate,activity,listView);
+                        executeQueryReport(queryDate,activity,listView,tv_in_count,tv_out_count);
                     }
                 })
                 .setNegativeButton("取消", null).show();
         return ad;
     }
 
-    public static void executeQueryReport(final String queryDate, final Activity activity, final ListView listView){
+    public static void executeQueryReport(final String queryDate, final Activity activity, final ListView listView, final TextView tv_in_count, final TextView tv_out_count){
 
         final MyDataBaseHelper dataBaseHelper=new MyDataBaseHelper(activity, Constants.SQ_DATABASE,null,1);
         ServiceExecutor.getInstance().execute(new Runnable() {
             @Override
             public void run() {
                 final Map<String , OrgAgency> agencyMap= SQLiteOperation.queryOrgAgentCount(dataBaseHelper.getReadableDatabase(),queryDate);
+                final Map<String, Integer> map = SQLiteOperation.queryInOutCount(dataBaseHelper.getReadableDatabase(), queryDate);
                 dataBaseHelper.close();
                 final List<OrgAgency> orgAgencyList=new ArrayList<OrgAgency>();
                 List<OrgAgency> sourceList=LogisticManager.getInstance().getAgencies();
@@ -105,6 +106,16 @@ public class DateTimePickDialogUtil {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        int inCount=0,outCount=0;
+                        if (map.get(Constants.Logistic.INBOUND_CODE)!=null){
+                            inCount=map.get(Constants.Logistic.INBOUND_CODE);
+                        }
+                        if (map.get(Constants.Logistic.OUTBOUND_CODE)!=null){
+                            outCount=map.get(Constants.Logistic.OUTBOUND_CODE);
+                        }
+
+                        tv_in_count.setText(inCount+"包");
+                        tv_out_count.setText(outCount+"包");
                         ReportAdapter adapter=new ReportAdapter(activity);
                         adapter.setOrgAgencyList(orgAgencyList);
                         listView.setAdapter(adapter);
