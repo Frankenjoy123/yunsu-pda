@@ -11,6 +11,7 @@ import android.util.Log;
 import com.yunsoo.exception.BaseException;
 import com.yunsoo.manager.FileManager;
 import com.yunsoo.manager.LogisticManager;
+import com.yunsoo.manager.SettingManager;
 import com.yunsoo.service.DataServiceImpl;
 import com.yunsoo.service.FileUpLoadService;
 import com.yunsoo.util.Constants;
@@ -57,7 +58,7 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
                     }
                 }
             }
-        },0,1000*60* Constants.SYNC_RATE);
+        },0,1000*60* SettingManager.getInstance().getSyncRateMin());
     }
 
     @Override

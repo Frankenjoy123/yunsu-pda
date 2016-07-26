@@ -54,7 +54,6 @@ public class PathActivity extends Activity {
     List<String> keys=new ArrayList<String>();
     PathAdapter adaper;
     ListView lv_path;
-	Builder builder;
 	
 	private boolean isFirstWrite=true;
 	private String prevFileName;
@@ -80,9 +79,13 @@ public class PathActivity extends Activity {
     private void init() {
         actionId=getIntent().getStringExtra(LogisticActionAdapter.ACTION_ID);
         actionName=getIntent().getStringExtra(LogisticActionAdapter.ACTION_NAME);
-        agencyId=getIntent().getStringExtra(Constants.Logistic.AGENCY_ID);
-        agencyName=getIntent().getStringExtra(Constants.Logistic.AGENCY_NAME);
-
+        if (actionId.equals(Constants.Logistic.INBOUND_CODE)){
+            agencyId=Constants.DEFAULT_STORAGE;
+            agencyName=Constants.BLANK;
+        }else {
+            agencyId=getIntent().getStringExtra(Constants.Logistic.AGENCY_ID);
+            agencyName=getIntent().getStringExtra(Constants.Logistic.AGENCY_NAME);
+        }
         tv_agency_name= (TextView) findViewById(R.id.tv_agency_name);
         tv_count_value= (TextView) findViewById(R.id.tv_count_value);
         tv_agency_name.setText(agencyName);
@@ -129,6 +132,7 @@ public class PathActivity extends Activity {
 
                 SQLiteOperation.insertPathData(dataBaseHelper.getWritableDatabase(),
                         packKey,actionId,agencyId,Constants.DB.NOT_SYNC,dateFormat.format(date));
+                dataBaseHelper.close();
             }
         });
 	}

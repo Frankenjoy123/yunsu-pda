@@ -22,6 +22,16 @@ public final class Constants {
 		public final static String OUTBOUND = "出库";
 		public static final String AGENCY_ID="agency_id";
 		public static final String AGENCY_NAME="agency_name";
+		public static final String REVOKE_INBOUND="撤销入库";
+		public static final String REVOKE_OUTBOUND="撤销出库";
+		public static final int LIMIT_ITEM=3000;
+
+	}
+
+	public final static class Key
+	{
+		public final static String KEY_STATUS="key_status";
+		public final static String NOT_EXIST="not_exist";
 	}
 
 	public final static class DB
@@ -35,6 +45,7 @@ public final class Constants {
 		public final static String STATUS_COLUMN="status";
 		public final static String SYNC="sync";
 		public final static String NOT_SYNC="not_sync";
+		public final static String DISABLE="disable";
 	}
 	
 	public final static class Cache {
@@ -113,10 +124,17 @@ public final class Constants {
 
     public static final String PATH_SYNC_SUCCESS_FOLDER="/path/sync_success";
 
-	public static final String BLANK=" ";
+	public static final String BLANK="";
 
 	public static final String APP_ID_VALUE="2m9h243c7uw40njbh98";
 
 	public static final int SYNC_RATE=10;
+
+	public static final String DEFAULT_STORAGE="default";
+
+	public static final String TITLE="title";
+
+	public static final boolean INIT_DATA=false;
+
 
 }

@@ -10,7 +10,17 @@ import android.widget.ImageView;
 
 import com.yunsoo.annotation.ViewById;
 //import com.itxiaowu.manager.DeviceGeoLocationManager;
+import com.yunsoo.service.ServiceExecutor;
+import com.yunsoo.service.background.InitDataService;
+import com.yunsoo.service.background.SyncFileService;
+import com.yunsoo.sqlite.MyDataBaseHelper;
+import com.yunsoo.sqlite.SQLiteOperation;
+import com.yunsoo.util.Constants;
 import com.yunsoo.util.DensityUtil;
+import com.yunsoo.util.KeyGenerator;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class WelcomeActivity extends BaseActivity{
@@ -31,6 +41,7 @@ public class WelcomeActivity extends BaseActivity{
         SharedPreferences preferences=getSharedPreferences("yunsoo_pda",MODE_PRIVATE);
         isAuthorize=preferences.getBoolean("isAuthorize",false);
         init();
+
 
         new Handler().postDelayed(new Runnable() {
 

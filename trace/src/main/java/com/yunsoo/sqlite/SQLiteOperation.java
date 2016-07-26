@@ -3,6 +3,8 @@ package com.yunsoo.sqlite;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
 import android.widget.Switch;
 
 import com.yunsoo.entity.OrgAgency;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by Frank zhou on 2015/7/14.
@@ -35,6 +38,7 @@ public class SQLiteOperation {
         }
     }
 
+
     public static void checkNotSyncDate(SQLiteDatabase db,String pack_key,String action_id,String agency,String time){
         ContentValues values=new ContentValues();
         values.put(Constants.DB.ACTION_ID_COLUMN,action_id);
@@ -46,6 +50,15 @@ public class SQLiteOperation {
 
     public static void updatePathData(SQLiteDatabase db,String pack_key,String status){
         updatePathData(db,pack_key,null,null,status,null);
+    }
+
+    public static void revokePathData(SQLiteDatabase db ,String time,String pack_key,String action_id){
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(Constants.DB.STATUS_COLUMN,Constants.DB.DISABLE);
+        if (time!=null){
+            contentValues.put(Constants.DB.TIME_COLUMN,time);
+        }
+        db.update(Constants.DB.PATH_TABLE, contentValues, Constants.DB.PACK_KEY_COLUMN+" = ? and " + Constants.DB.ACTION_ID_COLUMN+" =?" , new String[]{pack_key,action_id});
     }
 
     public static void updatePathData(SQLiteDatabase db,String pack_key,String action_id,String agency,String status,String time){
@@ -66,6 +79,26 @@ public class SQLiteOperation {
             contentValues.put(Constants.DB.TIME_COLUMN,time);
         }
         db.update(Constants.DB.PATH_TABLE, contentValues, Constants.DB.PACK_KEY_COLUMN+" = ?", new String[]{pack_key});
+    }
+
+
+    public static void batchUpdateStatus(SQLiteDatabase db,List<String> keyList,String action_id,String status){
+
+        //TODO 修正批量修改
+        Log.d("TIME","batchUpdateStatus start");
+        db.beginTransaction();
+//        db.update()
+        SQLiteStatement statement=db.compileStatement("update path set status=? where pack_key=? and action_id=?");
+        for (int i=0;i<keyList.size();i++){
+            statement.bindString(1,status);
+            statement.bindString(2,keyList.get(i));
+            statement.bindString(3,action_id);
+            statement.execute();
+            statement.clearBindings();
+        }
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        Log.d("TIME","batchUpdateStatus end");
     }
 
     public static List<String>  queryKey(SQLiteDatabase db,String pack_key,String action_id,String agency,String status){
@@ -106,6 +139,13 @@ public class SQLiteOperation {
         }
         return keyList;
     }
+
+    public static List<String>  queryKey(SQLiteDatabase db,String pack_key,String action_id,String status){
+       return queryKey(db,pack_key,action_id,null,status);
+    }
+
+
+
 
     public static List<String> queryDistinctAction(SQLiteDatabase db){
         Cursor cursor=db.query(true, Constants.DB.PATH_TABLE,new String[]{Constants.DB.ACTION_ID_COLUMN},
@@ -153,11 +193,17 @@ public class SQLiteOperation {
         return keyList;
     }
 
-    public static List<String>  queryPackKeyByAction(SQLiteDatabase db,String action){
+    public static List<String>  queryPackKeyByActionAndAgency(SQLiteDatabase db,String action,String agency,String offset){
 //        Cursor c = db.rawQuery("select * from user where username=?",new Stirng[]{"Jack Johnson"});
-        Cursor cursor=db.query(true, Constants.DB.PATH_TABLE,new String[]{Constants.DB.PACK_KEY_COLUMN},
-                Constants.DB.STATUS_COLUMN+" =? AND "+Constants.DB.ACTION_ID_COLUMN+" =? "
-                ,new String[]{Constants.DB.NOT_SYNC,action},null,null,null,null);
+        StringBuilder builder=new StringBuilder("select distinct pack_key from path where status=? and agency=? and action_id=? limit ");
+        builder.append(Constants.Logistic.LIMIT_ITEM);
+        builder.append(" offset ?");
+
+        Cursor cursor = db.rawQuery(builder.toString(), new String[]{Constants.DB.NOT_SYNC,action,offset});
+//
+//        Cursor cursor=db.query(true, Constants.DB.PATH_TABLE,new String[]{Constants.DB.PACK_KEY_COLUMN},
+//                Constants.DB.STATUS_COLUMN+" =? AND "+Constants.DB.AGENCY_COLUMN+" =? AND "+Constants.DB.ACTION_ID_COLUMN+" =? "
+//                ,new String[]{Constants.DB.NOT_SYNC,agency,action},null,null,null,null);
         List<String> keyList= new ArrayList<>();
         if (cursor!=null){
             while(cursor.moveToNext()){
@@ -168,27 +214,72 @@ public class SQLiteOperation {
         return keyList;
     }
 
-    public static Map<String,OrgAgency>  queryOrgAgentCount(SQLiteDatabase db, String date){
-        Map<String , OrgAgency> orgAgencyMap=new HashMap<>();
-        Cursor c = db.rawQuery("select agency , action_id , count(*) as count  from path where date(last_save_time)=? group by agency , action_id", new String[]{date});
 
-        if (c!=null){
-            while(c.moveToNext()){
-                String action=c.getString(1);
-                if (action.equals(Constants.Logistic.OUTBOUND_CODE)){
-                    String agency=c.getString(0);
-                    OrgAgency orgAgency=new OrgAgency();;
-                    orgAgency.setId(agency);
-                    int count=c.getInt(2);
-                    orgAgency.setOutbound_count(count);
-                    orgAgencyMap.put(agency,orgAgency);
-                }
+    public static List<String>  queryPackKeyByAction(SQLiteDatabase db,String action){
+        Cursor cursor = db.rawQuery("select distinct pack_key from path where status=? and action_id=? limit 3000 offset ?",
+                new String[]{Constants.DB.NOT_SYNC});
+//        Cursor cursor=db.query(true, Constants.DB.PATH_TABLE,new String[]{Constants.DB.PACK_KEY_COLUMN},
+//                Constants.DB.STATUS_COLUMN+" =? AND "+Constants.DB.ACTION_ID_COLUMN+" =? "
+//                ,new String[]{Constants.DB.NOT_SYNC,action},null,null,null,null);
+        List<String> keyList= new ArrayList<>();
+        if (cursor!=null){
+            while(cursor.moveToNext()){
+                String key = cursor.getString(cursor.getColumnIndex(Constants.DB.PACK_KEY_COLUMN));
+                keyList.add(key);
             }
         }
+        return keyList;
+    }
+
+    public static List<String>  queryPackKeyByAction(SQLiteDatabase db,String action,String offset){
+        StringBuilder builder=new StringBuilder("select distinct pack_key from path where status=? and action_id=? limit ");
+        builder.append(Constants.Logistic.LIMIT_ITEM);
+        builder.append(" offset ?");
+        Cursor cursor = db.rawQuery(builder.toString(), new String[]{Constants.DB.NOT_SYNC,action,offset});
+//        Cursor cursor=db.query(true, Constants.DB.PATH_TABLE,new String[]{Constants.DB.PACK_KEY_COLUMN},
+//                Constants.DB.STATUS_COLUMN+" =? AND "+Constants.DB.ACTION_ID_COLUMN+" =? "
+//                ,new String[]{Constants.DB.NOT_SYNC,action},null,null,null,null);
+        List<String> keyList= new ArrayList<>();
+        if (cursor!=null){
+            while(cursor.moveToNext()){
+                String key = cursor.getString(cursor.getColumnIndex(Constants.DB.PACK_KEY_COLUMN));
+                keyList.add(key);
+            }
+        }
+        return keyList;
+    }
+
+
+    public static Map<String,OrgAgency>  queryOrgAgentCount(SQLiteDatabase db, String date){
+
+        Log.d("TIME","queryOrgAgentCount start:");
+        Map<String , OrgAgency> orgAgencyMap=new HashMap<>();
+        Log.d("TIME","just rawQuerty start");
+        Cursor c = db.rawQuery("select agency  , count(*) as count  from path where date(last_save_time)=? and action_id=? group by agency",
+                new String[]{date,Constants.Logistic.OUTBOUND_CODE});
+        Log.d("TIME","just rawQuerty end");
+
+        Log.d("TIME","data put start");
+        if (c!=null){
+            while(c.moveToNext()) {
+                OrgAgency orgAgency=new OrgAgency();;
+                Log.d("TIME","parse data from cursor start");
+                String agencyId=c.getString(0);
+                int count=c.getInt(1);
+                Log.d("TIME","parse data from cursor end");
+                orgAgency.setId(agencyId);
+                orgAgency.setOutbound_count(count);
+                orgAgencyMap.put(agencyId,orgAgency);
+            }
+        }
+        Log.d("TIME","data put end");
+
+        Log.d("TIME","queryOrgAgentCount end");
         return orgAgencyMap;
     }
 
     public static Map<String,Integer>  queryInOutCount(SQLiteDatabase db, String date){
+        Log.d("TIME","queryInOutCount start");
         Map<String,Integer> countMap=new HashMap<>();
         Cursor c = db.rawQuery("select  action_id , count(*) as count  from path where date(last_save_time)=? group by action_id", new String[]{date});
         if (c!=null){
@@ -199,9 +290,9 @@ public class SQLiteOperation {
                 countMap.put(action,count);
             }
         }
+        Log.d("TIME","queryInOutCount end");
         return countMap;
     }
-
 
 
 }

@@ -183,27 +183,32 @@ public class LogisticManager extends BaseManager {
 
     public static void createLogisticFile(Context context) {
         MyDataBaseHelper dataBaseHelper = new MyDataBaseHelper(context, Constants.SQ_DATABASE, null, 1);
-        SQLiteDatabase db = dataBaseHelper.getReadableDatabase();
-        List<String> actionList2 = SQLiteOperation.queryDistinctAction(db);
+        SQLiteDatabase db = dataBaseHelper.getWritableDatabase();
+        List<String> actionList = SQLiteOperation.queryDistinctAction(db);
         List<String> agencyList = SQLiteOperation.queryDistinctAgency(db);
         List<String> keyList=null;
-        if (actionList2!=null&&actionList2.size()>0){
-            for (int i=0;i<actionList2.size();i++){
-                if (actionList2.get(i).equals(Constants.Logistic.INBOUND_CODE)){
-                    keyList=SQLiteOperation.queryPackKeyByAction(db,Constants.Logistic.INBOUND_CODE);
-                    buildYSFile(db,actionList2.get(i),keyList);
-                }else if (actionList2.get(i).equals(Constants.Logistic.OUTBOUND_CODE)){
-                    if (agencyList!=null&&agencyList.size()>0){
-                        for (int j=0;j<agencyList.size();j++){
-                            keyList=SQLiteOperation.queryPackKeyByActionAndAgency(db,actionList2.get(i),agencyList.get(j));
-                            buildYSFile(db,actionList2.get(i),agencyList.get(j),keyList);
-                        }
-                    }
+        if (actionList!=null&&actionList.contains(Constants.Logistic.INBOUND_CODE)){
+            int index=0;
+            do {
+                keyList=SQLiteOperation.queryPackKeyByAction(db,Constants.Logistic.INBOUND_CODE,String.valueOf(index*Constants.Logistic.LIMIT_ITEM));
+                buildYSFile(db,Constants.Logistic.INBOUND_CODE,keyList);
+                index++;
+            }while (keyList.size()<Constants.Logistic.LIMIT_ITEM);
+        }
 
-                }
+        if (actionList!=null&&actionList.contains(Constants.Logistic.OUTBOUND_CODE)
+                &&agencyList!=null&&agencyList.size()>0){
+            for (int j=0;j<agencyList.size();j++){
+                int index=0;
+                do {
+                    keyList=SQLiteOperation.queryPackKeyByActionAndAgency(db,Constants.Logistic.OUTBOUND_CODE,agencyList.get(j),String.valueOf(index*Constants.Logistic.LIMIT_ITEM));
+                    buildYSFile(db,Constants.Logistic.OUTBOUND_CODE,agencyList.get(j),keyList);
+                    index++;
+                }while (keyList.size()<Constants.Logistic.LIMIT_ITEM);
             }
         }
-        db.close();
+
+        dataBaseHelper.close();
     }
 
 
@@ -231,8 +236,9 @@ public class LogisticManager extends BaseManager {
             for(String key : keyList){
                 builder.append(key);
                 builder.append("\r\n");
-                SQLiteOperation.updatePathData(db,key,Constants.DB.SYNC);
+//                SQLiteOperation.updatePathData(db,key,Constants.DB.SYNC);
             }
+            SQLiteOperation.batchUpdateStatus(db,keyList,actionId,Constants.DB.SYNC);
             ysFile.setContent(builder.toString().getBytes(Charset.forName("UTF-8")));
 
             try {

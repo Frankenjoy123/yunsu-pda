@@ -42,6 +42,7 @@ public class SettingManager extends  BaseManager{
     }
 
     public void saveSyncRateSetting(int min) {
+        this.setSyncRateMin(min);
         SharedPreferences.Editor editor = context.getSharedPreferences(Constants.Preference.SETTING, Context.MODE_PRIVATE).edit();
         editor.putInt(Constants.Preference.SYNC_RATE, min);
         editor.commit();
@@ -51,7 +52,7 @@ public class SettingManager extends  BaseManager{
         return syncRateMin;
     }
 
-    public  void setSyncRateMin(int syncRateMin) {
-        SettingManager.syncRateMin = syncRateMin;
+    private  void setSyncRateMin(int syncRateMin) {
+        this.syncRateMin = syncRateMin;
     }
 }

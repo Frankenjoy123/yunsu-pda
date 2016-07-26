@@ -4,17 +4,15 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.yunsoo.activity.R;
 import com.yunsoo.adapter.LogisticActionAdapter;
 import com.yunsoo.entity.AuthUser;
 import com.yunsoo.exception.BaseException;
@@ -23,16 +21,24 @@ import com.yunsoo.manager.LogisticManager;
 import com.yunsoo.manager.SessionManager;
 import com.yunsoo.service.DataServiceImpl;
 import com.yunsoo.service.PermanentTokenLoginService;
+import com.yunsoo.service.ServiceExecutor;
 import com.yunsoo.service.background.SyncFileService;
+import com.yunsoo.sqlite.MyDataBaseHelper;
+import com.yunsoo.sqlite.SQLiteOperation;
 import com.yunsoo.util.Constants;
+import com.yunsoo.util.KeyGenerator;
 import com.yunsoo.util.ToastMessageHelper;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 
 public class PathMainActivity extends BaseActivity implements View.OnClickListener {
 
@@ -44,6 +50,7 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
     private String accessToken;
     private String api;
     private AuthUser tempAuthUser;
+    private MyDataBaseHelper dataBaseHelper;
 
 
     @Override
@@ -55,7 +62,64 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
         getActionBar().hide();
         setupActionItems();
         checkAuthorizeStatus();
+        dataBaseHelper=new MyDataBaseHelper(this, Constants.SQ_DATABASE,null,1);
+        initData();
     }
+
+
+    private void initData() {
+        if (Constants.INIT_DATA){
+            ServiceExecutor.getInstance().execute(new Runnable() {
+                @Override
+                public void run() {
+
+                    String actionId=Constants.Logistic.INBOUND_CODE;
+                    String agencyId=Constants.DEFAULT_STORAGE;
+                    SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                    Date date=new Date();
+                    String time=dateFormat.format(date);
+                    Log.d("TIME","start:"+time);
+                    SQLiteDatabase db=dataBaseHelper.getWritableDatabase();
+                    db.beginTransaction();
+                    SQLiteStatement statement=db.compileStatement("insert into path values(null,?,?,?,?,?)");
+                    for (int i=0;i<50000;i++){
+                        String packKey= UUID.randomUUID().toString();
+                        statement.bindString(1,packKey);
+                        statement.bindString(2,actionId);
+                        statement.bindString(3,agencyId);
+                        statement.bindString(4,Constants.DB.NOT_SYNC);
+                        statement.bindString(5,time);
+                        statement.execute();
+                        statement.clearBindings();
+                    }
+                    String actionId2=Constants.Logistic.OUTBOUND_CODE;
+                    int size=  LogisticManager.getInstance().getAgencies().size();
+                    Random random=new Random();
+                    for (int j=0;j<50000;j++){
+                        String agencyId2= LogisticManager.getInstance().getAgencies().get(random.nextInt(size)).getId();
+                        String packKey= UUID.randomUUID().toString();
+                        statement.bindString(1,packKey);
+                        statement.bindString(2,actionId2);
+                        statement.bindString(3,agencyId2);
+                        statement.bindString(4,Constants.DB.NOT_SYNC);
+                        statement.bindString(5,time);
+                        statement.execute();
+                        statement.clearBindings();
+                    }
+
+                    db.setTransactionSuccessful();
+                    db.endTransaction();
+                    dataBaseHelper.close();
+
+                    Date date2=new Date();
+                    String time2=dateFormat.format(date2);
+                    Log.d("TIME","end"+time2);
+                }
+            });
+
+        }
+    }
+
 
     private void startSyncFileService() {
         Intent intent=new Intent(this, SyncFileService.class);
@@ -74,7 +138,6 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
             map2.put(Constants.Logistic.OUTBOUND_CODE,Constants.Logistic.OUTBOUND);
             actions.add(map1);
             actions.add(map2);
-
             actionAdapter.setActions(actions);
             lv_action.setAdapter(actionAdapter);
 
@@ -84,7 +147,7 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void setupActionItems() {
-//        buildViewContent(this.findViewById(R.id.rl_path_sync), R.drawable.ic_synchronize, R.string.sync_path);
+        buildViewContent(this.findViewById(R.id.rl_repeal_scan), R.drawable.ic_synchronize, R.string.repeal_operation);
         buildViewContent(this.findViewById(R.id.rl_data_report), R.drawable.ic_data_report, R.string.data_report);
         buildViewContent(this.findViewById(R.id.rl_path_setting), R.drawable.ic_my_settings, R.string.settings);
     }
@@ -100,10 +163,10 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-//            case R.id.rl_path_sync:
-//                Intent intent1=new Intent(PathMainActivity.this,PathSyncActivity.class);
-//                startActivity(intent1);
-//                break;
+            case R.id.rl_repeal_scan:
+                Intent intent1=new Intent(PathMainActivity.this,RevokeOperationActivity.class);
+                startActivity(intent1);
+                break;
             case R.id.rl_data_report:
                 Intent intent=new Intent(PathMainActivity.this,DateQueryActivity.class);
                 startActivity(intent);

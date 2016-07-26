@@ -103,7 +103,6 @@ public class LogisticActionAdapter extends BaseAdapter
                 intent.putExtra(LogisticActionAdapter.ACTION_ID,action_id);
                 intent.putExtra(LogisticActionAdapter.ACTION_NAME,action_name);
                 activity.startActivity(intent);
-
             }
         });
 

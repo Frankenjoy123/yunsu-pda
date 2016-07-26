@@ -91,6 +91,7 @@ public class DateTimePickDialogUtil {
                 final Map<String, Integer> map = SQLiteOperation.queryInOutCount(dataBaseHelper.getReadableDatabase(), queryDate);
                 dataBaseHelper.close();
                 final List<OrgAgency> orgAgencyList=new ArrayList<OrgAgency>();
+                //TODO
                 List<OrgAgency> sourceList=LogisticManager.getInstance().getAgencies();
                 for (Map.Entry<String, OrgAgency> entry:
                         agencyMap.entrySet()) {
