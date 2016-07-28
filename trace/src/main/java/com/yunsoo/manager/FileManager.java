@@ -58,6 +58,25 @@ public class FileManager extends BaseManager{
         return fileNames;
     }
 
+    public List<String> getUnSyncLogFileNames() {
+        List<String> fileNames = null;
+        try {
+            String folderName = android.os.Environment.getExternalStorageDirectory() +
+                    Constants.YUNSOO_FOLDERNAME+Constants.PATH_LOG_NOT_SYNC_FOLDER;
+            File pack_task_folder = new File(folderName);
+            String[] packFiles= pack_task_folder.list();
+            fileNames=new ArrayList<>();
+            if (packFiles!=null&&packFiles.length>0){
+                for (int i=0;i<packFiles.length;i++){
+                    fileNames.add(packFiles[i]);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileNames;
+    }
+
     public void savePackFileIndex(int index) {
         SharedPreferences.Editor editor = context.getSharedPreferences(Constants.Preference.PREF_FILE, Context.MODE_PRIVATE).edit();
         editor.putInt(Constants.Preference.PACK_FILE_LAST_INDEX, index);

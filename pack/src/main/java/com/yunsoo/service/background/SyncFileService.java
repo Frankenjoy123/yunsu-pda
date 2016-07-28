@@ -3,9 +3,7 @@ package com.yunsoo.service.background;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.util.Log;
 
 import com.yunsoo.exception.BaseException;
@@ -43,16 +41,17 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                LogisticManager.createLogisticFile(context);
+
+                FileManager.getInstance().createPackFile();
                 List<String> fileNames=FileManager.getInstance().getPackFileNames();
                 if (fileNames!=null&&fileNames.size()>0){
                     String folderName = android.os.Environment.getExternalStorageDirectory() +
-                            Constants.YUNSOO_FOLDERNAME+Constants.PATH_SYNC_TASK_FOLDER;
+                            Constants.YUNSOO_FOLDERNAME+Constants.PACK_SYNC_TASK_FOLDER;
                     File path_task_folder = new File(folderName);
                     File[] files=path_task_folder.listFiles();
                     for(int i=0;i<files.length;i++){
                         FileUpLoadService fileUpLoadService=new FileUpLoadService(files[i].getAbsolutePath());
-                        fileUpLoadService.setFileType(FileUpLoadService.PATH_FILE);
+                        fileUpLoadService.setFileType(FileUpLoadService.PACK_FILE);
                         fileUpLoadService.setIndex(i);
                         fileUpLoadService.setDelegate((DataServiceImpl.DataServiceDelegate) context);
                         fileUpLoadService.start();
@@ -62,7 +61,7 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
                 List<String> logFileNames=FileManager.getInstance().getUnSyncLogFileNames();
                 if (logFileNames!=null&&logFileNames.size()>0){
                     String folderName = android.os.Environment.getExternalStorageDirectory() +
-                            Constants.YUNSOO_FOLDERNAME+Constants.PATH_LOG_NOT_SYNC_FOLDER;
+                            Constants.YUNSOO_FOLDERNAME+Constants.PACK_LOG_NOT_SYNC_FOLDER;
                     File path_task_folder = new File(folderName);
                     File[] files=path_task_folder.listFiles();
                     for(int i=0;i<files.length;i++){
@@ -99,7 +98,7 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
         if (service instanceof FileUpLoadService){
 
             String folderName = android.os.Environment.getExternalStorageDirectory() +
-                    Constants.YUNSOO_FOLDERNAME+Constants.PATH_SYNC_SUCCESS_FOLDER;
+                    Constants.YUNSOO_FOLDERNAME+Constants.PACK_SYNC_SUCCESS_FOLDER;
             File path_success_folder = new File(folderName);
             if (!path_success_folder.exists()){
                 path_success_folder.mkdirs();
@@ -114,7 +113,7 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
         if (service instanceof LogUpLoadService){
 
             String folderName = android.os.Environment.getExternalStorageDirectory() +
-                    Constants.YUNSOO_FOLDERNAME+Constants.PATH_LOG_SYNC_FOLDER;
+                    Constants.YUNSOO_FOLDERNAME+Constants.PACK_LOG_SYNC_FOLDER;
             File path_success_folder = new File(folderName);
             if (!path_success_folder.exists()){
                 path_success_folder.mkdirs();

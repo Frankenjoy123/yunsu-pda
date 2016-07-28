@@ -23,6 +23,7 @@ import com.yunsoo.service.DataServiceImpl;
 import com.yunsoo.service.PermanentTokenLoginService;
 import com.yunsoo.service.ServiceExecutor;
 import com.yunsoo.service.background.SyncFileService;
+import com.yunsoo.service.background.SyncLogService;
 import com.yunsoo.sqlite.MyDataBaseHelper;
 import com.yunsoo.sqlite.SQLiteOperation;
 import com.yunsoo.util.Constants;
@@ -82,7 +83,7 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
                     SQLiteDatabase db=dataBaseHelper.getWritableDatabase();
                     db.beginTransaction();
                     SQLiteStatement statement=db.compileStatement("insert into path values(null,?,?,?,?,?)");
-                    for (int i=0;i<50000;i++){
+                    for (int i=0;i<10000;i++){
                         String packKey= UUID.randomUUID().toString();
                         statement.bindString(1,packKey);
                         statement.bindString(2,actionId);
@@ -95,7 +96,7 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
                     String actionId2=Constants.Logistic.OUTBOUND_CODE;
                     int size=  LogisticManager.getInstance().getAgencies().size();
                     Random random=new Random();
-                    for (int j=0;j<50000;j++){
+                    for (int j=0;j<10000;j++){
                         String agencyId2= LogisticManager.getInstance().getAgencies().get(random.nextInt(size)).getId();
                         String packKey= UUID.randomUUID().toString();
                         statement.bindString(1,packKey);
@@ -124,6 +125,8 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
     private void startSyncFileService() {
         Intent intent=new Intent(this, SyncFileService.class);
         startService(intent);
+        Intent intent1=new Intent(this, SyncLogService.class);
+        startService(intent1);
     }
 
     private void initAction() {

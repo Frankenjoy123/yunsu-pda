@@ -16,6 +16,9 @@ public class MyDataBaseHelper extends SQLiteOpenHelper{
             "create table path(_id integer primary key autoincrement , pack_key, action_id,agency,status,last_save_time)";
 
     private final String CREATE_INDEX_SQL="create  index MY_INDEX on path (last_save_time, action_id,agency)";
+
+    private static final String CREATE_ACTION_INDEX ="create  index ACTION_INDEX on path (action_id)" ;
+
     public MyDataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
@@ -28,7 +31,8 @@ public class MyDataBaseHelper extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
 //        db.execSQL(CREATE_PACK_TABLE_SQL);
         db.execSQL(CREATE_PATH_TABLE_SQL);
-        db.execSQL(CREATE_INDEX_SQL);
+//        db.execSQL(CREATE_INDEX_SQL);
+//        db.execSQL(CREATE_ACTION_INDEX);
     }
 
     @Override

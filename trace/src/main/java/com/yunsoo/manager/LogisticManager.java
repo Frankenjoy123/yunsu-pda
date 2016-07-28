@@ -193,7 +193,7 @@ public class LogisticManager extends BaseManager {
                 keyList=SQLiteOperation.queryPackKeyByAction(db,Constants.Logistic.INBOUND_CODE,String.valueOf(index*Constants.Logistic.LIMIT_ITEM));
                 buildYSFile(db,Constants.Logistic.INBOUND_CODE,keyList);
                 index++;
-            }while (keyList.size()<Constants.Logistic.LIMIT_ITEM);
+            }while (keyList.size()==Constants.Logistic.LIMIT_ITEM);
         }
 
         if (actionList!=null&&actionList.contains(Constants.Logistic.OUTBOUND_CODE)
@@ -204,7 +204,7 @@ public class LogisticManager extends BaseManager {
                     keyList=SQLiteOperation.queryPackKeyByActionAndAgency(db,Constants.Logistic.OUTBOUND_CODE,agencyList.get(j),String.valueOf(index*Constants.Logistic.LIMIT_ITEM));
                     buildYSFile(db,Constants.Logistic.OUTBOUND_CODE,agencyList.get(j),keyList);
                     index++;
-                }while (keyList.size()<Constants.Logistic.LIMIT_ITEM);
+                }while (keyList.size()==Constants.Logistic.LIMIT_ITEM);
             }
         }
 

@@ -2,9 +2,11 @@ package com.yunsoo.activity;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.forlong401.log.transaction.log.manager.LogManager;
 import com.yunsoo.manager.DeviceManager;
 import com.yunsoo.manager.FileManager;
 import com.yunsoo.manager.LogisticManager;
@@ -13,6 +15,7 @@ import com.yunsoo.manager.SessionManager;
 import com.yunsoo.manager.SettingManager;
 import com.yunsoo.network.CacheService;
 import com.yunsoo.network.NetworkManager;
+import com.yunsoo.service.background.LogService;
 
 import okhttp3.OkHttpClient;
 
@@ -25,7 +28,11 @@ public class MyApplication extends Application{
         super.onCreate();
         Context appContext=this;
 
-        SQLiteManager.initializeIntance(appContext);
+        Intent stateService =  new Intent(this,LogService.class);
+        startService(stateService );
+
+//        LogManager.getManager(getApplicationContext()).registerCrashHandler();
+//        SQLiteManager.initializeIntance(appContext);
 
         SessionManager sessionManager = SessionManager.initializeIntance(appContext);
         sessionManager.restore();
@@ -45,5 +52,11 @@ public class MyApplication extends Application{
         LogisticManager logisticManager=LogisticManager.initializeInstance(appContext);
         logisticManager.restore();
 
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        LogManager.getManager(getApplicationContext()).unregisterCrashHandler();
     }
 }

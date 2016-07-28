@@ -18,6 +18,13 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+
+
+
 
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
@@ -29,7 +36,6 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-
         <uses-library android:name="android.test.runner" />
 
         <!-- 声明ListActivity -->
@@ -93,13 +99,19 @@
             android:name=".DateQueryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
-        <activity android:name=".RevokeOperationActivity"
+        <activity
+            android:name=".RevokeOperationActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
-        <activity android:name=".RevokeScanActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity
+            android:name=".RevokeScanActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden">
-        </activity>
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"></activity>
+
+        <service
+            android:name="com.yunsoo.service.background.LogService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

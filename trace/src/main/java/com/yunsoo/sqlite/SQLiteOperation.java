@@ -88,11 +88,11 @@ public class SQLiteOperation {
         Log.d("TIME","batchUpdateStatus start");
         db.beginTransaction();
 //        db.update()
-        SQLiteStatement statement=db.compileStatement("update path set status=? where pack_key=? and action_id=?");
+        SQLiteStatement statement=db.compileStatement("update path set status=? where action_id=? and pack_key=?");
         for (int i=0;i<keyList.size();i++){
             statement.bindString(1,status);
-            statement.bindString(2,keyList.get(i));
-            statement.bindString(3,action_id);
+            statement.bindString(2,action_id);
+            statement.bindString(3,keyList.get(i));
             statement.execute();
             statement.clearBindings();
         }
@@ -199,11 +199,7 @@ public class SQLiteOperation {
         builder.append(Constants.Logistic.LIMIT_ITEM);
         builder.append(" offset ?");
 
-        Cursor cursor = db.rawQuery(builder.toString(), new String[]{Constants.DB.NOT_SYNC,action,offset});
-//
-//        Cursor cursor=db.query(true, Constants.DB.PATH_TABLE,new String[]{Constants.DB.PACK_KEY_COLUMN},
-//                Constants.DB.STATUS_COLUMN+" =? AND "+Constants.DB.AGENCY_COLUMN+" =? AND "+Constants.DB.ACTION_ID_COLUMN+" =? "
-//                ,new String[]{Constants.DB.NOT_SYNC,agency,action},null,null,null,null);
+        Cursor cursor = db.rawQuery(builder.toString(), new String[]{Constants.DB.NOT_SYNC,agency,action,offset});
         List<String> keyList= new ArrayList<>();
         if (cursor!=null){
             while(cursor.moveToNext()){
