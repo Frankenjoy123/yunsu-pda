@@ -58,6 +58,8 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
                     }
                 }
 
+                uploadAutoInboundPackFile();
+
                 List<String> logFileNames=FileManager.getInstance().getUnSyncLogFileNames();
                 if (logFileNames!=null&&logFileNames.size()>0){
                     String folderName = android.os.Environment.getExternalStorageDirectory() +
@@ -72,6 +74,30 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
                 }
 
             }
+
+            private void uploadAutoInboundPackFile() {
+                String folderName = android.os.Environment.getExternalStorageDirectory() +
+                        Constants.YUNSOO_FOLDERNAME+Constants.PACK_AUTO_INBOUND_TASK_FOLDER;
+
+                try {
+                    File path_task_folder = new File(folderName);
+                    if (path_task_folder.exists()){
+                        File[] files=path_task_folder.listFiles();
+                        for(int i=0;i<files.length;i++){
+                            FileUpLoadService fileUpLoadService=new FileUpLoadService(files[i].getAbsolutePath());
+                            fileUpLoadService.setFileType(FileUpLoadService.PATH_FILE);
+                            fileUpLoadService.setIndex(i);
+                            fileUpLoadService.setDelegate((DataServiceImpl.DataServiceDelegate) context);
+                            fileUpLoadService.start();
+                        }
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
         },0,1000*60* SettingManager.getInstance().getSyncRateMin());
     }
 
@@ -97,8 +123,17 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
     public void onRequestSucceeded(DataServiceImpl service, JSONObject data, boolean isCached) {
         if (service instanceof FileUpLoadService){
 
-            String folderName = android.os.Environment.getExternalStorageDirectory() +
-                    Constants.YUNSOO_FOLDERNAME+Constants.PACK_SYNC_SUCCESS_FOLDER;
+            String folderName=null;
+            if (((FileUpLoadService) service).getFileType().equals(FileUpLoadService.PACK_FILE)){
+
+                folderName = android.os.Environment.getExternalStorageDirectory() +
+                        Constants.YUNSOO_FOLDERNAME+Constants.PACK_SYNC_SUCCESS_FOLDER;
+            }else if (((FileUpLoadService) service).getFileType().equals(FileUpLoadService.PATH_FILE)){
+
+                folderName = android.os.Environment.getExternalStorageDirectory() +
+                        Constants.YUNSOO_FOLDERNAME+Constants.PACK_AUTO_INBOUND_SUCCESS_FOLDER;
+            }
+
             File path_success_folder = new File(folderName);
             if (!path_success_folder.exists()){
                 path_success_folder.mkdirs();
@@ -107,7 +142,6 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
             File oldFile=new File(((FileUpLoadService) service).getFilePath());
             File newFile=new File(path_success_folder,oldFile.getName());
             oldFile.renameTo(newFile);
-
         }
 
         if (service instanceof LogUpLoadService){
@@ -124,6 +158,7 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
             oldFile.renameTo(newFile);
 
         }
+
     }
 
     @Override

@@ -14,6 +14,8 @@ public class SettingManager extends  BaseManager{
 
     private static int syncRateMin;
 
+    private static boolean isAutoInbound;
+
     public static SettingManager initializeInstance(Context context) {
 
         if (manager == null) {
@@ -35,17 +37,29 @@ public class SettingManager extends  BaseManager{
     }
 
     public void restore() {
-
         SharedPreferences preferences = context.getSharedPreferences(Constants.Preference.SETTING,
                 Context.MODE_PRIVATE);
         syncRateMin = preferences.getInt(Constants.Preference.SYNC_RATE, 30);
+        isAutoInbound=preferences.getBoolean(Constants.Preference.AUTO_INBOUND,false);
     }
+
+    public void saveAutoInboundSetting(boolean isAutoInbound) {
+        this.isAutoInbound=isAutoInbound;
+        SharedPreferences.Editor editor = context.getSharedPreferences(Constants.Preference.SETTING, Context.MODE_PRIVATE).edit();
+        editor.putBoolean(Constants.Preference.AUTO_INBOUND, isAutoInbound);
+        editor.commit();
+    }
+
 
     public void saveSyncRateSetting(int min) {
         this.setSyncRateMin(min);
         SharedPreferences.Editor editor = context.getSharedPreferences(Constants.Preference.SETTING, Context.MODE_PRIVATE).edit();
         editor.putInt(Constants.Preference.SYNC_RATE, min);
         editor.commit();
+    }
+
+    public  boolean isAutoInbound() {
+        return isAutoInbound;
     }
 
     public  int getSyncRateMin() {
