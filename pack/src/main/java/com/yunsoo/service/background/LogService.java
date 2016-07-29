@@ -60,7 +60,7 @@ public class LogService extends Service {
 
     private String CURR_INSTALL_LOG_NAME;   //如果当前的日志写在内存中，记录当前的日志文件名称
 
-    private String logServiceLogName = "yunsu_pda_path.log";//本服务输出的日志文件名称
+    private String logServiceLogName = "yunsu_pda_pack.log";//本服务输出的日志文件名称
     private SimpleDateFormat myLogSdf = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
     private OutputStreamWriter writer;
 
