@@ -64,6 +64,7 @@
 
     <string name="check_pack_repeat">该包装码已被扫描，请检查是否重复</string>
 
+    <string name="home">首页</string>
     <string name="settings">设置</string>
     <string name="login">登录</string>
     <string name="title_activity_my_scan_history">扫描记录</string>
@@ -138,6 +139,8 @@
     <string name="total_outbound">总计出库：</string>
     <string name="inbound">入库：</string>
     <string name="outbound">出库：</string>
+    <string name="inbound_scan">入库扫描</string>
+    <string name="outbound_scan">出库扫描</string>
 
     <string name="repeal_operation">撤销操作</string>
     <string name="repeal_inbound">撤销入库</string>

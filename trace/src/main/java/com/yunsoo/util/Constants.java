@@ -26,6 +26,9 @@ public final class Constants {
 		public static final String REVOKE_OUTBOUND="撤销出库";
 		public static final int LIMIT_ITEM=1000;
 
+		public static final String ACTION_ID="action_id";
+		public static final String ACTION_NAME="action_name";
+
 	}
 
 	public final static class Key

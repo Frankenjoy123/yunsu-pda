@@ -77,7 +77,7 @@ public class LogisticActionAdapter extends BaseAdapter
         actionId=actions.get(i).keySet().iterator().next();
         actionName=actions.get(i).get(actionId);
 
-        holder.tv_action.setText(actionName+"扫描");
+        holder.tv_action.setText(actionName+"ic_inbound");
 
         switch (actionName){
             case Constants.Logistic.INBOUND:

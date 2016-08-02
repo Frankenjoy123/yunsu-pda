@@ -29,6 +29,7 @@ import com.yunsoo.sqlite.SQLiteOperation;
 import com.yunsoo.util.Constants;
 import com.yunsoo.util.KeyGenerator;
 import com.yunsoo.util.ToastMessageHelper;
+import com.yunsoo.view.TitleBar;
 
 import org.json.JSONObject;
 
@@ -52,19 +53,27 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
     private String api;
     private AuthUser tempAuthUser;
     private MyDataBaseHelper dataBaseHelper;
+    TitleBar titleBar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_path_main);
+        init();
         startSyncFileService();
-        initAction();
         getActionBar().hide();
         setupActionItems();
         checkAuthorizeStatus();
         dataBaseHelper=new MyDataBaseHelper(this, Constants.SQ_DATABASE,null,1);
-        initData();
+//        initData();
+    }
+
+    private void init() {
+        getActionBar().hide();
+        titleBar = (TitleBar) findViewById(R.id.path_main_title_bar);
+        titleBar.setTitle(getString(R.string.home));
+        titleBar.setMode(TitleBar.TitleBarMode.TITLE_ONLY);
     }
 
 
@@ -129,30 +138,12 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
         startService(intent1);
     }
 
-    private void initAction() {
-
-        try {
-            lv_action= (ListView) findViewById(R.id.lv_action);
-            actionAdapter=new LogisticActionAdapter(this);
-            actions=new ArrayList<>();
-            Map<String, String> map1=new HashMap();
-            map1.put(Constants.Logistic.INBOUND_CODE, Constants.Logistic.INBOUND);
-            Map<String, String> map2=new HashMap();
-            map2.put(Constants.Logistic.OUTBOUND_CODE,Constants.Logistic.OUTBOUND);
-            actions.add(map1);
-            actions.add(map2);
-            actionAdapter.setActions(actions);
-            lv_action.setAdapter(actionAdapter);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private void setupActionItems() {
-        buildViewContent(this.findViewById(R.id.rl_repeal_scan), R.drawable.ic_synchronize, R.string.repeal_operation);
-        buildViewContent(this.findViewById(R.id.rl_data_report), R.drawable.ic_data_report, R.string.data_report);
-        buildViewContent(this.findViewById(R.id.rl_path_setting), R.drawable.ic_my_settings, R.string.settings);
+        buildViewContent(this.findViewById(R.id.rl_action_inbound), R.drawable.ic_inbound, R.string.inbound_scan);
+        buildViewContent(this.findViewById(R.id.rl_action_outbound), R.drawable.ic_report, R.string.outbound_scan);
+        buildViewContent(this.findViewById(R.id.rl_action_revoke), R.drawable.ic_revoke, R.string.repeal_operation);
+        buildViewContent(this.findViewById(R.id.rl_action_report), R.drawable.ic_report, R.string.data_report);
+        buildViewContent(this.findViewById(R.id.rl_action_setting), R.drawable.ic_setting, R.string.settings);
     }
 
     private void buildViewContent(View view, int imageResourceId, int textResourceId) {
@@ -166,19 +157,30 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.rl_repeal_scan:
+            case R.id.rl_action_inbound:
+                Intent inboundIntent=new Intent(PathMainActivity.this,PathActivity.class);
+                inboundIntent.putExtra(Constants.Logistic.ACTION_ID,Constants.Logistic.INBOUND_CODE);
+                inboundIntent.putExtra(Constants.Logistic.ACTION_NAME,Constants.Logistic.INBOUND);
+                startActivity(inboundIntent);
+                break;
+            case R.id.rl_action_outbound:
+                Intent outboundIntent=new Intent(PathMainActivity.this,OrgAgencyActivity.class);
+                outboundIntent.putExtra(Constants.Logistic.ACTION_ID,Constants.Logistic.OUTBOUND_CODE);
+                outboundIntent.putExtra(Constants.Logistic.ACTION_NAME,Constants.Logistic.OUTBOUND);
+                startActivity(outboundIntent);
+                break;
+            case R.id.rl_action_revoke:
                 Intent intent1=new Intent(PathMainActivity.this,RevokeOperationActivity.class);
                 startActivity(intent1);
                 break;
-            case R.id.rl_data_report:
+            case R.id.rl_action_report:
                 Intent intent=new Intent(PathMainActivity.this,DateQueryActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.rl_path_setting:
+            case R.id.rl_action_setting:
                 Intent intent2=new Intent(PathMainActivity.this,GlobalSettingActivity.class);
                 startActivity(intent2);
                 break;
-
         }
     }
 

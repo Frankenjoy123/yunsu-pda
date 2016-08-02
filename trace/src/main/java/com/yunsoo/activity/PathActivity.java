@@ -110,7 +110,11 @@ public class PathActivity extends Activity {
         titleBar=(TitleBar) findViewById(R.id.title_bar);
         titleBar.setMode(TitleBar.TitleBarMode.LEFT_BUTTON);
         titleBar.setDisplayAsBack(true);
-        titleBar.setTitle(actionName+"扫描");
+        if (actionId.equals(Constants.Logistic.INBOUND_CODE)){
+            titleBar.setTitle(getString(R.string.inbound_scan));
+        }else {
+            titleBar.setTitle(getString(R.string.outbound_scan));
+        }
 
         lv_path=(ListView) findViewById(R.id.lv_path);
         adaper=new PathAdapter(this, getResources());
