@@ -1,0 +1,59 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        config_debug {
+            keyAlias 'debugKey'
+            keyPassword '123456'
+            storeFile file('key/debugKey.jks')
+            storePassword '123456'
+        }
+        config_release {
+            keyAlias 'releaseKey'
+            keyPassword '123456'
+            storeFile file('key/releaseKey.jks')
+            storePassword '123456'
+        }
+    }
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+    defaultConfig {
+        applicationId "com.yunsu.trace.nongfu"
+        minSdkVersion 15
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            zipAlignEnabled true
+            debuggable false
+            jniDebuggable false
+            signingConfig signingConfigs.config_release
+            renderscriptDebuggable false
+            proguardFile 'C:/XQS/yunsu-pda/trace/proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+            jniDebuggable true
+            signingConfig signingConfigs.config_debug
+            renderscriptDebuggable true
+            proguardFile 'C:/XQS/yunsu-pda/trace/proguard-rules.pro'
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:22.1.1'
+    compile 'commons-codec:commons-codec:1.10'
+}

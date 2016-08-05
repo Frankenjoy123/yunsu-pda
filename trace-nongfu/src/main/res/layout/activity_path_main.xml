@@ -1,0 +1,99 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.yunsoo.activity.PathMainActivity"
+    >
+
+    <com.yunsoo.view.TitleBar
+        android:id="@+id/path_main_title_bar"
+        layout="@layout/title_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <!--<ListView-->
+        <!--android:id="@+id/lv_action"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:dividerHeight="20dp"-->
+        <!--android:divider="@color/app_bg_color"-->
+        <!--&gt;</ListView>-->
+
+    <!--<LinearLayout-->
+        <!--android:layout_below="@+id/lv_action"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical"-->
+    <!--&gt;-->
+
+    <!--<include-->
+        <!--android:id="@+id/rl_repeal_scan"-->
+        <!--layout="@layout/action_item_layout" />-->
+
+    <!--<include-->
+        <!--android:id="@+id/rl_data_report"-->
+        <!--layout="@layout/action_item_layout_bottom" />-->
+
+    <!--<include-->
+        <!--android:id="@+id/rl_path_setting"-->
+        <!--layout="@layout/action_item_layout_bottom" />-->
+
+    <!--</LinearLayout>-->
+
+
+
+    <LinearLayout
+        android:id="@+id/ll_action_1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/path_main_title_bar"
+    >
+
+        <include
+        android:id="@+id/rl_action_inbound"
+        layout="@layout/action_item_layout" />
+
+        <include
+        android:id="@+id/rl_action_outbound"
+        layout="@layout/action_item_layout" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_action_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:layout_below="@+id/ll_action_1"
+        >
+
+        <include
+            android:id="@+id/rl_action_report"
+            layout="@layout/action_item_layout" />
+
+        <include
+            android:id="@+id/rl_action_revoke"
+            layout="@layout/action_item_layout" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_action_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/ll_action_2"
+        android:layout_marginLeft="5dp"
+        android:layout_alignLeft="@id/ll_action_2"
+        >
+
+        <include
+            android:id="@+id/rl_action_setting"
+            layout="@layout/action_item_layout" />
+
+    </LinearLayout>
+
+</RelativeLayout>

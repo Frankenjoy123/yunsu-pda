@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/rl_agency_item"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_bg_bottom"
+    android:clickable="true"
+    android:layout_marginTop="20dp"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:id="@+id/ll_agency_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            >
+            <TextView
+                android:text="@string/agency"
+                style="@style/text_style_report"
+                />
+
+            <TextView
+                android:text="@string/outbound"
+                style="@style/text_style_report" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            >
+            <TextView
+                android:id="@+id/tv_report_agency_name"
+                style="@style/text_style_report"
+                android:text="杭州经销商"
+                />
+            <TextView
+                android:id="@+id/tv_outbound_count"
+                style="@style/text_style_report"
+                android:text="10包" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

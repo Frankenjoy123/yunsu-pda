@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+
+    tools:context="com.yunsoo.activity.PathActivity" >
+    	    <com.yunsoo.view.TitleBar
+        android:id="@+id/title_bar"
+        layout="@layout/title_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+		<LinearLayout
+		    android:id="@+id/ll_path"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentBottom="true"
+		    android:gravity="center"
+		    android:orientation="horizontal"
+			android:background="@color/titlebar_bg"
+			android:padding="5dp"
+			>
+
+
+			<TextView
+				android:id="@+id/tv_agency_name"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/scan_count"
+				android:textColor="#fff"
+				android:textSize="20sp" />
+
+			<TextView
+				android:id="@+id/tv_count_value"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="222"
+				android:layout_marginLeft="15dp"
+				android:textColor="#fff"
+				android:textSize="20sp" />
+
+		</LinearLayout>
+
+        <ListView 
+	        android:id="@+id/lv_path"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"    
+	        android:layout_above="@id/ll_path"  
+	        android:layout_below="@id/title_bar"
+        ></ListView>
+        
+        <EditText 
+            android:id="@+id/et_path"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            />
+
+</RelativeLayout>

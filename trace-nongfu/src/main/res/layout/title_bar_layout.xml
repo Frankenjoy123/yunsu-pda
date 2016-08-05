@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_alignParentTop="true"
+    android:background="@color/titlebar_bg">
+
+    <LinearLayout
+        android:id="@+id/ll_btn_left"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/title_btn_bg"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp" android:paddingRight="10dp">
+
+        <TextView android:layout_gravity="center"
+            android:id="@+id/btn_left"
+            android:layout_width="wrap_content" android:clickable="false"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|left"
+            android:text="注册"
+            android:textColor="@color/title_bar_button_text_color"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+
+    <CheckedTextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/app_name"
+        android:textColor="#fff"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+
+    <LinearLayout
+        android:id="@+id/ll_btn_right"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/title_btn_bg"
+        android:clickable="true" android:paddingLeft="10dp"
+        android:orientation="horizontal"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:id="@+id/btn_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null" android:layout_gravity="center"
+            android:gravity="center_vertical|right"
+            android:text="注册"
+            android:textColor="@color/title_bar_button_text_color"
+            android:textSize="18dp"
+            android:visibility="visible" />
+
+        <ImageButton
+            android:id="@+id/btn_right_img"
+            android:layout_width="25dp"
+            android:layout_height="25dp" android:clickable="false"
+            android:layout_gravity="center"
+            android:background="@null" android:visibility="gone"
+            android:scaleType="centerCrop"
+            android:src="@drawable/sensor_1" />
+    </LinearLayout>
+
+
+</RelativeLayout>
