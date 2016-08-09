@@ -43,7 +43,7 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                LogisticManager.createLogisticFile(context);
+                LogisticManager.getInstance().createLogisticFile();
                 List<String> fileNames=FileManager.getInstance().getPackFileNames();
                 if (fileNames!=null&&fileNames.size()>0){
                     String folderName = android.os.Environment.getExternalStorageDirectory() +

@@ -65,7 +65,6 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
         getActionBar().hide();
         setupActionItems();
         checkAuthorizeStatus();
-        dataBaseHelper=new MyDataBaseHelper(this, Constants.SQ_DATABASE,null,1);
 //        initData();
     }
 
@@ -79,6 +78,7 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
 
     private void initData() {
         if (Constants.INIT_DATA){
+            dataBaseHelper=new MyDataBaseHelper(this, Constants.SQ_DATABASE,null,1);
             ServiceExecutor.getInstance().execute(new Runnable() {
                 @Override
                 public void run() {

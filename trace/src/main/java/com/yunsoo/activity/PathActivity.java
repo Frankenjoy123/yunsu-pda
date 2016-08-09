@@ -28,9 +28,12 @@ import com.yunsoo.fileOpreation.FileOperation;
 import com.yunsoo.service.ServiceExecutor;
 import com.yunsoo.sqlite.MyDataBaseHelper;
 import com.yunsoo.sqlite.SQLiteOperation;
+import com.yunsoo.sqlite.service.PackService;
+import com.yunsoo.sqlite.service.impl.PackServiceImpl;
 import com.yunsoo.util.Constants;
 import com.yunsoo.util.StringUtils;
 import com.yunsoo.view.TitleBar;
+import com.yunsu.greendao.entity.Pack;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -57,8 +60,6 @@ public class PathActivity extends Activity {
 	
 	private boolean isFirstWrite=true;
 	private String prevFileName;
-	
-	private MyDataBaseHelper dataBaseHelper;
 
     private String actionId;
     private String actionName;
@@ -67,6 +68,8 @@ public class PathActivity extends Activity {
 
     private TextView tv_agency_name;
     private TextView tv_count_value;
+
+    private PackService packService;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +80,8 @@ public class PathActivity extends Activity {
 	}
 
     private void init() {
+        packService=new PackServiceImpl();
+
         actionId=getIntent().getStringExtra(LogisticActionAdapter.ACTION_ID);
         actionName=getIntent().getStringExtra(LogisticActionAdapter.ACTION_NAME);
         if (actionId.equals(Constants.Logistic.INBOUND_CODE)){
@@ -90,8 +95,6 @@ public class PathActivity extends Activity {
         tv_count_value= (TextView) findViewById(R.id.tv_count_value);
         tv_agency_name.setText(agencyName);
         tv_count_value.setText("已扫"+String.valueOf(keys.size())+"包");
-
-        dataBaseHelper=new MyDataBaseHelper(this, Constants.SQ_DATABASE,null,1);
         preferences=getSharedPreferences("pathActivityPre", Context.MODE_PRIVATE);
         editor=preferences.edit();
         prevFileName=preferences.getString("prevFileName", "");
@@ -131,12 +134,12 @@ public class PathActivity extends Activity {
         ServiceExecutor.getInstance().execute(new Runnable() {
             @Override
             public void run() {
-                final SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                final Date date=new Date();
-
-                SQLiteOperation.insertPathData(dataBaseHelper.getWritableDatabase(),
-                        packKey,actionId,agencyId,Constants.DB.NOT_SYNC,dateFormat.format(date));
-                dataBaseHelper.close();
+                Pack pack=new Pack();
+                pack.setPackKey(packKey);
+                pack.setStatus(Constants.DB.NOT_SYNC);
+                pack.setActionId(actionId);
+                pack.setAgency(agencyId);
+                packService.insertPackWithCheck(pack);
             }
         });
 	}
@@ -146,21 +149,9 @@ public class PathActivity extends Activity {
 
         editor.putString("prevFileName", prevFileName);
         editor.commit();
-        dataBaseHelper.close();
         super.onPause();
     }
 
-    @Override
-    protected void onStop() {
-        dataBaseHelper.close();
-        super.onStop();
-    }
-
-    @Override
-    public void finish() {
-        dataBaseHelper.close();
-        super.finish();
-    }
 
     private void bindTextChanged(){
 		et_path= (EditText) findViewById(R.id.et_path);

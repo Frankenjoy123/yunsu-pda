@@ -18,7 +18,10 @@ import com.yunsoo.manager.SessionManager;
 import com.yunsoo.service.ServiceExecutor;
 import com.yunsoo.sqlite.MyDataBaseHelper;
 import com.yunsoo.sqlite.SQLiteOperation;
+import com.yunsoo.sqlite.service.PackService;
+import com.yunsoo.sqlite.service.impl.PackServiceImpl;
 
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -83,13 +86,14 @@ public class DateTimePickDialogUtil {
 
     public static void executeQueryReport(final String queryDate, final Activity activity, final ListView listView, final TextView tv_in_count, final TextView tv_out_count){
 
-        final MyDataBaseHelper dataBaseHelper=new MyDataBaseHelper(activity, Constants.SQ_DATABASE,null,1);
         ServiceExecutor.getInstance().execute(new Runnable() {
             @Override
             public void run() {
-                final Map<String , OrgAgency> agencyMap= SQLiteOperation.queryOrgAgentCount(dataBaseHelper.getReadableDatabase(),queryDate);
-                final Map<String, Integer> map = SQLiteOperation.queryInOutCount(dataBaseHelper.getReadableDatabase(), queryDate);
-                dataBaseHelper.close();
+                PackService packService=new PackServiceImpl();
+
+                final Map<String , OrgAgency> agencyMap= packService.queryOrgAgentCount(queryDate);
+                final Map<String, Integer> map = packService.queryInOutCount(queryDate);
+
                 final List<OrgAgency> orgAgencyList=new ArrayList<OrgAgency>();
                 //TODO
                 List<OrgAgency> sourceList=LogisticManager.getInstance().getAgencies();

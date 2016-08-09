@@ -52,7 +52,7 @@ public class RevokeOperationActivity extends Activity implements View.OnClickLis
                 break;
             case R.id.rl_repeal_outbound:
                 Intent intent2=new Intent(RevokeOperationActivity.this,RevokeScanActivity.class);
-                intent2.putExtra(Constants.TITLE,Constants.Logistic.REVOKE_INBOUND);
+                intent2.putExtra(Constants.TITLE,Constants.Logistic.REVOKE_OUTBOUND);
                 startActivity(intent2);
                 break;
         }

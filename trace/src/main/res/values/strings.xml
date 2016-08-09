@@ -154,5 +154,6 @@
     <string name="please_input_sync_rate">自动同步时间（120分钟内）</string>
     <string name="minute">分钟</string>
     <string name="every">每隔</string>
+    <string name="key_not_exist">当前码不存在，请检查</string>
 
 </resources>
