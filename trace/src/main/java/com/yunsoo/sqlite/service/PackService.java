@@ -48,4 +48,7 @@ public interface PackService {
 
     //根据日期查询出入库的总数
     Map<String,Integer>  queryInOutCount(String date);
+
+    //删除日期之前的数据
+    void deleteBeforeDate(String date);
 }

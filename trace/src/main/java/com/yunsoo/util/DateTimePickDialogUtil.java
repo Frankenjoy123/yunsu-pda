@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,17 +13,13 @@ import com.yunsoo.activity.R;
 import com.yunsoo.adapter.ReportAdapter;
 import com.yunsoo.entity.OrgAgency;
 import com.yunsoo.manager.LogisticManager;
-import com.yunsoo.manager.SessionManager;
 import com.yunsoo.service.ServiceExecutor;
-import com.yunsoo.sqlite.MyDataBaseHelper;
-import com.yunsoo.sqlite.SQLiteOperation;
 import com.yunsoo.sqlite.service.PackService;
 import com.yunsoo.sqlite.service.impl.PackServiceImpl;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -132,10 +127,17 @@ public class DateTimePickDialogUtil {
     }
 
     public void init(DatePicker datePicker, TextView tv_date) {
+        Calendar mCalendar = Calendar.getInstance();
+        datePicker.setMaxDate(mCalendar.getTimeInMillis());
+        mCalendar.add(Calendar.MONTH,-3);
+        datePicker.setMinDate(mCalendar.getTimeInMillis());
+
         Calendar calendar = getDateCalendar((String) tv_date.getText());
         datePicker.init(calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH), null);
+
+
     }
 
     /**

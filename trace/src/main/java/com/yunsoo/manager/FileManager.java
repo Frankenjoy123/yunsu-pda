@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.yunsoo.util.Constants;
+import com.yunsoo.util.KeyHelper;
 
 import org.json.JSONException;
 
@@ -38,6 +39,54 @@ public class FileManager extends BaseManager{
         }
         return fileManager;
     }
+
+    public long getAllCacheSize(){
+        String pathSuccessFolderName = android.os.Environment.getExternalStorageDirectory() +
+                Constants.YUNSOO_FOLDERNAME+Constants.PATH_SYNC_SUCCESS_FOLDER;
+        File pathSuccessFile = new File(pathSuccessFolderName);
+        String LogSuccessFolderName = android.os.Environment.getExternalStorageDirectory() +
+                Constants.YUNSOO_FOLDERNAME+Constants.PATH_LOG_SYNC_FOLDER;
+        File pathLogSuccessFile = new File(pathSuccessFolderName);
+        return getFileLength(pathLogSuccessFile)+getFileLength(pathLogSuccessFile);
+    }
+
+    private long getFileLength(File dir) {
+        if (dir == null || !dir.exists())
+            return 0;
+        String[] children = dir.list();
+        long lDirSize = 0;
+        for (int i = 0; i < children.length; i++) {
+            File childFile = new File(dir, children[i]);
+            if (childFile.isDirectory())
+                lDirSize += getFileLength(childFile);
+            else
+                lDirSize += childFile.length();
+        }
+        return lDirSize;
+    }
+
+    // Clear all the related caches
+    public void clearCache() {
+        String pathSuccessFolderName = android.os.Environment.getExternalStorageDirectory() +
+                Constants.YUNSOO_FOLDERNAME+Constants.PATH_SYNC_SUCCESS_FOLDER;
+        File pathSuccessFile = new File(pathSuccessFolderName);
+        String LogSuccessFolderName = android.os.Environment.getExternalStorageDirectory() +
+                Constants.YUNSOO_FOLDERNAME+Constants.PATH_LOG_SYNC_FOLDER;
+        File pathLogSuccessFile = new File(LogSuccessFolderName);
+        if (pathSuccessFile.exists()&&pathSuccessFile.isDirectory()){
+            String[] children = pathSuccessFile.list();
+            for (int i = 0; i < children.length; i++) {
+                new File(pathSuccessFile, children[i]).delete();
+            }
+        }
+        if (pathLogSuccessFile.exists()&&pathLogSuccessFile.isDirectory()){
+            String[] children = pathLogSuccessFile.list();
+            for (int i = 0; i < children.length; i++) {
+                new File(pathLogSuccessFile, children[i]).delete();
+            }
+        }
+    }
+
 
     public List<String> getPackFileNames() {
         List<String> fileNames = null;

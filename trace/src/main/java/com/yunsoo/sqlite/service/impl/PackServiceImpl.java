@@ -1,6 +1,7 @@
 package com.yunsoo.sqlite.service.impl;
 
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -146,7 +147,7 @@ public class PackServiceImpl implements PackService {
         Log.d("TIME","queryOrgAgentCount start:");
         Map<String , OrgAgency> orgAgencyMap=new HashMap<>();
         Log.d("TIME","just rawQuerty start");
-        Cursor c = db.rawQuery("select agency  , count(*) as count  from Pack where date(save_time)=? and action_id=? group by agency",
+        Cursor c = db.rawQuery("select agency  , count(*) as count  from Pack where date(save_time)=? and action_id=? and status in ('sync' , 'not_sync') group by agency",
                 new String[]{date,Constants.Logistic.OUTBOUND_CODE});
         Log.d("TIME","just rawQuerty end");
 
@@ -173,7 +174,7 @@ public class PackServiceImpl implements PackService {
     public Map<String, Integer> queryInOutCount(String date) {
         Log.d("TIME","queryInOutCount start");
         Map<String,Integer> countMap=new HashMap<>();
-        Cursor c = db.rawQuery("select  action_id , count(*) as count  from Pack where date(save_time)=? group by action_id", new String[]{date});
+        Cursor c = db.rawQuery("select  action_id , count(*) as count  from Pack where date(save_time)=? and status in ('sync' , 'not_sync') group by action_id", new String[]{date});
         if (c!=null){
             while (c.moveToNext()){
                 String action=c.getString(0);
@@ -183,6 +184,15 @@ public class PackServiceImpl implements PackService {
         }
         Log.d("TIME","queryInOutCount end");
         return countMap;
+    }
+
+    @Override
+    public void deleteBeforeDate(String date) {
+        try {
+            db.execSQL("delete from Pack where  date(save_time) < ?",new String[]{date});
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }
