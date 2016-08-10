@@ -117,7 +117,13 @@ public class GlobalSettingActivity extends BaseActivity {
 
     private void setCacheSize() {
         long size = FileManager.getInstance().getAllCacheSize();
-        if (size < 1024 * 1024) {
+        if (size<=0){
+            tv_cache_size.setText("0KB");
+        }
+        if (size>0&&size<=1024){
+            tv_cache_size.setText("1KB");
+        }
+        else if (size < 1024 * 1024&&size>1024) {
             long kb = size / 1024;
             tv_cache_size.setText(String.valueOf(kb) + "KB");
         } else {
