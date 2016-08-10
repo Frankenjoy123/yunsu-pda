@@ -110,6 +110,11 @@ public class PackServiceImpl implements PackService {
     }
 
     @Override
+    public void batchDelete(List<Pack> packList) {
+        packDao.deleteInTx(packList);
+    }
+
+    @Override
     public List<String> queryDistinctAction() {
 
         Cursor cursor=db.query(true, Constants.DB.PACK_TABLE,new String[]{Constants.DB.ACTION_ID_COLUMN},
@@ -193,6 +198,14 @@ public class PackServiceImpl implements PackService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<Pack> queryBeforeData(String date,int offset) {
+        QueryBuilder<Pack> queryBuilder=packDao.queryBuilder();
+        queryBuilder.where((PackDao.Properties.SaveTime).lt(date)).limit(Constants.Logistic.LIMIT_ITEM)
+                .offset(offset);
+        return queryBuilder.list();
     }
 
 }

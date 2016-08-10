@@ -19,14 +19,25 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yunsoo.manager.FileManager;
+import com.yunsoo.manager.LogisticManager;
 import com.yunsoo.manager.SessionManager;
 import com.yunsoo.manager.SettingManager;
 import com.yunsoo.network.CacheService;
 import com.yunsoo.service.ServiceExecutor;
+import com.yunsoo.sqlite.service.PackService;
+import com.yunsoo.sqlite.service.impl.PackServiceImpl;
+import com.yunsoo.util.Constants;
+import com.yunsoo.util.DateUtil;
 import com.yunsoo.util.ToastMessageHelper;
 import com.yunsoo.view.TitleBar;
+import com.yunsu.greendao.entity.Pack;
 
 import java.lang.reflect.Field;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class GlobalSettingActivity extends BaseActivity {
     private TitleBar titleBar;
@@ -36,6 +47,7 @@ public class GlobalSettingActivity extends BaseActivity {
     private RelativeLayout rl_clear_cache;
     private TextView tv_cache_size;
 
+    private PackService packService;
     private final int CLEAR_SUCCESS=1;
 
     @Override
@@ -61,6 +73,7 @@ public class GlobalSettingActivity extends BaseActivity {
     };
 
     private void init() {
+        packService=new PackServiceImpl();
         getActionBar().hide();
         titleBar = (TitleBar) findViewById(R.id.global_setting_title_bar);
         titleBar.setTitle(getString(R.string.settings));
@@ -91,6 +104,7 @@ public class GlobalSettingActivity extends BaseActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         showLoading();
                         clearCacheFile();
+                        queryBeforeDate();
                     }
                 });
                 builder.show();
@@ -120,6 +134,26 @@ public class GlobalSettingActivity extends BaseActivity {
                 Message message=Message.obtain();
                 message.what=CLEAR_SUCCESS;
                 handler.sendMessage(message);
+            }
+        });
+    }
+
+    private void queryBeforeDate(){
+        ServiceExecutor.getInstance().execute(new Runnable() {
+            @Override
+            public void run() {
+                List<Pack> packList;
+                Calendar calendar=Calendar.getInstance();
+                calendar.add(Calendar.MONTH,-3);
+                String date= DateUtil.formatCalender(calendar);
+                do {
+                    packList=packService.queryBeforeData(date,0);
+                    if (packList!=null&&packList.size()>0){
+                        LogisticManager.getInstance().catheDbWithFile(packList);
+                        packService.batchDelete(packList);
+                    }
+                }while (packList!=null&&packList.size()==Constants.Logistic.LIMIT_ITEM);
+
             }
         });
     }

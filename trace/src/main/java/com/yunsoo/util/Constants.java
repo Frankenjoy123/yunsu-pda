@@ -133,6 +133,8 @@ public final class Constants {
 
 	public static final String PATH_LOG_SYNC_FOLDER ="/path/log/sync";
 
+	public static final String PATH_CACHE_DB="/path/cache/db";
+
 	public static final String BLANK="";
 
 	public static final int SYNC_RATE=10;
@@ -141,7 +143,7 @@ public final class Constants {
 
 	public static final String TITLE="title";
 
-	public static final boolean INIT_DATA=false;
+	public static final boolean INIT_DATA=true;
 
 
 }

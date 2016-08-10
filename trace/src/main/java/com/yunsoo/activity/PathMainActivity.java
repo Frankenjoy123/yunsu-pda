@@ -17,6 +17,7 @@ import com.yunsoo.adapter.LogisticActionAdapter;
 import com.yunsoo.entity.AuthUser;
 import com.yunsoo.exception.BaseException;
 import com.yunsoo.exception.ServerAuthException;
+import com.yunsoo.manager.GreenDaoManager;
 import com.yunsoo.manager.LogisticManager;
 import com.yunsoo.manager.SessionManager;
 import com.yunsoo.service.DataServiceImpl;
@@ -78,26 +79,27 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
 
     private void initData() {
         if (Constants.INIT_DATA){
-            dataBaseHelper=new MyDataBaseHelper(this, Constants.SQ_DATABASE,null,1);
+
             ServiceExecutor.getInstance().execute(new Runnable() {
                 @Override
                 public void run() {
-
+                    SQLiteDatabase db=GreenDaoManager.getInstance().getDb();
                     String actionId=Constants.Logistic.INBOUND_CODE;
                     String agencyId=Constants.DEFAULT_STORAGE;
                     SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                    Date date=new Date();
-                    String time=dateFormat.format(date);
-                    Log.d("TIME","start:"+time);
-                    SQLiteDatabase db=dataBaseHelper.getWritableDatabase();
+//                    Date date=new Date();
+//                    String time=dateFormat.format(date);
+                    String time="2016-05-07T15:00:00";
+                    Log.d("TIME","start:"+dateFormat.format(new Date()));
+//                    SQLiteDatabase db=dataBaseHelper.getWritableDatabase();
                     db.beginTransaction();
-                    SQLiteStatement statement=db.compileStatement("insert into path values(null,?,?,?,?,?)");
-                    for (int i=0;i<10000;i++){
+                    SQLiteStatement statement=db.compileStatement("insert into pack values(null,?,?,?,?,?)");
+                    for (int i=0;i<1000;i++){
                         String packKey= UUID.randomUUID().toString();
                         statement.bindString(1,packKey);
                         statement.bindString(2,actionId);
                         statement.bindString(3,agencyId);
-                        statement.bindString(4,Constants.DB.NOT_SYNC);
+                        statement.bindString(4,Constants.DB.SYNC);
                         statement.bindString(5,time);
                         statement.execute();
                         statement.clearBindings();
@@ -111,7 +113,7 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
                         statement.bindString(1,packKey);
                         statement.bindString(2,actionId2);
                         statement.bindString(3,agencyId2);
-                        statement.bindString(4,Constants.DB.NOT_SYNC);
+                        statement.bindString(4,Constants.DB.SYNC);
                         statement.bindString(5,time);
                         statement.execute();
                         statement.clearBindings();
@@ -119,7 +121,6 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
 
                     db.setTransactionSuccessful();
                     db.endTransaction();
-                    dataBaseHelper.close();
 
                     Date date2=new Date();
                     String time2=dateFormat.format(date2);

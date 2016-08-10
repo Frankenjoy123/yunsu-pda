@@ -36,6 +36,9 @@ public interface PackService {
     //批量更新状态
     void batchUpdateStatus(List<Pack> packList,String status);
 
+    //批量删除
+    void batchDelete(List<Pack> packList);
+
 
     //查询action
     List<String> queryDistinctAction();
@@ -51,4 +54,6 @@ public interface PackService {
 
     //删除日期之前的数据
     void deleteBeforeDate(String date);
+
+    List<Pack>  queryBeforeData(String date,int offset);
 }

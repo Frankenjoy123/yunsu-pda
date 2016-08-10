@@ -41,5 +41,7 @@ public class TraceDaoMaker {
         pack.addStringProperty("status");
         //时间
         pack.addStringProperty("saveTime");
+
+//        pack.addDateProperty("time");
     }
 }

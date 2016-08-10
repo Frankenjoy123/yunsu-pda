@@ -23,6 +23,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -225,63 +226,110 @@ public class LogisticManager extends BaseManager {
 
     private  void buildYSFile(List<Pack> packList){
         if (packList!=null&&packList.size()>0){
-            YSFile ysFile=new YSFile(YSFile.EXT_TF);
-            ysFile.putHeader("file_type","trace");
-            ysFile.putHeader("org_id",SessionManager.getInstance().getAuthUser().getOrgId());
-            ysFile.putHeader("count", String.valueOf(packList.size()));
             String actionId=packList.get(0).getActionId();
-            String agencyId=packList.get(0).getAgency();
-            ysFile.putHeader("action",actionId);
-            if (actionId.equals(Constants.Logistic.INBOUND_CODE)){
-                ysFile.putHeader("source","storage_name");
-                ysFile.putHeader("storage_name","default");
-            }else if (actionId.equals(Constants.Logistic.OUTBOUND_CODE)){
-                if (agencyId!=null){
-                    ysFile.putHeader("source","agent_id");
-                    ysFile.putHeader("agent_id",agencyId);
-                }
-            }
-            SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-            Date date=new Date();
-            ysFile.putHeader("date",dateFormat.format(date));
+           YSFile ysFile=  buildYunsuFileDetail(packList);
+            String folderName = android.os.Environment.getExternalStorageDirectory() +
+                    Constants.YUNSOO_FOLDERNAME+Constants.PATH_SYNC_TASK_FOLDER;
+            File path_task_folder = new File(folderName);
+            createFileByYunsuFile(path_task_folder,ysFile,actionId);
+        }
+    }
 
+    private YSFile buildYunsuFileDetail(List<Pack> packList){
+        YSFile ysFile=new YSFile(YSFile.EXT_TF);
+        ysFile.putHeader("file_type","trace");
+        ysFile.putHeader("org_id",SessionManager.getInstance().getAuthUser().getOrgId());
+        ysFile.putHeader("count", String.valueOf(packList.size()));
+        String actionId=packList.get(0).getActionId();
+        String agencyId=packList.get(0).getAgency();
+        ysFile.putHeader("action",actionId);
+        if (actionId.equals(Constants.Logistic.INBOUND_CODE)){
+            ysFile.putHeader("source","storage_name");
+            ysFile.putHeader("storage_name","default");
+        }else if (actionId.equals(Constants.Logistic.OUTBOUND_CODE)){
+            if (agencyId!=null){
+                ysFile.putHeader("source","agent_id");
+                ysFile.putHeader("agent_id",agencyId);
+            }
+        }
+        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        Date date=new Date();
+        ysFile.putHeader("date",dateFormat.format(date));
+
+        StringBuilder builder=new StringBuilder();
+        for(Pack pack : packList){
+            builder.append(pack.getPackKey());
+            builder.append("\r\n");
+        }
+        packService.batchUpdateStatus(packList,Constants.DB.SYNC);
+        ysFile.setContent(builder.toString().getBytes(Charset.forName("UTF-8")));
+        return ysFile;
+    }
+
+    private void createFileByYunsuFile(File path_task_folder,YSFile ysFile,String actionId){
+        try {
+
+            if (!path_task_folder.exists())
+                path_task_folder.mkdirs();
+
+            StringBuilder fileNameBuilder=new StringBuilder("Path_");
+            fileNameBuilder.append(actionId);
+            fileNameBuilder.append("_");
+            fileNameBuilder.append(DeviceManager.getInstance().getDeviceId());
+            fileNameBuilder.append("_");
+            fileNameBuilder.append(FileManager.getInstance().getPathFileLastIndex() + 1);
+            fileNameBuilder.append(".tf");
+
+            File file=new File(path_task_folder,fileNameBuilder.toString());
+            FileOutputStream fos = new FileOutputStream(file);
+            BufferedOutputStream bos = new BufferedOutputStream(fos);
+            bos.write(ysFile.toBytes());
+            bos.flush();
+            bos.close();
+            fos.close();
+            FileManager.getInstance().savePathFileIndex(FileManager.getInstance().getPathFileLastIndex() + 1);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void catheDbWithFile(List<Pack> packList){
+        if (packList!=null&&packList.size()>0){
             StringBuilder builder=new StringBuilder();
-            for(Pack pack : packList){
+            for (Pack pack:packList){
+                builder.append(pack.getId());
+                builder.append(",");
                 builder.append(pack.getPackKey());
+                builder.append(",");
+                builder.append(pack.getActionId());
+                builder.append(",");
+                builder.append(pack.getAgency());
+                builder.append(",");
+                builder.append(pack.getStatus());
+                builder.append(",");
+                builder.append(pack.getSaveTime());
                 builder.append("\r\n");
             }
-            packService.batchUpdateStatus(packList,Constants.DB.SYNC);
-            ysFile.setContent(builder.toString().getBytes(Charset.forName("UTF-8")));
-
+            SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HHmmss-SSS'Z'");
+            String folderName = android.os.Environment.getExternalStorageDirectory() +
+                    Constants.YUNSOO_FOLDERNAME+Constants.PATH_CACHE_DB;
+            File path_cache_folder = new File(folderName);
             try {
-
-                String folderName = android.os.Environment.getExternalStorageDirectory() +
-                        Constants.YUNSOO_FOLDERNAME+Constants.PATH_SYNC_TASK_FOLDER;
-                File path_task_folder = new File(folderName);
-                if (!path_task_folder.exists())
-                    path_task_folder.mkdirs();
-
-                StringBuilder fileNameBuilder=new StringBuilder("Path_");
-                fileNameBuilder.append(actionId);
-                fileNameBuilder.append("_");
-                fileNameBuilder.append(DeviceManager.getInstance().getDeviceId());
-                fileNameBuilder.append("_");
-                fileNameBuilder.append(FileManager.getInstance().getPathFileLastIndex() + 1);
-                fileNameBuilder.append(".tf");
-
-                File file=new File(path_task_folder,fileNameBuilder.toString());
+                if (!path_cache_folder.exists())
+                    path_cache_folder.mkdirs();
+                File file=new File(path_cache_folder,dateFormat.format(new Date()));
                 FileOutputStream fos = new FileOutputStream(file);
                 BufferedOutputStream bos = new BufferedOutputStream(fos);
-                bos.write(ysFile.toBytes());
+                bos.write(builder.toString().getBytes());
                 bos.flush();
                 bos.close();
                 fos.close();
-
-                FileManager.getInstance().savePathFileIndex(FileManager.getInstance().getPathFileLastIndex() + 1);
-
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+
+
         }
     }
 
