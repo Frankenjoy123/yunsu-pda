@@ -120,9 +120,6 @@ public class AuthorizeActivity extends BaseActivity implements DataServiceImpl.D
                         service.setDelegate(AuthorizeActivity.this);
                         service.start();
 
-//                        LogisticActionService actionService=new LogisticActionService();
-//                        actionService.start();
-
                         OrganizationAgencyService organizationAgencyService=new OrganizationAgencyService();
                         organizationAgencyService.start();
 

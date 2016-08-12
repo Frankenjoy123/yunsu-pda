@@ -144,6 +144,9 @@ public class GlobalSettingActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 查询三个月前的数据库的数据，文件存储之后，再清理
+     */
     private void queryBeforeDate(){
         ServiceExecutor.getInstance().execute(new Runnable() {
             @Override
@@ -165,6 +168,9 @@ public class GlobalSettingActivity extends BaseActivity {
     }
 
 
+    /**
+     * 设置授权的状态
+     */
     private void setAuthorizeStatus() {
 
         btn_authorize_status.setOnClickListener(new View.OnClickListener() {
@@ -191,6 +197,10 @@ public class GlobalSettingActivity extends BaseActivity {
 
     }
 
+    /**
+     * 设置数据同步的频率
+     * @param syncMinute 每隔分钟同步
+     */
     private void dialog(int syncMinute){
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
         builder.setTitle(R.string.please_input_sync_rate);

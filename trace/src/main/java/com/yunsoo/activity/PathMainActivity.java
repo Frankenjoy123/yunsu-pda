@@ -42,17 +42,13 @@ import java.util.UUID;
 
 public class PathMainActivity extends BaseActivity implements View.OnClickListener {
 
-    ListView lv_action;
     private LogisticActionAdapter actionAdapter;
 
-    List<Map<String,String>> actions;
     private String permanentToken;
     private String accessToken;
     private String api;
     private AuthUser tempAuthUser;
-    private MyDataBaseHelper dataBaseHelper;
     TitleBar titleBar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +69,9 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
         titleBar.setMode(TitleBar.TitleBarMode.TITLE_ONLY);
     }
 
+    /**
+     * 启动同步文件日志的Service，启动心跳的Service
+     */
     private void startService() {
         Intent intent=new Intent(this, SyncFileService.class);
         startService(intent);
@@ -83,6 +82,9 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
     }
 
 
+    /**
+     * 压力测试，用来初始化数据
+     */
     private void initData() {
         if (Constants.INIT_DATA){
 
@@ -93,11 +95,8 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
                     String actionId=Constants.Logistic.INBOUND_CODE;
                     String agencyId=Constants.DEFAULT_STORAGE;
                     SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-//                    Date date=new Date();
-//                    String time=dateFormat.format(date);
                     String time="2016-05-07T15:00:00";
                     Log.d("TIME","start:"+dateFormat.format(new Date()));
-//                    SQLiteDatabase db=dataBaseHelper.getWritableDatabase();
                     db.beginTransaction();
                     SQLiteStatement statement=db.compileStatement("insert into pack values(null,?,?,?,?,?)");
                     for (int i=0;i<1000;i++){
@@ -136,8 +135,6 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
 
         }
     }
-
-
 
 
     private void setupActionItems() {
@@ -186,6 +183,9 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
+    /**
+     * 检查授权状态
+     */
     private void checkAuthorizeStatus() {
         SessionManager.getInstance().restore();
         AuthUser authUser=SessionManager.getInstance().getAuthUser();
@@ -200,6 +200,7 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onRequestSucceeded(DataServiceImpl service, JSONObject data, boolean isCached) {
+        //授权验证成功后，更新状态
         if (service instanceof PermanentTokenLoginService){
             String newAccessToken=data.optString("token");
             int expires_in=data.optInt("expires_in");
@@ -222,6 +223,7 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                //授权验证失败后，说明该设备被取消授权
                 if (service instanceof PermanentTokenLoginService && exception instanceof ServerAuthException){
                     SharedPreferences preferences=getSharedPreferences("yunsoo_pda",MODE_PRIVATE);
                     SharedPreferences.Editor editor=preferences.edit();

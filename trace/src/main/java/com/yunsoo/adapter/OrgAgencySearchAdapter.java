@@ -64,25 +64,6 @@ public class OrgAgencySearchAdapter extends SearchAdapter<OrgAgency>{
                 context.startActivity(intent);
                 Activity activity= (Activity) context;
                 activity.finish();
-
-//                StringBuilder builder=new StringBuilder("确认选择");
-//                builder.append(filteredContainer.get(i).getName());
-//                builder.append("作为经销商吗？");
-//                AlertDialog dialog = new AlertDialog.Builder(context).setTitle(R.string.choose_org_agency).setMessage(builder.toString())
-//                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialogInterface, int i) {
-//                                Intent intent = new Intent(context, PathActivity.class);
-//                                intent.putExtra(LogisticActionAdapter.ACTION_ID,actionId);
-//                                intent.putExtra(LogisticActionAdapter.ACTION_NAME,actionName);
-//                                context.startActivity(intent);
-//                                Activity activity= (Activity) context;
-//                                activity.finish();
-//                            }
-//                        }).setNegativeButton(R.string.no, null).create();
-//                dialog.setCancelable(false);
-//                dialog.show();
-
             }
         });
 

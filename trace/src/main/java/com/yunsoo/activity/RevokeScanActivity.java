@@ -76,10 +76,11 @@ public class RevokeScanActivity extends Activity {
         adapter =new PathAdapter(this, getResources());
         adapter.setKeyList(keys);
         lv_revoke_scan.setAdapter(adapter);
-
     }
 
-
+    /**
+     * 扫码事件触发
+     */
     private void bindEditTextChange() {
 
         et_revoke_scan.requestFocus();
@@ -148,6 +149,10 @@ public class RevokeScanActivity extends Activity {
 
     }
 
+    /**
+     * 检查码的状态
+     * @param key
+     */
     private void checkKeyStatus(final String key){
         ServiceExecutor.getInstance().execute(new Runnable() {
             @Override
@@ -201,7 +206,6 @@ public class RevokeScanActivity extends Activity {
             else if (msg.what==FAIL_MSG){
                 ToastMessageHelper.showMessage(RevokeScanActivity.this,"当前包装还未"+actionName+"，请检查",true);
             }
-
             super.handleMessage(msg);
         }
     };

@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -37,15 +38,17 @@ public class PackServiceImpl implements PackService {
 
     @Override
     public void insertPackWithCheck(Pack pack) {
-        String arr[]=null;
+        HashSet<String> set=new HashSet();
         if (pack.getActionId().equals(Constants.Logistic.INBOUND_CODE)){
-            arr=new String[]{Constants.Logistic.INBOUND_CODE,Constants.Logistic.REVOKE_INBOUND_CODE};
+            set.add(Constants.Logistic.INBOUND_CODE);
+            set.add(Constants.Logistic.REVOKE_INBOUND_CODE);
         }else
         {
-            arr=new String[]{Constants.Logistic.OUTBOUND_CODE,Constants.Logistic.REVOKE_OUTBOUND_CODE};
+            set.add(Constants.Logistic.OUTBOUND_CODE);
+            set.add(Constants.Logistic.REVOKE_OUTBOUND_CODE);
         }
         QueryBuilder<Pack> queryBuilder=packDao.queryBuilder();
-        queryBuilder.where(queryBuilder.and(PackDao.Properties.PackKey.eq(pack.getPackKey()), PackDao.Properties.ActionId.in(arr)));
+        queryBuilder.where(queryBuilder.and(PackDao.Properties.PackKey.eq(pack.getPackKey()), PackDao.Properties.ActionId.in(set)));
         List<Pack> packList=queryBuilder.list();
         if (packList!=null&&packList.size()>0){
             Pack resultPack=packList.get(0);
@@ -98,18 +101,20 @@ public class PackServiceImpl implements PackService {
 
     @Override
     public Pack queryRevokeOrNot(Pack pack) {
-        String arr[]=null;
+        HashSet<String> set=new HashSet<>();
         if (pack.getActionId().equals(Constants.Logistic.INBOUND_CODE) || pack.getActionId().equals(Constants.Logistic.REVOKE_INBOUND_CODE) ){
-            arr=new String[]{Constants.Logistic.INBOUND_CODE,Constants.Logistic.REVOKE_INBOUND_CODE};
+            set.add(Constants.Logistic.INBOUND_CODE);
+            set.add(Constants.Logistic.REVOKE_INBOUND_CODE);
         }
         else {
-            arr=new String[]{Constants.Logistic.OUTBOUND_CODE,Constants.Logistic.REVOKE_OUTBOUND_CODE};
+            set.add(Constants.Logistic.OUTBOUND_CODE);
+            set.add(Constants.Logistic.REVOKE_OUTBOUND_CODE);
         }
 
         QueryBuilder<Pack> queryBuilder=packDao.queryBuilder();
         queryBuilder.where(
                 PackDao.Properties.PackKey.eq(pack.getPackKey()),
-                PackDao.Properties.ActionId.in(arr));
+                PackDao.Properties.ActionId.in(set));
 
         return queryBuilder.unique();
     }

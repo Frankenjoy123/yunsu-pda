@@ -48,6 +48,9 @@ public class WelcomeActivity extends BaseActivity{
     }
 
 
+    /**
+     * 欢迎界面初始化
+     */
     private void init() {
         int[] size = DensityUtil.getScreenHeightAndWidth(this);
         int imageSize = (int) (size[0] * 0.5);//width * 0.5
@@ -59,6 +62,7 @@ public class WelcomeActivity extends BaseActivity{
 
         ll_btn_area.setVisibility(View.GONE);
     }
+
     private void gotoAuthorizeActivity() {
         Intent intent=new Intent(WelcomeActivity.this, AuthorizeActivity.class);
         startActivity(intent);

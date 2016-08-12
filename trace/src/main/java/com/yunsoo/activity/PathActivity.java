@@ -3,8 +3,6 @@ package com.yunsoo.activity;
 import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -12,11 +10,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,10 +17,7 @@ import android.widget.Toast;
 
 import com.yunsoo.adapter.LogisticActionAdapter;
 import com.yunsoo.adapter.PathAdapter;
-import com.yunsoo.fileOpreation.FileOperation;
 import com.yunsoo.service.ServiceExecutor;
-import com.yunsoo.sqlite.MyDataBaseHelper;
-import com.yunsoo.sqlite.SQLiteOperation;
 import com.yunsoo.sqlite.service.PackService;
 import com.yunsoo.sqlite.service.impl.PackServiceImpl;
 import com.yunsoo.util.Constants;
@@ -35,14 +25,9 @@ import com.yunsoo.util.StringUtils;
 import com.yunsoo.view.TitleBar;
 import com.yunsu.greendao.entity.Pack;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,21 +36,16 @@ public class PathActivity extends Activity {
 	SharedPreferences.Editor editor;
 
 	private String uniqueId;
-    
-    TitleBar titleBar;
-    EditText et_path;
-    List<String> keys=new ArrayList<String>();
-    PathAdapter adaper;
-    ListView lv_path;
-	
-	private boolean isFirstWrite=true;
-	private String prevFileName;
-
     private String actionId;
     private String actionName;
     private String agencyId;
     private String agencyName;
 
+    private TitleBar titleBar;
+    private EditText et_path;
+    private List<String> keys=new ArrayList<String>();
+    private PathAdapter adaper;
+    private ListView lv_path;
     private TextView tv_agency_name;
     private TextView tv_count_value;
 
@@ -81,7 +61,6 @@ public class PathActivity extends Activity {
 
     private void init() {
         packService=new PackServiceImpl();
-
         actionId=getIntent().getStringExtra(LogisticActionAdapter.ACTION_ID);
         actionName=getIntent().getStringExtra(LogisticActionAdapter.ACTION_NAME);
         if (actionId.equals(Constants.Logistic.INBOUND_CODE)){
@@ -97,17 +76,6 @@ public class PathActivity extends Activity {
         tv_count_value.setText("已扫"+String.valueOf(keys.size())+"包");
         preferences=getSharedPreferences("pathActivityPre", Context.MODE_PRIVATE);
         editor=preferences.edit();
-        prevFileName=preferences.getString("prevFileName", "");
-
-        final TelephonyManager tm = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
-
-        final String tmDevice, tmSerial, tmPhone, androidId;
-        tmDevice = "" + tm.getDeviceId();
-        tmSerial = "" + tm.getSimSerialNumber();
-        androidId = "" + android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
-
-        UUID deviceUuid = new UUID(androidId.hashCode(), ((long)tmDevice.hashCode() << 32) | tmSerial.hashCode());
-        uniqueId = deviceUuid.toString();
 
         getActionBar().hide();
         titleBar=(TitleBar) findViewById(R.id.title_bar);
@@ -129,7 +97,10 @@ public class PathActivity extends Activity {
     }
 
 
-
+    /**
+     * 将扫描的key结果存储到DB
+     * @param packKey
+     */
 	private void submitToDB(final String packKey) {
         ServiceExecutor.getInstance().execute(new Runnable() {
             @Override
@@ -144,15 +115,10 @@ public class PathActivity extends Activity {
         });
 	}
 
-    @Override
-    protected void onPause() {
 
-        editor.putString("prevFileName", prevFileName);
-        editor.commit();
-        super.onPause();
-    }
-
-
+    /**
+     * 扫码事件
+     */
     private void bindTextChanged(){
 		et_path= (EditText) findViewById(R.id.et_path);
 		et_path.requestFocus();
@@ -220,8 +186,6 @@ public class PathActivity extends Activity {
                     toast.show();
                 }
 
-
-				
 			}
 		});
 	}
