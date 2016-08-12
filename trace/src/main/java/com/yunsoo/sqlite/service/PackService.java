@@ -27,6 +27,9 @@ public interface PackService {
     //根据Key,actionId查询
     Pack queryByKeyAction(Pack pack);
 
+    //查询入库。撤销入库，或者出库或者撤销出库的记录
+    Pack queryRevokeOrNot(Pack pack);
+
     //根据Action和status查询Pack List
     List<Pack> queryPackListByActionStatus(Pack pack,int offset);
 
@@ -44,7 +47,7 @@ public interface PackService {
     List<String> queryDistinctAction();
 
     //查询经销商
-    List<String> queryDistinctAgency();
+    List<String> queryDistinctAgency(String action);
 
     //根据日期查询经销商的出库计数
     Map<String,OrgAgency> queryOrgAgentCount(String date);

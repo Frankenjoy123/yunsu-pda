@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.yunsoo.adapter.PathAdapter;
+import com.yunsoo.manager.LogisticManager;
 import com.yunsoo.service.ServiceExecutor;
 import com.yunsoo.sqlite.MyDataBaseHelper;
 import com.yunsoo.sqlite.service.PackService;
@@ -36,6 +37,7 @@ public class RevokeScanActivity extends Activity {
     private List<String> keys=new ArrayList<String>();
     private PathAdapter adapter;
     private String actionId;
+    private String revokeActionId;
     private String actionName;
     private String title;
     private PackService packService;
@@ -59,9 +61,11 @@ public class RevokeScanActivity extends Activity {
         title=getIntent().getStringExtra(Constants.TITLE);
         if (title.equals(Constants.Logistic.REVOKE_INBOUND)){
             actionId=Constants.Logistic.INBOUND_CODE;
+            revokeActionId=Constants.Logistic.REVOKE_INBOUND_CODE;
             actionName=Constants.Logistic.INBOUND;
         }else {
             actionId=Constants.Logistic.OUTBOUND_CODE;
+            revokeActionId=Constants.Logistic.REVOKE_OUTBOUND_CODE;
             actionName=Constants.Logistic.OUTBOUND;
         }
         titleBar.setTitle(title);
@@ -74,24 +78,6 @@ public class RevokeScanActivity extends Activity {
         lv_revoke_scan.setAdapter(adapter);
 
     }
-
-    private Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case SUCCESS_MSG:
-                    if (((Pack)msg.obj).getStatus().equals(Constants.DB.DISABLE)){
-                        ToastMessageHelper.showMessage(RevokeScanActivity.this,"当前包装已被"+title+"，请检查",true);
-                    }else {
-                        keys.add(0,((Pack)msg.obj).getPackKey());
-                        adapter.notifyDataSetChanged();
-                    }
-                    break;
-                case FAIL_MSG:
-                    ToastMessageHelper.showMessage(RevokeScanActivity.this,"当前包装还未"+actionName+"，请检查",true);
-            }
-            super.handleMessage(msg);
-        }
-    };
 
 
     private void bindEditTextChange() {
@@ -169,22 +155,22 @@ public class RevokeScanActivity extends Activity {
                 Pack queryPack=new Pack();
                 queryPack.setPackKey(key);
                 queryPack.setActionId(actionId);
-                Pack resultPack=packService.queryByKeyAction(queryPack);
+                Pack resultPack=packService.queryRevokeOrNot(queryPack);
 
                 if (resultPack!=null){
                     Pack messagePack=new Pack();
                     messagePack.setPackKey(resultPack.getPackKey());
-                    messagePack.setStatus(resultPack.getStatus());
+                    messagePack.setActionId(resultPack.getActionId());
 
-                    if (!resultPack.getStatus().equals(Constants.DB.DISABLE)){
+                    if (resultPack.getActionId().equals(Constants.Logistic.INBOUND_CODE)||
+                            resultPack.getActionId().equals(Constants.Logistic.OUTBOUND_CODE))
                         packService.revokePathData(resultPack);
-                    }
 
                     Message message=Message.obtain();
                     message.what=SUCCESS_MSG;
                     message.obj=messagePack;
                     handler.sendMessage(message);
-                    //TODO 如果是已经同步的，处理撤销逻辑,重新生成文件上传
+
                 }else {
                     //TODO UI返回扫描不存在
                     Message message=Message.obtain();
@@ -194,5 +180,30 @@ public class RevokeScanActivity extends Activity {
             }
         });
     }
+
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            if (msg.what==SUCCESS_MSG){
+                switch (((Pack)msg.obj).getActionId()){
+                    case  Constants.Logistic.REVOKE_INBOUND_CODE :
+                    case Constants.Logistic.REVOKE_OUTBOUND_CODE:
+                        ToastMessageHelper.showMessage(RevokeScanActivity.this,"当前包装已被"+title+"，请检查",true);
+                        break;
+
+                    case Constants.Logistic.INBOUND_CODE:
+                    case Constants.Logistic.OUTBOUND_CODE:
+                        keys.add(0,((Pack)msg.obj).getPackKey());
+                        adapter.notifyDataSetChanged();
+                        break;
+                }
+
+            }
+            else if (msg.what==FAIL_MSG){
+                ToastMessageHelper.showMessage(RevokeScanActivity.this,"当前包装还未"+actionName+"，请检查",true);
+            }
+
+            super.handleMessage(msg);
+        }
+    };
 
 }

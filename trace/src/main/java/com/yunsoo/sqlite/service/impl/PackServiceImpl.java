@@ -37,11 +37,20 @@ public class PackServiceImpl implements PackService {
 
     @Override
     public void insertPackWithCheck(Pack pack) {
+        String arr[]=null;
+        if (pack.getActionId().equals(Constants.Logistic.INBOUND_CODE)){
+            arr=new String[]{Constants.Logistic.INBOUND_CODE,Constants.Logistic.REVOKE_INBOUND_CODE};
+        }else
+        {
+            arr=new String[]{Constants.Logistic.OUTBOUND_CODE,Constants.Logistic.REVOKE_OUTBOUND_CODE};
+        }
         QueryBuilder<Pack> queryBuilder=packDao.queryBuilder();
-        queryBuilder.where(queryBuilder.and(PackDao.Properties.PackKey.eq(pack.getPackKey()), PackDao.Properties.ActionId.eq(pack.getActionId())));
+        queryBuilder.where(queryBuilder.and(PackDao.Properties.PackKey.eq(pack.getPackKey()), PackDao.Properties.ActionId.in(arr)));
         List<Pack> packList=queryBuilder.list();
         if (packList!=null&&packList.size()>0){
             Pack resultPack=packList.get(0);
+            resultPack.setActionId(pack.getActionId());
+            resultPack.setAgency(pack.getAgency());
             resultPack.setStatus(Constants.DB.NOT_SYNC);
             resultPack.setSaveTime(dateFormat.format(new Date()));
             updatePack(resultPack);
@@ -59,7 +68,12 @@ public class PackServiceImpl implements PackService {
 
     @Override
     public void revokePathData(Pack pack) {
-        pack.setStatus(Constants.DB.DISABLE);
+        if (pack.getActionId().equals(Constants.Logistic.INBOUND_CODE)){
+            pack.setActionId(Constants.Logistic.REVOKE_INBOUND_CODE);
+        }else {
+            pack.setActionId(Constants.Logistic.REVOKE_OUTBOUND_CODE);
+        }
+        pack.setStatus(Constants.DB.NOT_SYNC);
         pack.setSaveTime(dateFormat.format(new Date()));
         updatePack(pack);
     }
@@ -79,6 +93,24 @@ public class PackServiceImpl implements PackService {
         QueryBuilder<Pack> queryBuilder=packDao.queryBuilder();
         queryBuilder.where(PackDao.Properties.PackKey.eq(pack.getPackKey()),
                 PackDao.Properties.ActionId.eq(pack.getActionId()));
+        return queryBuilder.unique();
+    }
+
+    @Override
+    public Pack queryRevokeOrNot(Pack pack) {
+        String arr[]=null;
+        if (pack.getActionId().equals(Constants.Logistic.INBOUND_CODE) || pack.getActionId().equals(Constants.Logistic.REVOKE_INBOUND_CODE) ){
+            arr=new String[]{Constants.Logistic.INBOUND_CODE,Constants.Logistic.REVOKE_INBOUND_CODE};
+        }
+        else {
+            arr=new String[]{Constants.Logistic.OUTBOUND_CODE,Constants.Logistic.REVOKE_OUTBOUND_CODE};
+        }
+
+        QueryBuilder<Pack> queryBuilder=packDao.queryBuilder();
+        queryBuilder.where(
+                PackDao.Properties.PackKey.eq(pack.getPackKey()),
+                PackDao.Properties.ActionId.in(arr));
+
         return queryBuilder.unique();
     }
 
@@ -132,9 +164,9 @@ public class PackServiceImpl implements PackService {
     }
 
     @Override
-    public List<String> queryDistinctAgency() {
+    public List<String> queryDistinctAgency(String action) {
         Cursor cursor=db.query(true, Constants.DB.PACK_TABLE,new String[]{Constants.DB.AGENCY_COLUMN},
-                Constants.DB.STATUS_COLUMN+"=?",new String[]{Constants.DB.NOT_SYNC},Constants.DB.AGENCY_COLUMN,null,null,null);
+                Constants.DB.STATUS_COLUMN+"=? " +" and " + Constants.DB.ACTION_ID_COLUMN+" =?",new String[]{Constants.DB.NOT_SYNC,action},Constants.DB.AGENCY_COLUMN,null,null,null);
         List<String> agencyList= new ArrayList<>();
         if (cursor!=null){
             while(cursor.moveToNext()){
@@ -152,7 +184,7 @@ public class PackServiceImpl implements PackService {
         Log.d("TIME","queryOrgAgentCount start:");
         Map<String , OrgAgency> orgAgencyMap=new HashMap<>();
         Log.d("TIME","just rawQuerty start");
-        Cursor c = db.rawQuery("select agency  , count(*) as count  from Pack where date(save_time)=? and action_id=? and status in ('sync' , 'not_sync') group by agency",
+        Cursor c = db.rawQuery("select agency  , count(*) as count  from Pack where date(save_time)=? and action_id=? group by agency",
                 new String[]{date,Constants.Logistic.OUTBOUND_CODE});
         Log.d("TIME","just rawQuerty end");
 
@@ -179,7 +211,7 @@ public class PackServiceImpl implements PackService {
     public Map<String, Integer> queryInOutCount(String date) {
         Log.d("TIME","queryInOutCount start");
         Map<String,Integer> countMap=new HashMap<>();
-        Cursor c = db.rawQuery("select  action_id , count(*) as count  from Pack where date(save_time)=? and status in ('sync' , 'not_sync') group by action_id", new String[]{date});
+        Cursor c = db.rawQuery("select  action_id , count(*) as count  from Pack where date(save_time)=? and action_id in ('inbound' ,'outbound' ) group by action_id", new String[]{date});
         if (c!=null){
             while (c.moveToNext()){
                 String action=c.getString(0);

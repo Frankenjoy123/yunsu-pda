@@ -94,6 +94,10 @@
             android:name="com.yunsoo.service.background.SyncFileService"
             android:enabled="true"
             android:exported="true" />
+        <service
+            android:name="com.yunsoo.service.background.RecycleHeartBeatService"
+            android:enabled="true"
+            android:exported="true" />
 
         <activity
             android:name=".DateQueryActivity"

@@ -59,19 +59,6 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
                     }
                 }
 
-                List<String> logFileNames=FileManager.getInstance().getUnSyncLogFileNames();
-                if (logFileNames!=null&&logFileNames.size()>0){
-                    String folderName = android.os.Environment.getExternalStorageDirectory() +
-                            Constants.YUNSOO_FOLDERNAME+Constants.PATH_LOG_NOT_SYNC_FOLDER;
-                    File path_task_folder = new File(folderName);
-                    File[] files=path_task_folder.listFiles();
-                    for(int i=0;i<files.length;i++){
-                        LogUpLoadService service=new LogUpLoadService(files[i].getAbsolutePath());
-                        service.setDelegate((DataServiceImpl.DataServiceDelegate) context);
-                        service.start();
-                    }
-                }
-
             }
         },0,1000*60* SettingManager.getInstance().getSyncRateMin());
     }
@@ -106,21 +93,6 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
             }
 
             File oldFile=new File(((FileUpLoadService) service).getFilePath());
-            File newFile=new File(path_success_folder,oldFile.getName());
-            oldFile.renameTo(newFile);
-
-        }
-
-        if (service instanceof LogUpLoadService){
-
-            String folderName = android.os.Environment.getExternalStorageDirectory() +
-                    Constants.YUNSOO_FOLDERNAME+Constants.PATH_LOG_SYNC_FOLDER;
-            File path_success_folder = new File(folderName);
-            if (!path_success_folder.exists()){
-                path_success_folder.mkdirs();
-            }
-
-            File oldFile=new File(((LogUpLoadService) service).getFilePath());
             File newFile=new File(path_success_folder,oldFile.getName());
             oldFile.renameTo(newFile);
 

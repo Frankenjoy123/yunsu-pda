@@ -18,6 +18,8 @@ public final class Constants {
 	{
 		public final static String INBOUND_CODE = "inbound";
 		public final static String OUTBOUND_CODE = "outbound";
+		public final static String REVOKE_INBOUND_CODE = "revoke_inbound";
+		public final static String REVOKE_OUTBOUND_CODE = "revoke_outbound";
 		public final static String INBOUND = "入库";
 		public final static String OUTBOUND = "出库";
 		public static final String AGENCY_ID="agency_id";

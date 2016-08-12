@@ -23,21 +23,18 @@ import com.yunsoo.manager.SessionManager;
 import com.yunsoo.service.DataServiceImpl;
 import com.yunsoo.service.PermanentTokenLoginService;
 import com.yunsoo.service.ServiceExecutor;
+import com.yunsoo.service.background.RecycleHeartBeatService;
 import com.yunsoo.service.background.SyncFileService;
 import com.yunsoo.service.background.SyncLogService;
 import com.yunsoo.sqlite.MyDataBaseHelper;
-import com.yunsoo.sqlite.SQLiteOperation;
 import com.yunsoo.util.Constants;
-import com.yunsoo.util.KeyGenerator;
 import com.yunsoo.util.ToastMessageHelper;
 import com.yunsoo.view.TitleBar;
 
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -62,7 +59,7 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_path_main);
         init();
-        startSyncFileService();
+        startService();
         getActionBar().hide();
         setupActionItems();
         checkAuthorizeStatus();
@@ -74,6 +71,15 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
         titleBar = (TitleBar) findViewById(R.id.path_main_title_bar);
         titleBar.setTitle(getString(R.string.home));
         titleBar.setMode(TitleBar.TitleBarMode.TITLE_ONLY);
+    }
+
+    private void startService() {
+        Intent intent=new Intent(this, SyncFileService.class);
+        startService(intent);
+        Intent intent1=new Intent(this, SyncLogService.class);
+        startService(intent1);
+        Intent intent2=new Intent(this, RecycleHeartBeatService.class);
+        startService(intent2);
     }
 
 
@@ -132,16 +138,11 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
     }
 
 
-    private void startSyncFileService() {
-        Intent intent=new Intent(this, SyncFileService.class);
-        startService(intent);
-        Intent intent1=new Intent(this, SyncLogService.class);
-        startService(intent1);
-    }
+
 
     private void setupActionItems() {
         buildViewContent(this.findViewById(R.id.rl_action_inbound), R.drawable.ic_inbound, R.string.inbound_scan);
-        buildViewContent(this.findViewById(R.id.rl_action_outbound), R.drawable.ic_report, R.string.outbound_scan);
+        buildViewContent(this.findViewById(R.id.rl_action_outbound), R.drawable.ic_outbound, R.string.outbound_scan);
         buildViewContent(this.findViewById(R.id.rl_action_revoke), R.drawable.ic_revoke, R.string.repeal_operation);
         buildViewContent(this.findViewById(R.id.rl_action_report), R.drawable.ic_report, R.string.data_report);
         buildViewContent(this.findViewById(R.id.rl_action_setting), R.drawable.ic_setting, R.string.settings);

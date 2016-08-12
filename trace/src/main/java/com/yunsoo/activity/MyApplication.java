@@ -15,6 +15,8 @@ import com.yunsoo.manager.SettingManager;
 import com.yunsoo.network.CacheService;
 import com.yunsoo.network.NetworkManager;
 import com.yunsoo.service.background.LogService;
+import com.yunsoo.service.background.SyncFileService;
+import com.yunsoo.service.background.SyncLogService;
 
 /**
  * Created by Frank zhou on 2015/7/20.

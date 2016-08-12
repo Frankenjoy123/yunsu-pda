@@ -62,20 +62,6 @@ public class LogisticManager extends BaseManager {
         packService=new PackServiceImpl();
     }
 
-    public List<Map<String, String>> getActionList() {
-        if (actionList==null||actionList.size()<1){
-            actionList=new ArrayList<>();
-            Map<String, String> map1=new HashMap();
-            map1.put(Constants.Logistic.INBOUND_CODE,Constants.Logistic.INBOUND);
-            Map<String, String> map2=new HashMap();
-            map2.put(Constants.Logistic.OUTBOUND_CODE,Constants.Logistic.OUTBOUND);
-            actionList.add(map1);
-            actionList.add(map2);
-        }
-        return actionList;
-    }
-
-
     public List<OrgAgency> getAgencies() {
         return agencies;
     }
@@ -190,41 +176,53 @@ public class LogisticManager extends BaseManager {
 
     public  void createLogisticFile() {
         List<String> actionList = packService.queryDistinctAction();
-        List<String> agencyList = packService.queryDistinctAgency();
-        if (actionList!=null&&actionList.contains(Constants.Logistic.INBOUND_CODE)){
-            List<Pack> resultPackList=null;
-            int index=0;
-            Pack queryPack=new Pack();
-            queryPack.setStatus(Constants.DB.NOT_SYNC);
-            queryPack.setActionId(Constants.Logistic.INBOUND_CODE);
-            do {
-                resultPackList=packService.queryPackListByActionStatus(queryPack,index*Constants.Logistic.LIMIT_ITEM);
-                buildYSFile(resultPackList);
-                index++;
-            }while (resultPackList!=null&&resultPackList.size()==Constants.Logistic.LIMIT_ITEM);
-        }
+        for (String action :actionList){
+            switch (action){
 
-        if (actionList!=null&&actionList.contains(Constants.Logistic.OUTBOUND_CODE)
-                &&agencyList!=null&&agencyList.size()>0){
-            List<Pack> resultPackList=null;
-            for (int j=0;j<agencyList.size();j++){
-                int index=0;
-                Pack queryPack=new Pack();
-                queryPack.setStatus(Constants.DB.NOT_SYNC);
-                queryPack.setActionId(Constants.Logistic.OUTBOUND_CODE);
-                queryPack.setAgency(agencyList.get(j));
-                do {
-                    resultPackList=packService.queryPackKeyByActionAgencyStatus(queryPack,index*Constants.Logistic.LIMIT_ITEM);
-                    buildYSFile(resultPackList);
-                    index++;
-                }while (resultPackList!=null&&resultPackList.size()==Constants.Logistic.LIMIT_ITEM);
+                case Constants.Logistic.INBOUND_CODE:
+                case Constants.Logistic.REVOKE_INBOUND_CODE:
+                    List<Pack> resultPackList=null;
+                    int index=0;
+                    Pack queryPack=new Pack();
+                    queryPack.setStatus(Constants.DB.NOT_SYNC);
+                    queryPack.setActionId(action);
+                    do {
+                        resultPackList=packService.queryPackListByActionStatus(queryPack,index*Constants.Logistic.LIMIT_ITEM);
+                        buildYSFile(resultPackList);
+                        index++;
+                    }while (resultPackList!=null&&resultPackList.size()==Constants.Logistic.LIMIT_ITEM);
+                    break;
+
+                case Constants.Logistic.OUTBOUND_CODE:
+                case Constants.Logistic.REVOKE_OUTBOUND_CODE:
+                    List<String> agencyList = packService.queryDistinctAgency(action);
+                    if (agencyList!=null&&agencyList.size()>0){
+                        for (int j=0;j<agencyList.size();j++){
+                            index=0;
+                            queryPack=new Pack();
+                            queryPack.setStatus(Constants.DB.NOT_SYNC);
+                            queryPack.setActionId(action);
+                            queryPack.setAgency(agencyList.get(j));
+                            do {
+                                resultPackList=packService.queryPackKeyByActionAgencyStatus(queryPack,index*Constants.Logistic.LIMIT_ITEM);
+                                buildYSFile(resultPackList);
+                                index++;
+                            }while (resultPackList!=null&&resultPackList.size()==Constants.Logistic.LIMIT_ITEM);
+                        }
+                    }
+                    break;
             }
         }
+
+
+
+
+
 
     }
 
 
-    private  void buildYSFile(List<Pack> packList){
+    public  void buildYSFile(List<Pack> packList){
         if (packList!=null&&packList.size()>0){
             String actionId=packList.get(0).getActionId();
            YSFile ysFile=  buildYunsuFileDetail(packList);
@@ -235,6 +233,11 @@ public class LogisticManager extends BaseManager {
         }
     }
 
+    /**
+     * 创建YSFile
+     * @param packList
+     * @return
+     */
     private YSFile buildYunsuFileDetail(List<Pack> packList){
         YSFile ysFile=new YSFile(YSFile.EXT_TF);
         ysFile.putHeader("file_type","trace");
@@ -266,6 +269,12 @@ public class LogisticManager extends BaseManager {
         return ysFile;
     }
 
+    /**
+     * 根据YSFile生成文件
+     * @param path_task_folder
+     * @param ysFile
+     * @param actionId
+     */
     private void createFileByYunsuFile(File path_task_folder,YSFile ysFile,String actionId){
         try {
 
@@ -294,6 +303,11 @@ public class LogisticManager extends BaseManager {
         }
     }
 
+
+    /**
+     * 将准备清理的数据库数据以文件的形式存储
+     * @param packList
+     */
     public void catheDbWithFile(List<Pack> packList){
         if (packList!=null&&packList.size()>0){
             StringBuilder builder=new StringBuilder();
@@ -328,8 +342,6 @@ public class LogisticManager extends BaseManager {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-
-
         }
     }
 
