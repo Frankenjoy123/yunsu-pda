@@ -33,11 +33,6 @@ public class SQLiteManager extends BaseManager {
         return dataBaseManager;
     }
 
-    public MyDataBaseHelper getMyDataBaseHelper(){
-        MyDataBaseHelper dataBaseHelper=new MyDataBaseHelper(context, Constants.SQ_DATABASE,null,1);
-        return dataBaseHelper;
-    }
-
     public  void savePackLastId(int id){
         SharedPreferences.Editor editor = dataBaseManager.context.getSharedPreferences(Constants.Preference.PREF_SQLITE, Context.MODE_PRIVATE).edit();
         editor.putInt(Constants.Preference.SQ_PACK_LAST_ID, id);

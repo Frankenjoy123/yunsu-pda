@@ -30,8 +30,8 @@ public class RevokeOperationActivity extends Activity implements View.OnClickLis
     }
 
     private void setupActionItems() {
-        buildViewContent(this.findViewById(R.id.rl_repeal_inbound), R.drawable.ic_synchronize, R.string.repeal_inbound);
-        buildViewContent(this.findViewById(R.id.rl_repeal_outbound), R.drawable.ic_data_report, R.string.repeal_outbound);
+        buildViewContent(this.findViewById(R.id.rl_repeal_inbound), R.drawable.ic_inbound, R.string.repeal_inbound);
+        buildViewContent(this.findViewById(R.id.rl_repeal_outbound), R.drawable.ic_outbound, R.string.repeal_outbound);
     }
 
     private void buildViewContent(View view, int imageResourceId, int textResourceId) {
@@ -52,7 +52,7 @@ public class RevokeOperationActivity extends Activity implements View.OnClickLis
                 break;
             case R.id.rl_repeal_outbound:
                 Intent intent2=new Intent(RevokeOperationActivity.this,RevokeScanActivity.class);
-                intent2.putExtra(Constants.TITLE,Constants.Logistic.REVOKE_INBOUND);
+                intent2.putExtra(Constants.TITLE,Constants.Logistic.REVOKE_OUTBOUND);
                 startActivity(intent2);
                 break;
         }

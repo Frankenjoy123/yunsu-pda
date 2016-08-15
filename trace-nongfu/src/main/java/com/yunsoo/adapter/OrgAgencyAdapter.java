@@ -4,23 +4,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.yunsoo.activity.AuthorizeActivity;
-import com.yunsoo.activity.OrgAgencyActivity;
-import com.yunsoo.activity.PathActivity;
+import com.yunsoo.activity.OutBoundScanActivity;
 import com.yunsoo.activity.R;
-import com.yunsoo.activity.R.drawable;
 import com.yunsoo.activity.R.id;
 import com.yunsoo.activity.R.layout;
-import com.yunsoo.manager.SessionManager;
 
 import java.util.List;
 
@@ -93,7 +87,7 @@ public class OrgAgencyAdapter extends BaseAdapter
                         .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent intent = new Intent(activity, PathActivity.class);
+                                Intent intent = new Intent(activity, OutBoundScanActivity.class);
                                 intent.putExtra(LogisticActionAdapter.ACTION_ID,actionId);
                                 intent.putExtra(LogisticActionAdapter.ACTION_NAME,actionName);
                                 activity.startActivity(intent);

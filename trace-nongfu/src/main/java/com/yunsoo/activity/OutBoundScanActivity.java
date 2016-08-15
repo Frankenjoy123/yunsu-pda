@@ -3,7 +3,6 @@ package com.yunsoo.activity;
 import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,11 +11,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,49 +18,57 @@ import android.widget.Toast;
 
 import com.yunsoo.adapter.LogisticActionAdapter;
 import com.yunsoo.adapter.PathAdapter;
-import com.yunsoo.fileOpreation.FileOperation;
+import com.yunsoo.annotation.ViewById;
+import com.yunsoo.entity.MaterialEntity;
 import com.yunsoo.service.ServiceExecutor;
-import com.yunsoo.sqlite.MyDataBaseHelper;
-import com.yunsoo.sqlite.SQLiteOperation;
+import com.yunsoo.sqlite.service.PackService;
+import com.yunsoo.sqlite.service.impl.PackServiceImpl;
 import com.yunsoo.util.Constants;
 import com.yunsoo.util.StringUtils;
 import com.yunsoo.view.TitleBar;
+import com.yunsu.greendao.entity.Pack;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PathActivity extends Activity {
+public class OutBoundScanActivity extends BaseActivity {
 	SharedPreferences preferences;
 	SharedPreferences.Editor editor;
 
-	private String uniqueId;
-    
-    TitleBar titleBar;
-    EditText et_path;
-    List<String> keys=new ArrayList<String>();
-    PathAdapter adaper;
-    ListView lv_path;
-	
-	private boolean isFirstWrite=true;
-	private String prevFileName;
-	
-	private MyDataBaseHelper dataBaseHelper;
+    @ViewById(id = R.id.title_bar)
+    private TitleBar titleBar;
 
-    private String actionId;
-    private String actionName;
-    private String agencyId;
-    private String agencyName;
+    @ViewById(id = R.id.et_path)
+    private EditText et_path;
 
-    private TextView tv_agency_name;
-    private TextView tv_count_value;
+    @ViewById(id = R.id.tv_product_name)
+    private TextView tv_product_name;
+
+    @ViewById(id = R.id.tv_amount)
+    private TextView tv_amount;
+
+    @ViewById(id = R.id.tv_send_count)
+    private TextView tv_send_count;
+
+    @ViewById(id = R.id.tv_remain_count)
+    private TextView tv_remain_count;
+
+    @ViewById(id = R.id.tv_customer_name)
+    private TextView tv_customer_name;
+
+    @ViewById(id = R.id.tv_contact_name)
+    private TextView tv_contact_name;
+
+    @ViewById(id = R.id.tv_contact_number)
+    private TextView tv_contact_number;
+
+
+    private List<String> keys=new ArrayList<String>();
+
+    private PackService packService;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,91 +79,48 @@ public class PathActivity extends Activity {
 	}
 
     private void init() {
-        actionId=getIntent().getStringExtra(LogisticActionAdapter.ACTION_ID);
-        actionName=getIntent().getStringExtra(LogisticActionAdapter.ACTION_NAME);
-        if (actionId.equals(Constants.Logistic.INBOUND_CODE)){
-            agencyId=Constants.DEFAULT_STORAGE;
-            agencyName=Constants.BLANK;
-        }else {
-            agencyId=getIntent().getStringExtra(Constants.Logistic.AGENCY_ID);
-            agencyName=getIntent().getStringExtra(Constants.Logistic.AGENCY_NAME);
-        }
-        tv_agency_name= (TextView) findViewById(R.id.tv_agency_name);
-        tv_count_value= (TextView) findViewById(R.id.tv_count_value);
-        tv_agency_name.setText(agencyName);
-        tv_count_value.setText("已扫"+String.valueOf(keys.size())+"包");
-
-        dataBaseHelper=new MyDataBaseHelper(this, Constants.SQ_DATABASE,null,1);
-        preferences=getSharedPreferences("pathActivityPre", Context.MODE_PRIVATE);
-        editor=preferences.edit();
-        prevFileName=preferences.getString("prevFileName", "");
-
-        final TelephonyManager tm = (TelephonyManager) getBaseContext().getSystemService(Context.TELEPHONY_SERVICE);
-
-        final String tmDevice, tmSerial, tmPhone, androidId;
-        tmDevice = "" + tm.getDeviceId();
-        tmSerial = "" + tm.getSimSerialNumber();
-        androidId = "" + android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
-
-        UUID deviceUuid = new UUID(androidId.hashCode(), ((long)tmDevice.hashCode() << 32) | tmSerial.hashCode());
-        uniqueId = deviceUuid.toString();
-
         getActionBar().hide();
         titleBar=(TitleBar) findViewById(R.id.title_bar);
         titleBar.setMode(TitleBar.TitleBarMode.LEFT_BUTTON);
         titleBar.setDisplayAsBack(true);
-        if (actionId.equals(Constants.Logistic.INBOUND_CODE)){
-            titleBar.setTitle(getString(R.string.inbound_scan));
-        }else {
-            titleBar.setTitle(getString(R.string.outbound_scan));
-        }
+        titleBar.setTitle(getString(R.string.outbound_scan));
 
-        lv_path=(ListView) findViewById(R.id.lv_path);
-        adaper=new PathAdapter(this, getResources());
-        adaper.setKeyList(keys);
+        packService=new PackServiceImpl();
+        Intent intent=getIntent();
+        Bundle bundle=intent.getBundleExtra("bundle");
+        MaterialEntity materialEntity=bundle.getParcelable("Material");
 
-        lv_path.setAdapter(adaper);
+
+
+
+
         bindTextChanged();
 
     }
 
 
-
+    /**
+     * 将扫描的key结果存储到DB
+     * @param packKey
+     */
 	private void submitToDB(final String packKey) {
         ServiceExecutor.getInstance().execute(new Runnable() {
             @Override
             public void run() {
-                final SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                final Date date=new Date();
-
-                SQLiteOperation.insertPathData(dataBaseHelper.getWritableDatabase(),
-                        packKey,actionId,agencyId,Constants.DB.NOT_SYNC,dateFormat.format(date));
-                dataBaseHelper.close();
+                Pack pack=new Pack();
+                pack.setPackKey(packKey);
+                pack.setStatus(Constants.DB.NOT_SYNC);
+//                pack.setActionId(actionId);
+//                pack.setAgency(agencyId);
+                packService.insertPackWithCheck(pack);
             }
         });
 	}
 
-    @Override
-    protected void onPause() {
 
-        editor.putString("prevFileName", prevFileName);
-        editor.commit();
-        dataBaseHelper.close();
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        dataBaseHelper.close();
-        super.onStop();
-    }
-
-    @Override
-    public void finish() {
-        dataBaseHelper.close();
-        super.finish();
-    }
-
+    /**
+     * 扫码事件
+     */
     private void bindTextChanged(){
 		et_path= (EditText) findViewById(R.id.et_path);
 		et_path.requestFocus();
@@ -229,8 +188,6 @@ public class PathActivity extends Activity {
                     toast.show();
                 }
 
-
-				
 			}
 		});
 	}

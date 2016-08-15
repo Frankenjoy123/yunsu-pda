@@ -2,54 +2,159 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    tools:context=".OutBoundScanActivity" >
 
-    tools:context="com.yunsoo.activity.PathActivity" >
-    	    <com.yunsoo.view.TitleBar
+	<com.yunsoo.view.TitleBar
         android:id="@+id/title_bar"
         layout="@layout/title_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
 
+	<TextView
+		android:id="@+id/tv_product_name"
+		android:layout_below="@+id/title_bar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		style="@style/text_style"
+		android:gravity="center"
+		android:text="七星果橙子"/>
+
+	<LinearLayout
+		android:id="@+id/ll_amount_summary"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/tv_product_name"
+		android:orientation="vertical">
 		<LinearLayout
-		    android:id="@+id/ll_path"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:layout_alignParentBottom="true"
-		    android:gravity="center"
-		    android:orientation="horizontal"
-			android:background="@color/titlebar_bg"
-			android:padding="5dp"
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+			<TextView
+				android:text="发货"
+				android:layout_weight="0.2"
+				style="@style/text_style"
+				android:gravity="center"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+
+			<TextView
+				android:id="@+id/tv_amount"
+				style="@style/text_style"
+				android:layout_weight="0.6"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+
+			<TextView
+				android:text="箱"
+				style="@style/text_style"
+				android:layout_weight="0.2"
+				android:gravity="center"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+			<TextView
+				android:text="已货"
+				android:layout_weight="0.2"
+				style="@style/text_style"
+				android:gravity="center"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+
+			<TextView
+				android:id="@+id/tv_send_count"
+				style="@style/text_style"
+				android:layout_weight="0.6"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+
+			<TextView
+				android:text="箱"
+				style="@style/text_style"
+				android:layout_weight="0.2"
+				android:gravity="center"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+		</LinearLayout>
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+			<TextView
+				android:text="剩余"
+				android:layout_weight="0.2"
+				style="@style/text_style"
+				android:gravity="center"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+
+			<TextView
+				android:id="@+id/tv_remain_count"
+				style="@style/text_style"
+				android:layout_weight="0.6"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+
+			<TextView
+				android:text="箱"
+				style="@style/text_style"
+				android:layout_weight="0.2"
+				android:gravity="center"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+		</LinearLayout>
+
+
+	</LinearLayout>
+
+
+	<LinearLayout
+		android:layout_below="@id/ll_amount_summary"
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+		<TextView
+			android:id="@+id/tv_customer_name"
+			android:text="xx公司"
+			style="@style/text_style.bold"
+			android:gravity="center"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" />
+
+		<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:gravity="center"
 			>
-
-
 			<TextView
-				android:id="@+id/tv_agency_name"
+				android:id="@+id/tv_contact_name"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="@string/scan_count"
-				android:textColor="#fff"
-				android:textSize="20sp" />
-
+				style="@style/text_style.bold"
+				android:text="张三"
+				/>
 			<TextView
-				android:id="@+id/tv_count_value"
+				android:id="@+id/tv_contact_number"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="222"
-				android:layout_marginLeft="15dp"
-				android:textColor="#fff"
-				android:textSize="20sp" />
+				style="@style/text_style.bold"
+				android:layout_marginLeft="10dp"
+				android:text="12345"
+
+				/>
 
 		</LinearLayout>
 
-        <ListView 
-	        android:id="@+id/lv_path"
-	        android:layout_width="match_parent"
-	        android:layout_height="match_parent"    
-	        android:layout_above="@id/ll_path"  
-	        android:layout_below="@id/title_bar"
-        ></ListView>
-        
+	</LinearLayout>
+
+
         <EditText 
             android:id="@+id/et_path"
             android:layout_width="0dp"

@@ -51,10 +51,7 @@ public class DateQueryActivity extends Activity {
 
         inTextView= (TextView) findViewById(R.id.tv_report_inbound_count);
         outTextView= (TextView) findViewById(R.id.tv_report_outbound_count);
-
         listView= (ListView) findViewById(R.id.lv_yunsu_report);
-//        tv_empty_note= (TextView) findViewById(R.id.tv_empty_note);
-//        listView.setEmptyView(tv_empty_note);
         tv_query_date = (TextView) findViewById(R.id.tv_query_date);
         rl_query_date= (RelativeLayout) findViewById(R.id.rl_query_date);
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");

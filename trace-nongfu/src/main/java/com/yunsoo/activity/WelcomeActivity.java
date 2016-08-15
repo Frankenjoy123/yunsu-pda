@@ -9,18 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.yunsoo.annotation.ViewById;
-//import com.itxiaowu.manager.DeviceGeoLocationManager;
-import com.yunsoo.service.ServiceExecutor;
-import com.yunsoo.service.background.InitDataService;
-import com.yunsoo.service.background.SyncFileService;
-import com.yunsoo.sqlite.MyDataBaseHelper;
-import com.yunsoo.sqlite.SQLiteOperation;
-import com.yunsoo.util.Constants;
 import com.yunsoo.util.DensityUtil;
-import com.yunsoo.util.KeyGenerator;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 
 public class WelcomeActivity extends BaseActivity{
@@ -59,6 +48,9 @@ public class WelcomeActivity extends BaseActivity{
     }
 
 
+    /**
+     * 欢迎界面初始化
+     */
     private void init() {
         int[] size = DensityUtil.getScreenHeightAndWidth(this);
         int imageSize = (int) (size[0] * 0.5);//width * 0.5
@@ -70,6 +62,7 @@ public class WelcomeActivity extends BaseActivity{
 
         ll_btn_area.setVisibility(View.GONE);
     }
+
     private void gotoAuthorizeActivity() {
         Intent intent=new Intent(WelcomeActivity.this, AuthorizeActivity.class);
         startActivity(intent);

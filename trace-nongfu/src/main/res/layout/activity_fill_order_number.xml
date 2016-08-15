@@ -3,11 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.yunsoo.activity.FillOrderNumberActivity">
+
+    <com.yunsoo.view.TitleBar
+        android:id="@+id/title_bar"
+        layout="@layout/title_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
 
 
     <EditText
@@ -17,5 +20,15 @@
         android:hint="@string/fill_order_number"
         android:gravity="center"
         android:id="@+id/et_order_number"/>
+
+    <Button
+        android:id="@+id/btn_query_order"
+        android:text="查询订单"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_bg"
+        android:layout_below="@+id/et_order_number"
+        android:layout_centerHorizontal="true"
+        />
 
 </RelativeLayout>

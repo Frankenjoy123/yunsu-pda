@@ -51,7 +51,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PathActivity"
+            android:name=".OutBoundScanActivity"
             android:label="@string/title_activity_path"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
@@ -90,6 +90,10 @@
             android:name="com.yunsoo.service.background.SyncFileService"
             android:enabled="true"
             android:exported="true" />
+        <service
+            android:name="com.yunsoo.service.background.RecycleHeartBeatService"
+            android:enabled="true"
+            android:exported="true" />
 
         <activity
             android:name=".DateQueryActivity"
@@ -104,12 +108,19 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
 
+
+        <activity
+            android:name=".FillOrderNumberActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+
+
         <service
             android:name="com.yunsoo.service.background.LogService"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".FillOrderNumberActivity"></activity>
+        <activity android:name=".MaterialListActivity"></activity>
     </application>
 
 </manifest>

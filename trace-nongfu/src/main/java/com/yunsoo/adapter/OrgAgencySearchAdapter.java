@@ -1,9 +1,7 @@
 package com.yunsoo.adapter;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.yunsoo.activity.PathActivity;
+import com.yunsoo.activity.OutBoundScanActivity;
 import com.yunsoo.activity.R;
 import com.yunsoo.entity.OrgAgency;
 import com.yunsoo.util.Constants;
@@ -56,7 +54,7 @@ public class OrgAgencySearchAdapter extends SearchAdapter<OrgAgency>{
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(context, PathActivity.class);
+                Intent intent = new Intent(context, OutBoundScanActivity.class);
                 intent.putExtra(LogisticActionAdapter.ACTION_ID,actionId);
                 intent.putExtra(LogisticActionAdapter.ACTION_NAME,actionName);
                 intent.putExtra(Constants.Logistic.AGENCY_ID,filteredContainer.get(i).getId());
@@ -64,25 +62,6 @@ public class OrgAgencySearchAdapter extends SearchAdapter<OrgAgency>{
                 context.startActivity(intent);
                 Activity activity= (Activity) context;
                 activity.finish();
-
-//                StringBuilder builder=new StringBuilder("确认选择");
-//                builder.append(filteredContainer.get(i).getName());
-//                builder.append("作为经销商吗？");
-//                AlertDialog dialog = new AlertDialog.Builder(context).setTitle(R.string.choose_org_agency).setMessage(builder.toString())
-//                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialogInterface, int i) {
-//                                Intent intent = new Intent(context, PathActivity.class);
-//                                intent.putExtra(LogisticActionAdapter.ACTION_ID,actionId);
-//                                intent.putExtra(LogisticActionAdapter.ACTION_NAME,actionName);
-//                                context.startActivity(intent);
-//                                Activity activity= (Activity) context;
-//                                activity.finish();
-//                            }
-//                        }).setNegativeButton(R.string.no, null).create();
-//                dialog.setCancelable(false);
-//                dialog.show();
-
             }
         });
 

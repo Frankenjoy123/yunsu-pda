@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/rl_order_item"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_bg_bottom"
+    android:clickable="true"
+    android:layout_marginTop="20dp"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:id="@+id/ll_top"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        >
+        <TextView
+            android:id="@+id/tv_material_number"
+            android:text="111101-01520"
+            style="@style/text_style.light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           />
+
+        <TextView
+            android:id="@+id/tv_amount"
+            style="@style/text_style.light"
+            android:text="300箱"
+            android:layout_marginLeft="10dp"
+            />
+
+    </LinearLayout>
+
+
+
+    <TextView
+        android:id="@+id/tv_product_name"
+        style="@style/text_style.light"
+        android:text="脐橙五星国56头10KG装"
+        android:layout_below="@+id/ll_top"
+        android:layout_centerInParent="true"
+         />
+
+</RelativeLayout>

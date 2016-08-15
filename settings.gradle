@@ -1,1 +1,1 @@
-include ':imagetest', ':common', ':trace', ':testapp', ':lib',':pack'
+include ':imagetest', ':common', ':testapp', ':lib',':pack',':trace-nongfu'

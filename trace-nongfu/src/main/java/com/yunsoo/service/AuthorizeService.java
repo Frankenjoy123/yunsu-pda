@@ -27,7 +27,7 @@ public class AuthorizeService extends DataServiceImpl {
      }
      */
 
-    private static final String LOGIN_URL = "/device/register";
+    private static final String LOGIN_URL = "/auth/device/register";
     private AuthorizeRequest request;
 
     public AuthorizeService(AuthorizeRequest request){

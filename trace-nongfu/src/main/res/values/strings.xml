@@ -11,6 +11,10 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
+
+    <string name="tab_scan">扫一扫</string>
+    <string name="tab_find">发现</string>
+    <string name="tab_profile">我</string>
     <string name="back">返回</string>
 
     <string name="network_not_available">请检查网络连接</string>
@@ -19,13 +23,19 @@
     <string name="pull_to_refresh_refreshing_label">加载中...</string>
     <string name="pull_to_refresh_tap_label">点击加载...</string>
 
+    <string name="activity">活动</string>
+    <string name="popular">热门</string>
+    <string name="nearby">周边</string>
     <string name="todo">开发中</string>
     <string name="load_failed">加载失败</string>
     <string name="backpress_to_exit">再按一次返回键退出</string>
     <string name="scan_result_tip">云溯温馨提示：</string>
     <string name="verify_code_loading">查询中...</string>
+    <string name="decoding_image">图片解析中...</string>
+    <string name="decoding_failed">无法解析图片</string>
     <string name="copy">复制</string>
     <string name="copy_succeeded">复制成功</string>
+    <string name="rfid_tip">请将手机靠近标签</string>
 
     <string name="yes">是</string>
     <string name="no">否</string>
@@ -111,6 +121,7 @@
 
     <string name="authorize_status">是否授权</string>
     <string name="clear_cache">清除历史数据</string>
+    <string name="clear_cache_release">将清除已经同步数据，包括物流文件和日志文件</string>
     <string name="current_version">当前版本</string>
     <string name="auto_sync">自动同步时间</string>
     <string name="scan_count">扫描计数</string>
@@ -144,8 +155,11 @@
     <string name="please_input_sync_rate">自动同步时间（120分钟内）</string>
     <string name="minute">分钟</string>
     <string name="every">每隔</string>
+    <string name="key_not_exist">当前码不存在，请检查</string>
 
     <!--FillOrderNumberActivity-->
     <string name="fill_order_number">请输入订单号</string>
 
+    <!--MaterialListActivity-->
+    <string name="material_list">物料列表</string>
 </resources>

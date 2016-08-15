@@ -10,6 +10,9 @@ import android.util.Log;
 
 import com.yunsoo.network.NetworkManager;
 import com.yunsoo.util.Constants;
+import com.yunsoo.util.DensityUtil;
+import com.yunsoo.util.HashUtils;
+import com.yunsoo.util.HexStringUtils;
 import com.yunsoo.util.StringHelper;
 
 
@@ -32,17 +35,18 @@ public class DeviceManager extends BaseManager {
 		deviceSDKVersion = "android: " + android.os.Build.VERSION.SDK_INT;
 
 		TelephonyManager tm = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-
 		deviceId = tm.getDeviceId();
 		if (deviceId == null) {
 			String previousDeviceId = getDeviceIdFromPreference();
 			if (StringHelper.isStringNullOrEmpty(previousDeviceId)) {
 				deviceId = UUID.randomUUID().toString();
-				saveDeviceIdToPreference(deviceId);
 			} else {
 				deviceId = previousDeviceId;
 			}
 		}
+		byte[] data=HashUtils.sha1(deviceId+Constants.APP_ID_VALUE);
+		deviceId=HexStringUtils.encode(data);
+//		saveDeviceIdToPreference(deviceId);
 
 		try {
 			appVersion = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
@@ -93,16 +97,6 @@ public class DeviceManager extends BaseManager {
         Log.d("ZXW","deviceId"+deviceId);
 		return deviceId;
 	}
-
-//	public String getDeviceGeoLocationInfo() {
-//		return DeviceGeoLocationManager.getInstance().getGeoLocationInfo();
-//	}
-
-	/*
-	 * public String getDeviceSecondsFromGMT() {
-	 * 
-	 * return secondsFromGMT; }
-	 */
 
 	public String getDeviceModel() {
 		return deviceModel;

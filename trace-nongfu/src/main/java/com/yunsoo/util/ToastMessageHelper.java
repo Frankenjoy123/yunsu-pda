@@ -30,4 +30,15 @@ public class ToastMessageHelper {
 		toast.setDuration(shortDuration ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG);
 		toast.show();
 	}
+
+	public static void showMessage(Context context, String msg, boolean shortDuration) {
+
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		TextView view = (TextView) inflater.inflate(R.layout.toast_layout, null);
+		view.setText(msg);
+		Toast toast = new Toast(context);
+		toast.setView(view);
+		toast.setDuration(shortDuration ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG);
+		toast.show();
+	}
 }

@@ -29,8 +29,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 原同步界面，暂停用
+ */
 public class PathSyncActivity extends BaseActivity implements DataServiceImpl.DataServiceDelegate {
-
 
     private MyDataBaseHelper dataBaseHelper;
     private ListView lv_path_sync;

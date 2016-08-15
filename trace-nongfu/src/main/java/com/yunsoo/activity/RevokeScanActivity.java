@@ -1,8 +1,9 @@
 package com.yunsoo.activity;
 
 import android.app.Activity;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -10,19 +11,21 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.yunsoo.adapter.LogisticActionAdapter;
 import com.yunsoo.adapter.PathAdapter;
+import com.yunsoo.manager.LogisticManager;
 import com.yunsoo.service.ServiceExecutor;
 import com.yunsoo.sqlite.MyDataBaseHelper;
-import com.yunsoo.sqlite.SQLiteOperation;
+import com.yunsoo.sqlite.service.PackService;
+import com.yunsoo.sqlite.service.impl.PackServiceImpl;
 import com.yunsoo.util.Constants;
 import com.yunsoo.util.StringUtils;
+import com.yunsoo.util.ToastMessageHelper;
 import com.yunsoo.view.TitleBar;
+import com.yunsu.greendao.entity.Pack;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.logging.LogRecord;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,9 +35,15 @@ public class RevokeScanActivity extends Activity {
     private EditText et_revoke_scan;
 
     private List<String> keys=new ArrayList<String>();
-    private PathAdapter adaper;
-    private MyDataBaseHelper dataBaseHelper;
+    private PathAdapter adapter;
     private String actionId;
+    private String revokeActionId;
+    private String actionName;
+    private String title;
+    private PackService packService;
+
+    private final int SUCCESS_MSG=1;
+    private final int FAIL_MSG=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,26 +54,33 @@ public class RevokeScanActivity extends Activity {
     }
 
     private void init() {
+        packService=new PackServiceImpl();
+
         getActionBar().hide();
         titleBar= (TitleBar) findViewById(R.id.revoke_scan_title_bar);
-        String title=getIntent().getStringExtra(Constants.TITLE);
+        title=getIntent().getStringExtra(Constants.TITLE);
         if (title.equals(Constants.Logistic.REVOKE_INBOUND)){
             actionId=Constants.Logistic.INBOUND_CODE;
+            revokeActionId=Constants.Logistic.REVOKE_INBOUND_CODE;
+            actionName=Constants.Logistic.INBOUND;
         }else {
             actionId=Constants.Logistic.OUTBOUND_CODE;
+            revokeActionId=Constants.Logistic.REVOKE_OUTBOUND_CODE;
+            actionName=Constants.Logistic.OUTBOUND;
         }
         titleBar.setTitle(title);
         titleBar.setMode(TitleBar.TitleBarMode.LEFT_BUTTON);
         titleBar.setDisplayAsBack(true);
         et_revoke_scan= (EditText) findViewById(R.id.et_revoke_scan);
         lv_revoke_scan=(ListView) findViewById(R.id.lv_revoke_scan);
-        adaper=new PathAdapter(this, getResources());
-        adaper.setKeyList(keys);
-        lv_revoke_scan.setAdapter(adaper);
-        dataBaseHelper=new MyDataBaseHelper(this, Constants.SQ_DATABASE,null,1);
+        adapter =new PathAdapter(this, getResources());
+        adapter.setKeyList(keys);
+        lv_revoke_scan.setAdapter(adapter);
     }
 
-
+    /**
+     * 扫码事件触发
+     */
     private void bindEditTextChange() {
 
         et_revoke_scan.requestFocus();
@@ -116,9 +132,7 @@ public class RevokeScanActivity extends Activity {
                         }
 
                         checkKeyStatus(formatKey);
-                        keys.add(0,StringUtils.replaceBlank(StringUtils.getLastString(string)));
 
-                        adaper.notifyDataSetChanged();
 
                     } catch (Exception e) {
                         // TODO: handle exception
@@ -130,31 +144,65 @@ public class RevokeScanActivity extends Activity {
                     toast.show();
                 }
 
-
-
             }
         });
 
     }
 
+    /**
+     * 检查码的状态
+     * @param key
+     */
     private void checkKeyStatus(final String key){
         ServiceExecutor.getInstance().execute(new Runnable() {
             @Override
             public void run() {
-                final SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                final Date date=new Date();
-                List<String> notSyncKeyList=SQLiteOperation.queryKey(dataBaseHelper.getReadableDatabase(),key,actionId,Constants.DB.NOT_SYNC);
-                if (notSyncKeyList!=null&&notSyncKeyList.size()>0){
-                    SQLiteOperation.revokePathData(dataBaseHelper.getWritableDatabase(),dateFormat.format(date),key,actionId);
+                Pack queryPack=new Pack();
+                queryPack.setPackKey(key);
+                Pack resultPack=packService.queryRevokeOrNot(queryPack);
+
+                if (resultPack!=null){
+                    Pack messagePack=new Pack();
+                    messagePack.setPackKey(resultPack.getPackKey());
+                        packService.revokePathData(resultPack);
+
+                    Message message=Message.obtain();
+                    message.what=SUCCESS_MSG;
+                    message.obj=messagePack;
+                    handler.sendMessage(message);
+
                 }else {
-                    List<String> hasSyncKeyList=SQLiteOperation.queryKey(dataBaseHelper.getReadableDatabase(),key,actionId,Constants.DB.SYNC);
-                    if (hasSyncKeyList!=null&&hasSyncKeyList.size()>0){
-                        SQLiteOperation.revokePathData(dataBaseHelper.getWritableDatabase(),dateFormat.format(date),key,actionId);
-                        //TODO 处理撤销逻辑,生成文件上传
-                    }
+                    //TODO UI返回扫描不存在
+                    Message message=Message.obtain();
+                    message.what=FAIL_MSG;
+                    handler.sendMessage(message);
                 }
             }
         });
     }
+
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            if (msg.what==SUCCESS_MSG){
+//                switch (((Pack)msg.obj).getActionId()){
+//                    case  Constants.Logistic.REVOKE_INBOUND_CODE :
+//                    case Constants.Logistic.REVOKE_OUTBOUND_CODE:
+//                        ToastMessageHelper.showMessage(RevokeScanActivity.this,"当前包装已被"+title+"，请检查",true);
+//                        break;
+//
+//                    case Constants.Logistic.INBOUND_CODE:
+//                    case Constants.Logistic.OUTBOUND_CODE:
+//                        keys.add(0,((Pack)msg.obj).getPackKey());
+//                        adapter.notifyDataSetChanged();
+//                        break;
+//                }
+
+            }
+            else if (msg.what==FAIL_MSG){
+                ToastMessageHelper.showMessage(RevokeScanActivity.this,"当前包装还未"+actionName+"，请检查",true);
+            }
+            super.handleMessage(msg);
+        }
+    };
 
 }

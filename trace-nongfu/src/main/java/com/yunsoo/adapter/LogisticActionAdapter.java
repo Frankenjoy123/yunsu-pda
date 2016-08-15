@@ -11,18 +11,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yunsoo.activity.OrgAgencyActivity;
-import com.yunsoo.activity.PathActivity;
-import com.yunsoo.activity.R;
+import com.yunsoo.activity.OutBoundScanActivity;
 import com.yunsoo.activity.R.drawable;
 import com.yunsoo.activity.R.id;
 import com.yunsoo.activity.R.layout;
 import com.yunsoo.util.Constants;
 
-import java.security.KeyStore;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Frank zhou on 7/15/2015.
@@ -96,7 +92,7 @@ public class LogisticActionAdapter extends BaseAdapter
                 String action_name=actions.get(finalPosition).get(action_id);
                 Intent intent=null;
                 if (action_id.equals(Constants.Logistic.INBOUND_CODE)){
-                    intent=new Intent(activity, PathActivity.class);
+                    intent=new Intent(activity, OutBoundScanActivity.class);
                 }else if (action_id.equals(Constants.Logistic.OUTBOUND_CODE)){
                     intent=new Intent(activity, OrgAgencyActivity.class);
                 }

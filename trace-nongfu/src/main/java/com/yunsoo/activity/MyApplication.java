@@ -7,6 +7,7 @@ import android.content.Intent;
 import com.forlong401.log.transaction.log.manager.LogManager;
 import com.yunsoo.manager.DeviceManager;
 import com.yunsoo.manager.FileManager;
+import com.yunsoo.manager.GreenDaoManager;
 import com.yunsoo.manager.LogisticManager;
 import com.yunsoo.manager.SQLiteManager;
 import com.yunsoo.manager.SessionManager;
@@ -14,7 +15,8 @@ import com.yunsoo.manager.SettingManager;
 import com.yunsoo.network.CacheService;
 import com.yunsoo.network.NetworkManager;
 import com.yunsoo.service.background.LogService;
-
+import com.yunsoo.service.background.SyncFileService;
+import com.yunsoo.service.background.SyncLogService;
 
 /**
  * Created by Frank zhou on 2015/7/20.
@@ -25,8 +27,10 @@ public class MyApplication extends Application{
         super.onCreate();
         Context appContext=this;
 
-        Intent stateService =  new Intent(this,LogService.class);
-        startService(stateService );
+//        Intent stateService =  new Intent(this,LogService.class);
+//        startService(stateService );
+
+        GreenDaoManager.initializeIntance(appContext);
 
 //        LogManager.getManager(getApplicationContext()).registerCrashHandler();
 //        SQLiteManager.initializeIntance(appContext);

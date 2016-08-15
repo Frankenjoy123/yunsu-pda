@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Chen Jerry on 3/9/2015.
+ * Created by Frank Zhou on 3/9/2015.
  */
 public class PathAdapter extends BaseAdapter
 {

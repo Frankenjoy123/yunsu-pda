@@ -30,15 +30,19 @@ public class NongfuTraceDaoMaker {
     public static void addPackAndProduct(Schema schema) {
 
         //创建数据库的表
-        Entity pack = schema.addEntity("OutBound");
+        Entity pack = schema.addEntity("Pack");
         //主键
         pack.addIdProperty().autoincrement();
         //包装码
         pack.addStringProperty("packKey").notNull();
+        //action
+        pack.addStringProperty("actionId");
+        //经销商
+        pack.addStringProperty("agency");
         //状态
         pack.addStringProperty("status");
         //时间
-        pack.addDateProperty("saveTime");
+        pack.addStringProperty("saveTime");
         //默认1，按垛出库
         pack.addIntProperty("count");
     }

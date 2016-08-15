@@ -60,7 +60,7 @@ public final class HashUtils {
 
 
     public static byte[] hash(String src, String algorithm) {
-        return hash(src.getBytes(StandardCharsets.UTF_8), algorithm);
+        return hash(src.getBytes(), algorithm);
     }
 
     public static byte[] hash(byte[] src, String algorithm) {

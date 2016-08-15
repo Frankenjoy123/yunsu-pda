@@ -18,6 +18,8 @@ public final class Constants {
 	{
 		public final static String INBOUND_CODE = "inbound";
 		public final static String OUTBOUND_CODE = "outbound";
+		public final static String REVOKE_INBOUND_CODE = "revoke_inbound";
+		public final static String REVOKE_OUTBOUND_CODE = "revoke_outbound";
 		public final static String INBOUND = "入库";
 		public final static String OUTBOUND = "出库";
 		public static final String AGENCY_ID="agency_id";
@@ -40,15 +42,16 @@ public final class Constants {
 	public final static class DB
 	{
 		public final static String PATH_TABLE="path";
-		public final static String PACK_TABLE="pack";
+		public final static String PACK_TABLE="Pack";
 		public final static String AGENCY_COLUMN="agency";
 		public final static String ACTION_ID_COLUMN="action_id";
 		public final static String PACK_KEY_COLUMN="pack_key";
-		public final static String TIME_COLUMN="last_save_time";
+		public final static String TIME_COLUMN="save_time";
 		public final static String STATUS_COLUMN="status";
 		public final static String SYNC="sync";
 		public final static String NOT_SYNC="not_sync";
 		public final static String DISABLE="disable";
+		public static final String  DB_NAME ="trace" ;
 	}
 	
 	public final static class Cache {
@@ -111,7 +114,7 @@ public final class Constants {
 
 	public static final String ACCESS_TOKEN = "X-YS-AccessToken";
 	public static final String APP_ID = "X-YS-AppId";
-	public static final String APP_ID_VALUE="2mlvpegbfroxlyiej4y";
+	public static final String APP_ID_VALUE="2mlvpegbfroxlyiej5p";
 	public static final String DEVICE_ID = "X-YS-DeviceId";
 	
 	public static final String CODE_BASE_URL = "http://t.m.yunsu.co/";
@@ -132,6 +135,8 @@ public final class Constants {
 
 	public static final String PATH_LOG_SYNC_FOLDER ="/path/log/sync";
 
+	public static final String PATH_CACHE_DB="/path/cache/db";
+
 	public static final String BLANK="";
 
 	public static final int SYNC_RATE=10;
@@ -140,7 +145,7 @@ public final class Constants {
 
 	public static final String TITLE="title";
 
-	public static final boolean INIT_DATA=false;
+	public static final boolean INIT_DATA=true;
 
 
 }

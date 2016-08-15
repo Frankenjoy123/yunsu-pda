@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.gesture.GestureOverlayView;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +18,37 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.yunsoo.manager.FileManager;
+import com.yunsoo.manager.LogisticManager;
 import com.yunsoo.manager.SessionManager;
 import com.yunsoo.manager.SettingManager;
+import com.yunsoo.network.CacheService;
+import com.yunsoo.service.ServiceExecutor;
+import com.yunsoo.sqlite.service.PackService;
+import com.yunsoo.sqlite.service.impl.PackServiceImpl;
+import com.yunsoo.util.Constants;
+import com.yunsoo.util.DateUtil;
 import com.yunsoo.util.ToastMessageHelper;
 import com.yunsoo.view.TitleBar;
+import com.yunsu.greendao.entity.Pack;
 
 import java.lang.reflect.Field;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
-public class GlobalSettingActivity extends Activity {
+public class GlobalSettingActivity extends BaseActivity {
     private TitleBar titleBar;
     private Button btn_authorize_status;
     private TextView tv_time_gap;
     private RelativeLayout rl_auto_sync;
+    private RelativeLayout rl_clear_cache;
+    private TextView tv_cache_size;
+
+    private PackService packService;
+    private final int CLEAR_SUCCESS=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +56,24 @@ public class GlobalSettingActivity extends Activity {
         setContentView(R.layout.activity_global_setting);
         init();
         setAuthorizeStatus();
+        setCacheSize();
     }
 
+    private Handler handler=new Handler()
+    {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case   CLEAR_SUCCESS:
+                    hideLoading();
+                    setCacheSize();
+            }
+            super.handleMessage(msg);
+        }
+    };
+
     private void init() {
+        packService=new PackServiceImpl();
         getActionBar().hide();
         titleBar = (TitleBar) findViewById(R.id.global_setting_title_bar);
         titleBar.setTitle(getString(R.string.settings));
@@ -54,8 +90,87 @@ public class GlobalSettingActivity extends Activity {
                 dialog(SettingManager.getInstance().getSyncRateMin());
             }
         });
+        rl_clear_cache= (RelativeLayout) findViewById(R.id.rl_clear_cache);
+        tv_cache_size= (TextView) findViewById(R.id.tv_cache_size);
+        rl_clear_cache.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder=new AlertDialog.Builder(GlobalSettingActivity.this);
+                builder.setTitle(R.string.clear_cache);
+                builder.setMessage(R.string.clear_cache_release);
+                builder.setNegativeButton(R.string.cancel,null);
+                builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        showLoading();
+                        clearCacheFile();
+                        queryBeforeDate();
+                    }
+                });
+                builder.show();
+            }
+        });
+
     }
 
+
+
+    private void setCacheSize() {
+        long size = FileManager.getInstance().getAllCacheSize();
+        if (size<=0){
+            tv_cache_size.setText("0KB");
+        }
+        if (size>0&&size<=1024){
+            tv_cache_size.setText("1KB");
+        }
+        else if (size < 1024 * 1024&&size>1024) {
+            long kb = size / 1024;
+            tv_cache_size.setText(String.valueOf(kb) + "KB");
+        } else {
+            long mb = size / (1024 * 1024);
+            tv_cache_size.setText(String.valueOf(mb) + "MB");
+        }
+    }
+
+    private void clearCacheFile() {
+        ServiceExecutor.getInstance().execute(new Runnable() {
+            @Override
+            public void run() {
+                FileManager.getInstance().clearCache();
+                Message message=Message.obtain();
+                message.what=CLEAR_SUCCESS;
+                handler.sendMessage(message);
+            }
+        });
+    }
+
+    /**
+     * 查询三个月前的数据库的数据，文件存储之后，再清理
+     */
+    private void queryBeforeDate(){
+        ServiceExecutor.getInstance().execute(new Runnable() {
+            @Override
+            public void run() {
+                List<Pack> packList;
+                Calendar calendar=Calendar.getInstance();
+                calendar.add(Calendar.MONTH,-3);
+                String date= DateUtil.formatCalender(calendar);
+                do {
+                    packList=packService.queryBeforeData(date,0);
+                    if (packList!=null&&packList.size()>0){
+                        LogisticManager.getInstance().catheDbWithFile(packList);
+                        packService.batchDelete(packList);
+                    }
+                }while (packList!=null&&packList.size()==Constants.Logistic.LIMIT_ITEM);
+
+            }
+        });
+    }
+
+
+    /**
+     * 设置授权的状态
+     */
     private void setAuthorizeStatus() {
 
         btn_authorize_status.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +197,10 @@ public class GlobalSettingActivity extends Activity {
 
     }
 
+    /**
+     * 设置数据同步的频率
+     * @param syncMinute 每隔分钟同步
+     */
     private void dialog(int syncMinute){
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
         builder.setTitle(R.string.please_input_sync_rate);
