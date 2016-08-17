@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,11 +23,14 @@ import com.yunsoo.adapter.PathAdapter;
 import com.yunsoo.annotation.ViewById;
 import com.yunsoo.entity.MaterialEntity;
 import com.yunsoo.service.ServiceExecutor;
+import com.yunsoo.sqlite.service.MaterialService;
 import com.yunsoo.sqlite.service.PackService;
+import com.yunsoo.sqlite.service.impl.MaterialServiceImpl;
 import com.yunsoo.sqlite.service.impl.PackServiceImpl;
 import com.yunsoo.util.Constants;
 import com.yunsoo.util.StringUtils;
 import com.yunsoo.view.TitleBar;
+import com.yunsu.greendao.entity.Material;
 import com.yunsu.greendao.entity.Pack;
 
 import java.util.ArrayList;
@@ -59,16 +64,18 @@ public class OutBoundScanActivity extends BaseActivity {
     @ViewById(id = R.id.tv_customer_name)
     private TextView tv_customer_name;
 
-    @ViewById(id = R.id.tv_contact_name)
-    private TextView tv_contact_name;
+//    @ViewById(id = R.id.tv_contact_name)
+//    private TextView tv_contact_name;
 
-    @ViewById(id = R.id.tv_contact_number)
-    private TextView tv_contact_number;
+//    @ViewById(id = R.id.tv_contact_number)
+//    private TextView tv_contact_number;
 
 
     private List<String> keys=new ArrayList<String>();
 
     private PackService packService;
+
+    private static final int QUERY_MATERIAL_SUCCESS=1;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,16 +94,40 @@ public class OutBoundScanActivity extends BaseActivity {
 
         packService=new PackServiceImpl();
         Intent intent=getIntent();
-        Bundle bundle=intent.getBundleExtra("bundle");
-        MaterialEntity materialEntity=bundle.getParcelable("Material");
+        final long materialId= intent.getLongExtra("materialId",0);
+        if (materialId!=0){
+            ServiceExecutor.getInstance().execute(new Runnable() {
+                @Override
+                public void run() {
+                    MaterialService materialService=new MaterialServiceImpl();
+                    Material material=materialService.queryById(materialId);
+                    Message message=Message.obtain();
+                    message.what=QUERY_MATERIAL_SUCCESS;
+                    message.obj=material;
+                    handler.sendMessage(message);
+                }
+            });
+        }
 
 
-
-
-
-        bindTextChanged();
+//        bindTextChanged();
 
     }
+
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case QUERY_MATERIAL_SUCCESS:
+                    Material material= (Material) msg.obj;
+                    tv_product_name.setText(material.getHeadSize()+"头"+material.getLevel()+"星");
+                    tv_amount.setText(String.valueOf(material.getAmount()));
+                    break;
+            }
+
+
+        }
+    };
 
 
     /**
@@ -175,9 +206,8 @@ public class OutBoundScanActivity extends BaseActivity {
 
                         submitToDB(formatKey);
                         keys.add(0,StringUtils.replaceBlank(StringUtils.getLastString(string)));
-                        tv_count_value.setText("已扫"+String.valueOf(keys.size())+"包");
-                        adaper.notifyDataSetChanged();
-
+//                        tv_count_value.setText("已扫"+String.valueOf(keys.size())+"包");
+//                        adaper.notifyDataSetChanged();
                     } catch (Exception e) {
                         // TODO: handle exception
                     }

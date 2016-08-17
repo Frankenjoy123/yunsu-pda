@@ -162,4 +162,8 @@
 
     <!--MaterialListActivity-->
     <string name="material_list">物料列表</string>
+
+    <!--OutBoundScanActivity-->
+    <string name="agent">经销商：</string>
+    <string name="plate_licence">车牌号：</string>
 </resources>

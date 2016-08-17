@@ -18,4 +18,8 @@
     <dimen name="process_past_text_margin_top">5dp</dimen>
     <dimen name="drawable_padding">5dp</dimen>
 
+    <dimen name="icon_arrow_width">16dp</dimen>
+    <dimen name="body_margin">10dp</dimen>
+    <dimen name="twenty">20dp</dimen>
+
 </resources>

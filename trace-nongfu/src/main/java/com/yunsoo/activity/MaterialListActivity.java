@@ -1,16 +1,19 @@
 package com.yunsoo.activity;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
+import android.os.Handler;
+import android.os.Message;
 import android.widget.ListView;
 
 import com.yunsoo.adapter.OrderAdapter;
 import com.yunsoo.annotation.ViewById;
 import com.yunsoo.entity.MaterialEntity;
+import com.yunsoo.service.ServiceExecutor;
+import com.yunsoo.sqlite.service.OrderService;
+import com.yunsoo.sqlite.service.impl.OrderServiceImpl;
 import com.yunsoo.view.TitleBar;
+import com.yunsu.greendao.entity.Material;
+import com.yunsu.greendao.entity.Order;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,36 +33,48 @@ public class MaterialListActivity extends BaseActivity {
     }
 
     private void init() {
-
         getActionBar().hide();
         TitleBar titleBar = (TitleBar) findViewById(R.id.title_bar);
         titleBar.setTitle(getString(R.string.material_list));
         titleBar.setMode(TitleBar.TitleBarMode.LEFT_BUTTON);
         titleBar.setDisplayAsBack(true);
 
-        final List<MaterialEntity> materialEntityList=new ArrayList<>();
-        for(int i=1;i<=3;i++){
-            MaterialEntity materialEntity=new MaterialEntity();
-            materialEntity.setMaterialNumber("111101-0152"+i);
-            materialEntity.setProductName("脐橙"+i+"星果"+"10公斤装");
-            materialEntity.setAmount(3);
-            materialEntityList.add(materialEntity);
-        }
+        ServiceExecutor.getInstance().execute(new Runnable() {
+            @Override
+            public void run() {
+                OrderService orderService=new OrderServiceImpl();
+                Order order=orderService.queryByOrderNumber("100");
+                List<Material> materialList=order.getMaterials();
+                Message message=Message.obtain();
+                message.what=1;
+                message.obj=materialList;
+                handler.sendMessage(message);
+            }
+        });
 
-        orderAdapter=new OrderAdapter(this);
-        orderAdapter.setMaterialEntityList(materialEntityList);
-        lv_material.setAdapter(orderAdapter);
+//        final List<MaterialEntity> materialEntityList=new ArrayList<>();
+//
+//        for(int i=1;i<=3;i++){
+//            MaterialEntity materialEntity=new MaterialEntity();
+//            materialEntity.setMaterialNumber("111101-0152"+i);
+//            materialEntity.setProductName("脐橙"+i+"星果"+"10公斤装");
+//            materialEntity.setAmount(3);
+//            materialEntityList.add(materialEntity);
+//        }
 
-//        lv_material.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Intent intent=new Intent(MaterialListActivity.this,OutBoundScanActivity.class);
-//                Bundle bundle=new Bundle();
-//                bundle.putParcelable("Material",materialEntityList.get(i-1));
-//                intent.putExtra("bundle",bundle);
-//                startActivity(intent);
-//            }
-//        });
     }
+
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+             if (msg.what==1){
+                 List<Material> materialList= (List<Material>) msg.obj;
+                 orderAdapter=new OrderAdapter(MaterialListActivity.this);
+                 orderAdapter.setMaterialList(materialList);
+                 lv_material.setAdapter(orderAdapter);
+             }
+
+        }
+    };
 
 }

@@ -3,6 +3,7 @@ package com.yunsoo.adapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.yunsoo.activity.OutBoundScanActivity;
 import com.yunsoo.activity.R;
 import com.yunsoo.entity.MaterialEntity;
+import com.yunsu.greendao.entity.Material;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,7 @@ public class OrderAdapter extends BaseAdapter {
 
 	LayoutInflater inflater;
 
-	List<MaterialEntity> materialEntityList = new ArrayList<MaterialEntity>();
+	List<Material> materialList = new ArrayList<Material>();
 
 	Activity activity;
 
@@ -30,25 +32,23 @@ public class OrderAdapter extends BaseAdapter {
 		inflater = activity.getLayoutInflater();
 	}
 
-	public void setMaterialEntityList(List<MaterialEntity> materialEntityList) {
-		if (materialEntityList==null||materialEntityList.size()==0){
+	public void setMaterialList(List<Material> materialList) {
+		if (materialList==null||materialList.size()==0){
 			return;
 		}
-		this.materialEntityList.clear();
-		this.materialEntityList.addAll(materialEntityList);
-
-		this.materialEntityList = materialEntityList;
+		this.materialList.clear();
+		this.materialList.addAll(materialList);
 	}
 
 	@Override
 	public int getCount() {
-		return materialEntityList.size();
+		return materialList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
 
-		return materialEntityList.get(position);
+		return materialList.get(position);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class OrderAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		final MaterialEntity item = (MaterialEntity) getItem(position);
+		final Material item = (Material) getItem(position);
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.order_item_layout,
 					parent, false);
@@ -78,18 +78,15 @@ public class OrderAdapter extends BaseAdapter {
 
 		holder.tv_material_number.setText(item.getMaterialNumber());
 		holder.tv_amount.setText(String.valueOf(item.getAmount()));
-		holder.tv_product_name.setText(item.getProductName());
+		holder.tv_product_name.setText(item.getHeadSize()+"头"+item.getLevel()+"星");
 		holder.rl_order_item.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				Intent intent=new Intent(activity,OutBoundScanActivity.class);
-				Bundle bundle=new Bundle();
-				bundle.putParcelable("Material",item);
-				intent.putExtra("bundle",bundle);
+				intent.putExtra("materialId",item.getId());
 				activity.startActivity(intent);
 			}
 		});
-
 		return convertView;
 	}
 

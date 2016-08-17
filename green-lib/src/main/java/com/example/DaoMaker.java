@@ -51,7 +51,7 @@ public class DaoMaker {
         //地址
         product.addDateProperty("lastSaveTime");
 
-        //建议一对多关联
+        //建立一对多关联
         Property packId=product.addLongProperty("packId").getProperty();
         product.addToOne(pack,packId);
 

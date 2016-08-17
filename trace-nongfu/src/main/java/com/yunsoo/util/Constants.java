@@ -52,6 +52,11 @@ public final class Constants {
 		public final static String NOT_SYNC="not_sync";
 		public final static String DISABLE="disable";
 		public static final String  DB_NAME ="trace" ;
+
+		public static final String NOT_START="not_start";
+		public static final String IN_PROGRESS="in_progress";
+		public static final String COMPLETED="completed";
+
 	}
 	
 	public final static class Cache {
