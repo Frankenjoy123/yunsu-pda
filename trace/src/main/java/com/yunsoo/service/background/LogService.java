@@ -30,7 +30,7 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
 
-import com.yunsoo.util.Constants;
+import com.yunsu.common.util.Constants;
 
 /**
  * 日志服务，日志默认会存储在SDcar里如果没有SDcard会存储在内存中的安装目录下面。

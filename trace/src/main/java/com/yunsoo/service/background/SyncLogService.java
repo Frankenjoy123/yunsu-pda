@@ -6,21 +6,16 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.yunsoo.exception.BaseException;
+import com.yunsu.common.exception.BaseException;
 import com.yunsoo.manager.FileManager;
-import com.yunsoo.manager.LogisticManager;
-import com.yunsoo.manager.SettingManager;
-import com.yunsoo.service.DataServiceImpl;
-import com.yunsoo.service.FileUpLoadService;
+import com.yunsu.common.service.DataServiceImpl;
 import com.yunsoo.service.LogUpLoadService;
-import com.yunsoo.util.Constants;
+import com.yunsu.common.util.Constants;
 
 import org.json.JSONObject;
 
 import java.io.File;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class SyncLogService extends Service implements DataServiceImpl.DataServiceDelegate{
     public static final String TAG = "SyncLogService";

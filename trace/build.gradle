@@ -50,26 +50,26 @@ android {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
     }
-    productFlavors {
-        KangCai {
-            minSdkVersion 15
-            applicationId 'com.yunsu.trace.kangcai'
-            targetSdkVersion 21
-            versionCode 1
-            versionName '1.0'
-            buildConfigField "int", "PATTERN_CODE", "1"
-        }
-        flavor2 {
-            minSdkVersion 15
-            applicationId 'com.yunsu.trace.two'
-            proguardFile 'C:/XQS/yunsu-pda/trace/proguard-rules.pro'
-            signingConfig signingConfigs.config_release
-            targetSdkVersion 21
-            versionCode 1
-            versionName '1.0'
-            buildConfigField "int", "PATTERN_TYPE", "2"
-        }
-    }
+//    productFlavors {
+//        KangCai {
+//            minSdkVersion 15
+//            applicationId 'com.yunsu.trace.kangcai'
+//            targetSdkVersion 21
+//            versionCode 1
+//            versionName '1.0'
+//            buildConfigField "int", "PATTERN_CODE", "1"
+//        }
+//        flavor2 {
+//            minSdkVersion 15
+//            applicationId 'com.yunsu.trace.two'
+//            proguardFile 'C:/XQS/yunsu-pda/trace/proguard-rules.pro'
+//            signingConfig signingConfigs.config_release
+//            targetSdkVersion 21
+//            versionCode 1
+//            versionName '1.0'
+//            buildConfigField "int", "PATTERN_TYPE", "2"
+//        }
+//    }
 
     sourceSets{
         main{

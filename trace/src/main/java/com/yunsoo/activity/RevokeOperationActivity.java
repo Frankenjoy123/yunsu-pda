@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.yunsoo.util.Constants;
+import com.yunsu.common.util.Constants;
 import com.yunsu.common.view.TitleBar;
 
 public class RevokeOperationActivity extends Activity implements View.OnClickListener {

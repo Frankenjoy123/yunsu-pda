@@ -4,12 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.yunsoo.util.Constants;
+import com.yunsu.common.util.Constants;
+import com.yunsu.common.manager.BaseManager;
 
 /**
  * Created by yunsu on 2016/7/14.
  */
-public class SettingManager extends  BaseManager{
+public class SettingManager extends BaseManager {
     private static SettingManager manager;
 
     private static int syncRateMin;

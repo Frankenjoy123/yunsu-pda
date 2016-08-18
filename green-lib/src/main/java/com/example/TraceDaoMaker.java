@@ -2,7 +2,9 @@ package com.example;
 
 import de.greenrobot.daogenerator.DaoGenerator;
 import de.greenrobot.daogenerator.Entity;
+import de.greenrobot.daogenerator.Property;
 import de.greenrobot.daogenerator.Schema;
+import de.greenrobot.daogenerator.ToMany;
 
 public class TraceDaoMaker {
     public static void main(String[] args) {
@@ -27,7 +29,27 @@ public class TraceDaoMaker {
      */
     public static void addPackAndProduct(Schema schema) {
 
-        //创建数据库的表
+        //创建物料表
+        Entity material=schema.addEntity("Material");
+        material.addIdProperty().autoincrement();
+        //经销商ID
+        material.addStringProperty("agencyId");
+        //完成状态
+        material.addStringProperty("status");
+        //时间
+        material.addStringProperty("time");
+        //总量
+        material.addLongProperty("amount");
+        //已发货
+        material.addLongProperty("sent");
+        //剩余
+        material.addLongProperty("remain");
+        //创建时间
+        material.addStringProperty("createTime");
+        //完成时间
+        material.addStringProperty("finishTime");
+
+        //创建包装表
         Entity pack = schema.addEntity("Pack");
         //主键
         pack.addIdProperty().autoincrement();
@@ -42,6 +64,11 @@ public class TraceDaoMaker {
         //时间
         pack.addStringProperty("saveTime");
 
-//        pack.addDateProperty("time");
+        //建立一对多关联
+        Property materialId=pack.addLongProperty("materialId").getProperty();
+        pack.addToOne(material,materialId);
+
+        ToMany materialToPacks=material.addToMany(pack,materialId);
+        materialToPacks.setName("packs");
     }
 }

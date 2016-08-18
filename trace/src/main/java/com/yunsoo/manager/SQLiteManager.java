@@ -2,11 +2,10 @@ package com.yunsoo.manager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.yunsoo.sqlite.MyDataBaseHelper;
-import com.yunsoo.util.Constants;
+import com.yunsu.common.util.Constants;
+import com.yunsu.common.manager.BaseManager;
 
 
 public class SQLiteManager extends BaseManager {

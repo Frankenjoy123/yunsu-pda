@@ -2,4 +2,6 @@
     <string name="app_name">android-library</string>
 
     <string name="back">返回</string>
+
+    <string name="network_not_available">请检查网络连接</string>
 </resources>

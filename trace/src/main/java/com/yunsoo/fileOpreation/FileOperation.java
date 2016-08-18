@@ -3,8 +3,6 @@ package com.yunsoo.fileOpreation;
 
 import android.text.format.Time;
 
-import com.yunsoo.manager.DeviceManager;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;

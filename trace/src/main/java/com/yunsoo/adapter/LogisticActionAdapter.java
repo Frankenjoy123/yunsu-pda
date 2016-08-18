@@ -12,17 +12,13 @@ import android.widget.TextView;
 
 import com.yunsoo.activity.OrgAgencyActivity;
 import com.yunsoo.activity.PathActivity;
-import com.yunsoo.activity.R;
 import com.yunsoo.activity.R.drawable;
 import com.yunsoo.activity.R.id;
 import com.yunsoo.activity.R.layout;
-import com.yunsoo.util.Constants;
+import com.yunsu.common.util.Constants;
 
-import java.security.KeyStore;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Frank zhou on 7/15/2015.

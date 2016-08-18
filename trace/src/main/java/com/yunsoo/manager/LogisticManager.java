@@ -8,7 +8,10 @@ import android.util.Log;
 import com.yunsoo.entity.OrgAgency;
 import com.yunsoo.sqlite.service.PackService;
 import com.yunsoo.sqlite.service.impl.PackServiceImpl;
-import com.yunsoo.util.Constants;
+import com.yunsu.common.manager.DeviceManager;
+import com.yunsu.common.util.Constants;
+import com.yunsu.common.manager.BaseManager;
+import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.util.YSFile;
 import com.yunsu.greendao.entity.Pack;
 
@@ -235,7 +238,7 @@ public class LogisticManager extends BaseManager {
     private YSFile buildYunsuFileDetail(List<Pack> packList){
         YSFile ysFile=new YSFile(YSFile.EXT_TF);
         ysFile.putHeader("file_type","trace");
-        ysFile.putHeader("org_id",SessionManager.getInstance().getAuthUser().getOrgId());
+        ysFile.putHeader("org_id", SessionManager.getInstance().getAuthUser().getOrgId());
         ysFile.putHeader("count", String.valueOf(packList.size()));
         String actionId=packList.get(0).getActionId();
         String agencyId=packList.get(0).getAgency();

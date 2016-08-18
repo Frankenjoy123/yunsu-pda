@@ -8,7 +8,7 @@ import android.util.Log;
 import com.yunsoo.entity.OrgAgency;
 import com.yunsoo.manager.GreenDaoManager;
 import com.yunsoo.sqlite.service.PackService;
-import com.yunsoo.util.Constants;
+import com.yunsu.common.util.Constants;
 import com.yunsu.greendao.dao.PackDao;
 import com.yunsu.greendao.entity.Pack;
 

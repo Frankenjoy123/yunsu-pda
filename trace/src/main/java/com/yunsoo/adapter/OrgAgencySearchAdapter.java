@@ -1,9 +1,7 @@
 package com.yunsoo.adapter;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +12,7 @@ import android.widget.TextView;
 import com.yunsoo.activity.PathActivity;
 import com.yunsoo.activity.R;
 import com.yunsoo.entity.OrgAgency;
-import com.yunsoo.util.Constants;
+import com.yunsu.common.util.Constants;
 
 import java.util.List;
 

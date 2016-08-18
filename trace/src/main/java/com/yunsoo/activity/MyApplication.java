@@ -2,21 +2,16 @@ package com.yunsoo.activity;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 
-import com.forlong401.log.transaction.log.manager.LogManager;
-import com.yunsoo.manager.DeviceManager;
+import com.yunsu.common.manager.DeviceManager;
 import com.yunsoo.manager.FileManager;
 import com.yunsoo.manager.GreenDaoManager;
 import com.yunsoo.manager.LogisticManager;
 import com.yunsoo.manager.SQLiteManager;
-import com.yunsoo.manager.SessionManager;
+import com.yunsu.common.manager.SessionManager;
 import com.yunsoo.manager.SettingManager;
-import com.yunsoo.network.CacheService;
-import com.yunsoo.network.NetworkManager;
-import com.yunsoo.service.background.LogService;
-import com.yunsoo.service.background.SyncFileService;
-import com.yunsoo.service.background.SyncLogService;
+import com.yunsu.common.network.CacheService;
+import com.yunsu.common.network.NetworkManager;
 
 /**
  * Created by Frank zhou on 2015/7/20.
@@ -55,9 +50,9 @@ public class MyApplication extends Application{
 
     }
 
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-        LogManager.getManager(getApplicationContext()).unregisterCrashHandler();
-    }
+//    @Override
+//    public void onTerminate() {
+//        super.onTerminate();
+//        LogManager.getManager(getApplicationContext()).unregisterCrashHandler();
+//    }
 }

@@ -13,19 +13,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yunsoo.adapter.LogisticActionAdapter;
-import com.yunsoo.entity.AuthUser;
-import com.yunsoo.exception.BaseException;
-import com.yunsoo.exception.ServerAuthException;
+import com.yunsu.common.entity.AuthUser;
+import com.yunsu.common.exception.BaseException;
+import com.yunsu.common.exception.ServerAuthException;
 import com.yunsoo.manager.GreenDaoManager;
 import com.yunsoo.manager.LogisticManager;
-import com.yunsoo.manager.SessionManager;
-import com.yunsoo.service.DataServiceImpl;
-import com.yunsoo.service.PermanentTokenLoginService;
-import com.yunsoo.service.ServiceExecutor;
+import com.yunsu.common.manager.SessionManager;
+import com.yunsu.common.service.DataServiceImpl;
+import com.yunsu.common.service.PermanentTokenLoginService;
+import com.yunsu.common.service.ServiceExecutor;
 import com.yunsoo.service.background.RecycleHeartBeatService;
 import com.yunsoo.service.background.SyncFileService;
 import com.yunsoo.service.background.SyncLogService;
-import com.yunsoo.util.Constants;
+import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.view.TitleBar;
 

@@ -1,24 +1,12 @@
 package com.yunsoo.service.background;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.yunsoo.exception.BaseException;
-import com.yunsoo.manager.FileManager;
-import com.yunsoo.manager.LogisticManager;
-import com.yunsoo.manager.SettingManager;
-import com.yunsoo.service.DataServiceImpl;
-import com.yunsoo.service.FileUpLoadService;
-import com.yunsoo.service.HeartBeatService;
-import com.yunsoo.util.Constants;
+import com.yunsu.common.service.HeartBeatService;
 
-import org.json.JSONObject;
-
-import java.io.File;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 

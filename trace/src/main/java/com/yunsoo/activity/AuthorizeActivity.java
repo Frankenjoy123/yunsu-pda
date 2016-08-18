@@ -8,17 +8,16 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 
-import com.yunsoo.entity.AuthUser;
-import com.yunsoo.entity.AuthorizeRequest;
-import com.yunsoo.entity.LoginResult;
+import com.yunsu.common.entity.AuthUser;
+import com.yunsu.common.entity.AuthorizeRequest;
+import com.yunsu.common.entity.LoginResult;
 import com.yunsoo.entity.ScanAuthorizeInfo;
-import com.yunsoo.exception.BaseException;
-import com.yunsoo.manager.DeviceManager;
-import com.yunsoo.manager.SessionManager;
-import com.yunsoo.service.AuthLoginService;
-import com.yunsoo.service.AuthorizeService;
-import com.yunsoo.service.DataServiceImpl;
-import com.yunsoo.service.LogisticActionService;
+import com.yunsu.common.exception.BaseException;
+import com.yunsu.common.manager.DeviceManager;
+import com.yunsu.common.manager.SessionManager;
+import com.yunsu.common.service.AuthLoginService;
+import com.yunsu.common.service.AuthorizeService;
+import com.yunsu.common.service.DataServiceImpl;
 import com.yunsoo.service.OrganizationAgencyService;
 import com.yunsu.common.util.ToastMessageHelper;
 

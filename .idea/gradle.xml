@@ -12,8 +12,6 @@
             <option value="$PROJECT_DIR$/android-library" />
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/green-lib" />
-            <option value="$PROJECT_DIR$/pack" />
-            <option value="$PROJECT_DIR$/testapp" />
             <option value="$PROJECT_DIR$/trace" />
           </set>
         </option>
@@ -23,8 +21,6 @@
             <option value="$PROJECT_DIR$/android-library" />
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/green-lib" />
-            <option value="$PROJECT_DIR$/pack" />
-            <option value="$PROJECT_DIR$/testapp" />
             <option value="$PROJECT_DIR$/trace" />
           </set>
         </option>

@@ -5,7 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.yunsoo.sqlite.MyGreenDaoHelper;
-import com.yunsoo.util.Constants;
+import com.yunsu.common.util.Constants;
+import com.yunsu.common.manager.BaseManager;
 import com.yunsu.greendao.dao.DaoMaster;
 import com.yunsu.greendao.dao.DaoSession;
 

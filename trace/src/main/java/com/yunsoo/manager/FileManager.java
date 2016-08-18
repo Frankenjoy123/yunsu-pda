@@ -4,7 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.yunsoo.util.Constants;
+import com.yunsu.common.util.Constants;
+import com.yunsu.common.manager.BaseManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Created by Frank zhou on 2015/7/15.
  */
-public class FileManager extends BaseManager{
+public class FileManager extends BaseManager {
 
     private static FileManager fileManager;
     private static final String TAG=FileManager.class.getSimpleName();

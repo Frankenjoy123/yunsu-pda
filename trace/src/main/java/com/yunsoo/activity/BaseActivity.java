@@ -9,14 +9,14 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.yunsoo.annotation.ViewById;
-import com.yunsoo.dialog.LoadingDialog;
-import com.yunsoo.entity.AuthUser;
-import com.yunsoo.entity.LoginResult;
-import com.yunsoo.exception.BaseException;
-import com.yunsoo.exception.ServerAuthException;
-import com.yunsoo.manager.SessionManager;
-import com.yunsoo.service.DataServiceImpl;
-import com.yunsoo.service.PermanentTokenLoginService;
+import com.yunsu.common.dialog.LoadingDialog;
+import com.yunsu.common.entity.AuthUser;
+import com.yunsu.common.entity.LoginResult;
+import com.yunsu.common.exception.BaseException;
+import com.yunsu.common.exception.ServerAuthException;
+import com.yunsu.common.manager.SessionManager;
+import com.yunsu.common.service.DataServiceImpl;
+import com.yunsu.common.service.PermanentTokenLoginService;
 import com.yunsu.common.util.ToastMessageHelper;
 
 import org.json.JSONObject;
