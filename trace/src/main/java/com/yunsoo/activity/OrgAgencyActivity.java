@@ -7,13 +7,12 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.yunsoo.adapter.LogisticActionAdapter;
-import com.yunsoo.adapter.OrgAgencyAdapter;
 import com.yunsoo.adapter.OrgAgencySearchAdapter;
 import com.yunsoo.adapter.SearchAdapter;
 import com.yunsoo.entity.OrgAgency;
 import com.yunsoo.manager.LogisticManager;
-import com.yunsoo.view.TitleBar;
-import java.util.ArrayList;
+import com.yunsu.common.view.TitleBar;
+
 import java.util.List;
 
 public class OrgAgencyActivity extends Activity {

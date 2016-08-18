@@ -9,7 +9,7 @@ import com.yunsoo.exception.BaseException;
 import com.yunsoo.exception.LocalGeneralException;
 import com.yunsoo.exception.ServerAuthException;
 import com.yunsoo.exception.ServerGeneralException;
-import com.yunsoo.util.ToastMessageHelper;
+import com.yunsu.common.util.ToastMessageHelper;
 
 public class BaseManager {
 

@@ -4,7 +4,7 @@
     tools:context="com.yunsoo.activity.PathMainActivity"
     >
 
-    <com.yunsoo.view.TitleBar
+    <com.yunsu.common.view.TitleBar
         android:id="@+id/path_main_title_bar"
         layout="@layout/title_bar_layout"
         android:layout_width="match_parent"

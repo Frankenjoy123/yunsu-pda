@@ -1,14 +1,10 @@
 package com.yunsoo.activity;
 
 import android.app.Activity;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.yunsoo.activity.R;
-import com.yunsoo.view.TitleBar;
+import com.yunsu.common.view.TitleBar;
 
 public class OffLineUploadActivity extends Activity {
     TitleBar titleBar;

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.yunsoo.annotation.ViewById;
-import com.yunsoo.util.DensityUtil;
+import com.yunsu.common.util.DensityUtil;
 
 
 public class WelcomeActivity extends BaseActivity{

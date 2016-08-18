@@ -20,7 +20,7 @@ import com.yunsoo.service.AuthorizeService;
 import com.yunsoo.service.DataServiceImpl;
 import com.yunsoo.service.LogisticActionService;
 import com.yunsoo.service.OrganizationAgencyService;
-import com.yunsoo.util.ToastMessageHelper;
+import com.yunsu.common.util.ToastMessageHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;

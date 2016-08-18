@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     tools:context=".MainActivity" >
     
-        	    <com.yunsoo.view.TitleBar
+        	    <com.yunsu.common.view.TitleBar
         android:id="@+id/package_title_bar"
         layout="@layout/title_bar_layout"
         android:layout_width="match_parent"

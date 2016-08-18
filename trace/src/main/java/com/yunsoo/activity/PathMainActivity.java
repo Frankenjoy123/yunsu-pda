@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.yunsoo.adapter.LogisticActionAdapter;
@@ -26,17 +25,14 @@ import com.yunsoo.service.ServiceExecutor;
 import com.yunsoo.service.background.RecycleHeartBeatService;
 import com.yunsoo.service.background.SyncFileService;
 import com.yunsoo.service.background.SyncLogService;
-import com.yunsoo.sqlite.MyDataBaseHelper;
 import com.yunsoo.util.Constants;
-import com.yunsoo.util.ToastMessageHelper;
-import com.yunsoo.view.TitleBar;
+import com.yunsu.common.util.ToastMessageHelper;
+import com.yunsu.common.view.TitleBar;
 
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 

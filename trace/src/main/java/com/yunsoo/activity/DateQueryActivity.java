@@ -1,26 +1,18 @@
 package com.yunsoo.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.yunsoo.adapter.ReportAdapter;
-import com.yunsoo.entity.OrgAgency;
-import com.yunsoo.manager.LogisticManager;
-import com.yunsoo.service.ServiceExecutor;
-import com.yunsoo.sqlite.SQLiteOperation;
 import com.yunsoo.util.DateTimePickDialogUtil;
-import com.yunsoo.view.TitleBar;
+import com.yunsu.common.view.TitleBar;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 public class DateQueryActivity extends Activity {
 

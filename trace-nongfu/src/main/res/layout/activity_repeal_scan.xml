@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".RevokeScanActivity">
 
-    <com.yunsoo.view.TitleBar
+    <com.yunsu.common.view.TitleBar
         android:id="@+id/revoke_scan_title_bar"
         layout="@layout/title_bar_layout"
         android:layout_width="match_parent"

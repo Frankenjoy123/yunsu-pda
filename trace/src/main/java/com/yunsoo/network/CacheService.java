@@ -16,11 +16,10 @@ import org.json.JSONException;
 import android.content.Context;
 import android.util.Log;
 
-import com.yunsoo.manager.SessionManager;
 import com.yunsoo.util.Constants;
 
 import com.yunsoo.entity.JSONEntity;
-import com.yunsoo.util.KeyHelper;
+import com.yunsu.common.util.KeyHelper;
 
 public class CacheService {
 	private static CacheService m_cacheService = null;

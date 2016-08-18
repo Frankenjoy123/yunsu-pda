@@ -13,14 +13,13 @@ import com.yunsoo.adapter.FileSyncAdapter;
 import com.yunsoo.exception.BaseException;
 import com.yunsoo.exception.ServerAuthException;
 import com.yunsoo.manager.FileManager;
-import com.yunsoo.manager.LogisticManager;
 import com.yunsoo.manager.SessionManager;
 import com.yunsoo.service.DataServiceImpl;
 import com.yunsoo.service.FileUpLoadService;
 import com.yunsoo.service.PermanentTokenLoginService;
 import com.yunsoo.sqlite.MyDataBaseHelper;
 import com.yunsoo.util.Constants;
-import com.yunsoo.view.TitleBar;
+import com.yunsu.common.view.TitleBar;
 
 import org.json.JSONObject;
 

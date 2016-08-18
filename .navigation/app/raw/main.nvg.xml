@@ -6,7 +6,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.yunsoo.activity.ListActivity"/>
+        className = "com.trace.activity.ListActivity"/>
       <point      
         x = "1744"      
         y = "1480"/>
@@ -14,7 +14,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.yunsoo.activity.PackDetail"/>
+        className = "com.trace.activity.PackDetail"/>
       <point      
         x = "1768"      
         y = "100"/>
@@ -22,7 +22,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.yunsoo.activity.FixPackActivity"/>
+        className = "com.trace.activity.FixPackActivity"/>
       <point      
         x = "24"      
         y = "1352"/>
@@ -30,7 +30,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.yunsoo.activity.AuthorizeActivity"/>
+        className = "com.trace.activity.AuthorizeActivity"/>
       <point      
         x = "944"      
         y = "1484"/>
@@ -38,7 +38,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.yunsoo.activity.PackMainActivity"/>
+        className = "com.trace.activity.PackMainActivity"/>
       <point      
         x = "2000"      
         y = "1912"/>
@@ -46,7 +46,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.yunsoo.activity.PackedHistoryActivity"/>
+        className = "com.trace.activity.PackedHistoryActivity"/>
       <point      
         x = "500"      
         y = "100"/>
@@ -54,7 +54,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.yunsoo.activity.ScanActivity"/>
+        className = "com.trace.activity.ScanActivity"/>
       <point      
         x = "1760"      
         y = "1920"/>
@@ -62,7 +62,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.yunsoo.activity.PathActivity"/>
+        className = "com.trace.activity.PathActivity"/>
       <point      
         x = "750"      
         y = "1730"/>
@@ -70,7 +70,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.yunsoo.activity.SettingActivity"/>
+        className = "com.trace.activity.SettingActivity"/>
       <point      
         x = "800"      
         y = "1780"/>
@@ -78,7 +78,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.yunsoo.activity.MainActivity"/>
+        className = "com.trace.activity.MainActivity"/>
       <point      
         x = "850"      
         y = "1830"/>
@@ -86,7 +86,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.yunsoo.activity.PathHistoryActivity"/>
+        className = "com.trace.activity.PathHistoryActivity"/>
       <point      
         x = "900"      
         y = "1880"/>
@@ -94,7 +94,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.yunsoo.activity.PathMainActivity"/>
+        className = "com.trace.activity.PathMainActivity"/>
       <point      
         x = "950"      
         y = "1930"/>
@@ -102,7 +102,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.yunsoo.activity.WelcomeActivity"/>
+        className = "com.trace.activity.WelcomeActivity"/>
       <point      
         x = "1000"      
         y = "1980"/>
@@ -110,7 +110,7 @@
     <statePointEntry>
       <state      
         class = "com.android.tools.idea.editors.navigation.model.ActivityState"      
-        className = "com.yunsoo.activity.PackSyncActivity"/>
+        className = "com.trace.activity.PackSyncActivity"/>
       <point      
         x = "1050"      
         y = "2030"/>

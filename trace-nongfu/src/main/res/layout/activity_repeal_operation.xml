@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".RevokeOperationActivity">
 
-    <com.yunsoo.view.TitleBar
+    <com.yunsu.common.view.TitleBar
         android:id="@+id/repeal_title_bar"
         layout="@layout/title_bar_layout"
         android:layout_width="match_parent"

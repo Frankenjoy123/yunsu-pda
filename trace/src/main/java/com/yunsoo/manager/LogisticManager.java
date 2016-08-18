@@ -3,18 +3,13 @@ package com.yunsoo.manager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.yunsoo.entity.AuthUser;
 import com.yunsoo.entity.OrgAgency;
-import com.yunsoo.sqlite.MyDataBaseHelper;
-import com.yunsoo.sqlite.SQLiteOperation;
 import com.yunsoo.sqlite.service.PackService;
 import com.yunsoo.sqlite.service.impl.PackServiceImpl;
 import com.yunsoo.util.Constants;
-import com.yunsoo.util.YSFile;
+import com.yunsu.common.util.YSFile;
 import com.yunsu.greendao.entity.Pack;
 
 import org.json.JSONArray;
@@ -23,7 +18,6 @@ import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;

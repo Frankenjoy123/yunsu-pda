@@ -5,9 +5,6 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.yunsoo.util.Constants;
-import com.yunsoo.util.KeyHelper;
-
-import org.json.JSONException;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -10,10 +10,9 @@ import android.util.Log;
 
 import com.yunsoo.network.NetworkManager;
 import com.yunsoo.util.Constants;
-import com.yunsoo.util.DensityUtil;
-import com.yunsoo.util.HashUtils;
-import com.yunsoo.util.HexStringUtils;
-import com.yunsoo.util.StringHelper;
+import com.yunsu.common.util.HashUtils;
+import com.yunsu.common.util.HexStringUtils;
+import com.yunsu.common.util.StringHelper;
 
 
 public class DeviceManager extends BaseManager {

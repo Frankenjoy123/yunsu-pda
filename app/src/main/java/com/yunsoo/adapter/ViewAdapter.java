@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.yunsoo.unity.ListItem;
 import com.yunsoo.activity.R.drawable;
 import com.yunsoo.activity.R.id;
 import com.yunsoo.activity.R.layout;

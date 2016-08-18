@@ -17,7 +17,7 @@ import com.yunsoo.exception.ServerAuthException;
 import com.yunsoo.manager.SessionManager;
 import com.yunsoo.service.DataServiceImpl;
 import com.yunsoo.service.PermanentTokenLoginService;
-import com.yunsoo.util.ToastMessageHelper;
+import com.yunsu.common.util.ToastMessageHelper;
 
 import org.json.JSONObject;
 

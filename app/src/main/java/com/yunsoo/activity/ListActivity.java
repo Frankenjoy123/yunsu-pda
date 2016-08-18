@@ -24,7 +24,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.yunsoo.adapter.ViewAdapter;
-import com.yunsoo.unity.ListItem;
 
 import java.util.ArrayList;
 import java.util.List;

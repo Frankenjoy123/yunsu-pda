@@ -1,19 +1,15 @@
 package com.yunsoo.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.gesture.GestureOverlayView;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,21 +18,18 @@ import com.yunsoo.manager.FileManager;
 import com.yunsoo.manager.LogisticManager;
 import com.yunsoo.manager.SessionManager;
 import com.yunsoo.manager.SettingManager;
-import com.yunsoo.network.CacheService;
 import com.yunsoo.service.ServiceExecutor;
 import com.yunsoo.sqlite.service.PackService;
 import com.yunsoo.sqlite.service.impl.PackServiceImpl;
 import com.yunsoo.util.Constants;
-import com.yunsoo.util.DateUtil;
-import com.yunsoo.util.ToastMessageHelper;
-import com.yunsoo.view.TitleBar;
+
+import com.yunsu.common.util.ToastMessageHelper;
+import com.yunsu.common.view.TitleBar;
+import com.yunsu.common.util.DateUtil;
 import com.yunsu.greendao.entity.Pack;
 
 import java.lang.reflect.Field;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class GlobalSettingActivity extends BaseActivity {

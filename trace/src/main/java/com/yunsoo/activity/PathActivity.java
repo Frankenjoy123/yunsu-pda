@@ -1,14 +1,11 @@
 package com.yunsoo.activity;
 
 import android.app.Activity;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -21,12 +18,11 @@ import com.yunsoo.service.ServiceExecutor;
 import com.yunsoo.sqlite.service.PackService;
 import com.yunsoo.sqlite.service.impl.PackServiceImpl;
 import com.yunsoo.util.Constants;
-import com.yunsoo.util.StringUtils;
-import com.yunsoo.view.TitleBar;
+import com.yunsu.common.util.StringUtils;
+import com.yunsu.common.view.TitleBar;
 import com.yunsu.greendao.entity.Pack;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

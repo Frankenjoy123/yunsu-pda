@@ -2,9 +2,14 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/YunsooPDA.iml" filepath="$PROJECT_DIR$/YunsooPDA.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/imagetest/imagetest.iml" filepath="$PROJECT_DIR$/imagetest/imagetest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android-library/android-library.iml" filepath="$PROJECT_DIR$/android-library/android-library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/green-lib/green-lib.iml" filepath="$PROJECT_DIR$/green-lib/green-lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common-android-library/mylibrary.iml" filepath="$PROJECT_DIR$/common-android-library/mylibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pack/pack.iml" filepath="$PROJECT_DIR$/pack/pack.iml" />
+      <module fileurl="file://$PROJECT_DIR$/testapp/testapp.iml" filepath="$PROJECT_DIR$/testapp/testapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/trace/trace.iml" filepath="$PROJECT_DIR$/trace/trace.iml" />
+      <module fileurl="file://$PROJECT_DIR$/yunsu-pda.iml" filepath="$PROJECT_DIR$/yunsu-pda.iml" />
     </modules>
   </component>
 </project>
