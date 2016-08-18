@@ -11,7 +11,7 @@ import com.yunsoo.manager.FileManager;
 import com.yunsoo.manager.LogisticManager;
 import com.yunsoo.manager.SettingManager;
 import com.yunsu.common.service.DataServiceImpl;
-import com.yunsoo.service.FileUpLoadService;
+import com.yunsu.common.service.FileUpLoadService;
 import com.yunsu.common.util.Constants;
 
 import org.json.JSONObject;

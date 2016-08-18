@@ -1,4 +1,4 @@
-package com.yunsoo.service;
+package com.yunsu.common.service;
 
 import android.util.Log;
 

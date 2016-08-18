@@ -8,7 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
-import com.yunsoo.annotation.ViewById;
+import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.dialog.LoadingDialog;
 import com.yunsu.common.entity.AuthUser;
 import com.yunsu.common.entity.LoginResult;

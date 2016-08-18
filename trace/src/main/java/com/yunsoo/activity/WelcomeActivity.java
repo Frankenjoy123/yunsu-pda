@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.yunsoo.annotation.ViewById;
+import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.util.DensityUtil;
 
 
