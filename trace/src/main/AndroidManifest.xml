@@ -24,12 +24,6 @@
 
 
 
-
-
-    <instrumentation
-        android:name="android.test.InstrumentationTestRunner"
-        android:targetPackage="com.yunsoo.activity" />
-
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -38,11 +32,6 @@
         android:theme="@style/AppTheme">
         <uses-library android:name="android.test.runner" />
 
-        <!-- 声明ListActivity -->
-        <activity
-            android:name=".ListActivity"
-            android:label="ListActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".WelcomeActivity"
             android:icon="@drawable/app_icon"
