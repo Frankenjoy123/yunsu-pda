@@ -1,4 +1,4 @@
-package com.yunsoo.activity;
+package com.yunsu.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -8,16 +8,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
-import com.yunsoo.annotation.ViewById;
-import com.yunsoo.dialog.LoadingDialog;
-import com.yunsoo.entity.AuthUser;
-import com.yunsoo.entity.LoginResult;
-import com.yunsoo.exception.BaseException;
-import com.yunsoo.exception.ServerAuthException;
-import com.yunsoo.manager.SessionManager;
-import com.yunsoo.service.DataServiceImpl;
-import com.yunsoo.service.PermanentTokenLoginService;
-import com.yunsoo.util.ToastMessageHelper;
+import com.yunsu.annotation.ViewById;
+import com.yunsu.dialog.LoadingDialog;
+import com.yunsu.entity.AuthUser;
+import com.yunsu.entity.LoginResult;
+import com.yunsu.exception.BaseException;
+import com.yunsu.exception.ServerAuthException;
+import com.yunsu.manager.SessionManager;
+import com.yunsu.service.DataServiceImpl;
+import com.yunsu.service.PermanentTokenLoginService;
+import com.yunsu.util.ToastMessageHelper;
 
 import org.json.JSONObject;
 

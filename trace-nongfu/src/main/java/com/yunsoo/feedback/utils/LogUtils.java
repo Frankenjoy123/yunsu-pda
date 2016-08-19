@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yunsoo.feedback.utils;
+package com.yunsu.feedback.utils;
 
 import java.io.File;
 

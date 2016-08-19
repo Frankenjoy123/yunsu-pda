@@ -1,4 +1,4 @@
-package com.yunsoo.activity;
+package com.yunsu.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,19 +8,19 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 
-import com.yunsoo.entity.AuthUser;
-import com.yunsoo.entity.AuthorizeRequest;
-import com.yunsoo.entity.LoginResult;
-import com.yunsoo.entity.ScanAuthorizeInfo;
-import com.yunsoo.exception.BaseException;
-import com.yunsoo.manager.DeviceManager;
-import com.yunsoo.manager.SessionManager;
-import com.yunsoo.service.AuthLoginService;
-import com.yunsoo.service.AuthorizeService;
-import com.yunsoo.service.DataServiceImpl;
-import com.yunsoo.service.LogisticActionService;
-import com.yunsoo.service.OrganizationAgencyService;
-import com.yunsoo.util.ToastMessageHelper;
+import com.yunsu.entity.AuthUser;
+import com.yunsu.entity.AuthorizeRequest;
+import com.yunsu.entity.LoginResult;
+import com.yunsu.entity.ScanAuthorizeInfo;
+import com.yunsu.exception.BaseException;
+import com.yunsu.manager.DeviceManager;
+import com.yunsu.manager.SessionManager;
+import com.yunsu.service.AuthLoginService;
+import com.yunsu.service.AuthorizeService;
+import com.yunsu.service.DataServiceImpl;
+import com.yunsu.service.LogisticActionService;
+import com.yunsu.service.OrganizationAgencyService;
+import com.yunsu.util.ToastMessageHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;

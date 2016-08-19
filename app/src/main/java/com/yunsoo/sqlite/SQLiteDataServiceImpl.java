@@ -1,6 +1,6 @@
-package com.yunsoo.sqlite;
+package com.yunsu.sqlite;
 
-import com.yunsoo.service.ServiceExecutor;
+import com.yunsu.service.ServiceExecutor;
 
 /**
  * Created by Frank zhou on 2015/7/14.

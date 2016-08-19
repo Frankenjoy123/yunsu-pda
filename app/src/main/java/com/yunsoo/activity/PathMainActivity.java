@@ -1,4 +1,4 @@
-package com.yunsoo.activity;
+package com.yunsu.activity;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -11,9 +11,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.yunsoo.activity.R;
-import com.yunsoo.adapter.LogisticActionAdapter;
-import com.yunsoo.manager.LogisticManager;
+import com.yunsu.activity.R;
+import com.yunsu.adapter.LogisticActionAdapter;
+import com.yunsu.manager.LogisticManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;

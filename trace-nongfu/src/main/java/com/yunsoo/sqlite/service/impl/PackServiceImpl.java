@@ -1,14 +1,14 @@
-package com.yunsoo.sqlite.service.impl;
+package com.yunsu.sqlite.service.impl;
 
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.yunsoo.entity.OrgAgency;
-import com.yunsoo.manager.GreenDaoManager;
-import com.yunsoo.sqlite.service.PackService;
-import com.yunsoo.util.Constants;
+import com.yunsu.entity.OrgAgency;
+import com.yunsu.manager.GreenDaoManager;
+import com.yunsu.sqlite.service.PackService;
+import com.yunsu.util.Constants;
 import com.yunsu.greendao.dao.PackDao;
 import com.yunsu.greendao.entity.Pack;
 

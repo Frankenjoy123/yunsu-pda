@@ -1,4 +1,4 @@
-package com.yunsoo.sqlite;
+package com.yunsu.sqlite;
 
 import android.content.Context;
 import android.database.DatabaseErrorHandler;

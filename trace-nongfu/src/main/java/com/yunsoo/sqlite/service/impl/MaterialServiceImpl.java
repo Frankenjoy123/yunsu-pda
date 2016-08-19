@@ -1,7 +1,7 @@
-package com.yunsoo.sqlite.service.impl;
+package com.yunsu.sqlite.service.impl;
 
-import com.yunsoo.manager.GreenDaoManager;
-import com.yunsoo.sqlite.service.MaterialService;
+import com.yunsu.manager.GreenDaoManager;
+import com.yunsu.sqlite.service.MaterialService;
 import com.yunsu.greendao.dao.MaterialDao;
 import com.yunsu.greendao.entity.Material;
 import com.yunsu.greendao.entity.Order;

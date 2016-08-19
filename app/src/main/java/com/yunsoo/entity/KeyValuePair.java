@@ -1,4 +1,4 @@
-package com.yunsoo.entity;
+package com.yunsu.entity;
 
 public class KeyValuePair {
 	private String key;

@@ -1,4 +1,4 @@
-package com.yunsoo.util;
+package com.yunsu.util;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;

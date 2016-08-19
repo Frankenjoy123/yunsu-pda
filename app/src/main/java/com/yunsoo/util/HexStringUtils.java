@@ -1,4 +1,4 @@
-package com.yunsoo.util;
+package com.yunsu.util;
 
 /**
  * Created by:   Lijian

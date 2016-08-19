@@ -1,4 +1,4 @@
-package com.yunsoo.activity;
+package com.yunsu.activity;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -9,18 +9,18 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.yunsoo.adapter.FileSyncAdapter;
-import com.yunsoo.exception.BaseException;
-import com.yunsoo.exception.ServerAuthException;
-import com.yunsoo.manager.FileManager;
-import com.yunsoo.manager.LogisticManager;
-import com.yunsoo.manager.SessionManager;
-import com.yunsoo.service.DataServiceImpl;
-import com.yunsoo.service.FileUpLoadService;
-import com.yunsoo.service.PermanentTokenLoginService;
-import com.yunsoo.sqlite.MyDataBaseHelper;
-import com.yunsoo.util.Constants;
-import com.yunsoo.view.TitleBar;
+import com.yunsu.adapter.FileSyncAdapter;
+import com.yunsu.exception.BaseException;
+import com.yunsu.exception.ServerAuthException;
+import com.yunsu.manager.FileManager;
+import com.yunsu.manager.LogisticManager;
+import com.yunsu.manager.SessionManager;
+import com.yunsu.service.DataServiceImpl;
+import com.yunsu.service.FileUpLoadService;
+import com.yunsu.service.PermanentTokenLoginService;
+import com.yunsu.sqlite.MyDataBaseHelper;
+import com.yunsu.util.Constants;
+import com.yunsu.view.TitleBar;
 
 import org.json.JSONObject;
 

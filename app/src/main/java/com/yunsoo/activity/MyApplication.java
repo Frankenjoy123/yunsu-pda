@@ -1,15 +1,15 @@
-package com.yunsoo.activity;
+package com.yunsu.activity;
 
 import android.app.Application;
 import android.content.Context;
 
-import com.yunsoo.manager.DeviceManager;
-import com.yunsoo.manager.FileManager;
-import com.yunsoo.manager.LogisticManager;
-import com.yunsoo.manager.SQLiteManager;
-import com.yunsoo.manager.SessionManager;
-import com.yunsoo.network.CacheService;
-import com.yunsoo.network.NetworkManager;
+import com.yunsu.manager.DeviceManager;
+import com.yunsu.manager.FileManager;
+import com.yunsu.manager.LogisticManager;
+import com.yunsu.manager.SQLiteManager;
+import com.yunsu.manager.SessionManager;
+import com.yunsu.network.CacheService;
+import com.yunsu.network.NetworkManager;
 
 /**
  * Created by Frank zhou on 2015/7/20.

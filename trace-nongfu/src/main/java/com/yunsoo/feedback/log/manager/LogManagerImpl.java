@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yunsoo.feedback.log.manager;
+package com.yunsu.feedback.log.manager;
 
 import java.io.File;
 import java.io.FileOutputStream;

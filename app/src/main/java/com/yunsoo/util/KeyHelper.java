@@ -1,6 +1,6 @@
-package com.yunsoo.util;
+package com.yunsu.util;
 
-import com.yunsoo.manager.SessionManager;
+import com.yunsu.manager.SessionManager;
 
 import java.security.MessageDigest;
 

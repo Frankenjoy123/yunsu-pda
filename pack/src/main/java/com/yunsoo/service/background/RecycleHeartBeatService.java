@@ -1,11 +1,11 @@
-package com.yunsoo.service.background;
+package com.yunsu.service.background;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.yunsoo.service.HeartBeatService;
+import com.yunsu.service.HeartBeatService;
 
 import java.util.Timer;
 import java.util.TimerTask;

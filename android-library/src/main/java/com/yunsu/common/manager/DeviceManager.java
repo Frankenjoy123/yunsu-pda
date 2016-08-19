@@ -14,6 +14,8 @@ import com.yunsu.common.util.HashUtils;
 import com.yunsu.common.util.HexStringUtils;
 import com.yunsu.common.util.StringHelper;
 
+import org.apache.log4j.Logger;
+
 
 public class DeviceManager extends BaseManager {
 	private static String TAG = DeviceManager.class.getSimpleName();
@@ -67,6 +69,8 @@ public class DeviceManager extends BaseManager {
 	public static synchronized DeviceManager getInstance() {
 		if (deviceManager == null) {
 			Log.d(TAG, "deviceManager has not been initialized");
+			Logger logger=Logger.getLogger(DeviceManager.class);
+			logger.error("deviceManager has not been initialized");
 		}
 		return deviceManager;
 	}
@@ -93,7 +97,6 @@ public class DeviceManager extends BaseManager {
 	}
 
 	public String getDeviceId() {
-        Log.d("ZXW","deviceId"+deviceId);
 		return deviceId;
 	}
 

@@ -1,13 +1,13 @@
-package com.yunsoo.manager;
+package com.yunsu.manager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
-import com.yunsoo.entity.AuthUser;
-import com.yunsoo.entity.OrgAgency;
-import com.yunsoo.util.Constants;
+import com.yunsu.entity.AuthUser;
+import com.yunsu.entity.OrgAgency;
+import com.yunsu.util.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;

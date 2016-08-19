@@ -1,4 +1,4 @@
-package com.yunsoo.activity;
+package com.yunsu.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,13 +18,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yunsoo.adapter.ProductInPackageAdapter;
-import com.yunsoo.fileOpreation.PackDetailFileRead;
-import com.yunsoo.sqlite.MyDataBaseHelper;
-import com.yunsoo.sqlite.SQLiteOperation;
-import com.yunsoo.util.Constants;
-import com.yunsoo.util.StringUtils;
-import com.yunsoo.view.TitleBar;
+import com.yunsu.adapter.ProductInPackageAdapter;
+import com.yunsu.fileOpreation.PackDetailFileRead;
+import com.yunsu.sqlite.MyDataBaseHelper;
+import com.yunsu.sqlite.SQLiteOperation;
+import com.yunsu.util.Constants;
+import com.yunsu.util.StringUtils;
+import com.yunsu.view.TitleBar;
 
 import java.io.File;
 import java.util.ArrayList;

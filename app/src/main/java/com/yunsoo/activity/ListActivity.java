@@ -1,4 +1,4 @@
-package com.yunsoo.activity;
+package com.yunsu.activity;
 
 /**
  * Created by Frank Zhou  on 4/23/2015.
@@ -23,7 +23,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.yunsoo.adapter.ViewAdapter;
+import com.yunsu.adapter.ViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

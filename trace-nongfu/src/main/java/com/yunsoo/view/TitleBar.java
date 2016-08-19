@@ -1,4 +1,4 @@
-package com.yunsoo.view;
+package com.yunsu.view;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,11 +10,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.yunsoo.activity.R.dimen;
-import com.yunsoo.activity.R.drawable;
-import com.yunsoo.activity.R.id;
-import com.yunsoo.activity.R.layout;
-import com.yunsoo.activity.R.string;
+import com.yunsu.activity.R.dimen;
+import com.yunsu.activity.R.drawable;
+import com.yunsu.activity.R.id;
+import com.yunsu.activity.R.layout;
+import com.yunsu.activity.R.string;
 
 
 public class TitleBar extends FrameLayout {

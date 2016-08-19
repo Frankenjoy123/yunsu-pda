@@ -1,4 +1,4 @@
-package com.yunsoo.activity;
+package com.yunsu.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,19 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.yunsoo.annotation.ViewById;
+import com.yunsu.annotation.ViewById;
 //import com.itxiaowu.manager.DeviceGeoLocationManager;
-import com.yunsoo.exception.BaseException;
-import com.yunsoo.manager.DeviceManager;
-import com.yunsoo.manager.FileManager;
-import com.yunsoo.manager.LogisticManager;
-import com.yunsoo.manager.SQLiteManager;
-import com.yunsoo.manager.SessionManager;
-import com.yunsoo.network.CacheService;
-import com.yunsoo.network.NetworkManager;
-import com.yunsoo.service.DataServiceImpl;
-import com.yunsoo.service.PermanentTokenLoginService;
-import com.yunsoo.util.DensityUtil;
+import com.yunsu.exception.BaseException;
+import com.yunsu.manager.DeviceManager;
+import com.yunsu.manager.FileManager;
+import com.yunsu.manager.LogisticManager;
+import com.yunsu.manager.SQLiteManager;
+import com.yunsu.manager.SessionManager;
+import com.yunsu.network.CacheService;
+import com.yunsu.network.NetworkManager;
+import com.yunsu.service.DataServiceImpl;
+import com.yunsu.service.PermanentTokenLoginService;
+import com.yunsu.util.DensityUtil;
 
 import org.json.JSONObject;
 

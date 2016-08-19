@@ -1,4 +1,4 @@
-package com.yunsoo.service;
+package com.yunsu.service;
 
 import java.util.HashMap;
 import java.util.Iterator;

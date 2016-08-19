@@ -1,4 +1,4 @@
-package com.yunsoo.network;
+package com.yunsu.network;
 
 public class ImageViewInfo {
 	public String url;

@@ -1,4 +1,4 @@
-package com.yunsoo.activity;
+package com.yunsu.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.yunsoo.view.TitleBar;
+import com.yunsu.view.TitleBar;
 
 public class SettingActivity extends Activity {
     private TitleBar titleBar;

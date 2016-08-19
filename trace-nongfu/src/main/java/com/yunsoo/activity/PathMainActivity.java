@@ -1,4 +1,4 @@
-package com.yunsoo.activity;
+package com.yunsu.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -13,24 +13,24 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.yunsoo.adapter.LogisticActionAdapter;
-import com.yunsoo.entity.AuthUser;
-import com.yunsoo.exception.BaseException;
-import com.yunsoo.exception.ServerAuthException;
-import com.yunsoo.manager.GreenDaoManager;
-import com.yunsoo.manager.LogisticManager;
-import com.yunsoo.manager.SessionManager;
-import com.yunsoo.service.DataServiceImpl;
-import com.yunsoo.service.PermanentTokenLoginService;
-import com.yunsoo.service.ServiceExecutor;
+import com.yunsu.adapter.LogisticActionAdapter;
+import com.yunsu.entity.AuthUser;
+import com.yunsu.exception.BaseException;
+import com.yunsu.exception.ServerAuthException;
+import com.yunsu.manager.GreenDaoManager;
+import com.yunsu.manager.LogisticManager;
+import com.yunsu.manager.SessionManager;
+import com.yunsu.service.DataServiceImpl;
+import com.yunsu.service.PermanentTokenLoginService;
+import com.yunsu.service.ServiceExecutor;
 
-import com.yunsoo.service.background.RecycleHeartBeatService;
-import com.yunsoo.service.background.SyncFileService;
-import com.yunsoo.service.background.SyncLogService;
-import com.yunsoo.sqlite.MyDataBaseHelper;
-import com.yunsoo.util.Constants;
-import com.yunsoo.util.ToastMessageHelper;
-import com.yunsoo.view.TitleBar;
+import com.yunsu.service.background.RecycleHeartBeatService;
+import com.yunsu.service.background.SyncFileService;
+import com.yunsu.service.background.SyncLogService;
+import com.yunsu.sqlite.MyDataBaseHelper;
+import com.yunsu.util.Constants;
+import com.yunsu.util.ToastMessageHelper;
+import com.yunsu.view.TitleBar;
 
 import org.json.JSONObject;
 

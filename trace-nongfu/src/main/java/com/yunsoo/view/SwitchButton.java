@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.yunsoo.view;
+package com.yunsu.view;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -37,7 +37,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
-import com.yunsoo.activity.R;
+import com.yunsu.activity.R;
 
 
 /**

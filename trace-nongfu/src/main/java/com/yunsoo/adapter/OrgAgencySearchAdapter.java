@@ -1,4 +1,4 @@
-package com.yunsoo.adapter;
+package com.yunsu.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.yunsoo.activity.OutBoundScanActivity;
-import com.yunsoo.activity.R;
-import com.yunsoo.entity.OrgAgency;
-import com.yunsoo.util.Constants;
+import com.yunsu.activity.OutBoundScanActivity;
+import com.yunsu.activity.R;
+import com.yunsu.entity.OrgAgency;
+import com.yunsu.util.Constants;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.yunsoo.util;
+package com.yunsu.util;
 
 import android.app.Activity;
 import android.content.Context;

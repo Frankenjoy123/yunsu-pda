@@ -1,4 +1,4 @@
-package com.yunsoo.annotation;
+package com.yunsu.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

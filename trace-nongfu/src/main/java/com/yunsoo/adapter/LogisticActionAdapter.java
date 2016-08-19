@@ -1,4 +1,4 @@
-package com.yunsoo.adapter;
+package com.yunsu.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,12 +10,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.yunsoo.activity.OrgAgencyActivity;
-import com.yunsoo.activity.OutBoundScanActivity;
-import com.yunsoo.activity.R.drawable;
-import com.yunsoo.activity.R.id;
-import com.yunsoo.activity.R.layout;
-import com.yunsoo.util.Constants;
+import com.yunsu.activity.OrgAgencyActivity;
+import com.yunsu.activity.OutBoundScanActivity;
+import com.yunsu.activity.R.drawable;
+import com.yunsu.activity.R.id;
+import com.yunsu.activity.R.layout;
+import com.yunsu.util.Constants;
 
 import java.util.List;
 import java.util.Map;

@@ -1,8 +1,8 @@
-package com.yunsoo.util;
+package com.yunsu.util;
 
 import android.webkit.URLUtil;
 
-import com.yunsoo.entity.KeyValuePair;
+import com.yunsu.entity.KeyValuePair;
 
 import org.json.JSONArray;
 import org.json.JSONException;

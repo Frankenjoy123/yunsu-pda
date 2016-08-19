@@ -1,4 +1,4 @@
-package com.yunsoo.activity;
+package com.yunsu.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.yunsoo.annotation.ViewById;
-import com.yunsoo.util.DensityUtil;
+import com.yunsu.annotation.ViewById;
+import com.yunsu.util.DensityUtil;
 
 
 public class WelcomeActivity extends BaseActivity{

@@ -1,10 +1,10 @@
-package com.yunsoo.network;
+package com.yunsu.network;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.yunsoo.activity.R;
+import com.yunsu.activity.R;
 
 
 public class NetworkManager {

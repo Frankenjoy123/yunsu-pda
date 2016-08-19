@@ -1,4 +1,4 @@
-package com.yunsoo.activity;
+package com.yunsu.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,8 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 
-import com.yunsoo.manager.SessionManager;
-import com.yunsoo.view.TitleBar;
+import com.yunsu.manager.SessionManager;
+import com.yunsu.view.TitleBar;
 
 public class GlobalSettingActivity extends Activity {
     private TitleBar titleBar;

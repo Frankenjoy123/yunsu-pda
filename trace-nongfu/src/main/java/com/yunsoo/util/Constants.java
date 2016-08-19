@@ -1,4 +1,4 @@
-package com.yunsoo.util;
+package com.yunsu.util;
 
 public final class Constants {
 

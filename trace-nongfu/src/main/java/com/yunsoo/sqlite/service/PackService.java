@@ -1,6 +1,6 @@
-package com.yunsoo.sqlite.service;
+package com.yunsu.sqlite.service;
 
-import com.yunsoo.entity.OrgAgency;
+import com.yunsu.entity.OrgAgency;
 import com.yunsu.greendao.entity.Pack;
 
 import java.util.List;

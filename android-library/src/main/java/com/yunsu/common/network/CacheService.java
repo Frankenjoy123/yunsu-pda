@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.Calendar;
 
+import org.apache.log4j.Logger;
 import org.json.JSONException;
 
 import android.content.Context;
@@ -47,7 +48,6 @@ public class CacheService {
 				File sdDir = android.os.Environment.getExternalStorageDirectory();
 				m_cacheService.downloadDir = new File(sdDir, m_cacheService.packageName + Constants.Cache.CACHE_SDCARD_DOWNLOAD_PATH);
 
-
 			} else {
 				m_cacheService.downloadDir = context.getCacheDir();
 			}
@@ -57,6 +57,8 @@ public class CacheService {
 				if (!m_cacheService.downloadDir.exists()) {
 					boolean bCreateSucc = m_cacheService.downloadDir.mkdirs();
 					Log.d("Debug", "Create the download directory " + bCreateSucc);
+					Logger logger=Logger.getLogger(CacheService.class);
+					logger.debug("Create the download directory " + bCreateSucc);
 				}
 				//TODO after login, then try to reset data folders.
 				// put it here just for demo purpose.

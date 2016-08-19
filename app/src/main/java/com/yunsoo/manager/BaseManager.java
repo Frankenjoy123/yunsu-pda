@@ -1,15 +1,15 @@
-package com.yunsoo.manager;
+package com.yunsu.manager;
 
 import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.yunsoo.exception.BaseException;
-import com.yunsoo.exception.LocalGeneralException;
-import com.yunsoo.exception.ServerAuthException;
-import com.yunsoo.exception.ServerGeneralException;
-import com.yunsoo.util.ToastMessageHelper;
+import com.yunsu.exception.BaseException;
+import com.yunsu.exception.LocalGeneralException;
+import com.yunsu.exception.ServerAuthException;
+import com.yunsu.exception.ServerGeneralException;
+import com.yunsu.util.ToastMessageHelper;
 
 public class BaseManager {
 

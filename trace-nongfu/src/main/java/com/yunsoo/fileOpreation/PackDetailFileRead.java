@@ -1,9 +1,9 @@
-package com.yunsoo.fileOpreation;
+package com.yunsu.fileOpreation;
 
 import android.os.Environment;
 import android.text.format.Time;
 
-import com.yunsoo.unity.PackageDetail;
+import com.yunsu.unity.PackageDetail;
 
 import java.io.BufferedReader;
 import java.io.File;

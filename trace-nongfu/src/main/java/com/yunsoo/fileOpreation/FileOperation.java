@@ -1,9 +1,9 @@
-package com.yunsoo.fileOpreation;
+package com.yunsu.fileOpreation;
 
 
 import android.text.format.Time;
 
-import com.yunsoo.manager.DeviceManager;
+import com.yunsu.manager.DeviceManager;
 
 import java.io.BufferedReader;
 import java.io.File;

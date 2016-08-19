@@ -1,4 +1,4 @@
-package com.yunsoo.util;
+package com.yunsu.util;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;

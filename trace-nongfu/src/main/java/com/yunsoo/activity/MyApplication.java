@@ -1,22 +1,22 @@
-package com.yunsoo.activity;
+package com.yunsu.activity;
 
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 
 import com.forlong401.log.transaction.log.manager.LogManager;
-import com.yunsoo.manager.DeviceManager;
-import com.yunsoo.manager.FileManager;
-import com.yunsoo.manager.GreenDaoManager;
-import com.yunsoo.manager.LogisticManager;
-import com.yunsoo.manager.SQLiteManager;
-import com.yunsoo.manager.SessionManager;
-import com.yunsoo.manager.SettingManager;
-import com.yunsoo.network.CacheService;
-import com.yunsoo.network.NetworkManager;
-import com.yunsoo.service.background.LogService;
-import com.yunsoo.service.background.SyncFileService;
-import com.yunsoo.service.background.SyncLogService;
+import com.yunsu.manager.DeviceManager;
+import com.yunsu.manager.FileManager;
+import com.yunsu.manager.GreenDaoManager;
+import com.yunsu.manager.LogisticManager;
+import com.yunsu.manager.SQLiteManager;
+import com.yunsu.manager.SessionManager;
+import com.yunsu.manager.SettingManager;
+import com.yunsu.network.CacheService;
+import com.yunsu.network.NetworkManager;
+import com.yunsu.service.background.LogService;
+import com.yunsu.service.background.SyncFileService;
+import com.yunsu.service.background.SyncLogService;
 
 /**
  * Created by Frank zhou on 2015/7/20.

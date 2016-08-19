@@ -1,4 +1,4 @@
-package com.yunsoo.unity;
+package com.yunsu.unity;
 
 import android.graphics.drawable.Drawable;
 

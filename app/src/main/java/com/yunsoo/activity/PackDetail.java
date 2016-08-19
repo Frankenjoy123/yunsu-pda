@@ -1,4 +1,4 @@
-package com.yunsoo.activity;
+package com.yunsu.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.yunsoo.adapter.ProductInPackageAdapter;
-import com.yunsoo.unity.PackageDetail;
-import com.yunsoo.view.TitleBar;
+import com.yunsu.adapter.ProductInPackageAdapter;
+import com.yunsu.unity.PackageDetail;
+import com.yunsu.view.TitleBar;
 
 public class PackDetail extends Activity {
 	private TextView tv_packageID;

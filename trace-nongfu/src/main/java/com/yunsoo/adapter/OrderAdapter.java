@@ -1,4 +1,4 @@
-package com.yunsoo.adapter;
+package com.yunsu.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,9 +11,9 @@ import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.yunsoo.activity.OutBoundScanActivity;
-import com.yunsoo.activity.R;
-import com.yunsoo.entity.MaterialEntity;
+import com.yunsu.activity.OutBoundScanActivity;
+import com.yunsu.activity.R;
+import com.yunsu.entity.MaterialEntity;
 import com.yunsu.greendao.entity.Material;
 
 import java.util.ArrayList;

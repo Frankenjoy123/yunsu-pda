@@ -1,4 +1,4 @@
-package com.yunsoo.adapter;
+package com.yunsu.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -11,9 +11,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.yunsoo.activity.R.drawable;
-import com.yunsoo.activity.R.id;
-import com.yunsoo.activity.R.layout;
+import com.yunsu.activity.R.drawable;
+import com.yunsu.activity.R.id;
+import com.yunsu.activity.R.layout;
 
 import java.util.ArrayList;
 import java.util.List;

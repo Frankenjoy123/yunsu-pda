@@ -1,4 +1,4 @@
-package com.yunsoo.exception;
+package com.yunsu.exception;
 
 /**
  * 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.yunsoo.unity;
+package com.yunsu.unity;
 
 import java.io.Serializable;
 import java.util.List;

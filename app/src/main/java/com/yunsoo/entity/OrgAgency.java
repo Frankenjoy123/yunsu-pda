@@ -1,4 +1,4 @@
-package com.yunsoo.entity;
+package com.yunsu.entity;
 
 /**
  * Created by frank on 2016/6/20.

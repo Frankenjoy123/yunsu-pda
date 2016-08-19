@@ -1,4 +1,4 @@
-package com.yunsoo.util;
+package com.yunsu.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

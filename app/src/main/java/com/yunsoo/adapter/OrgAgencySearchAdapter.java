@@ -1,4 +1,4 @@
-package com.yunsoo.adapter;
+package com.yunsu.adapter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.yunsoo.activity.PathActivity;
-import com.yunsoo.activity.R;
-import com.yunsoo.entity.OrgAgency;
+import com.yunsu.activity.PathActivity;
+import com.yunsu.activity.R;
+import com.yunsu.entity.OrgAgency;
 
 import java.util.List;
 

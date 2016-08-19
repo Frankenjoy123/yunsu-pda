@@ -1,4 +1,4 @@
-package com.yunsoo.activity;
+package com.yunsu.activity;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -10,9 +10,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.yunsoo.activity.R;
-import com.yunsoo.fileOpreation.FileOperation;
-import com.yunsoo.manager.LogisticManager;
+import com.yunsu.activity.R;
+import com.yunsu.fileOpreation.FileOperation;
+import com.yunsu.manager.LogisticManager;
 
 import java.io.BufferedWriter;
 import java.io.File;

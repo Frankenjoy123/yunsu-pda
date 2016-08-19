@@ -1,4 +1,4 @@
-package com.yunsoo.adapter;
+package com.yunsu.adapter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,10 +11,10 @@ import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.yunsoo.activity.OutBoundScanActivity;
-import com.yunsoo.activity.R;
-import com.yunsoo.activity.R.id;
-import com.yunsoo.activity.R.layout;
+import com.yunsu.activity.OutBoundScanActivity;
+import com.yunsu.activity.R;
+import com.yunsu.activity.R.id;
+import com.yunsu.activity.R.layout;
 
 import java.util.List;
 

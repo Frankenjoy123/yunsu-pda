@@ -1,12 +1,12 @@
-package com.yunsoo.network;
+package com.yunsu.network;
 
 import android.util.Log;
 
-import com.yunsoo.exception.ServerAuthException;
-import com.yunsoo.exception.ServerGeneralException;
-import com.yunsoo.manager.DeviceManager;
-import com.yunsoo.manager.SessionManager;
-import com.yunsoo.util.Constants;
+import com.yunsu.exception.ServerAuthException;
+import com.yunsu.exception.ServerGeneralException;
+import com.yunsu.manager.DeviceManager;
+import com.yunsu.manager.SessionManager;
+import com.yunsu.util.Constants;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;

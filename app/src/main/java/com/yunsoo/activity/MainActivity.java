@@ -1,4 +1,4 @@
-package com.yunsoo.activity;
+package com.yunsu.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,14 +11,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.yunsoo.entity.AuthUser;
-import com.yunsoo.exception.BaseException;
-import com.yunsoo.exception.NetworkNotAvailableException;
-import com.yunsoo.exception.ServerAuthException;
-import com.yunsoo.manager.SessionManager;
-import com.yunsoo.service.DataServiceImpl;
-import com.yunsoo.service.PermanentTokenLoginService;
-import com.yunsoo.util.ToastMessageHelper;
+import com.yunsu.entity.AuthUser;
+import com.yunsu.exception.BaseException;
+import com.yunsu.exception.NetworkNotAvailableException;
+import com.yunsu.exception.ServerAuthException;
+import com.yunsu.manager.SessionManager;
+import com.yunsu.service.DataServiceImpl;
+import com.yunsu.service.PermanentTokenLoginService;
+import com.yunsu.util.ToastMessageHelper;
 
 import org.json.JSONObject;
 

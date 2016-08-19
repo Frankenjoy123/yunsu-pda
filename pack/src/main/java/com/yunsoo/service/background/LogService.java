@@ -1,4 +1,4 @@
-package com.yunsoo.service.background;
+package com.yunsu.service.background;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -13,7 +13,7 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
 
-import com.yunsoo.util.Constants;
+import com.yunsu.util.Constants;
 
 import java.io.BufferedReader;
 import java.io.File;

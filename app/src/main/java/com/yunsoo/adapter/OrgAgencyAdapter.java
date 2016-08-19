@@ -1,4 +1,4 @@
-package com.yunsoo.adapter;
+package com.yunsu.adapter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,14 +13,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.yunsoo.activity.AuthorizeActivity;
-import com.yunsoo.activity.OrgAgencyActivity;
-import com.yunsoo.activity.PathActivity;
-import com.yunsoo.activity.R;
-import com.yunsoo.activity.R.drawable;
-import com.yunsoo.activity.R.id;
-import com.yunsoo.activity.R.layout;
-import com.yunsoo.manager.SessionManager;
+import com.yunsu.activity.AuthorizeActivity;
+import com.yunsu.activity.OrgAgencyActivity;
+import com.yunsu.activity.PathActivity;
+import com.yunsu.activity.R;
+import com.yunsu.activity.R.drawable;
+import com.yunsu.activity.R.id;
+import com.yunsu.activity.R.layout;
+import com.yunsu.manager.SessionManager;
 
 import java.util.List;
 

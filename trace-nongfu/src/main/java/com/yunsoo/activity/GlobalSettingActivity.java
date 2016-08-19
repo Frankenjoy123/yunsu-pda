@@ -1,4 +1,4 @@
-package com.yunsoo.activity;
+package com.yunsu.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,18 +18,18 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.yunsoo.manager.FileManager;
-import com.yunsoo.manager.LogisticManager;
-import com.yunsoo.manager.SessionManager;
-import com.yunsoo.manager.SettingManager;
-import com.yunsoo.network.CacheService;
-import com.yunsoo.service.ServiceExecutor;
-import com.yunsoo.sqlite.service.PackService;
-import com.yunsoo.sqlite.service.impl.PackServiceImpl;
-import com.yunsoo.util.Constants;
-import com.yunsoo.util.DateUtil;
-import com.yunsoo.util.ToastMessageHelper;
-import com.yunsoo.view.TitleBar;
+import com.yunsu.manager.FileManager;
+import com.yunsu.manager.LogisticManager;
+import com.yunsu.manager.SessionManager;
+import com.yunsu.manager.SettingManager;
+import com.yunsu.network.CacheService;
+import com.yunsu.service.ServiceExecutor;
+import com.yunsu.sqlite.service.PackService;
+import com.yunsu.sqlite.service.impl.PackServiceImpl;
+import com.yunsu.util.Constants;
+import com.yunsu.util.DateUtil;
+import com.yunsu.util.ToastMessageHelper;
+import com.yunsu.view.TitleBar;
 import com.yunsu.greendao.entity.Pack;
 
 import java.lang.reflect.Field;

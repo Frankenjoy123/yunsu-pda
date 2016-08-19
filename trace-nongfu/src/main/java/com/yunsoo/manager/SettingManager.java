@@ -1,10 +1,10 @@
-package com.yunsoo.manager;
+package com.yunsu.manager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.yunsoo.util.Constants;
+import com.yunsu.util.Constants;
 
 /**
  * Created by yunsu on 2016/7/14.

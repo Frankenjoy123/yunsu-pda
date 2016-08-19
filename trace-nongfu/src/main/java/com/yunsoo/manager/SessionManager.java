@@ -1,4 +1,4 @@
-package com.yunsoo.manager;
+package com.yunsu.manager;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,9 +6,9 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
-import com.yunsoo.entity.AuthUser;
+import com.yunsu.entity.AuthUser;
 
-import com.yunsoo.util.Constants;
+import com.yunsu.util.Constants;
 
 import org.json.JSONException;
 import org.json.JSONObject;

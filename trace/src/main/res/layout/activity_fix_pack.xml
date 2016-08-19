@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.yunsoo.activity.FixPackActivity">
+    tools:context="com.yunsu.activity.FixPackActivity">
 
     <com.yunsu.common.view.TitleBar
         android:id="@+id/fix_title_bar"

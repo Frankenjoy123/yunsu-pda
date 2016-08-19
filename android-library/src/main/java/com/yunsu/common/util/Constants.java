@@ -135,6 +135,10 @@ public final class Constants {
 
 	public static final String PATH_LOG_SYNC_FOLDER ="/path/log/sync";
 
+	public static final String PATH_CRASH_SYNC_FOLDER ="/path/crash/sync";
+
+	public static final String PATH_CRASH_NOT_SYNC_FOLDER ="/path/crash/not_sync";
+
 	public static final String PATH_CACHE_DB="/path/cache/db";
 
 	public static final String BLANK="";

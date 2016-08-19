@@ -1,4 +1,4 @@
-package com.yunsoo.manager;
+package com.yunsu.manager;
 
 import java.util.UUID;
 
@@ -8,9 +8,9 @@ import android.content.SharedPreferences.Editor;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import com.yunsoo.network.NetworkManager;
-import com.yunsoo.util.Constants;
-import com.yunsoo.util.StringHelper;
+import com.yunsu.network.NetworkManager;
+import com.yunsu.util.Constants;
+import com.yunsu.util.StringHelper;
 
 
 public class DeviceManager extends BaseManager {

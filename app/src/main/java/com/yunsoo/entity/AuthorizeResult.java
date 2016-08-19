@@ -1,4 +1,4 @@
-package com.yunsoo.entity;
+package com.yunsu.entity;
 
 import org.json.JSONArray;
 import org.json.JSONException;

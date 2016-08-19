@@ -1,13 +1,13 @@
-package com.yunsoo.service;
+package com.yunsu.service;
 
 import android.util.Log;
 
-import com.yunsoo.entity.AuthorizeRequest;
-import com.yunsoo.exception.LocalGeneralException;
-import com.yunsoo.exception.NetworkNotAvailableException;
-import com.yunsoo.exception.ServerAuthException;
-import com.yunsoo.exception.ServerGeneralException;
-import com.yunsoo.network.RequestManager;
+import com.yunsu.entity.AuthorizeRequest;
+import com.yunsu.exception.LocalGeneralException;
+import com.yunsu.exception.NetworkNotAvailableException;
+import com.yunsu.exception.ServerAuthException;
+import com.yunsu.exception.ServerGeneralException;
+import com.yunsu.network.RequestManager;
 
 import org.json.JSONObject;
 

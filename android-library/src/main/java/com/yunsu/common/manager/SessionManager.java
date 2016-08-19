@@ -10,6 +10,7 @@ import android.util.Log;
 import com.yunsu.common.entity.AuthUser;
 import com.yunsu.common.util.Constants;
 
+import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -58,6 +59,8 @@ public class SessionManager extends BaseManager {
     public static SessionManager getInstance() {
         if (sessionManager == null) {
             Log.w("SessionManager", "SessionManager instance has not been initialized");
+            Logger logger=Logger.getLogger(SessionManager.class);
+            logger.error("SessionManager has not been initialized");
         }
         return sessionManager;
     }
@@ -78,7 +81,6 @@ public class SessionManager extends BaseManager {
                 Context.MODE_PRIVATE);
 
         String authUserInfo = preferences.getString(Constants.Preference.KEY_USER_INFO, null);
-        Log.d("ZXW", "authUserInfo: " + authUserInfo);
         if (authUserInfo != null) {
             try {
                 JSONObject objectUser = new JSONObject(authUserInfo);

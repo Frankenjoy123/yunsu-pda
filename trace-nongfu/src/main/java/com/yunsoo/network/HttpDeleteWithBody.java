@@ -1,4 +1,4 @@
-package com.yunsoo.network;
+package com.yunsu.network;
 
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 

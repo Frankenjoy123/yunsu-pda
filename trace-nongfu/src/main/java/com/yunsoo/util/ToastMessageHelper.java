@@ -1,11 +1,11 @@
-package com.yunsoo.util;
+package com.yunsu.util;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yunsoo.activity.R;
+import com.yunsu.activity.R;
 
 
 public class ToastMessageHelper {

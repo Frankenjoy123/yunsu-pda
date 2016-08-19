@@ -1,4 +1,4 @@
-package com.yunsoo.entity;
+package com.yunsu.entity;
 
 import android.os.Parcel;
 import android.os.Parcelable;

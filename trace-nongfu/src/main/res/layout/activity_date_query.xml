@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.yunsoo.activity.DateQueryActivity">
+    tools:context="com.yunsu.activity.DateQueryActivity">
 
     <com.yunsu.common.view.TitleBar
         android:id="@+id/data_report_title_bar"

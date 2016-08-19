@@ -1,4 +1,4 @@
-package com.yunsoo.sqlite;
+package com.yunsu.sqlite;
 
 import android.database.sqlite.SQLiteDatabase;
 

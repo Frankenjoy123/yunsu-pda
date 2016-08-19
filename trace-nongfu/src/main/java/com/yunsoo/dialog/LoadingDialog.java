@@ -1,4 +1,4 @@
-package com.yunsoo.dialog;
+package com.yunsu.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 
-import com.yunsoo.activity.R;
-import com.yunsoo.service.DataServiceImpl;
+import com.yunsu.activity.R;
+import com.yunsu.service.DataServiceImpl;
 
 
 /**

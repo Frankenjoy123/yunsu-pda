@@ -20,6 +20,7 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -133,7 +134,6 @@ public class RestClient {
                 if (!params.isEmpty()) {
                     if (isJsonContent) {
                         httpPost.setEntity(new StringEntity(params.get(0).getValue(), HTTP.UTF_8));
-                        Log.e("TODO", params.get(0).getValue());
                     } else if (filePost) {
                         String sFilePath = params.get(0).getValue();
 //                         httpPost.setEntity(new FileEntity(new File(sFilePath), "binary/octet-stream"));
@@ -289,6 +289,8 @@ public class RestClient {
                     case HttpStatus.SC_NOT_FOUND:
                     default:
                         Log.e("tttttttttttttttt", "ffdfdfudf" + statusCode + "  --" + request.getURI().toString());
+                        Logger logger=Logger.getLogger(RestClient.class);
+                        logger.error("ffdfdfudf" + statusCode + "  --" + request.getURI().toString());
                         throw new ServerGeneralException("服务器发生了小状态，等等再试", statusCode);
                 }
 
@@ -296,6 +298,8 @@ public class RestClient {
         } catch (Exception e) {
             Log.w("SendRequest", "Error " + e.getMessage() + " while send request with " + url);
             Log.w("StackTrace", "Error " + e.getStackTrace());
+            Logger logger=Logger.getLogger(RestClient.class);
+            logger.error( e.getMessage() + " while send request with " + url);
             if (e instanceof ServerGeneralException || e instanceof ServerAuthException) {
                 throw e;
             } else {

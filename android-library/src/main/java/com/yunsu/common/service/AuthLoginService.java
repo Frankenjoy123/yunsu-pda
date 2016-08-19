@@ -9,6 +9,7 @@ import com.yunsu.common.exception.ServerAuthException;
 import com.yunsu.common.exception.ServerGeneralException;
 import com.yunsu.common.network.RequestManager;
 
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 public class AuthLoginService extends DataServiceImpl {
@@ -31,9 +32,10 @@ public class AuthLoginService extends DataServiceImpl {
     protected JSONObject method() throws ServerAuthException, ServerGeneralException, LocalGeneralException,
             NetworkNotAvailableException, Exception {
         Log.d("ZXW","AuthLoginService method");
+        Logger logger=Logger.getLogger(AuthLoginService.class);
+        logger.info("start AuthLoginService");
         JSONObject request=new JSONObject();
         request.put("token",token);
-
         JSONObject object= RequestManager.Post(LOGIN_URL,request.toString());
         return object;
     }

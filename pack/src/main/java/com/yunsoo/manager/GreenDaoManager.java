@@ -1,10 +1,10 @@
-package com.yunsoo.manager;
+package com.yunsu.manager;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.yunsoo.util.Constants;
+import com.yunsu.util.Constants;
 import com.yunsu.greendao.dao.DaoMaster;
 import com.yunsu.greendao.dao.DaoSession;
 

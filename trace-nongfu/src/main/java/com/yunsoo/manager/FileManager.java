@@ -1,11 +1,11 @@
-package com.yunsoo.manager;
+package com.yunsu.manager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import com.yunsoo.util.Constants;
-import com.yunsoo.util.KeyHelper;
+import com.yunsu.util.Constants;
+import com.yunsu.util.KeyHelper;
 
 import org.json.JSONException;
 

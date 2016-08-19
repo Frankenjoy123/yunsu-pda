@@ -1,4 +1,4 @@
-package com.yunsoo.manager;
+package com.yunsu.manager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -7,14 +7,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.yunsoo.entity.AuthUser;
-import com.yunsoo.entity.OrgAgency;
-import com.yunsoo.sqlite.MyDataBaseHelper;
-import com.yunsoo.sqlite.SQLiteOperation;
-import com.yunsoo.sqlite.service.PackService;
-import com.yunsoo.sqlite.service.impl.PackServiceImpl;
-import com.yunsoo.util.Constants;
-import com.yunsoo.util.YSFile;
+import com.yunsu.entity.AuthUser;
+import com.yunsu.entity.OrgAgency;
+import com.yunsu.sqlite.MyDataBaseHelper;
+import com.yunsu.sqlite.SQLiteOperation;
+import com.yunsu.sqlite.service.PackService;
+import com.yunsu.sqlite.service.impl.PackServiceImpl;
+import com.yunsu.util.Constants;
+import com.yunsu.util.YSFile;
 import com.yunsu.greendao.entity.Pack;
 
 import org.json.JSONArray;

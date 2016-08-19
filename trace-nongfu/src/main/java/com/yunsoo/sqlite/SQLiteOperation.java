@@ -1,4 +1,4 @@
-package com.yunsoo.sqlite;
+package com.yunsu.sqlite;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 import android.widget.Switch;
 
-import com.yunsoo.entity.OrgAgency;
-import com.yunsoo.util.Constants;
+import com.yunsu.entity.OrgAgency;
+import com.yunsu.util.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;

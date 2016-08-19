@@ -14,6 +14,7 @@ import com.yunsu.common.util.Constants;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.protocol.HTTP;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -40,6 +41,8 @@ public class RequestManager {
 
 		jsonObject = restClient.Execute(RestClient.RequestMethod.POST);
 		Log.d(TAG, "Request end: at " + format.format(new Date()));
+		Logger logger=Logger.getLogger(RequestManager.class);
+		logger.debug("Request end: at " + format.format(new Date()));
 		return HandleResponseResult(jsonObject);
 	}
 
@@ -50,11 +53,14 @@ public class RequestManager {
         JSONObject jsonObject = null;
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
         Log.d(TAG, "Request started: at " + format.format(new Date()));
+		Logger logger=Logger.getLogger(RequestManager.class);
+		logger.debug("Request "+url+" started: at " + format.format(new Date()));
         RestClient restClient = new RestClient(SessionManager.getInstance().getAuthUser().getApi() + url);
         restClient.SetIsJsonContent(true);
         SetRequestHeader(restClient);
         jsonObject = restClient.Execute(RestClient.RequestMethod.GET);
         Log.d(TAG, "Request end: at " + format.format(new Date()));
+		logger.debug("Request "+url+" started: at "  + format.format(new Date()));
         return HandleResponseResult(jsonObject);
     }
 
@@ -62,6 +68,8 @@ public class RequestManager {
 			Exception {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
 		Log.d(TAG, "Request started: at " + format.format(new Date()));
+		Logger logger=Logger.getLogger(RequestManager.class);
+		logger.debug("Request "+url+" started: at "  + format.format(new Date()));
 		JSONObject jsonObject = null;
 		AuthUser authUser=SessionManager.getInstance().getAuthUser();
 		String api=authUser.getApi();
@@ -74,6 +82,7 @@ public class RequestManager {
 
 		jsonObject = restClient.Execute(RestClient.RequestMethod.POST);
 		Log.d(TAG, "Request end: at " + format.format(new Date()));
+
 		return HandleResponseResult(jsonObject);
 	}
 

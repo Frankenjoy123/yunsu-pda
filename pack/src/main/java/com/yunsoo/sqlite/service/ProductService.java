@@ -1,4 +1,4 @@
-package com.yunsoo.sqlite.service;
+package com.yunsu.sqlite.service;
 
 import com.yunsu.greendao.entity.Product;
 import java.util.List;
