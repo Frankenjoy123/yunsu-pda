@@ -1,24 +1,31 @@
 package com.yunsu.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.yunsu.adapter.LogisticActionAdapter;
 import com.yunsu.adapter.OrgAgencySearchAdapter;
 import com.yunsu.adapter.SearchAdapter;
+import com.yunsu.common.util.Constants;
 import com.yunsu.entity.OrgAgency;
 import com.yunsu.manager.LogisticManager;
 import com.yunsu.common.view.TitleBar;
 
 import java.util.List;
+import java.util.Objects;
 
 public class OrgAgencyActivity extends Activity {
     private TitleBar titleBar;
     private ListView listView;
     private EditText editText;
+
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +36,9 @@ public class OrgAgencyActivity extends Activity {
 
     private void init(){
         getActionBar().hide();
-        String actionId = getIntent().getStringExtra(LogisticActionAdapter.ACTION_ID);
-        String actionName = getIntent().getStringExtra(LogisticActionAdapter.ACTION_NAME);
+        intent=getIntent();
+        String actionId = intent.getStringExtra(LogisticActionAdapter.ACTION_ID);
+        String actionName = intent.getStringExtra(LogisticActionAdapter.ACTION_NAME);
         listView= (ListView) findViewById(R.id.lv_org_agency);
         titleBar=(TitleBar) findViewById(R.id.org_agency_title_bar);
         editText= (EditText) findViewById(R.id.search_edit_text);
@@ -45,6 +53,27 @@ public class OrgAgencyActivity extends Activity {
         ((OrgAgencySearchAdapter)adapter).setActionId(actionId);
         ((OrgAgencySearchAdapter)adapter).setActionName(actionName);
         listView.setAdapter(adapter);
+
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//
+//                Object object=adapterView.getSelectedItem();
+//                if (object instanceof OrgAgency){
+//
+//                }
+////                Intent intent = new Intent(context, PathActivity.class);
+////                intent.putExtra(LogisticActionAdapter.ACTION_ID,actionId);
+////                intent.putExtra(LogisticActionAdapter.ACTION_NAME,actionName);
+////                intent.putExtra(Constants.Logistic.AGENCY_ID,filteredContainer.get(i).getId());
+////                intent.putExtra(Constants.Logistic.AGENCY_NAME,filteredContainer.get(i).getName());
+////
+//////                context.startActivity(intent);
+////                Activity activity= (Activity) context;
+////                activity.setResult(SUCCESS,intent);
+////                activity.finish();
+//            }
+//        });
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override

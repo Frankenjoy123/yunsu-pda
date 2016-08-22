@@ -7,7 +7,8 @@
     android:background="@drawable/item_bg_bottom"
     android:clickable="true"
     android:layout_marginTop="20dp"
-    android:padding="10dp">
+    android:padding="10dp"
+    >
 
     <ImageView
         android:id="@+id/iv_image"
@@ -15,15 +16,22 @@
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_org_agency" />
+        android:src="@drawable/ic_org_agency"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        />
 
     <TextView
         android:id="@+id/tv_org_agency"
         style="@style/text_style.light"
         android:layout_centerInParent="true"
         android:text="@string/settings"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
          />
 
-    <ImageView style="@style/right_action_style" />
+    <ImageView style="@style/right_action_style"
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
 
 </RelativeLayout>

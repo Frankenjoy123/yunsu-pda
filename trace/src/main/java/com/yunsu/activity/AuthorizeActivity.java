@@ -44,8 +44,6 @@ public class AuthorizeActivity extends BaseActivity implements DataServiceImpl.D
         getActionBar().hide();
         et_authorize_code= (EditText) findViewById(R.id.et_authorize_code);
         bindScanAuthorize();
-
-
     }
 
     private void bindScanAuthorize() {

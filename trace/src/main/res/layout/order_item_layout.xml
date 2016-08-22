@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/rl_agency_item"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_bg_bottom"
+    android:clickable="true"
+    android:layout_marginTop="20dp"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:id="@+id/ll_order_number"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/text_style_report"
+            android:text="@string/order"/>
+        <TextView
+            android:id="@+id/tv_order_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/text_style_report"
+            android:text="1"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_agency_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/ll_order_number"
+        >
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            >
+            <TextView
+                android:text="@string/agency"
+                style="@style/text_style_report"
+                />
+
+            <TextView
+                android:text="@string/outbound_schedule"
+                style="@style/text_style_report" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            >
+            <TextView
+                android:id="@+id/tv_agency_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/text_style_report"
+                android:text="杭州经销商"
+                />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_outbound_count"
+                    style="@style/text_style_report"
+                    android:text="10" />
+                <TextView
+                    android:text="/"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/text_style_report"
+                    />
+                <TextView
+                    android:id="@+id/tv_outbound_amount"
+                    style="@style/text_style_report"
+                    android:text="100"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

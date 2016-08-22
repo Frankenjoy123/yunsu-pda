@@ -34,6 +34,8 @@ public class TraceDaoMaker {
         material.addIdProperty().autoincrement();
         //经销商ID
         material.addStringProperty("agencyId");
+        //经销商名称
+        material.addStringProperty("agencyName");
         //完成状态
         material.addStringProperty("status");
         //时间

@@ -93,6 +93,7 @@
     <string name="company_name">广州云溯科技有限公司</string>
     <string name="title_activity_authorize">AuthorizeActivity</string>
 
+
     <string name="cancel">取消</string>
     <string name="save">保存</string>
     <string name="title_activity_pack_main">PackMainActivity</string>
@@ -135,13 +136,23 @@
     <string name="title_activity_org_agency">OrgAgencyActivity</string>
 
     <string name="choose_org_agency">选择经销商</string>
+    <string name="please_choose_org_agency">请选择经销商</string>
+    <string name="delivery_amount">发货数</string>
     <string name="agency">经销商：</string>
     <string name="total_inbound">总计入库：</string>
     <string name="total_outbound">总计出库：</string>
     <string name="inbound">入库：</string>
     <string name="outbound">出库：</string>
+    <string name="outbound_schedule">出库进度：</string>
     <string name="inbound_scan">入库扫描</string>
     <string name="outbound_scan">出库扫描</string>
+    <string name="outbound_order">出库订单</string>
+    <string name="add">添加</string>
+    <string name="order">订单</string>
+    <string name="create_new_order">新建订单</string>
+    <string name="done">完成</string>
+    <string name="please_type_in_amount">请输入发货数</string>
+
 
     <string name="repeal_operation">撤销操作</string>
     <string name="repeal_inbound">撤销入库</string>

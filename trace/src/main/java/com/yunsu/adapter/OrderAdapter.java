@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.yunsu.activity.R.id;
 import com.yunsu.activity.R.layout;
 import com.yunsu.entity.OrgAgency;
+import com.yunsu.greendao.entity.Material;
 
 import java.util.List;
 import java.util.Map;
@@ -17,31 +18,30 @@ import java.util.Map;
 /**
  * Created by Frank zhou on 6/20/2016.
  */
-public class ReportAdapter extends BaseAdapter
+public class OrderAdapter extends BaseAdapter
 {
 
-    List<OrgAgency> orgAgencyList;
-    Map<String,OrgAgency> orgAgencyMap;
+    List<Material> materialList;
     LayoutInflater inflater;
     Activity activity;
 
-    public ReportAdapter(Activity activity) {
+    public OrderAdapter(Activity activity) {
         this.activity=activity;
         this.inflater = activity.getLayoutInflater();
     }
 
-    public void setOrgAgencyList(List<OrgAgency> orgAgencyList) {
-        this.orgAgencyList = orgAgencyList;
+    public void setMaterialList(List<Material> materialList) {
+        this.materialList = materialList;
     }
 
     @Override
     public int getCount() {
-        return orgAgencyList.size();
+        return materialList.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return orgAgencyList.get(i);
+        return materialList.get(i);
     }
 
     @Override
@@ -52,21 +52,27 @@ public class ReportAdapter extends BaseAdapter
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
         if(view==null){
-            view=inflater.inflate(layout.report_item_layout,viewGroup,false);
+            view=inflater.inflate(layout.order_item_layout,viewGroup,false);
             ViewHolder holder=new ViewHolder();
-            holder.tv_report_agency_name = (TextView) view.findViewById(id.tv_report_agency_name);
+            holder.tv_order_id = (TextView) view.findViewById(id.tv_order_id);
+            holder.tv_agency_name= (TextView) view.findViewById(id.tv_agency_name);
             holder.tv_outbound_count= (TextView) view.findViewById(id.tv_outbound_count);
+            holder.tv_outbound_amount= (TextView) view.findViewById(id.tv_outbound_amount);
             view.setTag(holder);
         }
         ViewHolder holder= (ViewHolder) view.getTag();
-        holder.tv_report_agency_name.setText(orgAgencyList.get(i).getName());
-        holder.tv_outbound_count.setText(String.valueOf(orgAgencyList.get(i).getOutbound_count())+"包");
+        holder.tv_order_id.setText(String.valueOf(materialList.get(i).getId()));
+        holder.tv_agency_name.setText(materialList.get(i).getAgencyName());
+        holder.tv_outbound_count.setText(materialList.get(i).getSent()+"");
+        holder.tv_outbound_amount.setText(materialList.get(i).getAmount()+"");
         return view;
     }
 
     private final static class ViewHolder {
-        TextView tv_report_agency_name;
+        TextView tv_order_id;
+        TextView tv_agency_name;
         TextView tv_outbound_count;
+        TextView tv_outbound_amount;
     }
 
 }

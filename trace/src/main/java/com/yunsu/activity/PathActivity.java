@@ -44,7 +44,6 @@ public class PathActivity extends Activity {
     private ListView lv_path;
     private TextView tv_agency_name;
     private TextView tv_count_value;
-
     private PackService packService;
     
 	@Override

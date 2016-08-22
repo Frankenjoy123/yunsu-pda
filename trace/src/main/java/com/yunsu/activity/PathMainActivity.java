@@ -135,7 +135,7 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
 
     private void setupActionItems() {
         buildViewContent(this.findViewById(R.id.rl_action_inbound), R.drawable.ic_inbound, R.string.inbound_scan);
-        buildViewContent(this.findViewById(R.id.rl_action_outbound), R.drawable.ic_outbound, R.string.outbound_scan);
+        buildViewContent(this.findViewById(R.id.rl_action_outbound), R.drawable.ic_outbound, R.string.outbound_order);
         buildViewContent(this.findViewById(R.id.rl_action_revoke), R.drawable.ic_revoke, R.string.repeal_operation);
         buildViewContent(this.findViewById(R.id.rl_action_report), R.drawable.ic_report, R.string.data_report);
         buildViewContent(this.findViewById(R.id.rl_action_setting), R.drawable.ic_setting, R.string.settings);
@@ -159,7 +159,7 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
                 startActivity(inboundIntent);
                 break;
             case R.id.rl_action_outbound:
-                Intent outboundIntent=new Intent(PathMainActivity.this,OrgAgencyActivity.class);
+                Intent outboundIntent=new Intent(PathMainActivity.this,OrderListActivity.class);
                 outboundIntent.putExtra(Constants.Logistic.ACTION_ID,Constants.Logistic.OUTBOUND_CODE);
                 outboundIntent.putExtra(Constants.Logistic.ACTION_NAME,Constants.Logistic.OUTBOUND);
                 startActivity(outboundIntent);

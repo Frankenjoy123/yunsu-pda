@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateOrderActivity">
+    <com.yunsu.common.view.TitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        ></com.yunsu.common.view.TitleBar>
+
+    <RelativeLayout
+        android:id="@+id/rl_agent_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_bar"
+        android:background="@drawable/item_bg"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        >
+        <TextView
+            android:id="@+id/tv_agent_name"
+            style="@style/text_style_create_order"
+            android:hint="@string/please_choose_org_agency"/>
+
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_right_arrow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_order_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_agent_name"
+        android:padding="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/item_bg"
+        >
+        <TextView
+            android:layout_centerVertical="true"
+            android:text="@string/delivery_amount"
+            style="@style/text_style_create_order"/>
+
+        <TextView
+            android:id="@+id/tv_order_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/text_style_create_order"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:text="100"
+            />
+
+        <ImageView
+            style="@style/right_action_style" />
+
+
+
+
+
+        <LinearLayout
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            >
+            <ImageButton
+                android:id="@+id/ic_minus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_circle_item"
+                android:src="@drawable/ic_minus"
+                android:scaleType="centerInside"
+                />
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                style="@style/text_style_create_order"
+                android:gravity="center"
+                />
+
+            <ImageButton
+                android:id="@+id/ic_add"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_add"
+                android:background="@drawable/bg_circle_item"
+                android:scaleType="centerInside"
+                />
+
+
+
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

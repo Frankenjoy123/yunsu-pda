@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.yunsu.activity.CreateOrderActivity;
 import com.yunsu.activity.PathActivity;
 import com.yunsu.activity.R;
 import com.yunsu.entity.OrgAgency;
@@ -24,6 +25,9 @@ public class OrgAgencySearchAdapter extends SearchAdapter<OrgAgency>{
     LayoutInflater inflater;
     private String actionId;
     private String actionName;
+    private Activity activity;
+
+    public static final int SUCCESS=100;
 
     public void setActionId(String actionId) {
         this.actionId = actionId;
@@ -35,6 +39,7 @@ public class OrgAgencySearchAdapter extends SearchAdapter<OrgAgency>{
 
     public OrgAgencySearchAdapter(List<OrgAgency> container, Context context) {
         super(container, context);
+        this.activity= (Activity) context;
         inflater=((Activity)context).getLayoutInflater();
     }
 
@@ -53,14 +58,17 @@ public class OrgAgencySearchAdapter extends SearchAdapter<OrgAgency>{
         holder.rl_agency_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent=activity.getIntent();
 
-                Intent intent = new Intent(context, PathActivity.class);
-                intent.putExtra(LogisticActionAdapter.ACTION_ID,actionId);
-                intent.putExtra(LogisticActionAdapter.ACTION_NAME,actionName);
+//                Intent intent = new Intent(context, CreateOrderActivity.class);
+//                intent.putExtra(LogisticActionAdapter.ACTION_ID,actionId);
+//                intent.putExtra(LogisticActionAdapter.ACTION_NAME,actionName);
                 intent.putExtra(Constants.Logistic.AGENCY_ID,filteredContainer.get(i).getId());
                 intent.putExtra(Constants.Logistic.AGENCY_NAME,filteredContainer.get(i).getName());
-                context.startActivity(intent);
-                Activity activity= (Activity) context;
+
+//                context.startActivity(intent);
+//                Activity activity= (Activity) context;
+                activity.setResult(SUCCESS,intent);
                 activity.finish();
             }
         });

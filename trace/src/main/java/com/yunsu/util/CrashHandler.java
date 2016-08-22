@@ -182,7 +182,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
                 //发送给开发人员
 //                LogUpLoadService service=new LogUpLoadService(path+"/"+fileName);
 //                service.start();
-//                sendCrashLog2PM(path+fileName);
                 fos.close();
             }
             return fileName;
@@ -192,39 +191,4 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         return null;
     }
 
-    /**
-     * 将捕获的导致崩溃的错误信息发送给开发人员
-     *
-     * 目前只将log日志保存在sdcard 和输出到LogCat中，并未发送给后台。
-     */
-//    private void sendCrashLog2PM(String fileName){
-//        if(!new File(fileName).exists()){
-//            Toast.makeText(mContext, "日志文件不存在！", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//        FileInputStream fis = null;
-//        BufferedReader reader = null;
-//        String s = null;
-//        try {
-//            fis = new FileInputStream(fileName);
-//            reader = new BufferedReader(new InputStreamReader(fis, "GBK"));
-//            while(true){
-//                s = reader.readLine();
-//                if(s == null) break;
-//                //由于目前尚未确定以何种方式发送，所以先打出log日志。
-//                Log.i("info", s.toString());
-//            }
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }finally{   // 关闭流
-//            try {
-//                reader.close();
-//                fis.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
 }
