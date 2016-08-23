@@ -54,27 +54,6 @@ public class OrgAgencyActivity extends Activity {
         ((OrgAgencySearchAdapter)adapter).setActionName(actionName);
         listView.setAdapter(adapter);
 
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//
-//                Object object=adapterView.getSelectedItem();
-//                if (object instanceof OrgAgency){
-//
-//                }
-////                Intent intent = new Intent(context, PathActivity.class);
-////                intent.putExtra(LogisticActionAdapter.ACTION_ID,actionId);
-////                intent.putExtra(LogisticActionAdapter.ACTION_NAME,actionName);
-////                intent.putExtra(Constants.Logistic.AGENCY_ID,filteredContainer.get(i).getId());
-////                intent.putExtra(Constants.Logistic.AGENCY_NAME,filteredContainer.get(i).getName());
-////
-//////                context.startActivity(intent);
-////                Activity activity= (Activity) context;
-////                activity.setResult(SUCCESS,intent);
-////                activity.finish();
-//            }
-//        });
-
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

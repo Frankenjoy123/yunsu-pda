@@ -152,6 +152,9 @@
     <string name="create_new_order">新建订单</string>
     <string name="done">完成</string>
     <string name="please_type_in_amount">请输入发货数</string>
+    <string name="scan_key">正在扫码：</string>
+    <string name="order_finish">订单完成</string>
+    <string name="order_finish_message">订单内的所有包装出库完成</string>
 
 
     <string name="repeal_operation">撤销操作</string>

@@ -27,6 +27,7 @@ public final class Constants {
 		public static final String REVOKE_INBOUND="撤销入库";
 		public static final String REVOKE_OUTBOUND="撤销出库";
 		public static final int LIMIT_ITEM=1000;
+		public static final String AMOUNT="amount";
 
 		public static final String ACTION_ID="action_id";
 		public static final String ACTION_NAME="action_name";
@@ -52,6 +53,10 @@ public final class Constants {
 		public final static String NOT_SYNC="not_sync";
 		public final static String DISABLE="disable";
 		public static final String  DB_NAME ="trace" ;
+
+		public static final String NOT_START="not_start";
+		public static final String IN_PROGRESS="in_progress";
+		public static final String FINISHED="finished";
 	}
 	
 	public final static class Cache {

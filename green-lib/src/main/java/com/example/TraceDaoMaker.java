@@ -37,9 +37,9 @@ public class TraceDaoMaker {
         //经销商名称
         material.addStringProperty("agencyName");
         //完成状态
-        material.addStringProperty("status");
-        //时间
-        material.addStringProperty("time");
+        material.addStringProperty("progressStatus");
+        //同步状态
+        material.addStringProperty("syncStatus");
         //总量
         material.addLongProperty("amount");
         //已发货

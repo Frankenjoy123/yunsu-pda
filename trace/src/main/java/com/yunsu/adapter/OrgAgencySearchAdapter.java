@@ -59,15 +59,8 @@ public class OrgAgencySearchAdapter extends SearchAdapter<OrgAgency>{
             @Override
             public void onClick(View v) {
                 Intent intent=activity.getIntent();
-
-//                Intent intent = new Intent(context, CreateOrderActivity.class);
-//                intent.putExtra(LogisticActionAdapter.ACTION_ID,actionId);
-//                intent.putExtra(LogisticActionAdapter.ACTION_NAME,actionName);
                 intent.putExtra(Constants.Logistic.AGENCY_ID,filteredContainer.get(i).getId());
                 intent.putExtra(Constants.Logistic.AGENCY_NAME,filteredContainer.get(i).getName());
-
-//                context.startActivity(intent);
-//                Activity activity= (Activity) context;
                 activity.setResult(SUCCESS,intent);
                 activity.finish();
             }

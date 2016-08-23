@@ -20,6 +20,8 @@ public interface MaterialService {
     //根据ID查询物流
     Material queryById(long id);
 
+    List<Material> queryAllMaterial();
+
     //删除物料
     void deleteMaterial(Material material);
 

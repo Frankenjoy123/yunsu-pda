@@ -11,8 +11,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -26,9 +24,9 @@ import com.yunsu.greendao.entity.Material;
 import com.yunsu.manager.SettingManager;
 import com.yunsu.sqlite.service.MaterialService;
 import com.yunsu.sqlite.service.impl.MaterialServiceImpl;
-
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CreateOrderActivity extends BaseActivity {
     @ViewById(id = R.id.title_bar)
@@ -46,23 +44,18 @@ public class CreateOrderActivity extends BaseActivity {
     @ViewById(id = R.id.tv_order_amount)
     private TextView tv_order_amount;
 
-//    @ViewById(id = R.id.ic_minus)
-//    private ImageView ic_minus;
-//
-//    @ViewById(id = R.id.ic_add)
-//    private ImageView ic_add;
-
     public static final int SUCCESS=100;
-//    private MiusThread miusThread;
-//    private boolean isOnLongClick;
-//    private PlusThread plusThread;
 
-    private int amount=1;
+    private static final int DEFAULT_AMOUNT=1;
 
     private String agentId;
     private String agentName;
 
     private MaterialService materialService;
+
+    private List<Material> materialList=new ArrayList<>();
+
+    private static final int INSERT_SUCCESS=11;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,34 +71,36 @@ public class CreateOrderActivity extends BaseActivity {
         titleBar.setMode(TitleBar.TitleBarMode.BOTH_BUTTONS);
         titleBar.setRightButtonText(getString(R.string.done));
 
+        tv_order_amount.setText(String.valueOf(DEFAULT_AMOUNT));
+
         materialService=new MaterialServiceImpl();
 
         titleBar.setOnRightButtonClickedListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (agentId!=null&&agentName!=null){
+                    showLoading();
+                    ServiceExecutor.getInstance().execute(new Runnable() {
+                        @Override
+                        public void run() {
 
-
-                ServiceExecutor.getInstance().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        String numString=tv_order_amount.getText().toString();
-                        int temp=Integer.parseInt(numString);
-                        Material material=new Material();
-                        material.setAmount((long) temp);
-                        material.setAgencyId(agentId);
-                        material.setAgencyName(agentName);
-                        materialService.insertMaterial(material);
-                    }
-                });
-
-                Intent intent=getIntent();
-                intent.putExtra(Constants.Logistic.AGENCY_ID,agentId);
-                intent.putExtra(Constants.Logistic.AGENCY_NAME,agentName);
-                setResult(OrderListActivity.ADD_NEW_ORDER_RESULT,intent);
-                finish();
+                            int amount=Integer.parseInt(tv_order_amount.getText().toString());
+                            Material material=new Material();
+                            material.setAmount((long) amount);
+                            material.setSent((long) 0);
+                            material.setProgressStatus(Constants.DB.NOT_START);
+                            material.setSyncStatus(Constants.DB.NOT_SYNC);
+                            material.setAgencyId(agentId);
+                            material.setAgencyName(agentName);
+                            materialService.insertMaterial(material);
+                            handler.sendEmptyMessage(INSERT_SUCCESS);
+                        }
+                    });
+                }else {
+                    ToastMessageHelper.showErrorMessage(CreateOrderActivity.this,R.string.please_choose_org_agency,true);
+                }
             }
         });
-
 
         rl_agent_name.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +110,6 @@ public class CreateOrderActivity extends BaseActivity {
             }
         });
 
-        tv_order_amount.setText(String.valueOf(amount));
 
         rl_order_amount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,13 +119,22 @@ public class CreateOrderActivity extends BaseActivity {
                 dialog(amount);
             }
         });
-
-//        ic_minus.setEnabled(false);
-//
-//        ic_minus.setOnTouchListener(new ComponentOnTouch());
-//        ic_add.setOnTouchListener(new ComponentOnTouch());
-
     }
+
+
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case INSERT_SUCCESS:
+                    hideLoading();
+                    finish();
+                    break;
+            }
+
+            super.handleMessage(msg);
+        }
+    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -197,124 +200,5 @@ public class CreateOrderActivity extends BaseActivity {
         builder.create().show();
     }
 
-
-
-//    //Touch事件
-//    class ComponentOnTouch implements View.OnTouchListener {
-//        @Override
-//        public boolean onTouch(View v, MotionEvent event) {
-//            switch (v.getId()) {
-//                //这是btnMius下的一个层，为了增强易点击性
-//                case R.id.ic_minus:
-//                    onTouchChange("mius", event.getAction());
-//                    break;
-//                //这里也写，是为了增强易点击性
-////                case R.id.btnMius:
-////                    onTouchChange("mius", event.getAction());
-////                    break;
-////                case R.id.linearBtnPlus:
-////                    onTouchChange("plus", event.getAction());
-////                    break;
-//                case R.id.ic_add:
-//                    onTouchChange("plus", event.getAction());
-//                    break;
-//            }
-//            return true;
-//        }
-//    }
-//
-//    private void onTouchChange(String methodName, int eventAction) {
-//        //按下松开分别对应启动停止减线程方法
-//        if ("mius".equals(methodName)) {
-//            if (eventAction == MotionEvent.ACTION_DOWN) {
-//                miusThread = new MiusThread();
-//                isOnLongClick = true;
-//                miusThread.start();
-//            } else if (eventAction == MotionEvent.ACTION_UP) {
-//                if (miusThread != null) {
-//                    isOnLongClick = false;
-//                }
-//            } else if (eventAction == MotionEvent.ACTION_MOVE) {
-//                if (miusThread != null) {
-//                    isOnLongClick = true;
-//                }
-//            }
-//        }
-//        //按下松开分别对应启动停止加线程方法
-//        else if ("plus".equals(methodName)) {
-//            if (eventAction == MotionEvent.ACTION_DOWN) {
-//                plusThread = new PlusThread();
-//                isOnLongClick = true;
-//                plusThread.start();
-//            } else if (eventAction == MotionEvent.ACTION_UP) {
-//                if (plusThread != null) {
-//                    isOnLongClick = false;
-//                }
-//            } else if (eventAction == MotionEvent.ACTION_MOVE) {
-//                if (plusThread != null) {
-//                    isOnLongClick = true;
-//                }
-//            }
-//        }
-//    }
-//
-//
-//    //减操作
-//    class MiusThread extends Thread {
-//        @Override
-//        public void run() {
-//            while (isOnLongClick) {
-//                try {
-//                    Thread.sleep(100);
-//                    myHandler.sendEmptyMessage(1);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//                super.run();
-//            }
-//        }
-//    }
-//
-//    //加操作
-//    class PlusThread extends Thread {
-//        @Override
-//        public void run() {
-//            while (isOnLongClick) {
-//                try {
-//                    Thread.sleep(100);
-//                    myHandler.sendEmptyMessage(2);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//                super.run();
-//            }
-//        }
-//    }
-
-//    //更新文本框的值
-//    Handler myHandler = new Handler() {
-//        public void handleMessage(Message msg) {
-//            switch (msg.what) {
-//                case 1:
-//                    if (amount>1){
-//                        tv_order_amount.setText(String.valueOf(--amount));
-//                    }else {
-//                        ic_minus.setEnabled(false);
-//                    }
-//                   ic_add.setEnabled(true);
-//                    break;
-//
-//                case 2:
-//                    if (amount<=100000){
-//                        tv_order_amount.setText(String.valueOf(++amount));
-//                    }else {
-//                        ic_add.setEnabled(false);
-//                    }
-//                    ic_minus.setEnabled(true);
-//                    break;
-//            }
-//
-//        };
-//    };
 
 }

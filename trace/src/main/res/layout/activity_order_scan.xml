@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/rl_order_item"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/item_bg_bottom"
-    android:layout_marginTop="20dp"
-    android:padding="10dp">
+    android:layout_height="match_parent"
+    tools:context="com.yunsu.activity.OrderScanActivity">
+    <com.yunsu.common.view.TitleBar
+        android:id="@+id/title_bar"
+        layout="@layout/title_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
 
     <LinearLayout
         android:id="@+id/ll_order_number"
@@ -14,24 +17,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
+        android:layout_below="@+id/title_bar"
         >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/text_style_report"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
             android:text="@string/order"/>
         <TextView
             android:id="@+id/tv_order_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/text_style_report"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:text="1" />
+            android:text="1"
+            />
 
     </LinearLayout>
 
@@ -41,29 +40,21 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@+id/ll_order_number"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
         >
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
             >
             <TextView
                 android:text="@string/agency"
                 style="@style/text_style_report"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
                 />
 
             <TextView
                 android:text="@string/outbound_schedule"
-                style="@style/text_style_report"
-                android:focusable="false"
-                android:focusableInTouchMode="false"/>
+                style="@style/text_style_report" />
 
         </LinearLayout>
 
@@ -72,45 +63,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
             >
             <TextView
                 android:id="@+id/tv_agency_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/text_style_report"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
                 android:text="杭州经销商"
                 />
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:focusableInTouchMode="false">
+                android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/tv_outbound_count"
                     style="@style/text_style_report"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
                     android:text="10" />
                 <TextView
                     android:text="/"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
                     style="@style/text_style_report"
                     />
                 <TextView
                     android:id="@+id/tv_outbound_amount"
                     style="@style/text_style_report"
                     android:text="100"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -121,6 +100,34 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_below="@+id/ll_agency_name"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120dp"
+        >
+        <TextView
+            android:text="@string/scan_key"
+            style="@style/text_style_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_scan_key"
+            android:layout_width="160dp"
+            style="@style/text_style_report"
+            android:layout_height="wrap_content" />
 
+    </LinearLayout>
+
+
+
+
+    <EditText
+        android:id="@+id/et_scan"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        />
 
 </RelativeLayout>

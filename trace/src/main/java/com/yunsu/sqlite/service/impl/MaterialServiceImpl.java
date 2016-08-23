@@ -34,6 +34,11 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
+    public List<Material> queryAllMaterial() {
+        return materialDao.queryBuilder().orderDesc(MaterialDao.Properties.Id).list();
+    }
+
+    @Override
     public void deleteMaterial(Material material) {
         materialDao.delete(material);
     }
