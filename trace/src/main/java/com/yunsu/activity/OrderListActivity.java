@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.yunsu.adapter.OrderAdapter;
 import com.yunsu.common.annotation.ViewById;
@@ -23,8 +24,12 @@ import java.util.List;
 public class OrderListActivity extends  BaseActivity {
     @ViewById(id = R.id.title_bar)
     TitleBar titleBar;
+
     @ViewById(id = R.id.lv_order)
     ListView lv_order;
+
+    @ViewById(id = R.id.tv_empty_order_tip)
+    private TextView tv_empty_order_tip;
 
     public static final int ADD_NEW_ORDER_REQUEST=123;
 
@@ -50,7 +55,7 @@ public class OrderListActivity extends  BaseActivity {
         titleBar.setTitle(getString(R.string.outbound_order));
         titleBar.setDisplayAsBack(true);
         titleBar.setMode(TitleBar.TitleBarMode.BOTH_BUTTONS);
-        titleBar.setRightButtonText(getString(R.string.add));
+        titleBar.setRightButtonText(getString(R.string.new_order));
         titleBar.setOnRightButtonClickedListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,9 +73,10 @@ public class OrderListActivity extends  BaseActivity {
                 Intent intent=new Intent(OrderListActivity.this,OrderScanActivity.class);
                 intent.putExtra(ID,materialList.get(i).getId());
                 startActivity(intent);
-//                ToastMessageHelper.showMessage(OrderListActivity.this,"jjj",true);
             }
         });
+
+        lv_order.setEmptyView(tv_empty_order_tip);
     }
 
 

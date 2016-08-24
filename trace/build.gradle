@@ -84,5 +84,5 @@ dependencies {
     compile 'commons-codec:commons-codec:1.10'
     compile 'org.greenrobot:greendao:2.2.1'
     compile 'org.greenrobot:greendao-generator:2.2.0'
-    compile project(':android-library')
+    compile project(':common-pda')
 }

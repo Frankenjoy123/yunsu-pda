@@ -101,6 +101,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_scan_key"
         android:layout_below="@+id/ll_agency_name"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
@@ -121,13 +122,41 @@
 
     </LinearLayout>
 
-
-
-
     <EditText
         android:id="@+id/et_scan"
         android:layout_width="0dp"
         android:layout_height="0dp"
         />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/ll_scan_key"
+        android:layout_marginTop="40dp"
+        >
+        <Button
+            android:id="@+id/btn_confirm_finish"
+            android:text="@string/confirm_finish"
+            android:background="@drawable/btn_bg"
+            android:textColor="@color/clear_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            />
+
+        <Button
+            android:id="@+id/btn_revoke_outbound"
+            android:text="@string/revoke_operation"
+            android:background="@drawable/btn_bg"
+            android:textColor="@color/clear_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginLeft="40dp"
+            />
+
+    </LinearLayout>
 
 </RelativeLayout>

@@ -60,50 +60,21 @@
         <ImageView
             style="@style/right_action_style" />
 
-
-
-
-
-        <LinearLayout
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:visibility="gone"
-            >
-            <ImageButton
-                android:id="@+id/ic_minus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_circle_item"
-                android:src="@drawable/ic_minus"
-                android:scaleType="centerInside"
-                />
-            <TextView
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                style="@style/text_style_create_order"
-                android:gravity="center"
-                />
-
-            <ImageButton
-                android:id="@+id/ic_add"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:src="@drawable/ic_add"
-                android:background="@drawable/bg_circle_item"
-                android:scaleType="centerInside"
-                />
-
-
-
-
-
-        </LinearLayout>
-
     </RelativeLayout>
 
 
+    <Button
+        android:id="@+id/btn_confirm_create"
+        android:text="@string/confirm_create"
+        android:background="@drawable/btn_bg"
+        android:layout_below="@+id/rl_order_amount"
+        android:textColor="@color/clear_color"
+        android:layout_marginTop="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        />
 
 </RelativeLayout>

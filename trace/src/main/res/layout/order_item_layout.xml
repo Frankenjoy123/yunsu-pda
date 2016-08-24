@@ -33,6 +33,17 @@
             android:focusableInTouchMode="false"
             android:text="1" />
 
+        <TextView
+            android:id="@+id/tv_progress_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/text_style_report"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:layout_marginLeft="40dp"
+            android:text="未开始"
+            />
+
     </LinearLayout>
 
     <LinearLayout

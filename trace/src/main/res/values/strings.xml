@@ -153,8 +153,23 @@
     <string name="done">完成</string>
     <string name="please_type_in_amount">请输入发货数</string>
     <string name="scan_key">正在扫码：</string>
+
+
+    <!--OrderList-->
     <string name="order_finish">订单完成</string>
     <string name="order_finish_message">订单内的所有包装出库完成</string>
+    <string name="confirm_create">确认创建</string>
+    <string name="create_new_order_tip">暂无订单，请创建新订单</string>
+    <string name="new_order">新订单</string>
+    <string name="not_start">未开始</string>
+    <string name="in_progress">进行中</string>
+    <string name="finished">已完成</string>
+
+
+    <!--<OrderScan>-->
+    <string name="confirm_finish">强制完成</string>
+    <string name="confirm_finish_message">此操作将会提前完成订单，实际出库数将会小于应出库数</string>
+    <string name="revoke_operation">撤销操作</string>
 
 
     <string name="repeal_operation">撤销操作</string>

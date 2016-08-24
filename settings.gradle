@@ -1,1 +1,1 @@
-include ':common', ':green-lib', ':trace', ':android-library'
+include  ':green-lib', ':trace', ':common-pda'

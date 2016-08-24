@@ -13,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,6 +58,12 @@ public class OrderScanActivity extends BaseActivity {
 
     @ViewById(id = R.id.et_scan)
     EditText et_scan;
+
+    @ViewById(id = R.id.btn_confirm_finish)
+    Button btn_confirm_finish;
+
+    @ViewById(id = R.id.btn_revoke_outbound)
+    Button btn_revoke_outbound;
     
     private MaterialService materialService;
 
@@ -69,6 +76,8 @@ public class OrderScanActivity extends BaseActivity {
     private static final int QUERY_MATERIAL_SUCCESS=100;
 
     private static final int INSERT_PACK_SUCCESS=200;
+
+    private static final int CONFIRM_FINISH_ORDER_MSG=303;
 
 
     
@@ -107,6 +116,32 @@ public class OrderScanActivity extends BaseActivity {
 
         bindTextChanged();
 
+        bindConfirmFinishOrder();
+    }
+
+    private void bindConfirmFinishOrder() {
+        btn_confirm_finish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog dialog = new AlertDialog.Builder(OrderScanActivity.this).setTitle(R.string.confirm_finish).setMessage(R.string.confirm_finish_message)
+                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                showLoading();
+                                ServiceExecutor.getInstance().execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        material.setProgressStatus(Constants.DB.FINISHED);
+                                        materialService.updateMaterial(material);
+                                        handler.sendEmptyMessage(CONFIRM_FINISH_ORDER_MSG);
+                                    }
+                                });
+                            }
+                        }).setNegativeButton(R.string.cancel,null).create();
+                dialog.setCancelable(false);
+                dialog.show();
+            }
+        });
     }
 
     private void refreshUI(){
@@ -222,6 +257,9 @@ public class OrderScanActivity extends BaseActivity {
                     }
 
                     break;
+                case CONFIRM_FINISH_ORDER_MSG:
+                    hideLoading();
+                    finish();
             }
         }
     };

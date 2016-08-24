@@ -11,8 +11,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yunsu.activity.OrderScanActivity;
+import com.yunsu.activity.R;
 import com.yunsu.activity.R.id;
 import com.yunsu.activity.R.layout;
+import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.entity.OrgAgency;
 import com.yunsu.greendao.entity.Material;
@@ -64,6 +66,7 @@ public class OrderAdapter extends BaseAdapter
             holder.tv_outbound_count= (TextView) view.findViewById(id.tv_outbound_count);
             holder.tv_outbound_amount= (TextView) view.findViewById(id.tv_outbound_amount);
             holder.rl_order_item= (RelativeLayout) view.findViewById(id.rl_order_item);
+            holder.tv_progress_status= (TextView) view.findViewById(id.tv_progress_status);
             view.setTag(holder);
         }
         ViewHolder holder= (ViewHolder) view.getTag();
@@ -71,16 +74,22 @@ public class OrderAdapter extends BaseAdapter
         holder.tv_agency_name.setText(materialList.get(i).getAgencyName());
         holder.tv_outbound_count.setText(materialList.get(i).getSent()+"");
         holder.tv_outbound_amount.setText(materialList.get(i).getAmount()+"");
-//        holder.rl_order_item.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                ToastMessageHelper.showErrorMessage(activity,"kikk",true);
-//                Log.d("zxw","start ");
-//                Intent intent = new Intent(activity, OrderScanActivity.class);
-//                activity.startActivity(intent);
-//            }
-//        });
-
+        String progressStatus=null;
+        switch (materialList.get(i).getProgressStatus()){
+            case  Constants.DB.NOT_START:
+                progressStatus=activity.getString(R.string.not_start);
+                break;
+            case Constants.DB.IN_PROGRESS:
+                progressStatus=activity.getString(R.string.in_progress);
+                break;
+            case Constants.DB.FINISHED:
+                progressStatus=activity.getString(R.string.finished);
+                break;
+            default:
+                progressStatus=activity.getString(R.string.not_start);
+                break;
+        }
+        holder.tv_progress_status.setText(progressStatus);
         return view;
     }
 
@@ -89,6 +98,7 @@ public class OrderAdapter extends BaseAdapter
         TextView tv_agency_name;
         TextView tv_outbound_count;
         TextView tv_outbound_amount;
+        TextView tv_progress_status;
         RelativeLayout rl_order_item;
     }
 

@@ -27,7 +27,6 @@ public class OrgAgencySearchAdapter extends SearchAdapter<OrgAgency>{
     private String actionName;
     private Activity activity;
 
-    public static final int SUCCESS=100;
 
     public void setActionId(String actionId) {
         this.actionId = actionId;
@@ -61,7 +60,7 @@ public class OrgAgencySearchAdapter extends SearchAdapter<OrgAgency>{
                 Intent intent=activity.getIntent();
                 intent.putExtra(Constants.Logistic.AGENCY_ID,filteredContainer.get(i).getId());
                 intent.putExtra(Constants.Logistic.AGENCY_NAME,filteredContainer.get(i).getName());
-                activity.setResult(SUCCESS,intent);
+                activity.setResult(CreateOrderActivity.GET_AGENCY_RESULT,intent);
                 activity.finish();
             }
         });

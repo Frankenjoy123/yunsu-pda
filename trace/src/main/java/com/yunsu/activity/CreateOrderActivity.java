@@ -2,14 +2,16 @@ package com.yunsu.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,7 +23,6 @@ import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.view.TitleBar;
 import com.yunsu.greendao.entity.Material;
-import com.yunsu.manager.SettingManager;
 import com.yunsu.sqlite.service.MaterialService;
 import com.yunsu.sqlite.service.impl.MaterialServiceImpl;
 import java.lang.reflect.Field;
@@ -44,6 +45,9 @@ public class CreateOrderActivity extends BaseActivity {
     @ViewById(id = R.id.tv_order_amount)
     private TextView tv_order_amount;
 
+    @ViewById(id = R.id.btn_confirm_create)
+    private Button btn_confirm_create;
+
     public static final int SUCCESS=100;
 
     private static final int DEFAULT_AMOUNT=1;
@@ -57,6 +61,10 @@ public class CreateOrderActivity extends BaseActivity {
 
     private static final int INSERT_SUCCESS=11;
 
+    public static final int GET_AGENCY_QUEST=101;
+
+    public static final int GET_AGENCY_RESULT=201;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,14 +76,14 @@ public class CreateOrderActivity extends BaseActivity {
         getActionBar().hide();
         titleBar.setTitle(getString(R.string.create_new_order));
         titleBar.setDisplayAsBack(true);
-        titleBar.setMode(TitleBar.TitleBarMode.BOTH_BUTTONS);
+        titleBar.setMode(TitleBar.TitleBarMode.LEFT_BUTTON);
         titleBar.setRightButtonText(getString(R.string.done));
 
         tv_order_amount.setText(String.valueOf(DEFAULT_AMOUNT));
 
         materialService=new MaterialServiceImpl();
 
-        titleBar.setOnRightButtonClickedListener(new View.OnClickListener() {
+        btn_confirm_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (agentId!=null&&agentName!=null){
@@ -97,7 +105,7 @@ public class CreateOrderActivity extends BaseActivity {
                         }
                     });
                 }else {
-                    ToastMessageHelper.showErrorMessage(CreateOrderActivity.this,R.string.please_choose_org_agency,true);
+                    ToastMessageHelper.showMessage(CreateOrderActivity.this,R.string.please_choose_org_agency,true);
                 }
             }
         });
@@ -106,7 +114,7 @@ public class CreateOrderActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(CreateOrderActivity.this,OrgAgencyActivity.class);
-                startActivityForResult(intent,SUCCESS);
+                startActivityForResult(intent,GET_AGENCY_QUEST);
             }
         });
 
@@ -138,9 +146,13 @@ public class CreateOrderActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        agentId=data.getStringExtra(Constants.Logistic.AGENCY_ID);
-        agentName=data.getStringExtra(Constants.Logistic.AGENCY_NAME);
-        tv_agent_name.setText(agentName);
+        if (resultCode==GET_AGENCY_RESULT){
+            agentId=data.getStringExtra(Constants.Logistic.AGENCY_ID);
+            agentName=data.getStringExtra(Constants.Logistic.AGENCY_NAME);
+            if (agentName!=null){
+                tv_agent_name.setText(agentName);
+            }
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -153,7 +165,7 @@ public class CreateOrderActivity extends BaseActivity {
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
         builder.setTitle(R.string.please_type_in_amount);
         LayoutInflater inflater=getLayoutInflater();
-        View view=inflater.inflate(R.layout.dialog_delivery_amount,null);
+        final View view=inflater.inflate(R.layout.dialog_delivery_amount,null);
         final EditText et= (EditText) view.findViewById(R.id.et_amount);
         et.setText(String.valueOf(amount));
         et.setSelection(et.getText().length());
@@ -170,6 +182,8 @@ public class CreateOrderActivity extends BaseActivity {
                     closeDialog=true;
                     int amount=Integer.parseInt(numString);
                     tv_order_amount.setText(amount+"");
+                    InputMethodManager imm= (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(),0);
                 }else {
                     closeDialog=false;
                     ToastMessageHelper.showErrorMessage(CreateOrderActivity.this,"请输入十万以内的合法正数",true);
@@ -199,6 +213,5 @@ public class CreateOrderActivity extends BaseActivity {
         });
         builder.create().show();
     }
-
 
 }
