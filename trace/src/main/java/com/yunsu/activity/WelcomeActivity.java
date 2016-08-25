@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.yunsu.common.annotation.ViewById;
+import com.yunsu.common.manager.SessionManager;
+import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.DensityUtil;
 
 import org.apache.log4j.Logger;
@@ -31,10 +33,9 @@ public class WelcomeActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        SharedPreferences preferences=getSharedPreferences("yunsoo_pda",MODE_PRIVATE);
-        isAuthorize=preferences.getBoolean("isAuthorize",false);
+        SharedPreferences preferences=getSharedPreferences(Constants.Preference.YUNSU_PDA,MODE_PRIVATE);
+        isAuthorize=preferences.getBoolean(Constants.Preference.IS_AUTHORIZE,false);
         init();
-
 
         new Handler().postDelayed(new Runnable() {
 

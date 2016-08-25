@@ -25,6 +25,8 @@ public class AuthUser implements JSONEntity {
         this.orgId=user.getOrgId();
     }
 
+
+
     public void populate(JSONObject object) {
         accessToken = object.optString("accessToken");
         permanentToken =object.optString("permanentToken");
@@ -72,4 +74,5 @@ public class AuthUser implements JSONEntity {
     public void setPermanentToken(String permanentToken) {
         this.permanentToken = permanentToken;
     }
+
 }

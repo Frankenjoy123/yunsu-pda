@@ -12,7 +12,7 @@ import com.yunsu.common.network.RequestManager;
 
 import org.json.JSONObject;
 
-public class AuthorizeService extends DataServiceImpl {
+public class AuthorizeRegisterService extends DataServiceImpl {
     /**
      * Path：http://api.test.yunsu.co:6080/device/register
      Method：POST
@@ -29,7 +29,7 @@ public class AuthorizeService extends DataServiceImpl {
     private static final String LOGIN_URL = "/auth/device/register";
     private AuthorizeRequest request;
 
-    public AuthorizeService(AuthorizeRequest request){
+    public AuthorizeRegisterService(AuthorizeRequest request){
         this.request=request;
     }
 
@@ -37,7 +37,7 @@ public class AuthorizeService extends DataServiceImpl {
     @Override
     protected JSONObject method() throws ServerAuthException, ServerGeneralException, LocalGeneralException,
             NetworkNotAvailableException, Exception {
-            Log.d("ZXW","AuthorizeService method");
+            Log.d("ZXW","AuthorizeRegisterService method");
             JSONObject object= RequestManager.Post(LOGIN_URL,request.toJsonString());
             return object;
     }

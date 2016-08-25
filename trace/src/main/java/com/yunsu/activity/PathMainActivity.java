@@ -38,13 +38,9 @@ import java.util.UUID;
 
 public class PathMainActivity extends BaseActivity implements View.OnClickListener {
 
-    private LogisticActionAdapter actionAdapter;
-
-    private String permanentToken;
-    private String accessToken;
-    private String api;
-    private AuthUser tempAuthUser;
     TitleBar titleBar;
+
+    public static PathMainActivity pathMainActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,17 +48,21 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
         setContentView(R.layout.activity_path_main);
         init();
         startService();
-        getActionBar().hide();
         setupActionItems();
         checkAuthorizeStatus();
 //        initData();
     }
 
-    private void init() {
-        getActionBar().hide();
-        titleBar = (TitleBar) findViewById(R.id.path_main_title_bar);
-        titleBar.setTitle(getString(R.string.home));
-        titleBar.setMode(TitleBar.TitleBarMode.TITLE_ONLY);
+    /**
+     * 检查授权状态
+     */
+    private void checkAuthorizeStatus() {
+        AuthUser authUser=SessionManager.getInstance().getAuthUser();
+        String permanentToken = authUser.getPermanentToken();
+        PermanentTokenLoginService service= new PermanentTokenLoginService(permanentToken);
+        service.setContext(this);
+        service.setDelegate(this);
+        service.start();
     }
 
     /**
@@ -75,6 +75,62 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
         startService(intent1);
         Intent intent2=new Intent(this, RecycleHeartBeatService.class);
         startService(intent2);
+    }
+
+
+    private void init() {
+        getActionBar().hide();
+        titleBar = (TitleBar) findViewById(R.id.path_main_title_bar);
+        titleBar.setTitle(getString(R.string.home));
+        titleBar.setMode(TitleBar.TitleBarMode.TITLE_ONLY);
+        pathMainActivity=this;
+    }
+
+
+    private void setupActionItems() {
+        buildViewContent(this.findViewById(R.id.rl_action_inbound), R.drawable.ic_inbound, R.string.inbound_scan);
+        buildViewContent(this.findViewById(R.id.rl_action_outbound), R.drawable.ic_outbound, R.string.outbound_order);
+        buildViewContent(this.findViewById(R.id.rl_action_revoke), R.drawable.ic_revoke, R.string.repeal_operation);
+        buildViewContent(this.findViewById(R.id.rl_action_report), R.drawable.ic_report, R.string.data_report);
+        buildViewContent(this.findViewById(R.id.rl_action_setting), R.drawable.ic_setting, R.string.settings);
+    }
+
+    private void buildViewContent(View view, int imageResourceId, int textResourceId) {
+        ImageView iv = (ImageView) view.findViewById(R.id.iv_image);
+        iv.setImageResource(imageResourceId);
+        TextView tv = (TextView) view.findViewById(R.id.tv_action_name);
+        tv.setText(textResourceId);
+        view.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.rl_action_inbound:
+                Intent inboundIntent=new Intent(PathMainActivity.this,PathActivity.class);
+                inboundIntent.putExtra(Constants.Logistic.ACTION_ID,Constants.Logistic.INBOUND_CODE);
+                inboundIntent.putExtra(Constants.Logistic.ACTION_NAME,Constants.Logistic.INBOUND);
+                startActivity(inboundIntent);
+                break;
+            case R.id.rl_action_outbound:
+                Intent outboundIntent=new Intent(PathMainActivity.this,OrderListActivity.class);
+                outboundIntent.putExtra(Constants.Logistic.ACTION_ID,Constants.Logistic.OUTBOUND_CODE);
+                outboundIntent.putExtra(Constants.Logistic.ACTION_NAME,Constants.Logistic.OUTBOUND);
+                startActivity(outboundIntent);
+                break;
+            case R.id.rl_action_revoke:
+                Intent intent1=new Intent(PathMainActivity.this,RevokeOperationActivity.class);
+                startActivity(intent1);
+                break;
+            case R.id.rl_action_report:
+                Intent intent=new Intent(PathMainActivity.this,DateQueryActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.rl_action_setting:
+                Intent intent2=new Intent(PathMainActivity.this,GlobalSettingActivity.class);
+                startActivity(intent2);
+                break;
+        }
     }
 
 
@@ -132,117 +188,4 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-
-    private void setupActionItems() {
-        buildViewContent(this.findViewById(R.id.rl_action_inbound), R.drawable.ic_inbound, R.string.inbound_scan);
-        buildViewContent(this.findViewById(R.id.rl_action_outbound), R.drawable.ic_outbound, R.string.outbound_order);
-        buildViewContent(this.findViewById(R.id.rl_action_revoke), R.drawable.ic_revoke, R.string.repeal_operation);
-        buildViewContent(this.findViewById(R.id.rl_action_report), R.drawable.ic_report, R.string.data_report);
-        buildViewContent(this.findViewById(R.id.rl_action_setting), R.drawable.ic_setting, R.string.settings);
-    }
-
-    private void buildViewContent(View view, int imageResourceId, int textResourceId) {
-        ImageView iv = (ImageView) view.findViewById(R.id.iv_image);
-        iv.setImageResource(imageResourceId);
-        TextView tv = (TextView) view.findViewById(R.id.tv_action_name);
-        tv.setText(textResourceId);
-        view.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.rl_action_inbound:
-                Intent inboundIntent=new Intent(PathMainActivity.this,PathActivity.class);
-                inboundIntent.putExtra(Constants.Logistic.ACTION_ID,Constants.Logistic.INBOUND_CODE);
-                inboundIntent.putExtra(Constants.Logistic.ACTION_NAME,Constants.Logistic.INBOUND);
-                startActivity(inboundIntent);
-                break;
-            case R.id.rl_action_outbound:
-                Intent outboundIntent=new Intent(PathMainActivity.this,OrderListActivity.class);
-                outboundIntent.putExtra(Constants.Logistic.ACTION_ID,Constants.Logistic.OUTBOUND_CODE);
-                outboundIntent.putExtra(Constants.Logistic.ACTION_NAME,Constants.Logistic.OUTBOUND);
-                startActivity(outboundIntent);
-                break;
-            case R.id.rl_action_revoke:
-                Intent intent1=new Intent(PathMainActivity.this,RevokeOperationActivity.class);
-                startActivity(intent1);
-                break;
-            case R.id.rl_action_report:
-                Intent intent=new Intent(PathMainActivity.this,DateQueryActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.rl_action_setting:
-                Intent intent2=new Intent(PathMainActivity.this,GlobalSettingActivity.class);
-                startActivity(intent2);
-                break;
-        }
-    }
-
-    /**
-     * 检查授权状态
-     */
-    private void checkAuthorizeStatus() {
-        SessionManager.getInstance().restore();
-        AuthUser authUser=SessionManager.getInstance().getAuthUser();
-        permanentToken=authUser.getPermanentToken();
-        accessToken=authUser.getAccessToken();
-        api=authUser.getApi();
-        PermanentTokenLoginService service= new PermanentTokenLoginService(permanentToken);
-        service.setDelegate(PathMainActivity.this);
-        service.start();
-    }
-
-
-    @Override
-    public void onRequestSucceeded(DataServiceImpl service, JSONObject data, boolean isCached) {
-        //授权验证成功后，更新状态
-        if (service instanceof PermanentTokenLoginService){
-            String newAccessToken=data.optString("token");
-            int expires_in=data.optInt("expires_in");
-            SharedPreferences preferences=getSharedPreferences("yunsoo_pda",MODE_PRIVATE);
-            SharedPreferences.Editor editor=preferences.edit();
-            editor.putBoolean("isAuthorize", true);
-            editor.commit();
-            tempAuthUser=new AuthUser();
-            tempAuthUser.setAccessToken(newAccessToken);
-            tempAuthUser.setApi(api);
-            tempAuthUser.setPermanentToken(permanentToken);
-            tempAuthUser.setOrgId(SessionManager.getInstance().getAuthUser().getOrgId());
-            SessionManager.getInstance().saveLoginCredential(tempAuthUser);
-        }
-
-    }
-
-    @Override
-    public void onRequestFailed(final DataServiceImpl service, final BaseException exception) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                //授权验证失败后，说明该设备被取消授权
-                if (service instanceof PermanentTokenLoginService && exception instanceof ServerAuthException){
-                    SharedPreferences preferences=getSharedPreferences("yunsoo_pda",MODE_PRIVATE);
-                    SharedPreferences.Editor editor=preferences.edit();
-                    editor.putBoolean("isAuthorize", false);
-                    editor.commit();
-                    SessionManager.getInstance().logout();
-                    AlertDialog dialog = new AlertDialog.Builder(PathMainActivity.this).setTitle(R.string.not_authorize)
-                            .setMessage(R.string.not_authorize_message)
-                            .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Intent intent=new Intent(PathMainActivity.this,AuthorizeActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            }).create();
-                    dialog.setCancelable(false);
-                    dialog.show();
-                }else {
-                    ToastMessageHelper.showErrorMessage(PathMainActivity.this,exception.getMessage(),true);
-                }
-            }
-        });
-
-    }
 }

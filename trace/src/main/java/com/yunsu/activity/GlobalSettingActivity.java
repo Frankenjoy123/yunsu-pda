@@ -173,14 +173,15 @@ public class GlobalSettingActivity extends BaseActivity {
                         .setPositiveButton(R.string.confirm_cancel_authorize, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                SharedPreferences preferences=getSharedPreferences("yunsoo_pda",MODE_PRIVATE);
+                                SharedPreferences preferences=getSharedPreferences(Constants.Preference.YUNSU_PDA,MODE_PRIVATE);
                                 SharedPreferences.Editor editor=preferences.edit();
-                                editor.putBoolean("isAuthorize", false);
+                                editor.putBoolean(Constants.Preference.IS_AUTHORIZE, false);
                                 editor.commit();
                                 SessionManager.getInstance().logout();
                                 Intent intent=new Intent(GlobalSettingActivity.this,AuthorizeActivity.class);
                                 startActivity(intent);
                                 finish();
+                                PathMainActivity.pathMainActivity.finish();
                             }
                         }).setNegativeButton(R.string.no, null).create();
                 dialog.setCancelable(false);
@@ -189,6 +190,8 @@ public class GlobalSettingActivity extends BaseActivity {
         });
 
     }
+
+
 
     /**
      * 设置数据同步的频率

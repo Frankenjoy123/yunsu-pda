@@ -17,6 +17,7 @@ import com.yunsu.common.exception.ServerAuthException;
 import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.service.DataServiceImpl;
 import com.yunsu.common.service.PermanentTokenLoginService;
+import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.ToastMessageHelper;
 
 import org.json.JSONObject;
@@ -98,21 +99,8 @@ public abstract class BaseActivity extends Activity implements DataServiceImpl.D
     }
 
     @Override
-    public void onRequestSucceeded(final DataServiceImpl service, final JSONObject data, boolean isCached) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                hideLoading();
-                if (service instanceof PermanentTokenLoginService){
-                    AuthUser authUser=SessionManager.getInstance().getAuthUser();
-                    LoginResult loginResult=new LoginResult();
-                    loginResult.populate(data);
-                    authUser.setAccessToken(loginResult.getAccessToken());
-                    SessionManager.getInstance().saveLoginCredential(authUser);
-                    SessionManager.getInstance().restore();
-                }
-            }
-        });
+    public void onRequestSucceeded(DataServiceImpl service, JSONObject data, boolean isCached) {
+
     }
 
     @Override
@@ -123,9 +111,9 @@ public abstract class BaseActivity extends Activity implements DataServiceImpl.D
             public void run() {
                 hideLoading();
                 if (service instanceof PermanentTokenLoginService && exception instanceof ServerAuthException){
-                    SharedPreferences preferences=getSharedPreferences("yunsoo_pda",MODE_PRIVATE);
+                    SharedPreferences preferences=getSharedPreferences(Constants.Preference.YUNSU_PDA,MODE_PRIVATE);
                     SharedPreferences.Editor editor=preferences.edit();
-                    editor.putBoolean("isAuthorize", false);
+                    editor.putBoolean(Constants.Preference.IS_AUTHORIZE, false);
                     editor.commit();
                     SessionManager.getInstance().logout();
                     AlertDialog dialog = new AlertDialog.Builder(BaseActivity.this).setTitle(R.string.not_authorize)

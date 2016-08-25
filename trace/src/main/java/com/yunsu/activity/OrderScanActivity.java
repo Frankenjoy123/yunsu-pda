@@ -150,6 +150,15 @@ public class OrderScanActivity extends BaseActivity {
         tv_order_id.setText(String.valueOf(material.getId()));
         tv_outbound_amount.setText(String.valueOf(material.getAmount()));
         tv_outbound_count.setText(String.valueOf(material.getSent()));
+        if (material.getProgressStatus().equals(Constants.DB.FINISHED)){
+            btn_confirm_finish.setVisibility(View.GONE);
+        }else if (material.getProgressStatus().equals(Constants.DB.NOT_START)){
+            btn_confirm_finish.setVisibility(View.VISIBLE);
+            btn_confirm_finish.setEnabled(false);
+        }else {
+            btn_confirm_finish.setVisibility(View.VISIBLE);
+            btn_confirm_finish.setEnabled(true);
+        }
     }
 
 

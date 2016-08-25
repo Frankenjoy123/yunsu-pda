@@ -101,6 +101,9 @@ public final class Constants {
 		public final static String KEY_FOLLOWING_DATA = "manufacturer_data";
 		public final static String PREF_ORG = "org";
 		public final static String KEY_LAST_MESSAGE_ID = "manufacturer_data";
+
+		public final static String YUNSU_PDA="yunsoo_pda";
+		public final static String IS_AUTHORIZE="isAuthorize";
 	}
 
 	public final static class Request {

@@ -1,15 +1,18 @@
 package com.yunsu.common.service;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
-
 import com.yunsu.common.entity.AuthUser;
+import com.yunsu.common.entity.LoginResult;
 import com.yunsu.common.exception.LocalGeneralException;
 import com.yunsu.common.exception.NetworkNotAvailableException;
 import com.yunsu.common.exception.ServerAuthException;
 import com.yunsu.common.exception.ServerGeneralException;
 import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.network.RequestManager;
+import com.yunsu.common.util.Constants;
 
 import org.json.JSONObject;
 
@@ -19,9 +22,14 @@ public class PermanentTokenLoginService extends DataServiceImpl {
 
     private String permanent_token;
 
+    private Context context;
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
     public PermanentTokenLoginService(String permanent_token) {
         this.permanent_token = permanent_token;
-
     }
 
     @Override
@@ -29,17 +37,22 @@ public class PermanentTokenLoginService extends DataServiceImpl {
             NetworkNotAvailableException, Exception {
 
         Log.d("ZXW","PermanentTokenLoginService start");
-        JSONObject result = RequestManager.GetWithURL(URL + permanent_token);
-        String accessToken=result.optString("token");
+        JSONObject data = RequestManager.GetWithURL(URL + permanent_token);
+        String newAccessToken=data.optString("token");
 
-        AuthUser user = new AuthUser();
-        user.setAccessToken(accessToken);
+        AuthUser authUser=SessionManager.getInstance().getAuthUser();
+        authUser.setAccessToken(newAccessToken);
+        SessionManager.getInstance().saveLoginCredential(authUser);
 
-        SessionManager.getInstance().saveLoginCredential(user);
+        if (context!=null){
+            SharedPreferences preferences=context.getSharedPreferences(Constants.Preference.YUNSU_PDA,Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor=preferences.edit();
+            editor.putBoolean(Constants.Preference.IS_AUTHORIZE, true);
+            editor.commit();
+        }
 
-
-        return result;
-
+        return data;
     }
+
 
 }
