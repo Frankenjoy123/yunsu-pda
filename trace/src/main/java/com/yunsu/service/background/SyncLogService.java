@@ -1,5 +1,6 @@
 package com.yunsu.service.background;
 
+import android.app.IntentService;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -20,16 +21,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class SyncLogService extends Service implements DataServiceImpl.DataServiceDelegate{
+public class SyncLogService extends IntentService implements DataServiceImpl.DataServiceDelegate{
     public static final String TAG = "SyncLogService";
 
-    public SyncLogService() {
+
+    public SyncLogService( ) {
+        super(TAG);
     }
 
+
     @Override
-    public void onCreate() {
-        super.onCreate();
-        Log.d(TAG, "onCreate() executed");
+    protected void onHandleIntent(Intent intent) {
         startSync();
     }
 
@@ -85,23 +87,6 @@ public class SyncLogService extends Service implements DataServiceImpl.DataServi
 
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand() executed");
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy() executed");
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
 
     @Override
     public void onRequestSucceeded(DataServiceImpl service, JSONObject data, boolean isCached) {

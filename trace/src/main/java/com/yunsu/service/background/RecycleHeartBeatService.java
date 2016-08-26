@@ -35,7 +35,13 @@ public class RecycleHeartBeatService extends Service implements DataServiceImpl.
     @Override
     public void onCreate() {
         super.onCreate();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(TAG, "onStartCommand() executed");
         startSync();
+        return super.onStartCommand(intent, flags, startId);
     }
 
     private void startSync(){
@@ -65,11 +71,7 @@ public class RecycleHeartBeatService extends Service implements DataServiceImpl.
         }
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand() executed");
-        return super.onStartCommand(intent, flags, startId);
-    }
+
 
     @Override
     public void onDestroy() {

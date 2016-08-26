@@ -148,7 +148,7 @@
     <string name="outbound_scan">出库扫描</string>
     <string name="outbound_order">出库订单</string>
     <string name="add">添加</string>
-    <string name="order">订单</string>
+    <string name="order">订单：</string>
     <string name="create_new_order">新建订单</string>
     <string name="done">完成</string>
     <string name="please_type_in_amount">请输入发货数</string>

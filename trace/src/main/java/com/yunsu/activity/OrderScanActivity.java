@@ -24,6 +24,7 @@ import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.StringUtils;
+import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.view.TitleBar;
 import com.yunsu.greendao.entity.Material;
 import com.yunsu.greendao.entity.Pack;
@@ -92,7 +93,7 @@ public class OrderScanActivity extends BaseActivity {
         getActionBar().hide();
         titleBar.setTitle(getString(R.string.outbound_scan));
         titleBar.setDisplayAsBack(true);
-        titleBar.setMode(TitleBar.TitleBarMode.BOTH_BUTTONS);
+        titleBar.setMode(TitleBar.TitleBarMode.LEFT_BUTTON);
         titleBar.setRightButtonText(getString(R.string.done));
         
         final long id=getIntent().getLongExtra(OrderListActivity.ID,0);
@@ -120,27 +121,19 @@ public class OrderScanActivity extends BaseActivity {
     }
 
     private void bindConfirmFinishOrder() {
-        btn_confirm_finish.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog dialog = new AlertDialog.Builder(OrderScanActivity.this).setTitle(R.string.confirm_finish).setMessage(R.string.confirm_finish_message)
-                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                showLoading();
-                                ServiceExecutor.getInstance().execute(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        material.setProgressStatus(Constants.DB.FINISHED);
-                                        materialService.updateMaterial(material);
-                                        handler.sendEmptyMessage(CONFIRM_FINISH_ORDER_MSG);
-                                    }
-                                });
-                            }
-                        }).setNegativeButton(R.string.cancel,null).create();
-                dialog.setCancelable(false);
-                dialog.show();
-            }
+        btn_confirm_finish.setOnClickListener(view -> {
+
+            AlertDialog dialog = new AlertDialog.Builder(OrderScanActivity.this).setTitle(R.string.confirm_finish).setMessage(R.string.confirm_finish_message)
+                    .setPositiveButton(R.string.confirm, (dialogInterface, i) -> {
+                        showLoading();
+                        ServiceExecutor.getInstance().execute(() -> {
+                            material.setProgressStatus(Constants.DB.FINISHED);
+                            materialService.updateMaterial(material);
+                            handler.sendEmptyMessage(CONFIRM_FINISH_ORDER_MSG);
+                        });
+                    }).setNegativeButton(R.string.cancel,null).create();
+            dialog.setCancelable(false);
+            dialog.show();
         });
     }
 
@@ -159,6 +152,7 @@ public class OrderScanActivity extends BaseActivity {
             btn_confirm_finish.setVisibility(View.VISIBLE);
             btn_confirm_finish.setEnabled(true);
         }
+
     }
 
 

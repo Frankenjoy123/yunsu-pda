@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     signingConfigs {
@@ -75,6 +76,11 @@ android {
         main{
             java.srcDirs = ['src/main/java','src/main/java-gen']
         }
+    }
+
+    compileOptions{
+        targetCompatibility  org.gradle.api.JavaVersion.VERSION_1_8
+        sourceCompatibility  org.gradle.api.JavaVersion.VERSION_1_8
     }
 }
 

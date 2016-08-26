@@ -8,19 +8,62 @@
     android:layout_marginTop="20dp"
     android:padding="10dp">
 
+    <RelativeLayout
+        android:id="@+id/rl_agency_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/ic_agency"
+            android:src="@drawable/ic_agency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_agency_des"
+            android:text="@string/agency"
+            style="@style/text_style_order_list"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:layout_toRightOf="@+id/ic_agency"
+            android:layout_marginLeft="10dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_agency_name"
+            style="@style/text_style_order_list"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:text="杭州经销商"
+            android:layout_toRightOf="@+id/tv_agency_des"
+            android:layout_marginLeft="10dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_progress_status"
+            style="@style/text_style_order_list"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:text="未开始"
+            android:layout_alignParentRight="true"
+            />
+
+
+
+    </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/ll_order_number"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:focusable="false"
         android:focusableInTouchMode="false"
+        android:layout_below="@+id/rl_agency_status"
         >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/text_style_report"
+            style="@style/text_style_order_list"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:text="@string/order"/>
@@ -28,21 +71,12 @@
             android:id="@+id/tv_order_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/text_style_report"
+            style="@style/text_style_order_list"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:text="1" />
 
-        <TextView
-            android:id="@+id/tv_progress_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/text_style_report"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:layout_marginLeft="40dp"
-            android:text="未开始"
-            />
+
 
     </LinearLayout>
 
@@ -55,83 +89,43 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         >
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
+        <TextView
+            android:text="@string/outbound_schedule"
+            style="@style/text_style_order_list"
             android:focusable="false"
-            android:focusableInTouchMode="false"
-            >
-            <TextView
-                android:text="@string/agency"
-                style="@style/text_style_report"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                />
-
-            <TextView
-                android:text="@string/outbound_schedule"
-                style="@style/text_style_report"
-                android:focusable="false"
-                android:focusableInTouchMode="false"/>
-
-        </LinearLayout>
+            android:focusableInTouchMode="false"/>
 
         <LinearLayout
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
             android:focusable="false"
-            android:focusableInTouchMode="false"
-            >
+            android:focusableInTouchMode="false">
             <TextView
-                android:id="@+id/tv_agency_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/text_style_report"
+                android:id="@+id/tv_outbound_count"
+                style="@style/text_style_order_list"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:text="杭州经销商"
-                />
-
-            <LinearLayout
-                android:orientation="horizontal"
+                android:text="10" />
+            <TextView
+                android:text="/"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:focusable="false"
-                android:focusableInTouchMode="false">
-                <TextView
-                    android:id="@+id/tv_outbound_count"
-                    style="@style/text_style_report"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:text="10" />
-                <TextView
-                    android:text="/"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    style="@style/text_style_report"
-                    />
-                <TextView
-                    android:id="@+id/tv_outbound_amount"
-                    style="@style/text_style_report"
-                    android:text="100"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
+                android:focusableInTouchMode="false"
+                style="@style/text_style_order_list"
+                />
+            <TextView
+                android:id="@+id/tv_outbound_amount"
+                style="@style/text_style_order_list"
+                android:text="100"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
-
 
     </LinearLayout>
-
-
 
 </RelativeLayout>

@@ -5,6 +5,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
@@ -67,6 +68,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
      */
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
+//        System.out.println(thread.getId()+","+thread.getName()+","+thread.getState());
+
         if (!handleException(ex) && mDefaultHandler != null) {
             //如果用户没有处理则让系统默认的异常处理器来处理
             mDefaultHandler.uncaughtException(thread, ex);
@@ -100,10 +103,12 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             @Override
             public void run() {
                 Looper.prepare();
-                Toast.makeText(mContext, "很抱歉,程序出现异常,即将退出.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "哦哦,出现点小问题，重启就好，攻城狮正在加紧修复中。。。", Toast.LENGTH_LONG).show();
                 Looper.loop();
             }
         }.start();
+
+
         //保存日志文件
         saveCatchInfo2File(ex);
         return true;
