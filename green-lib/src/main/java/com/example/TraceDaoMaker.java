@@ -31,7 +31,10 @@ public class TraceDaoMaker {
 
         //创建物料表
         Entity material=schema.addEntity("Material");
+        //id
         material.addIdProperty().autoincrement();
+        //物流号
+        material.addStringProperty("materialNumber").notNull();
         //经销商ID
         material.addStringProperty("agencyId");
         //经销商名称
@@ -44,8 +47,6 @@ public class TraceDaoMaker {
         material.addLongProperty("amount");
         //已发货
         material.addLongProperty("sent");
-        //剩余
-        material.addLongProperty("remain");
         //创建时间
         material.addStringProperty("createTime");
         //完成时间

@@ -3,6 +3,8 @@ package com.yunsu.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -35,13 +37,14 @@ public class OrderListActivity extends  BaseActivity {
 
     public static final int ADD_NEW_ORDER_RESULT=456;
 
+    public static final int QUERY_ORDER_LIST_MSG=167;
+
     List<Material> materialList=new ArrayList<>();
 
     private MaterialService materialService;
 
     private OrderAdapter orderAdapter;
 
-    public static final String ID="id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +74,7 @@ public class OrderListActivity extends  BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent=new Intent(OrderListActivity.this,OrderScanActivity.class);
-                intent.putExtra(ID,materialList.get(i).getId());
+                intent.putExtra(Constants.DB.ID,materialList.get(i).getId());
                 startActivity(intent);
             }
         });
@@ -82,12 +85,32 @@ public class OrderListActivity extends  BaseActivity {
 
     @Override
     protected void onResume() {
-        List<Material> materialList=materialService.queryAllMaterial();
-        this.materialList.clear();
-        this.materialList.addAll(materialList);
-        orderAdapter.notifyDataSetChanged();
+        showLoading();
+        ServiceExecutor.getInstance().execute(() -> {
+            List<Material> materialList=materialService.queryAllMaterial();
+            this.materialList.clear();
+            this.materialList.addAll(materialList);
+            handler.sendEmptyMessage(QUERY_ORDER_LIST_MSG);
+        });
         super.onResume();
     }
+
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+
+                case QUERY_ORDER_LIST_MSG:
+                    hideLoading();
+                    orderAdapter.notifyDataSetChanged();
+                    break;
+
+            }
+            super.handleMessage(msg);
+        }
+
+
+    };
 
 }
 

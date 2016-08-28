@@ -70,26 +70,32 @@ public class OrderAdapter extends BaseAdapter
             view.setTag(holder);
         }
         ViewHolder holder= (ViewHolder) view.getTag();
-        holder.tv_order_id.setText(String.valueOf(materialList.get(i).getId()));
+        holder.tv_order_id.setText(String.valueOf(materialList.get(i).getMaterialNumber()));
         holder.tv_agency_name.setText(materialList.get(i).getAgencyName());
         holder.tv_outbound_count.setText(materialList.get(i).getSent()+"");
         holder.tv_outbound_amount.setText(materialList.get(i).getAmount()+"");
         String progressStatus=null;
+        int color = 0;
         switch (materialList.get(i).getProgressStatus()){
             case  Constants.DB.NOT_START:
                 progressStatus=activity.getString(R.string.not_start);
+                color=   activity.getResources().getColor(R.color.order_list_not_start);
                 break;
             case Constants.DB.IN_PROGRESS:
                 progressStatus=activity.getString(R.string.in_progress);
+                color=activity.getResources().getColor(R.color.order_list_in_progress);
                 break;
             case Constants.DB.FINISHED:
                 progressStatus=activity.getString(R.string.finished);
+                color=activity.getResources().getColor(R.color.order_list_finish);
                 break;
             default:
                 progressStatus=activity.getString(R.string.not_start);
+                color=   activity.getResources().getColor(R.color.order_list_not_start);
                 break;
         }
         holder.tv_progress_status.setText(progressStatus);
+        holder.tv_progress_status.setTextColor(color);
         return view;
     }
 

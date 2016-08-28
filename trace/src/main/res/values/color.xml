@@ -22,4 +22,10 @@
     <color name="action_press_color">#60A1A1A1</color>
     <color name="red_btn_normal_color">#EC7272</color>
     <color name="red_btn_press_color">#E65135</color>
+
+    <color name="order_list_grey">#666666</color>
+    
+    <color name="order_list_not_start">#fdb805</color>
+    <color name="order_list_in_progress">#f85700</color>
+    <color name="order_list_finish">#3285ff</color>
 </resources>

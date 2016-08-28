@@ -56,4 +56,15 @@
             android:layout_height="0dp"
             />
 
+
+	<TextView
+		android:id="@+id/tv_empty_pack_tip"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/pack_list_empty_tip"
+		style="@style/text_style_create_order"
+		android:gravity="center"
+		android:layout_centerInParent="true"
+		/>
+
 </RelativeLayout>

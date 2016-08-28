@@ -16,10 +16,12 @@ import java.util.List;
 public class MaterialServiceImpl implements MaterialService {
     private MaterialDao materialDao= GreenDaoManager.getInstance().getDaoSession().getMaterialDao();
     SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    SimpleDateFormat materialNumberFormat=new SimpleDateFormat("yyyyMMddHHmmssSSS");
 
     @Override
     public void insertMaterial(Material material) {
         material.setCreateTime(dateFormat.format(new Date()));
+        material.setMaterialNumber(materialNumberFormat.format(new Date()));
         materialDao.insert(material);
     }
 

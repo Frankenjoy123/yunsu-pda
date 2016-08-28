@@ -57,7 +57,15 @@ public final class Constants {
 		public static final String NOT_START="not_start";
 		public static final String IN_PROGRESS="in_progress";
 		public static final String FINISHED="finished";
+
+		public static final String ID="id";
+
+		public static final int HAS_OUTBOUND_IN_ORDER=11;
+		public static final int NOT_OUTBOUND=22;
+
+
 	}
+
 	
 	public final static class Cache {
 		public final static String CACHE_SDCARD_IMAGE_PATH = "/image";

@@ -35,6 +35,8 @@ import com.yunsu.sqlite.service.impl.PackServiceImpl;
 
 import org.apache.log4j.Logger;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -65,6 +67,9 @@ public class OrderScanActivity extends BaseActivity {
 
     @ViewById(id = R.id.btn_revoke_outbound)
     Button btn_revoke_outbound;
+
+    @ViewById(id = R.id.tv_progress_status)
+    TextView tv_progress_status;
     
     private MaterialService materialService;
 
@@ -80,36 +85,49 @@ public class OrderScanActivity extends BaseActivity {
 
     private static final int CONFIRM_FINISH_ORDER_MSG=303;
 
+    private static final int EXIST_IN_ORDER_MSG=123;
 
+    private static final int REVOKE_KEY_IN_OTHER_ORDER_MSG=125;
+
+    private  long id;
+
+    SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_scan);
-        init();
+        basicInit();
     }
 
-    private void init() {
+    private void basicInit() {
         getActionBar().hide();
         titleBar.setTitle(getString(R.string.outbound_scan));
         titleBar.setDisplayAsBack(true);
         titleBar.setMode(TitleBar.TitleBarMode.LEFT_BUTTON);
         titleBar.setRightButtonText(getString(R.string.done));
-        
-        final long id=getIntent().getLongExtra(OrderListActivity.ID,0);
+
+        id=getIntent().getLongExtra(Constants.DB.ID,0);
         materialService=new MaterialServiceImpl();
         packService=new PackServiceImpl();
+        bindRevokeOrder();
+        bindConfirmFinishOrder();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        init();
+    }
+
+    private void init() {
         showLoading();
-        
+
         if (id!=0){
             ServiceExecutor.getInstance().execute(new Runnable() {
                 @Override
                 public void run() {
                     material= materialService.queryById(id);
-                    sendCount=material.getSent();
-                    Message message=Message.obtain();
-                    message.what=QUERY_MATERIAL_SUCCESS;
                     handler.sendEmptyMessage(QUERY_MATERIAL_SUCCESS);
                 }
             });
@@ -117,7 +135,16 @@ public class OrderScanActivity extends BaseActivity {
 
         bindTextChanged();
 
-        bindConfirmFinishOrder();
+
+
+    }
+
+    private void bindRevokeOrder() {
+        btn_revoke_outbound.setOnClickListener(view -> {
+            Intent intent=new Intent(OrderScanActivity.this,OrderRevokeActivity.class);
+            intent.putExtra(Constants.DB.ID,id);
+            startActivity(intent);
+        });
     }
 
     private void bindConfirmFinishOrder() {
@@ -128,6 +155,8 @@ public class OrderScanActivity extends BaseActivity {
                         showLoading();
                         ServiceExecutor.getInstance().execute(() -> {
                             material.setProgressStatus(Constants.DB.FINISHED);
+                            SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                            material.setFinishTime(dateFormat.format(new Date()));
                             materialService.updateMaterial(material);
                             handler.sendEmptyMessage(CONFIRM_FINISH_ORDER_MSG);
                         });
@@ -140,20 +169,41 @@ public class OrderScanActivity extends BaseActivity {
     private void refreshUI(){
         hideLoading();
         tv_agency_name.setText(material.getAgencyName());;
-        tv_order_id.setText(String.valueOf(material.getId()));
+        tv_order_id.setText(String.valueOf(material.getMaterialNumber()));
         tv_outbound_amount.setText(String.valueOf(material.getAmount()));
         tv_outbound_count.setText(String.valueOf(material.getSent()));
-        if (material.getProgressStatus().equals(Constants.DB.FINISHED)){
-            btn_confirm_finish.setVisibility(View.GONE);
-        }else if (material.getProgressStatus().equals(Constants.DB.NOT_START)){
-            btn_confirm_finish.setVisibility(View.VISIBLE);
-            btn_confirm_finish.setEnabled(false);
-        }else {
-            btn_confirm_finish.setVisibility(View.VISIBLE);
-            btn_confirm_finish.setEnabled(true);
+        String progressStatus=null;
+        int color=0;
+        switch (material.getProgressStatus()){
+            case  Constants.DB.NOT_START:
+                progressStatus=getString(R.string.not_start);
+                color=   getResources().getColor(R.color.order_list_not_start);
+                btn_confirm_finish.setEnabled(false);
+                btn_revoke_outbound.setEnabled(false);
+                break;
+            case Constants.DB.IN_PROGRESS:
+                progressStatus=getString(R.string.in_progress);
+                color=getResources().getColor(R.color.order_list_in_progress);
+                btn_confirm_finish.setEnabled(true);
+                btn_revoke_outbound.setEnabled(true);
+                break;
+            case Constants.DB.FINISHED:
+                progressStatus=getString(R.string.finished);
+                color=getResources().getColor(R.color.order_list_finish);
+                btn_confirm_finish.setEnabled(false);
+                btn_revoke_outbound.setEnabled(true);
+                break;
+            default:
+                progressStatus=getString(R.string.not_start);
+                color=   getResources().getColor(R.color.order_list_not_start);
+                btn_confirm_finish.setEnabled(false);
+                break;
         }
 
+        tv_progress_status.setText(progressStatus);
+        tv_progress_status.setTextColor(color);
     }
+
 
 
     /**
@@ -213,40 +263,104 @@ public class OrderScanActivity extends BaseActivity {
         ServiceExecutor.getInstance().execute(new Runnable() {
             @Override
             public void run() {
-                Pack pack=new Pack();
-                pack.setPackKey(packKey);
-                pack.setStatus(Constants.DB.NOT_SYNC);
-                pack.setActionId(Constants.Logistic.OUTBOUND_CODE);
-                pack.setAgency(material.getAgencyId());
-                pack.setMaterial(material);
-                pack.setMaterialId(material.getId());
-                packService.insertPackWithCheck(pack);
+                Pack queryPack=new Pack();
+                queryPack.setActionId(Constants.Logistic.OUTBOUND_CODE);
+                queryPack.setPackKey(packKey);
+                Pack resultPack=packService.queryRevokeOrNot(queryPack);
 
-                material.setSent(material.getSent()+1);
-                if (material.getSent()<material.getAmount()){
-                    material.setProgressStatus(Constants.DB.IN_PROGRESS);
-                }else {
-                    material.setProgressStatus(Constants.DB.FINISHED);
+                //包装不存在于任何订单中
+                if (resultPack==null){
+                    Pack pack=new Pack();
+                    pack.setPackKey(packKey);
+                    pack.setStatus(Constants.DB.NOT_SYNC);
+                    pack.setActionId(Constants.Logistic.OUTBOUND_CODE);
+                    pack.setAgency(material.getAgencyId());
+                    pack.setMaterialId(material.getId());
+                    pack.setSaveTime(dateFormat.format(new Date()));
+                    pack.setMaterialId(material.getId());
+                    pack.setAgency(material.getAgencyId());
+                    packService.insertPackData(pack);
+
+                    updateMaterialIncrease();
+
+                    handler.sendEmptyMessage(INSERT_PACK_SUCCESS);
                 }
-                materialService.updateMaterial(material);
+                else {
+                    //包装码已经存在于当前订单中
+                    if (resultPack.getMaterialId()==material.getId()){
 
-                handler.sendEmptyMessage(INSERT_PACK_SUCCESS);
+                        //在当前订单中已被撤销
+                        if (resultPack.getStatus().equals(Constants.Logistic.REVOKE_OUTBOUND_CODE)){
+                            resultPack.setActionId(Constants.Logistic.OUTBOUND_CODE);
+                            resultPack.setStatus(Constants.DB.NOT_SYNC);
+                            resultPack.setSaveTime(dateFormat.format(new Date()));
+                            packService.updatePack(resultPack);
+
+                            updateMaterialIncrease();
+                            handler.sendEmptyMessage(INSERT_PACK_SUCCESS);
+
+                        }else {//在当前订单中未被撤销过
+                            handler.sendEmptyMessage(EXIST_IN_ORDER_MSG);
+                        }
+
+                    //包装码存在于其他订单中
+                    }else {
+
+                        // 码在其他订单中，已被撤销
+                        if (resultPack.getActionId().equals(Constants.Logistic.REVOKE_OUTBOUND_CODE)){
+                            resultPack.setMaterialId(material.getId());
+                            resultPack.setActionId(Constants.Logistic.OUTBOUND_CODE);
+                            resultPack.setStatus(Constants.DB.NOT_SYNC);
+                            resultPack.setSaveTime(dateFormat.format(new Date()));
+                            resultPack.setAgency(material.getAgencyId());
+                            packService.updatePack(resultPack);
+
+                            updateMaterialIncrease();
+                            handler.sendEmptyMessage(INSERT_PACK_SUCCESS);
+
+                        }
+                        //码在其他订单中，未被撤销
+                        else {
+
+                            Message message=Message.obtain();
+                            message.obj=materialService.queryById(resultPack.getMaterialId()).getMaterialNumber();
+                            message.what=REVOKE_KEY_IN_OTHER_ORDER_MSG;
+                            handler.sendMessage(message);
+
+                        }
+                    }
+                }
 
             }
         });
     }
 
+    //物料订单加1更新
+    private void updateMaterialIncrease() {
+        material.setSent(material.getSent()+1);
+        if (material.getSent()<material.getAmount()){
+            material.setProgressStatus(Constants.DB.IN_PROGRESS);
+        }else {
+            material.setProgressStatus(Constants.DB.FINISHED);
+            SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            material.setFinishTime(dateFormat.format(new Date()));
+        }
+        materialService.updateMaterial(material);
+    }
+
+
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
+
                 case QUERY_MATERIAL_SUCCESS:
                     hideLoading();
                     refreshUI();
                     break;
+
                 case INSERT_PACK_SUCCESS:
                     refreshUI();
-
                     if (material.getSent()==material.getAmount()){
                         AlertDialog dialog = new AlertDialog.Builder(OrderScanActivity.this).setTitle(R.string.order_finish).setMessage(R.string.order_finish_message)
                                 .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
@@ -260,9 +374,22 @@ public class OrderScanActivity extends BaseActivity {
                     }
 
                     break;
+
+                case EXIST_IN_ORDER_MSG:
+                    ToastMessageHelper.showMessage(OrderScanActivity.this,
+                            R.string.key_exist_in_this_order,false);
+                    break;
+
+                case REVOKE_KEY_IN_OTHER_ORDER_MSG:
+                    ToastMessageHelper.showMessage(OrderScanActivity.this,
+                            String.format(getString(R.string.key_exist_in_other_order),msg.obj),false);
+                    break;
+
                 case CONFIRM_FINISH_ORDER_MSG:
                     hideLoading();
                     finish();
+                    break;
+
             }
         }
     };

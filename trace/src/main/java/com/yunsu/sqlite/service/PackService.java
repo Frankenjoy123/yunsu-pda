@@ -21,11 +21,17 @@ public interface PackService {
     //撤销一条记录
     void revokePathData(Pack pack);
 
+    //撤销出库订单中的包装
+    void revokePackInOrder(Pack pack);
+
     //根据Key,actionid ，status查询
     Pack queryByKeyActionStatus(Pack pack);
 
     //根据Key,actionId查询
     Pack queryByKeyAction(Pack pack);
+
+    //根据Key,materialId查询
+    Pack queryByKeyMaterialId(Pack pack);
 
     //查询入库。撤销入库，或者出库或者撤销出库的记录
     Pack queryRevokeOrNot(Pack pack);

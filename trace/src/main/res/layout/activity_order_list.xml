@@ -15,7 +15,9 @@
         android:id="@+id/lv_order"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/title_bar"></ListView>
+        android:layout_below="@+id/title_bar"
+        android:dividerHeight="5dp"
+        ></ListView>
 
     <TextView
         android:id="@+id/tv_empty_order_tip"

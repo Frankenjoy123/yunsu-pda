@@ -76,4 +76,12 @@
 
     </style>
 
+    <style name="text_style_order_scan_big">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">40dp</item>
+
+    </style>
+
+
 </resources>

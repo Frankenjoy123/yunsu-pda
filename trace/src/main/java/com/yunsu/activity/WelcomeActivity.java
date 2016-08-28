@@ -66,11 +66,6 @@ public class WelcomeActivity extends BaseActivity{
         iv_icon.setLayoutParams(params);
 
         ll_btn_area.setVisibility(View.GONE);
-
-        int a=1;
-        int b=0;
-        int c=a/b;
-
     }
 
     private void gotoAuthorizeActivity() {

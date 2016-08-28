@@ -6,7 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.yunsu.entity.OrgAgency;
+import com.yunsu.greendao.entity.Material;
 import com.yunsu.manager.GreenDaoManager;
+import com.yunsu.sqlite.service.MaterialService;
 import com.yunsu.sqlite.service.PackService;
 import com.yunsu.common.util.Constants;
 import com.yunsu.greendao.dao.PackDao;
@@ -31,13 +33,19 @@ public class PackServiceImpl implements PackService {
     private SQLiteDatabase db=GreenDaoManager.getInstance().getDb();
     SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
+    private MaterialService materialService=new MaterialServiceImpl();
+
     @Override
     public void insertPackData(Pack pack) {
         packDao.insert(pack);
     }
 
     @Override
-    public void insertPackWithCheck(Pack pack) {
+    public void  insertPackWithCheck(Pack pack) {
+
+        //扫码是否存在于当前订单
+        boolean existInOrder=false;
+
         HashSet<String> set=new HashSet();
         if (pack.getActionId().equals(Constants.Logistic.INBOUND_CODE)){
             set.add(Constants.Logistic.INBOUND_CODE);
@@ -52,6 +60,20 @@ public class PackServiceImpl implements PackService {
         List<Pack> packList=queryBuilder.list();
         if (packList!=null&&packList.size()>0){
             Pack resultPack=packList.get(0);
+            if (resultPack.getMaterialId()!=null&&resultPack.getMaterialId()!=0){
+                //目前的订单号和之前的订单号不一致，更新之前的订单信息
+                if (pack.getMaterialId()!=resultPack.getMaterialId()){
+                    Material oldMaterial=materialService.queryById(resultPack.getMaterialId());
+                    oldMaterial.setSent(oldMaterial.getSent()-1);
+                    if (oldMaterial.getSent()==0){
+                        oldMaterial.setProgressStatus(Constants.DB.NOT_START);
+                    }else {
+                        oldMaterial.setProgressStatus(Constants.DB.IN_PROGRESS);
+                    }
+                    materialService.updateMaterial(oldMaterial);
+                }
+
+            }
             resultPack.setActionId(pack.getActionId());
             resultPack.setAgency(pack.getAgency());
             resultPack.setStatus(Constants.DB.NOT_SYNC);
@@ -82,6 +104,14 @@ public class PackServiceImpl implements PackService {
     }
 
     @Override
+    public void revokePackInOrder(Pack pack) {
+        pack.setActionId(Constants.Logistic.REVOKE_OUTBOUND_CODE);
+        pack.setStatus(Constants.DB.NOT_SYNC);
+        pack.setSaveTime(dateFormat.format(new Date()));
+        updatePack(pack);
+    }
+
+    @Override
     public Pack queryByKeyActionStatus(Pack pack) {
         QueryBuilder<Pack> queryBuilder=packDao.queryBuilder();
         queryBuilder.where(queryBuilder.and(PackDao.Properties.PackKey.eq(pack.getPackKey()),
@@ -96,6 +126,14 @@ public class PackServiceImpl implements PackService {
         QueryBuilder<Pack> queryBuilder=packDao.queryBuilder();
         queryBuilder.where(PackDao.Properties.PackKey.eq(pack.getPackKey()),
                 PackDao.Properties.ActionId.eq(pack.getActionId()));
+        return queryBuilder.unique();
+    }
+
+    @Override
+    public Pack queryByKeyMaterialId(Pack pack) {
+        QueryBuilder<Pack> queryBuilder=packDao.queryBuilder();
+        queryBuilder.where(PackDao.Properties.PackKey.eq(pack.getPackKey()),
+                PackDao.Properties.MaterialId.eq(pack.getMaterialId()));
         return queryBuilder.unique();
     }
 

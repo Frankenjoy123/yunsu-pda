@@ -2,6 +2,7 @@ package com.yunsu.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.yunsu.adapter.LogisticActionAdapter;
 import com.yunsu.adapter.PathAdapter;
+import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.sqlite.service.PackService;
 import com.yunsu.sqlite.service.impl.PackServiceImpl;
@@ -45,6 +47,9 @@ public class PathActivity extends Activity {
     private TextView tv_agency_name;
     private TextView tv_count_value;
     private PackService packService;
+
+    @ViewById(id = R.id.tv_empty_pack_tip)
+    private TextView tv_empty_pack_tip;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,21 +79,25 @@ public class PathActivity extends Activity {
 
         getActionBar().hide();
         titleBar=(TitleBar) findViewById(R.id.title_bar);
-        titleBar.setMode(TitleBar.TitleBarMode.LEFT_BUTTON);
+        titleBar.setMode(TitleBar.TitleBarMode.BOTH_BUTTONS);
         titleBar.setDisplayAsBack(true);
         if (actionId.equals(Constants.Logistic.INBOUND_CODE)){
             titleBar.setTitle(getString(R.string.inbound_scan));
         }else {
             titleBar.setTitle(getString(R.string.outbound_scan));
         }
-
+        titleBar.setRightButtonText(getString(R.string.repeal_inbound));
+        titleBar.setOnRightButtonClickedListener(view -> {
+            Intent intent =new Intent(PathActivity.this,RevokeScanActivity.class);
+            intent.putExtra(Constants.TITLE,Constants.Logistic.REVOKE_INBOUND);
+            startActivity(intent);
+        });
         lv_path=(ListView) findViewById(R.id.lv_path);
         adaper=new PathAdapter(this, getResources());
         adaper.setKeyList(keys);
-
         lv_path.setAdapter(adaper);
+        lv_path.setEmptyView(tv_empty_pack_tip);
         bindTextChanged();
-
     }
 
 

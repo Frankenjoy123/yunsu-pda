@@ -5,13 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/item_bg_bottom"
-    android:layout_marginTop="20dp"
-    android:padding="10dp">
+    android:layout_marginTop="20dp">
 
     <RelativeLayout
         android:id="@+id/rl_agency_status"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        >
         <ImageView
             android:id="@+id/ic_agency"
             android:src="@drawable/ic_agency"
@@ -22,6 +24,7 @@
             android:id="@+id/tv_agency_des"
             android:text="@string/agency"
             style="@style/text_style_order_list"
+            android:textColor="@color/order_list_grey"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:layout_toRightOf="@+id/ic_agency"
@@ -31,6 +34,7 @@
         <TextView
             android:id="@+id/tv_agency_name"
             style="@style/text_style_order_list"
+            android:textColor="@color/order_list_grey"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:text="杭州经销商"
@@ -72,6 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/text_style_order_list"
+            android:textColor="#f14439"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:text="1" />

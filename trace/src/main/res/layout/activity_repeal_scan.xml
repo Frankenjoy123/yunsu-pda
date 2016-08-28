@@ -18,6 +18,16 @@
         android:layout_height="match_parent"
         android:layout_below="@id/revoke_scan_title_bar"
         ></ListView>
+
+    <TextView
+        android:id="@+id/tv_empty_key_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/revoke_scan_tip"
+        style="@style/text_style_create_order"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        />
     <EditText
         android:id="@+id/et_revoke_scan"
         android:layout_width="0dp"

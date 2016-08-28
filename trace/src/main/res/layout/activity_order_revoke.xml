@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.yunsu.activity.OrderScanActivity">
+    tools:context="com.yunsu.activity.OrderRevokeActivity">
     <com.yunsu.common.view.TitleBar
         android:id="@+id/title_bar"
         layout="@layout/title_bar_layout"
@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/title_bar"
         android:background="@drawable/item_bg_bottom_normal"
-       >
+        >
         <TextView
             android:id="@+id/tv_agency_name_des"
             android:text="@string/agency"
@@ -28,12 +28,6 @@
             style="@style/text_style_order_list"
             android:layout_toRightOf="@+id/tv_agency_name_des"
             android:text="杭州经销商"
-            />
-        <TextView
-            android:id="@+id/tv_progress_status"
-            style="@style/text_style_order_list"
-            android:layout_alignParentRight="true"
-            android:text="未开始"
             />
     </RelativeLayout>
 
@@ -97,7 +91,7 @@
         android:layout_centerHorizontal="true"
         >
         <TextView
-            android:text="@string/scan_key"
+            android:text="@string/revoke_scan_key"
             style="@style/text_style_order_list" />
         <TextView
             android:id="@+id/tv_scan_key"
@@ -123,7 +117,7 @@
             android:layout_width="100dp"
             android:layout_height="130dp" />
         <TextView
-            android:text="@string/scan_key_tip"
+            android:text="@string/revoke_scan_tip"
             style="@style/text_style_order_list"
             android:textColor="#cccccc"
             />
@@ -136,35 +130,5 @@
         android:layout_height="0dp"
         />
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        >
-        <Button
-            android:id="@+id/btn_confirm_finish"
-            android:text="@string/confirm_finish"
-            android:background="@drawable/btn_bg"
-            android:textColor="@color/clear_color"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:padding="10dp"
-            />
-
-        <Button
-            android:id="@+id/btn_revoke_outbound"
-            android:text="@string/revoke_operation"
-            android:background="@drawable/btn_bg"
-            android:textColor="@color/clear_color"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_weight="0.5"
-            />
-
-    </LinearLayout>
 
 </RelativeLayout>

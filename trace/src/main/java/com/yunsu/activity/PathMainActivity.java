@@ -47,7 +47,6 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_path_main);
         init();
-        startService();
         setupActionItems();
         checkAuthorizeStatus();
 //        initData();
@@ -90,7 +89,6 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
     private void setupActionItems() {
         buildViewContent(this.findViewById(R.id.rl_action_inbound), R.drawable.ic_inbound, R.string.inbound_scan);
         buildViewContent(this.findViewById(R.id.rl_action_outbound), R.drawable.ic_outbound, R.string.outbound_order);
-        buildViewContent(this.findViewById(R.id.rl_action_revoke), R.drawable.ic_revoke, R.string.repeal_operation);
         buildViewContent(this.findViewById(R.id.rl_action_report), R.drawable.ic_report, R.string.data_report);
         buildViewContent(this.findViewById(R.id.rl_action_setting), R.drawable.ic_setting, R.string.settings);
     }
@@ -101,6 +99,13 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
         TextView tv = (TextView) view.findViewById(R.id.tv_action_name);
         tv.setText(textResourceId);
         view.setOnClickListener(this);
+    }
+
+    @Override
+    public void onRequestSucceeded(DataServiceImpl service, JSONObject data, boolean isCached) {
+        if (service instanceof PermanentTokenLoginService){
+            startService();
+        }
     }
 
     @Override
@@ -117,10 +122,6 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
                 outboundIntent.putExtra(Constants.Logistic.ACTION_ID,Constants.Logistic.OUTBOUND_CODE);
                 outboundIntent.putExtra(Constants.Logistic.ACTION_NAME,Constants.Logistic.OUTBOUND);
                 startActivity(outboundIntent);
-                break;
-            case R.id.rl_action_revoke:
-                Intent intent1=new Intent(PathMainActivity.this,RevokeOperationActivity.class);
-                startActivity(intent1);
                 break;
             case R.id.rl_action_report:
                 Intent intent=new Intent(PathMainActivity.this,DateQueryActivity.class);

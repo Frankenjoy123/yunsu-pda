@@ -9,9 +9,11 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yunsu.adapter.PathAdapter;
+import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.sqlite.service.PackService;
 import com.yunsu.sqlite.service.impl.PackServiceImpl;
@@ -26,10 +28,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RevokeScanActivity extends Activity {
+public class RevokeScanActivity extends BaseActivity {
     private TitleBar titleBar;
     private ListView lv_revoke_scan;
     private EditText et_revoke_scan;
+
+    @ViewById(id = R.id.tv_empty_key_tip)
+    private TextView tv_empty_key_tip;
 
     private List<String> keys=new ArrayList<String>();
     private PathAdapter adapter;
@@ -73,6 +78,7 @@ public class RevokeScanActivity extends Activity {
         adapter =new PathAdapter(this, getResources());
         adapter.setKeyList(keys);
         lv_revoke_scan.setAdapter(adapter);
+        lv_revoke_scan.setEmptyView(tv_empty_key_tip);
     }
 
     /**
