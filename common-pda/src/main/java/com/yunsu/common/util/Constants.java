@@ -63,6 +63,7 @@ public final class Constants {
 		public static final int HAS_OUTBOUND_IN_ORDER=11;
 		public static final int NOT_OUTBOUND=22;
 
+		public static final int PAGE_SIZE=20;
 
 	}
 

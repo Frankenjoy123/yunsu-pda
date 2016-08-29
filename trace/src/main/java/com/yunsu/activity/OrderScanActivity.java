@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,6 +71,9 @@ public class OrderScanActivity extends BaseActivity {
 
     @ViewById(id = R.id.tv_progress_status)
     TextView tv_progress_status;
+
+    @ViewById(id = R.id.ll_scan_key)
+    LinearLayout ll_scan_key;
     
     private MaterialService materialService;
 
@@ -135,8 +139,6 @@ public class OrderScanActivity extends BaseActivity {
 
         bindTextChanged();
 
-
-
     }
 
     private void bindRevokeOrder() {
@@ -180,23 +182,31 @@ public class OrderScanActivity extends BaseActivity {
                 color=   getResources().getColor(R.color.order_list_not_start);
                 btn_confirm_finish.setEnabled(false);
                 btn_revoke_outbound.setEnabled(false);
+                et_scan.setEnabled(true);
+                ll_scan_key.setVisibility(View.VISIBLE);
                 break;
             case Constants.DB.IN_PROGRESS:
                 progressStatus=getString(R.string.in_progress);
                 color=getResources().getColor(R.color.order_list_in_progress);
                 btn_confirm_finish.setEnabled(true);
                 btn_revoke_outbound.setEnabled(true);
+                et_scan.setEnabled(true);
+                ll_scan_key.setVisibility(View.VISIBLE);
                 break;
             case Constants.DB.FINISHED:
                 progressStatus=getString(R.string.finished);
                 color=getResources().getColor(R.color.order_list_finish);
                 btn_confirm_finish.setEnabled(false);
                 btn_revoke_outbound.setEnabled(true);
+                et_scan.setEnabled(false);
+                ll_scan_key.setVisibility(View.INVISIBLE);
                 break;
             default:
                 progressStatus=getString(R.string.not_start);
                 color=   getResources().getColor(R.color.order_list_not_start);
                 btn_confirm_finish.setEnabled(false);
+                et_scan.setEnabled(true);
+                ll_scan_key.setVisibility(View.VISIBLE);
                 break;
         }
 

@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/common-pda" />
             <option value="$PROJECT_DIR$/green-lib" />
+            <option value="$PROJECT_DIR$/pullrefreshLibrary" />
             <option value="$PROJECT_DIR$/trace" />
           </set>
         </option>
@@ -19,6 +20,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/common-pda" />
             <option value="$PROJECT_DIR$/green-lib" />
+            <option value="$PROJECT_DIR$/pullrefreshLibrary" />
             <option value="$PROJECT_DIR$/trace" />
           </set>
         </option>

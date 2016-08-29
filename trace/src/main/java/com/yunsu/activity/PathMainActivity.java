@@ -1,9 +1,6 @@
 package com.yunsu.activity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
@@ -12,10 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.yunsu.adapter.LogisticActionAdapter;
 import com.yunsu.common.entity.AuthUser;
-import com.yunsu.common.exception.BaseException;
-import com.yunsu.common.exception.ServerAuthException;
 import com.yunsu.manager.GreenDaoManager;
 import com.yunsu.manager.LogisticManager;
 import com.yunsu.common.manager.SessionManager;
@@ -26,7 +20,6 @@ import com.yunsu.service.background.RecycleHeartBeatService;
 import com.yunsu.service.background.SyncFileService;
 import com.yunsu.service.background.SyncLogService;
 import com.yunsu.common.util.Constants;
-import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.view.TitleBar;
 
 import org.json.JSONObject;
@@ -112,9 +105,7 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.rl_action_inbound:
-                Intent inboundIntent=new Intent(PathMainActivity.this,PathActivity.class);
-                inboundIntent.putExtra(Constants.Logistic.ACTION_ID,Constants.Logistic.INBOUND_CODE);
-                inboundIntent.putExtra(Constants.Logistic.ACTION_NAME,Constants.Logistic.INBOUND);
+                Intent inboundIntent=new Intent(PathMainActivity.this,InboundScanActivity.class);
                 startActivity(inboundIntent);
                 break;
             case R.id.rl_action_outbound:

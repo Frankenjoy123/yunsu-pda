@@ -1,10 +1,14 @@
 package com.yunsu.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -17,6 +21,7 @@ import com.yunsu.adapter.LogisticActionAdapter;
 import com.yunsu.adapter.PathAdapter;
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.service.ServiceExecutor;
+import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.sqlite.service.PackService;
 import com.yunsu.sqlite.service.impl.PackServiceImpl;
 import com.yunsu.common.util.Constants;
@@ -24,32 +29,50 @@ import com.yunsu.common.util.StringUtils;
 import com.yunsu.common.view.TitleBar;
 import com.yunsu.greendao.entity.Pack;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PathActivity extends Activity {
+public class InboundScanActivity extends BaseActivity {
 	SharedPreferences preferences;
 	SharedPreferences.Editor editor;
 
-	private String uniqueId;
     private String actionId;
-    private String actionName;
+
     private String agencyId;
     private String agencyName;
 
+    @ViewById(id = R.id.title_bar)
     private TitleBar titleBar;
+
+    @ViewById(id = R.id.et_path)
     private EditText et_path;
+
     private List<String> keys=new ArrayList<String>();
     private PathAdapter adaper;
+
+    @ViewById(id = R.id.lv_path)
     private ListView lv_path;
+
+    @ViewById(id = R.id.tv_agency_name)
     private TextView tv_agency_name;
+
+    @ViewById(id = R.id.tv_count_value)
     private TextView tv_count_value;
+
     private PackService packService;
 
     @ViewById(id = R.id.tv_empty_pack_tip)
     private TextView tv_empty_pack_tip;
+
+    SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+    private static final int INSERT_PACK_SUCCESS=200;
+
+    private static final int EXIST_MSG=123;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,38 +84,26 @@ public class PathActivity extends Activity {
 
     private void init() {
         packService=new PackServiceImpl();
-        actionId=getIntent().getStringExtra(LogisticActionAdapter.ACTION_ID);
-        actionName=getIntent().getStringExtra(LogisticActionAdapter.ACTION_NAME);
-        if (actionId.equals(Constants.Logistic.INBOUND_CODE)){
-            agencyId=Constants.DEFAULT_STORAGE;
-            agencyName=Constants.BLANK;
-        }else {
-            agencyId=getIntent().getStringExtra(Constants.Logistic.AGENCY_ID);
-            agencyName=getIntent().getStringExtra(Constants.Logistic.AGENCY_NAME);
-        }
-        tv_agency_name= (TextView) findViewById(R.id.tv_agency_name);
-        tv_count_value= (TextView) findViewById(R.id.tv_count_value);
+        actionId=Constants.Logistic.INBOUND_CODE;
+        agencyId=Constants.DEFAULT_STORAGE;
+        agencyName=Constants.BLANK;
+
         tv_agency_name.setText(agencyName);
         tv_count_value.setText("已扫"+String.valueOf(keys.size())+"包");
         preferences=getSharedPreferences("pathActivityPre", Context.MODE_PRIVATE);
         editor=preferences.edit();
 
         getActionBar().hide();
-        titleBar=(TitleBar) findViewById(R.id.title_bar);
+
         titleBar.setMode(TitleBar.TitleBarMode.BOTH_BUTTONS);
         titleBar.setDisplayAsBack(true);
-        if (actionId.equals(Constants.Logistic.INBOUND_CODE)){
-            titleBar.setTitle(getString(R.string.inbound_scan));
-        }else {
-            titleBar.setTitle(getString(R.string.outbound_scan));
-        }
+        titleBar.setTitle(getString(R.string.inbound_scan));
         titleBar.setRightButtonText(getString(R.string.repeal_inbound));
         titleBar.setOnRightButtonClickedListener(view -> {
-            Intent intent =new Intent(PathActivity.this,RevokeScanActivity.class);
+            Intent intent =new Intent(InboundScanActivity.this,RevokeScanActivity.class);
             intent.putExtra(Constants.TITLE,Constants.Logistic.REVOKE_INBOUND);
             startActivity(intent);
         });
-        lv_path=(ListView) findViewById(R.id.lv_path);
         adaper=new PathAdapter(this, getResources());
         adaper.setKeyList(keys);
         lv_path.setAdapter(adaper);
@@ -109,12 +120,35 @@ public class PathActivity extends Activity {
         ServiceExecutor.getInstance().execute(new Runnable() {
             @Override
             public void run() {
-                Pack pack=new Pack();
-                pack.setPackKey(packKey);
-                pack.setStatus(Constants.DB.NOT_SYNC);
-                pack.setActionId(actionId);
-                pack.setAgency(agencyId);
-                packService.insertPackWithCheck(pack);
+                Pack queryPack=new Pack();
+                queryPack.setPackKey(packKey);
+                queryPack.setActionId(Constants.Logistic.INBOUND_CODE);
+                Pack resultPack=packService.queryRevokeOrNot(queryPack);
+                //已入库或撤销入库
+                if (resultPack!=null){
+                    //已撤销入库
+                    if (resultPack.getActionId().equals(Constants.Logistic.REVOKE_INBOUND_CODE)){
+                        resultPack.setActionId(Constants.Logistic.INBOUND_CODE);
+                        resultPack.setStatus(Constants.DB.NOT_SYNC);
+                        resultPack.setSaveTime(dateFormat.format(new Date()));
+                        packService.updatePack(resultPack);
+                        keys.add(packKey);
+                        handler.sendEmptyMessage(INSERT_PACK_SUCCESS);
+                    }else {//已入库
+                        handler.sendEmptyMessage(EXIST_MSG);
+                    }
+                }else {//未入库
+                    Pack pack=new Pack();
+                    pack.setPackKey(packKey);
+                    pack.setStatus(Constants.DB.NOT_SYNC);
+                    pack.setActionId(Constants.Logistic.INBOUND_CODE);
+                    pack.setAgency(Constants.DEFAULT_STORAGE);
+                    pack.setSaveTime(dateFormat.format(new Date()));
+                    packService.insertPackData(pack);
+                    keys.add(packKey);
+                    handler.sendEmptyMessage(INSERT_PACK_SUCCESS);
+                }
+
             }
         });
 	}
@@ -161,24 +195,7 @@ public class PathActivity extends Activity {
                         if(string.isEmpty()||string=="\n"){
                             return;
                         }
-                        if (keys != null && keys.size() > 0) {
-                            for (int i = 0; i < keys.size(); i++) {
-                                String historyFormatKey=StringUtils.getLastString(StringUtils.replaceBlank(keys.get(i)));
-                                if (formatKey.equals(historyFormatKey))
-                                {
-                                    Toast toast = Toast.makeText(getApplicationContext(),
-                                            getString(R.string.key_exist) , Toast.LENGTH_SHORT);
-                                    toast.setGravity(Gravity.CENTER , 0, 0);
-                                    toast.show();
-                                    return;
-                                }
-                            }
-                        }
-
                         submitToDB(formatKey);
-                        keys.add(0,StringUtils.replaceBlank(StringUtils.getLastString(string)));
-                        tv_count_value.setText("已扫"+String.valueOf(keys.size())+"包");
-                        adaper.notifyDataSetChanged();
 
                     } catch (Exception e) {
                         // TODO: handle exception
@@ -193,5 +210,28 @@ public class PathActivity extends Activity {
 			}
 		});
 	}
+
+
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+
+                case INSERT_PACK_SUCCESS:
+                    adaper.notifyDataSetChanged();
+//                    keys.add(0,StringUtils.replaceBlank(StringUtils.getLastString(string)));
+                    tv_count_value.setText("已扫"+String.valueOf(keys.size())+"包");
+//                    adaper.notifyDataSetChanged();
+                    break;
+
+                case EXIST_MSG:
+                    ToastMessageHelper.showMessage(InboundScanActivity.this,
+                            R.string.key_inbound_already,true);
+                    break;
+
+
+            }
+        }
+    };
 
 }

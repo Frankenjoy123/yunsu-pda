@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yunsu.activity.OrgAgencyActivity;
-import com.yunsu.activity.PathActivity;
+import com.yunsu.activity.InboundScanActivity;
 import com.yunsu.activity.R.drawable;
 import com.yunsu.activity.R.id;
 import com.yunsu.activity.R.layout;
@@ -92,7 +92,7 @@ public class LogisticActionAdapter extends BaseAdapter
                 String action_name=actions.get(finalPosition).get(action_id);
                 Intent intent=null;
                 if (action_id.equals(Constants.Logistic.INBOUND_CODE)){
-                    intent=new Intent(activity, PathActivity.class);
+                    intent=new Intent(activity, InboundScanActivity.class);
                 }else if (action_id.equals(Constants.Logistic.OUTBOUND_CODE)){
                     intent=new Intent(activity, OrgAgencyActivity.class);
                 }

@@ -25,6 +25,7 @@ import com.yunsu.common.view.TitleBar;
 import com.yunsu.greendao.entity.Material;
 import com.yunsu.sqlite.service.MaterialService;
 import com.yunsu.sqlite.service.impl.MaterialServiceImpl;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,22 +49,22 @@ public class CreateOrderActivity extends BaseActivity {
     @ViewById(id = R.id.btn_confirm_create)
     private Button btn_confirm_create;
 
-    public static final int SUCCESS=100;
+    public static final int SUCCESS = 100;
 
-    private static final int DEFAULT_AMOUNT=1;
+    private static final int DEFAULT_AMOUNT = 1;
 
     private String agentId;
     private String agentName;
 
     private MaterialService materialService;
 
-    private List<Material> materialList=new ArrayList<>();
+    private List<Material> materialList = new ArrayList<>();
 
-    private static final int INSERT_SUCCESS=11;
+    private static final int INSERT_SUCCESS = 11;
 
-    public static final int GET_AGENCY_QUEST=101;
+    public static final int GET_AGENCY_QUEST = 101;
 
-    public static final int GET_AGENCY_RESULT=201;
+    public static final int GET_AGENCY_RESULT = 201;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,31 +82,33 @@ public class CreateOrderActivity extends BaseActivity {
 
         tv_order_amount.setText(String.valueOf(DEFAULT_AMOUNT));
 
-        materialService=new MaterialServiceImpl();
+        materialService = new MaterialServiceImpl();
 
         btn_confirm_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (agentId!=null&&agentName!=null){
+                if (agentId != null && agentName != null) {
                     showLoading();
                     ServiceExecutor.getInstance().execute(new Runnable() {
                         @Override
                         public void run() {
 
-                            int amount=Integer.parseInt(tv_order_amount.getText().toString());
-                            Material material=new Material();
+                            int amount = Integer.parseInt(tv_order_amount.getText().toString());
+                            Material material = new Material();
                             material.setAmount((long) amount);
                             material.setSent((long) 0);
                             material.setProgressStatus(Constants.DB.NOT_START);
                             material.setSyncStatus(Constants.DB.NOT_SYNC);
                             material.setAgencyId(agentId);
                             material.setAgencyName(agentName);
-                            materialService.insertMaterial(material);
-                            handler.sendEmptyMessage(INSERT_SUCCESS);
+                            Message message=Message.obtain();
+                            message.obj=materialService.insertMaterial(material);
+                            message.what=INSERT_SUCCESS;
+                            handler.sendMessage(message);
                         }
                     });
-                }else {
-                    ToastMessageHelper.showMessage(CreateOrderActivity.this,R.string.please_choose_org_agency,true);
+                } else {
+                    ToastMessageHelper.showMessage(CreateOrderActivity.this, R.string.please_choose_org_agency, true);
                 }
             }
         });
@@ -113,8 +116,8 @@ public class CreateOrderActivity extends BaseActivity {
         rl_agent_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(CreateOrderActivity.this,OrgAgencyActivity.class);
-                startActivityForResult(intent,GET_AGENCY_QUEST);
+                Intent intent = new Intent(CreateOrderActivity.this, OrgAgencyActivity.class);
+                startActivityForResult(intent, GET_AGENCY_QUEST);
             }
         });
 
@@ -122,21 +125,24 @@ public class CreateOrderActivity extends BaseActivity {
         rl_order_amount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String numString=tv_order_amount.getText().toString();
-                int amount=Integer.parseInt(numString);
+                String numString = tv_order_amount.getText().toString();
+                int amount = Integer.parseInt(numString);
                 dialog(amount);
             }
         });
     }
 
 
-    private Handler handler=new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case INSERT_SUCCESS:
                     hideLoading();
                     finish();
+                    Intent intent = new Intent(CreateOrderActivity.this,OrderScanActivity.class);
+                    intent.putExtra(Constants.DB.ID,(long)msg.obj);
+                    startActivity(intent);
                     break;
             }
 
@@ -146,10 +152,10 @@ public class CreateOrderActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode==GET_AGENCY_RESULT){
-            agentId=data.getStringExtra(Constants.Logistic.AGENCY_ID);
-            agentName=data.getStringExtra(Constants.Logistic.AGENCY_NAME);
-            if (agentName!=null){
+        if (resultCode == GET_AGENCY_RESULT) {
+            agentId = data.getStringExtra(Constants.Logistic.AGENCY_ID);
+            agentName = data.getStringExtra(Constants.Logistic.AGENCY_NAME);
+            if (agentName != null) {
                 tv_agent_name.setText(agentName);
             }
         }
@@ -159,14 +165,15 @@ public class CreateOrderActivity extends BaseActivity {
 
     /**
      * 设置发货数
+     *
      * @param amount 发货数
      */
-    private void dialog(int amount){
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+    private void dialog(int amount) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.please_type_in_amount);
-        LayoutInflater inflater=getLayoutInflater();
-        final View view=inflater.inflate(R.layout.dialog_delivery_amount,null);
-        final EditText et= (EditText) view.findViewById(R.id.et_amount);
+        LayoutInflater inflater = getLayoutInflater();
+        final View view = inflater.inflate(R.layout.dialog_delivery_amount, null);
+        final EditText et = (EditText) view.findViewById(R.id.et_amount);
         et.setText(String.valueOf(amount));
         et.setSelection(et.getText().length());
         builder.setView(view);
@@ -174,25 +181,25 @@ public class CreateOrderActivity extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 boolean closeDialog;
-                String numString=et.getText().toString();
-                if (numString.startsWith("0")){
-                    closeDialog=false;
-                    ToastMessageHelper.showErrorMessage(CreateOrderActivity.this,"请输入合法的数字",true);
-                }else if (numString.length()<=6&&(Integer.parseInt(numString)<=100000)){
-                    closeDialog=true;
-                    int amount=Integer.parseInt(numString);
-                    tv_order_amount.setText(amount+"");
-                    InputMethodManager imm= (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(),0);
-                }else {
-                    closeDialog=false;
-                    ToastMessageHelper.showErrorMessage(CreateOrderActivity.this,"请输入十万以内的合法正数",true);
+                String numString = et.getText().toString();
+                if (numString.startsWith("0")) {
+                    closeDialog = false;
+                    ToastMessageHelper.showErrorMessage(CreateOrderActivity.this, "请输入合法的数字", true);
+                } else if (numString.length() <= 6 && (Integer.parseInt(numString) <= 100000)) {
+                    closeDialog = true;
+                    int amount = Integer.parseInt(numString);
+                    tv_order_amount.setText(amount + "");
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                } else {
+                    closeDialog = false;
+                    ToastMessageHelper.showErrorMessage(CreateOrderActivity.this, "请输入十万以内的合法正数", true);
                 }
                 try {
                     //下面三句控制弹框的关闭
                     Field field = dialogInterface.getClass().getSuperclass().getDeclaredField("mShowing");
                     field.setAccessible(true);
-                    field.set(dialogInterface,closeDialog);//true表示要关闭
+                    field.set(dialogInterface, closeDialog);//true表示要关闭
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -205,7 +212,7 @@ public class CreateOrderActivity extends BaseActivity {
                     //下面三句控制弹框的关闭
                     Field field = dialogInterface.getClass().getSuperclass().getDeclaredField("mShowing");
                     field.setAccessible(true);
-                    field.set(dialogInterface,true);//true表示要关闭
+                    field.set(dialogInterface, true);//true表示要关闭
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -12,6 +12,8 @@ public interface PackService {
     //插入一条物流数据
     void insertPackData(Pack pack);
 
+    void insertInboundPack(Pack pack);
+
     //插入时检查是否存在，如果存在直接更新
     void insertPackWithCheck(Pack pack);
 

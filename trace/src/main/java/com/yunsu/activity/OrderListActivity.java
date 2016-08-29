@@ -10,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.yunsu.adapter.OrderAdapter;
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.service.ServiceExecutor;
@@ -22,28 +24,33 @@ import com.yunsu.sqlite.service.impl.MaterialServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
-public class OrderListActivity extends  BaseActivity {
+public class OrderListActivity extends BaseActivity {
     @ViewById(id = R.id.title_bar)
     TitleBar titleBar;
 
     @ViewById(id = R.id.lv_order)
-    ListView lv_order;
+    PullToRefreshListView lv_order;
 
     @ViewById(id = R.id.tv_empty_order_tip)
     private TextView tv_empty_order_tip;
 
-    public static final int ADD_NEW_ORDER_REQUEST=123;
+    public static final int ADD_NEW_ORDER_REQUEST = 123;
 
-    public static final int ADD_NEW_ORDER_RESULT=456;
+    public static final int ADD_NEW_ORDER_RESULT = 456;
 
-    public static final int QUERY_ORDER_LIST_MSG=167;
+    public static final int QUERY_ORDER_LIST_MSG = 167;
 
-    List<Material> materialList=new ArrayList<>();
+    public static final int ADD_ORDER_LIST_MSG=153;
+
+    List<Material> materialList = new ArrayList<>();
 
     private MaterialService materialService;
 
     private OrderAdapter orderAdapter;
+
+    public static final int PAGE_SIZE = 20;
 
 
     @Override
@@ -62,24 +69,38 @@ public class OrderListActivity extends  BaseActivity {
         titleBar.setOnRightButtonClickedListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(OrderListActivity.this,CreateOrderActivity.class);
-                startActivityForResult(intent,ADD_NEW_ORDER_REQUEST);
+                Intent intent = new Intent(OrderListActivity.this, CreateOrderActivity.class);
+                startActivityForResult(intent, ADD_NEW_ORDER_REQUEST);
             }
         });
-        materialService=new MaterialServiceImpl();
-        orderAdapter=new OrderAdapter(this);
+        materialService = new MaterialServiceImpl();
+        orderAdapter = new OrderAdapter(this);
         orderAdapter.setMaterialList(materialList);
+        lv_order.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
         lv_order.setAdapter(orderAdapter);
-        lv_order.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lv_order.setOnItemClickListener((adapterView, view, i, l) -> {
+            Intent intent = new Intent(OrderListActivity.this, OrderScanActivity.class);
+            intent.putExtra(Constants.DB.ID, materialList.get(i-1).getId());
+            startActivity(intent);
+        });
+        lv_order.setEmptyView(tv_empty_order_tip);
+        lv_order.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent=new Intent(OrderListActivity.this,OrderScanActivity.class);
-                intent.putExtra(Constants.DB.ID,materialList.get(i).getId());
-                startActivity(intent);
+            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+                addEarlierList();
             }
         });
+    }
 
-        lv_order.setEmptyView(tv_empty_order_tip);
+    private void addEarlierList() {
+        if (lv_order.getCurrentMode().equals(PullToRefreshBase.Mode.PULL_FROM_END)){
+            ServiceExecutor.getInstance().execute(() -> {
+                List<Material> resultList=materialService.queryMaterialByPage(materialList.size());
+                materialList.addAll(resultList);
+                handler.sendEmptyMessage(ADD_ORDER_LIST_MSG);
+            });
+        }
     }
 
 
@@ -87,7 +108,7 @@ public class OrderListActivity extends  BaseActivity {
     protected void onResume() {
         showLoading();
         ServiceExecutor.getInstance().execute(() -> {
-            List<Material> materialList=materialService.queryAllMaterial();
+            List<Material> materialList = materialService.queryMaterialByPage(0);
             this.materialList.clear();
             this.materialList.addAll(materialList);
             handler.sendEmptyMessage(QUERY_ORDER_LIST_MSG);
@@ -95,21 +116,24 @@ public class OrderListActivity extends  BaseActivity {
         super.onResume();
     }
 
-    private Handler handler=new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
 
                 case QUERY_ORDER_LIST_MSG:
                     hideLoading();
                     orderAdapter.notifyDataSetChanged();
                     break;
 
+                case ADD_ORDER_LIST_MSG:
+                    orderAdapter.notifyDataSetChanged();
+                    lv_order.onRefreshComplete();
+                    break;
+
             }
             super.handleMessage(msg);
         }
-
-
     };
 
 }

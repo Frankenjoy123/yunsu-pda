@@ -174,6 +174,9 @@
     <string name="key_exist_in_this_order">该包装已存在于当前订单中，请检查</string>
     <string name="key_exist_in_other_order">该包装已存在于其它订单中，请在订单%s中先撤销该包装</string>
 
+    <!--<inboundScan>-->
+    <string name="key_inbound_already">该包装已入库，请检查</string>
+
 
     <!--<revoke>-->
     <string name="repeal_operation">撤销操作</string>

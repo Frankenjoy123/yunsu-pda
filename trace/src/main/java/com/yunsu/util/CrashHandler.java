@@ -99,14 +99,14 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         collectDeviceInfo(mContext);
 
         //使用Toast来显示异常信息
-        new Thread() {
-            @Override
-            public void run() {
-                Looper.prepare();
-                Toast.makeText(mContext, "哦哦,出现点小问题，重启就好，攻城狮正在加紧修复中。。。", Toast.LENGTH_LONG).show();
-                Looper.loop();
-            }
-        }.start();
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                Looper.prepare();
+//                Toast.makeText(mContext, "哦哦,出现点小问题，重启就好，攻城狮正在加紧修复中。。。", Toast.LENGTH_LONG).show();
+//                Looper.loop();
+//            }
+//        }.start();
 
 
         //保存日志文件

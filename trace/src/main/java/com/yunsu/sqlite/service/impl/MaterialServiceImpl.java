@@ -1,5 +1,6 @@
 package com.yunsu.sqlite.service.impl;
 
+import com.yunsu.common.util.Constants;
 import com.yunsu.greendao.dao.MaterialDao;
 import com.yunsu.greendao.entity.Material;
 import com.yunsu.greendao.entity.Pack;
@@ -18,11 +19,12 @@ public class MaterialServiceImpl implements MaterialService {
     SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     SimpleDateFormat materialNumberFormat=new SimpleDateFormat("yyyyMMddHHmmssSSS");
 
+
     @Override
-    public void insertMaterial(Material material) {
+    public long insertMaterial(Material material) {
         material.setCreateTime(dateFormat.format(new Date()));
         material.setMaterialNumber(materialNumberFormat.format(new Date()));
-        materialDao.insert(material);
+        return  materialDao.insert(material);
     }
 
     @Override
@@ -38,6 +40,13 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public List<Material> queryAllMaterial() {
         return materialDao.queryBuilder().orderDesc(MaterialDao.Properties.Id).list();
+
+    }
+
+    @Override
+    public List<Material> queryMaterialByPage(int offSet) {
+       return materialDao.queryBuilder().offset(offSet).limit(Constants.DB.PAGE_SIZE)
+                .orderDesc(MaterialDao.Properties.Id).list();
     }
 
     @Override

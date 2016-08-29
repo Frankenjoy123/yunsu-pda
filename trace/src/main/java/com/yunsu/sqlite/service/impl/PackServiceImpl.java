@@ -41,6 +41,30 @@ public class PackServiceImpl implements PackService {
     }
 
     @Override
+    public void insertInboundPack(Pack pack) {
+
+        HashSet<String> set=new HashSet();
+        set.add(Constants.Logistic.INBOUND_CODE);
+        set.add(Constants.Logistic.REVOKE_INBOUND_CODE);
+
+        QueryBuilder<Pack> queryBuilder=packDao.queryBuilder();
+        queryBuilder.where(queryBuilder.and(PackDao.Properties.PackKey.eq(pack.getPackKey()), PackDao.Properties.ActionId.in(set)));
+        List<Pack> packList=queryBuilder.list();
+        if (packList!=null&&packList.size()>0){
+            Pack resultPack=packList.get(0);
+            resultPack.setActionId(Constants.Logistic.INBOUND_CODE);
+            resultPack.setAgency(Constants.DEFAULT_STORAGE);
+            resultPack.setStatus(Constants.DB.NOT_SYNC);
+            resultPack.setSaveTime(dateFormat.format(new Date()));
+            updatePack(resultPack);
+        }
+        else {
+            pack.setSaveTime(dateFormat.format(new Date()));
+            insertPackData(pack);
+        }
+    }
+
+    @Override
     public void  insertPackWithCheck(Pack pack) {
 
         //扫码是否存在于当前订单

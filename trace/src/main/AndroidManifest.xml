@@ -42,7 +42,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PathActivity"
+            android:name=".InboundScanActivity"
             android:label="@string/title_activity_path"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />

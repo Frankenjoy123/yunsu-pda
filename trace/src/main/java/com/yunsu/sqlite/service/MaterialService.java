@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public interface MaterialService {
     //插入物料
-    void insertMaterial(Material material);
+    long insertMaterial(Material material);
 
     //更新物料
     void updateMaterial(Material material);
@@ -20,7 +20,10 @@ public interface MaterialService {
     //根据ID查询物流
     Material queryById(long id);
 
+    //查询全部的物料订单
     List<Material> queryAllMaterial();
+
+    List<Material> queryMaterialByPage(int offSet);
 
     //删除物料
     void deleteMaterial(Material material);
