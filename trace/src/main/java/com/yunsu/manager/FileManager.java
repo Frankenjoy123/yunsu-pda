@@ -111,13 +111,16 @@ public class FileManager extends BaseManager {
             String folderName = android.os.Environment.getExternalStorageDirectory() +
                     Constants.YUNSOO_FOLDERNAME+Constants.PATH_LOG_NOT_SYNC_FOLDER;
             File pack_task_folder = new File(folderName);
-            String[] packFiles= pack_task_folder.list();
-            fileNames=new ArrayList<>();
-            if (packFiles!=null&&packFiles.length>0){
-                for (int i=0;i<packFiles.length;i++){
-                    fileNames.add(packFiles[i]);
+            if (pack_task_folder.exists()){
+                String[] packFiles= pack_task_folder.list();
+                fileNames=new ArrayList<>();
+                if (packFiles!=null&&packFiles.length>0){
+                    for (int i=0;i<packFiles.length;i++){
+                        fileNames.add(packFiles[i]);
+                    }
                 }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

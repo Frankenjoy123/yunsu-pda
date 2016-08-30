@@ -146,18 +146,22 @@
         <Button
             android:id="@+id/btn_confirm_finish"
             android:text="@string/confirm_finish"
-            android:background="@drawable/btn_bg"
+            android:background="@drawable/btn_no_corner_bg"
             android:textColor="@color/clear_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:padding="10dp"
             />
+        <View
+            android:background="@color/app_bg_color"
+            android:layout_width="2dp"
+            android:layout_height="match_parent"/>
 
         <Button
             android:id="@+id/btn_revoke_outbound"
             android:text="@string/revoke_operation"
-            android:background="@drawable/btn_bg"
+            android:background="@drawable/btn_no_corner_bg"
             android:textColor="@color/clear_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

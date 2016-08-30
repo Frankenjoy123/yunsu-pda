@@ -91,6 +91,11 @@ public class SyncLogService extends IntentService implements DataServiceImpl.Dat
     @Override
     public void onRequestSucceeded(DataServiceImpl service, JSONObject data, boolean isCached) {
         if (service instanceof LogUpLoadService){
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             String folderName=null;
             if (((LogUpLoadService)service).isCrashLog()){
                  folderName = android.os.Environment.getExternalStorageDirectory() +

@@ -20,6 +20,7 @@ import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.network.ImageViewInfo;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.util.Constants;
+import com.yunsu.common.util.StringHelper;
 import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.view.TitleBar;
 import com.yunsu.greendao.entity.Material;
@@ -182,15 +183,15 @@ public class CreateOrderActivity extends BaseActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 boolean closeDialog;
                 String numString = et.getText().toString();
-                if (numString.startsWith("0")) {
+                if (StringHelper.isStringNullOrEmpty(numString)||numString.startsWith("0") ) {
                     closeDialog = false;
                     ToastMessageHelper.showErrorMessage(CreateOrderActivity.this, "请输入合法的数字", true);
                 } else if (numString.length() <= 6 && (Integer.parseInt(numString) <= 100000)) {
                     closeDialog = true;
                     int amount = Integer.parseInt(numString);
                     tv_order_amount.setText(amount + "");
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 } else {
                     closeDialog = false;
                     ToastMessageHelper.showErrorMessage(CreateOrderActivity.this, "请输入十万以内的合法正数", true);
