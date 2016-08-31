@@ -2,7 +2,6 @@ package com.yunsu.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,16 +9,14 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.yunsu.adapter.PackageHistoryAdapter;
-import com.yunsu.sqlite.PackDataBaseHelper;
+import com.yunsu.common.view.TitleBar;
+import com.yunsu.greendao.entity.Pack;
+import com.yunsu.greendao.entity.Product;
 import com.yunsu.sqlite.service.PackService;
 import com.yunsu.sqlite.service.ProductService;
 import com.yunsu.sqlite.service.impl.PackServiceImpl;
 import com.yunsu.sqlite.service.impl.ProductServiceImpl;
 import com.yunsu.unity.PackageDetail;
-import com.yunsu.util.Constants;
-import com.yunsu.view.TitleBar;
-import com.yunsu.greendao.entity.Pack;
-import com.yunsu.greendao.entity.Product;
 
 import java.util.ArrayList;
 import java.util.List;

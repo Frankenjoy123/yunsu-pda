@@ -13,10 +13,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yunsu.common.annotation.ViewById;
+import com.yunsu.common.exception.NotVerifyException;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.StringUtils;
 import com.yunsu.common.util.ToastMessageHelper;
+import com.yunsu.common.util.YunsuKeyUtil;
 import com.yunsu.common.view.TitleBar;
 import com.yunsu.greendao.entity.Material;
 import com.yunsu.greendao.entity.Pack;
@@ -130,28 +132,21 @@ public class OrderRevokeActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+
                 String string=new StringBuilder(s).toString();
-                Pattern pattern =Pattern.compile("^https?:\\/\\/[\\w\\-\\.]+\\.yunsu\\.co(?:\\:\\d+)?(?:\\/p)?\\/([^\\/]+)\\/?$");;
-                Matcher matcher=pattern.matcher(string);
-                if (matcher.find()){
-                    String formatKey= StringUtils.replaceBlank(StringUtils.getLastString(string));
-                    try {
+                try {
+                    String formatKey=YunsuKeyUtil.verifyScanKey(string);
+                    checkKeyStatus(formatKey);
+                    tv_scan_key.setText(formatKey);
 
-                        if(string.isEmpty()||string=="\n"){
-                            return;
-                        }
-                        checkKeyStatus(formatKey);
-
-                        tv_scan_key.setText(formatKey);
-                    } catch (Exception e) {
-                        Logger logger=Logger.getLogger(OrderRevokeActivity.class);
-                        logger.error(e.getMessage());
-                    }
-                }else {
+                } catch (NotVerifyException e) {
                     Toast toast = Toast.makeText(getApplicationContext(),
                             getString(R.string.key_not_verify) , Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER , 0, 0);
                     toast.show();
+                }catch (Exception e) {
+                    Logger logger=Logger.getLogger(OrderRevokeActivity.class);
+                    logger.error(e.getMessage());
                 }
 
             }

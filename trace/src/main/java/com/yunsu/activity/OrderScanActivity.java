@@ -21,11 +21,13 @@ import android.widget.Toast;
 
 import com.yunsu.adapter.OrderAdapter;
 import com.yunsu.common.annotation.ViewById;
+import com.yunsu.common.exception.NotVerifyException;
 import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.StringUtils;
 import com.yunsu.common.util.ToastMessageHelper;
+import com.yunsu.common.util.YunsuKeyUtil;
 import com.yunsu.common.view.TitleBar;
 import com.yunsu.greendao.entity.Material;
 import com.yunsu.greendao.entity.Pack;
@@ -238,25 +240,13 @@ public class OrderScanActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String string=new StringBuilder(s).toString();
-                Pattern pattern =Pattern.compile("^https?:\\/\\/[\\w\\-\\.]+\\.yunsu\\.co(?:\\:\\d+)?(?:\\/p)?\\/([^\\/]+)\\/?$");;
-                Matcher matcher=pattern.matcher(string);
-                if (matcher.find()){
-                    String formatKey= StringUtils.replaceBlank(StringUtils.getLastString(string));
-                    try {
-
-                        if(string.isEmpty()||string=="\n"){
-                            return;
-                        }
-                        submitToDB(formatKey);
-
-                        tv_scan_key.setText(formatKey);
-                    } catch (Exception e) {
-                        Logger logger=Logger.getLogger(OrderScanActivity.class);
-                        logger.error(e.getMessage());
-                    }
-                }else {
+                try {
+                    String formatKey=YunsuKeyUtil.verifyScanKey(string);
+                    submitToDB(formatKey);
+                    tv_scan_key.setText(formatKey);
+                } catch (NotVerifyException e) {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            getString(R.string.key_not_verify) , Toast.LENGTH_SHORT);
+                            e.getMessage() , Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER , 0, 0);
                     toast.show();
                 }

@@ -4,7 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.yunsu.util.Constants;
+import com.yunsu.common.manager.BaseManager;
+import com.yunsu.common.util.Constants;
 import com.yunsu.greendao.dao.DaoMaster;
 import com.yunsu.greendao.dao.DaoSession;
 

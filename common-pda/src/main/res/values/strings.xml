@@ -4,4 +4,8 @@
     <string name="back">返回</string>
 
     <string name="network_not_available">请检查网络连接</string>
+
+    <string name="not_authorize">PDA授权已被取消</string>
+
+    <string name="not_authorize_message">当前PDA的授权已在服务平台取消，需要重新回到授权界面进行授权</string>
 </resources>

@@ -5,7 +5,8 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.yunsu.service.HeartBeatService;
+
+import com.yunsu.common.service.HeartBeatService;
 
 import java.util.Timer;
 import java.util.TimerTask;

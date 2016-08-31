@@ -13,7 +13,7 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
 
-import com.yunsu.util.Constants;
+import com.yunsu.common.util.Constants;
 
 import java.io.BufferedReader;
 import java.io.File;

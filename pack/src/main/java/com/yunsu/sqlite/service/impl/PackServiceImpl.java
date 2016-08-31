@@ -1,16 +1,15 @@
 package com.yunsu.sqlite.service.impl;
 
-import com.yunsu.manager.GreenDaoManager;
-import com.yunsu.sqlite.service.PackService;
-import com.yunsu.util.Constants;
-import com.yunsu.greendao.dao.DaoSession;
+import com.yunsu.common.util.Constants;
 import com.yunsu.greendao.dao.PackDao;
 import com.yunsu.greendao.entity.Pack;
 import com.yunsu.greendao.entity.Product;
+import com.yunsu.manager.GreenDaoManager;
+import com.yunsu.sqlite.service.PackService;
 
 import java.util.List;
+
 import de.greenrobot.dao.query.Query;
-import de.greenrobot.dao.query.QueryBuilder;
 
 /**
  * Created by yunsu on 2016/7/27.

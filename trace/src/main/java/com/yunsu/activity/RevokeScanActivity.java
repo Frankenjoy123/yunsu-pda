@@ -14,7 +14,9 @@ import android.widget.Toast;
 
 import com.yunsu.adapter.PathAdapter;
 import com.yunsu.common.annotation.ViewById;
+import com.yunsu.common.exception.NotVerifyException;
 import com.yunsu.common.service.ServiceExecutor;
+import com.yunsu.common.util.YunsuKeyUtil;
 import com.yunsu.sqlite.service.PackService;
 import com.yunsu.sqlite.service.impl.PackServiceImpl;
 import com.yunsu.common.util.Constants;
@@ -104,45 +106,28 @@ public class RevokeScanActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String string=new StringBuilder(s).toString();
-                Pattern pattern = null;
-                switch (BuildConfig.FLAVOR){
-                    case Constants.Favor.KANGCAI:
-                        pattern=Pattern.compile("^https?:\\/\\/[\\w\\-\\.]+\\.yunsu\\.co(?:\\:\\d+)?(?:\\/p)?\\/([^\\/]+)\\/?$");
-                        break;
-                    default:
-                        pattern=Pattern.compile("^https?:\\/\\/[\\w\\-\\.]+\\.yunsu\\.co(?:\\:\\d+)?(?:\\/p)?\\/([^\\/]+)\\/?$");
-                }
-                Matcher matcher=pattern.matcher(string);
-                if (matcher.find()){
-                    String formatKey= StringUtils.replaceBlank(StringUtils.getLastString(string));
-                    try {
-
-                        if(string.isEmpty()||string=="\n"){
-                            return;
-                        }
-                        if (keys != null && keys.size() > 0) {
-                            for (int i = 0; i < keys.size(); i++) {
-                                String historyFormatKey=StringUtils.getLastString(StringUtils.replaceBlank(keys.get(i)));
-                                if (formatKey.equals(historyFormatKey))
-                                {
-                                    Toast toast = Toast.makeText(getApplicationContext(),
-                                            getString(R.string.key_exist) , Toast.LENGTH_SHORT);
-                                    toast.setGravity(Gravity.CENTER , 0, 0);
-                                    toast.show();
-                                    return;
-                                }
+                try {
+                    String formatKey= YunsuKeyUtil.verifyScanKey(string);
+                    if (keys != null && keys.size() > 0) {
+                        for (int i = 0; i < keys.size(); i++) {
+                            String historyFormatKey=StringUtils.getLastString(StringUtils.replaceBlank(keys.get(i)));
+                            if (formatKey.equals(historyFormatKey))
+                            {
+                                Toast toast = Toast.makeText(getApplicationContext(),
+                                        getString(R.string.key_exist) , Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER , 0, 0);
+                                toast.show();
+                                return;
                             }
                         }
-
-                        checkKeyStatus(formatKey);
-
-
-                    } catch (Exception e) {
-                        // TODO: handle exception
                     }
-                }else {
+
+                    checkKeyStatus(formatKey);
+
+
+                } catch (NotVerifyException e) {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            getString(R.string.key_not_verify) , Toast.LENGTH_SHORT);
+                            e.getMessage() , Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER , 0, 0);
                     toast.show();
                 }

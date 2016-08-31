@@ -1,1 +1,1 @@
-include  ':green-lib', ':trace', ':common-pda',':pullrefreshLibrary'
+include  ':green-lib', ':common-pda',':pullrefreshLibrary',':pack',':trace'

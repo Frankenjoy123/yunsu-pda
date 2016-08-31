@@ -1,12 +1,12 @@
-package com.yunsu.service;
+package com.yunsu.common.service;
 
 import android.util.Log;
 
-import com.yunsu.exception.LocalGeneralException;
-import com.yunsu.exception.NetworkNotAvailableException;
-import com.yunsu.exception.ServerAuthException;
-import com.yunsu.exception.ServerGeneralException;
-import com.yunsu.network.RequestManager;
+import com.yunsu.common.exception.LocalGeneralException;
+import com.yunsu.common.exception.NetworkNotAvailableException;
+import com.yunsu.common.exception.ServerAuthException;
+import com.yunsu.common.exception.ServerGeneralException;
+import com.yunsu.common.network.RequestManager;
 
 import org.json.JSONObject;
 
@@ -15,6 +15,8 @@ public class LogUpLoadService extends DataServiceImpl {
     private String filePath;
     private int index;
     private String url;
+
+    private boolean isCrashLog=false;
 
     public LogUpLoadService(String filePath)
     {
@@ -31,6 +33,14 @@ public class LogUpLoadService extends DataServiceImpl {
 
     public String getFilePath() {
         return filePath;
+    }
+
+    public boolean isCrashLog() {
+        return isCrashLog;
+    }
+
+    public void setCrashLog(boolean crashLog) {
+        isCrashLog = crashLog;
     }
 
     @Override

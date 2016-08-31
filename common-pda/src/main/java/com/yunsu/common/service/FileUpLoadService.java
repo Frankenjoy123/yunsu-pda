@@ -7,7 +7,6 @@ import com.yunsu.common.exception.NetworkNotAvailableException;
 import com.yunsu.common.exception.ServerAuthException;
 import com.yunsu.common.exception.ServerGeneralException;
 import com.yunsu.common.network.RequestManager;
-import com.yunsu.common.service.DataServiceImpl;
 
 import org.json.JSONObject;
 
@@ -24,6 +23,10 @@ public class FileUpLoadService extends DataServiceImpl {
 
     public void setFileType(String fileType) {
         this.fileType = fileType;
+    }
+
+    public String getFileType() {
+        return fileType;
     }
 
     public FileUpLoadService(String filePath)
