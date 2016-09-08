@@ -33,25 +33,26 @@ public class PackDaoMaker {
         Entity pack = schema.addEntity("Pack");
         //主键
         pack.addIdProperty().autoincrement();
-        //名称
+        //包装码
         pack.addStringProperty("packKey").notNull();;
-        //年龄
+        //同步状态
         pack.addStringProperty("status");
-        //地址
+        //最近操作时间
         pack.addDateProperty("lastSaveTime");
+        //规格
+        pack.addIntProperty("standard");
+        //实际产品数
+        pack.addIntProperty("realCount");
 
 
         //创建数据库的表
         Entity product = schema.addEntity("Product");
         product.addIdProperty().autoincrement();
-        //名称
         product.addStringProperty("productKey");
-        //年龄
         product.addStringProperty("status");
-        //地址
         product.addDateProperty("lastSaveTime");
 
-        //建立一对多关联
+        //建立包装和产品的一对多关联
         Property packId=product.addLongProperty("packId").getProperty();
         product.addToOne(pack,packId);
 
@@ -65,11 +66,20 @@ public class PackDaoMaker {
         staff.addStringProperty("staffNumber");
         staff.addStringProperty("name");
 
+        //建立员工和包装的一对多关联
+        Property staffId=pack.addLongProperty("staffId").getProperty();
+        pack.addToOne(staff,staffId);
+
         //产品信息表
         Entity productBase=schema.addEntity("ProductBase");
         productBase.addIdProperty().autoincrement();
         productBase.addStringProperty("productNumber");
         productBase.addStringProperty("name");
+
+
+        //建立产品信息和包装的一对多关联
+        Property productBaseId=pack.addLongProperty("productBaseId").getProperty();
+        pack.addToOne(productBase,productBaseId);
 
     }
 }

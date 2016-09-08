@@ -1,5 +1,6 @@
 package com.yunsu.sqlite.service;
 
+import com.yunsu.entity.StaffCountEntity;
 import com.yunsu.greendao.entity.Pack;
 import com.yunsu.greendao.entity.Product;
 
@@ -46,6 +47,9 @@ public interface PackService {
      */
 
      List<Pack> queryNotSyncPacks();
+
+    //根据日期查询员工的打包数和产品数
+    List<StaffCountEntity>  queryPackProductCountByDate(String date);
 
 
 }
