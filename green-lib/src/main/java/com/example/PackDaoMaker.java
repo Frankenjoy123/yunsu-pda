@@ -6,7 +6,7 @@ import de.greenrobot.daogenerator.Property;
 import de.greenrobot.daogenerator.Schema;
 import de.greenrobot.daogenerator.ToMany;
 
-public class DaoMaker {
+public class PackDaoMaker {
     public static void main(String[] args) {
         // 正如你所见的，你创建了一个用于添加实体（Entity）的模式（Schema）对象。
         // 两个参数分别代表：数据库版本号与自动生成代码的包路径。
@@ -59,15 +59,17 @@ public class DaoMaker {
         packToProducts.setName("products");
 
 
-/*        //创建数据库的表
-        Entity entity = schema.addEntity("Student");
-        //主键 是int类型
-        entity.addIdProperty();
-        //名称
-        entity.addStringProperty("name");
-        //年龄
-        entity.addIntProperty("age");
-        //地址
-        entity.addStringProperty("address");*/
+        //员工编号
+        Entity staff =schema.addEntity("Staff");
+        staff.addIdProperty().autoincrement();
+        staff.addStringProperty("staffNumber");
+        staff.addStringProperty("name");
+
+        //产品信息表
+        Entity productBase=schema.addEntity("ProductBase");
+        productBase.addIdProperty().autoincrement();
+        productBase.addStringProperty("productNumber");
+        productBase.addStringProperty("name");
+
     }
 }

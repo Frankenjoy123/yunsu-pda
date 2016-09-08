@@ -19,7 +19,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void removeProduct(Product product) {
-
+        productDao.delete(product);
     }
 
     @Override
