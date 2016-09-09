@@ -1,6 +1,4 @@
-package com.yunsu.entity;
-
-import com.yunsu.common.entity.JSONEntity;
+package com.yunsu.common.entity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

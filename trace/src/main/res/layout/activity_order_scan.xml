@@ -75,6 +75,7 @@
         <TextView
             android:id="@+id/tv_outbound_count"
             style="@style/text_style_order_scan_big"
+            android:textColor="#10f089"
             android:text="10" />
         <TextView
             android:text="/"
@@ -84,7 +85,6 @@
         <TextView
             android:id="@+id/tv_outbound_amount"
             style="@style/text_style_order_scan_big"
-            android:textColor="#f0625e"
             android:text="100" />
     </LinearLayout>
 
@@ -118,7 +118,7 @@
         android:gravity="center"
         >
         <ImageView
-            android:src="@drawable/ic_order_scan"
+            android:src="@drawable/ic_scan"
             android:scaleType="centerInside"
             android:layout_width="100dp"
             android:layout_height="130dp" />

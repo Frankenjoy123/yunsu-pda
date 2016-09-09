@@ -77,7 +77,7 @@
             android:textSize="16.0dp" />
 
         <TextView
-            android:id="@+id/tv_product"
+            android:id="@+id/tv_staff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -123,6 +123,19 @@
         <ImageView style="@style/right_action_style" />
 
     </RelativeLayout>
+
+
+    <Button
+        android:id="@+id/btn_start_pack"
+        android:layout_below="@+id/rl_choose_product"
+        android:background="@drawable/btn_bg"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/start_pack"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
 

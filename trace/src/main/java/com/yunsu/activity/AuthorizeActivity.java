@@ -8,17 +8,19 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 
+import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.entity.AuthUser;
 import com.yunsu.common.entity.AuthorizeRequest;
 import com.yunsu.common.entity.LoginResult;
 import com.yunsu.common.service.AuthorizeRegisterService;
 import com.yunsu.common.util.Constants;
-import com.yunsu.entity.ScanAuthorizeInfo;
+import com.yunsu.common.entity.ScanAuthorizeInfo;
 import com.yunsu.common.exception.BaseException;
 import com.yunsu.common.manager.DeviceManager;
 import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.service.AuthLoginService;
 import com.yunsu.common.service.DataServiceImpl;
+import com.yunsu.common.view.TitleBar;
 import com.yunsu.service.OrganizationAgencyService;
 import com.yunsu.common.util.ToastMessageHelper;
 
@@ -34,8 +36,8 @@ public class AuthorizeActivity extends BaseActivity implements DataServiceImpl.D
     private String accessToken;
     private String permanentToken;
 
-
-
+    @ViewById(id = R.id.title_bar)
+    private TitleBar titleBar;
 
 
     @Override
@@ -43,6 +45,9 @@ public class AuthorizeActivity extends BaseActivity implements DataServiceImpl.D
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authorize);
         getActionBar().hide();
+        titleBar.setTitle(getString(R.string.app_name));
+        titleBar.setDisplayAsBack(true);
+        titleBar.setMode(TitleBar.TitleBarMode.TITLE_ONLY);
         et_authorize_code= (EditText) findViewById(R.id.et_authorize_code);
         bindScanAuthorize();
     }

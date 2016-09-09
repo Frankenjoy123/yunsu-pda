@@ -9,64 +9,65 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.yunsu.adapter.StaffAdapter;
+import com.yunsu.adapter.ProductBaseAdapter;
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.view.TitleBar;
-import com.yunsu.greendao.entity.Staff;
-import com.yunsu.sqlite.service.StaffService;
-import com.yunsu.sqlite.service.impl.StaffServiceImpl;
+import com.yunsu.greendao.entity.ProductBase;
+import com.yunsu.sqlite.service.ProductBaseService;
+import com.yunsu.sqlite.service.impl.ProductBaseServiceImpl;
 
 import java.util.List;
 
-public class StaffListActivity extends BaseActivity {
+public class ProductBaseListActivity extends BaseActivity {
+
     @ViewById(id = R.id.title_bar)
     TitleBar titleBar;
 
-    @ViewById(id = R.id.lv_staff)
-    ListView lv_staff;
+    @ViewById(id = R.id.lv_product_base)
+    ListView lv_product_base;
 
-    @ViewById(id = R.id.tv_empty_staff_tip)
-    private TextView tv_empty_staff_tip;
+    @ViewById(id = R.id.tv_empty_product_base_tip)
+    private TextView tv_empty_product_base_tip;
 
-    private StaffAdapter staffAdapter;
+    private ProductBaseAdapter productBaseAdapter;
 
-    private StaffService staffService;
+    private ProductBaseService productBaseService;
 
-    private static final  int QUERY_ALL_STAFF_MSG=134;
+    private static final  int QUERY_ALL_PRODUCT_MSG =136;
 
-    private List<Staff> staffList;
+    private List<ProductBase> productBaseList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_staff_list);
+        setContentView(R.layout.activity_product_base_list);
         init();
     }
 
     private void init() {
         getActionBar().hide();
-        titleBar.setTitle(getString(R.string.staff_list));
+        titleBar.setTitle(getString(R.string.product_list));
         titleBar.setDisplayAsBack(true);
         titleBar.setMode(TitleBar.TitleBarMode.BOTH_BUTTONS);
         titleBar.setRightButtonText(getString(R.string.create));
-        lv_staff.setEmptyView(tv_empty_staff_tip);
+        lv_product_base.setEmptyView(tv_empty_product_base_tip);
         titleBar.setOnRightButtonClickedListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(StaffListActivity.this,CreateStaffActivity.class);
+                Intent intent=new Intent(ProductBaseListActivity.this,CreateProductBaseActivity.class);
                 startActivity(intent);
             }
         });
-        staffAdapter=new StaffAdapter(this);
-        staffService=new StaffServiceImpl();
+        productBaseAdapter =new ProductBaseAdapter(this);
+        productBaseService =new ProductBaseServiceImpl();
 
-        lv_staff.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lv_product_base.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent=getIntent();
-                intent.putExtra(PackDefineActivity.STAFF_ID,staffList.get(i).getId());
-                setResult(PackDefineActivity.STAFF_RESULT,intent);
+                intent.putExtra(PackDefineActivity.PRODUCT_BASE_ID, productBaseList.get(i).getId());
+                setResult(PackDefineActivity.PRODUCT_BASE_RESULT,intent);
                 finish();
             }
         });
@@ -80,10 +81,10 @@ public class StaffListActivity extends BaseActivity {
         ServiceExecutor.getInstance().execute(new Runnable() {
             @Override
             public void run() {
-                staffList=staffService.queryAllStaff();
+                productBaseList = productBaseService.queryAllProductBase();
                 Message message=Message.obtain();
-                message.what=QUERY_ALL_STAFF_MSG;
-                message.obj=staffList;
+                message.what= QUERY_ALL_PRODUCT_MSG;
+                message.obj= productBaseList;
                 handler.sendMessage(message);
 
             }
@@ -97,9 +98,9 @@ public class StaffListActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
-                case QUERY_ALL_STAFF_MSG:
-                    staffAdapter.setStaffList((List<Staff>) msg.obj);
-                    lv_staff.setAdapter(staffAdapter);
+                case QUERY_ALL_PRODUCT_MSG:
+                    productBaseAdapter.setProductBaseList((List<ProductBase>) msg.obj);
+                    lv_product_base.setAdapter(productBaseAdapter);
                     hideLoading();
                     break;
             }
@@ -108,5 +109,4 @@ public class StaffListActivity extends BaseActivity {
             super.handleMessage(msg);
         }
     };
-
 }

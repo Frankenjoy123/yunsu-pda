@@ -6,6 +6,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.yunsu.common.annotation.ViewById;
+import com.yunsu.common.util.StringHelper;
+import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.view.TitleBar;
 import com.yunsu.greendao.entity.Staff;
 import com.yunsu.sqlite.service.StaffService;
@@ -45,9 +47,15 @@ public class CreateStaffActivity extends BaseActivity {
             public void onClick(View view) {
                 String staffName=et_staff_name.getText().toString();
                 String staffNumber=et_staff_number.getText().toString();
-                Staff staff=new Staff(null,staffNumber,staffName);
-                staffService.insert(staff);
-                finish();
+                if (StringHelper.isStringNullOrEmpty(staffName)){
+                    ToastMessageHelper.showErrorMessage(CreateStaffActivity.this,R.string.name_not_null,true);
+                }else if (StringHelper.isStringNullOrEmpty(staffNumber)){
+                    ToastMessageHelper.showErrorMessage(CreateStaffActivity.this,R.string.number_not_null,true);
+                }else {
+                    Staff staff=new Staff(null,staffNumber,staffName);
+                    staffService.insert(staff);
+                    finish();
+                }
             }
         });
     }
