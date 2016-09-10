@@ -86,7 +86,7 @@ public class PackedHistoryActivity extends Activity {
                                     int position, long id) {
 
                 Intent intent = new Intent(PackedHistoryActivity.this,
-                        PackDetail.class);
+                        PackDetailActivity.class);
                 PackageDetail detail = detailList.get(position);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("detail", detail);

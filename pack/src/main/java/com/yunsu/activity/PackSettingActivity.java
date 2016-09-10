@@ -1,12 +1,16 @@
 package com.yunsu.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,12 +23,15 @@ import com.yunsu.common.view.TitleBar;
 import com.yunsu.entity.PackInfoEntity;
 import com.yunsu.greendao.entity.ProductBase;
 import com.yunsu.greendao.entity.Staff;
+import com.yunsu.manager.SettingManager;
 import com.yunsu.sqlite.service.ProductBaseService;
 import com.yunsu.sqlite.service.StaffService;
 import com.yunsu.sqlite.service.impl.ProductBaseServiceImpl;
 import com.yunsu.sqlite.service.impl.StaffServiceImpl;
 
-public class PackDefineActivity extends BaseActivity {
+import java.lang.reflect.Field;
+
+public class PackSettingActivity extends BaseActivity {
     @ViewById(id = R.id.title_bar)
     private TitleBar titleBar;
 
@@ -98,10 +105,17 @@ public class PackDefineActivity extends BaseActivity {
         staffService = new StaffServiceImpl();
         productBaseService = new ProductBaseServiceImpl();
 
+        rl_choose_standard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog(standard);
+            }
+        });
+
         rl_choose_staff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent staffIntent = new Intent(PackDefineActivity.this, StaffListActivity.class);
+                Intent staffIntent = new Intent(PackSettingActivity.this, StaffListActivity.class);
                 startActivityForResult(staffIntent, STAFF_REQUEST);
             }
         });
@@ -109,7 +123,7 @@ public class PackDefineActivity extends BaseActivity {
         rl_choose_product.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent productIntent = new Intent(PackDefineActivity.this, ProductBaseListActivity.class);
+                Intent productIntent = new Intent(PackSettingActivity.this, ProductBaseListActivity.class);
                 startActivityForResult(productIntent, PRODUCT_BASE_REQUEST);
             }
         });
@@ -121,14 +135,14 @@ public class PackDefineActivity extends BaseActivity {
                 String staffText = tv_staff.getText().toString();
                 String productText = tv_product.getText().toString();
                 if (StringHelper.isStringNullOrEmpty(standardText)) {
-                    ToastMessageHelper.showErrorMessage(PackDefineActivity.this, R.string.set_pack_standard, true);
+                    ToastMessageHelper.showErrorMessage(PackSettingActivity.this, R.string.set_pack_standard, true);
                 } else if (StringHelper.isStringNullOrEmpty(staffText)) {
-                    ToastMessageHelper.showErrorMessage(PackDefineActivity.this, R.string.set_staff, true);
+                    ToastMessageHelper.showErrorMessage(PackSettingActivity.this, R.string.set_staff, true);
                 } else if (StringHelper.isStringNullOrEmpty(productText)) {
-                    ToastMessageHelper.showErrorMessage(PackDefineActivity.this, R.string.set_product, true);
+                    ToastMessageHelper.showErrorMessage(PackSettingActivity.this, R.string.set_product, true);
                 } else {
 
-                    Intent intent = new Intent(PackDefineActivity.this, ScanActivity.class);
+                    Intent intent = new Intent(PackSettingActivity.this, PackScanActivity.class);
                     PackInfoEntity packInfoEntity = new PackInfoEntity();
                     packInfoEntity.setProductBaseId(productBase.getId());
                     packInfoEntity.setProductBaseName(productBase.getName());
@@ -150,6 +164,60 @@ public class PackDefineActivity extends BaseActivity {
 
         restoreSetting();
 
+    }
+
+
+
+    private void dialog(int standard){
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setTitle(R.string.set_standard);
+        LayoutInflater inflater=getLayoutInflater();
+        View view=inflater.inflate(R.layout.dialog_pack_standard,null);
+        final EditText et_pack_standard= (EditText) view.findViewById(R.id.et_pack_standard);
+        et_pack_standard.setText(String.valueOf(standard));
+        et_pack_standard.setSelection(et_pack_standard.getText().length());
+        builder.setView(view);
+        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                boolean closeDialog;
+                String numString=et_pack_standard.getText().toString();
+                if (numString.startsWith("0")){
+                    closeDialog=false;
+                    ToastMessageHelper.showErrorMessage(PackSettingActivity.this,"请输入合法的数字",true);
+                }else if (numString.length()<=4&&(Integer.parseInt(numString)<=1000)){
+                    closeDialog=true;
+                    int min=Integer.parseInt(numString);
+                    SettingManager.getInstance().saveSyncRateSetting(min);
+                    tv_standard_value.setText(String.valueOf(numString));
+                }else {
+                    closeDialog=false;
+                    ToastMessageHelper.showErrorMessage(PackSettingActivity.this,"请输入1000以内的数字",true);
+                }
+                try {
+                    //下面三句控制弹框的关闭
+                    Field field = dialogInterface.getClass().getSuperclass().getDeclaredField("mShowing");
+                    field.setAccessible(true);
+                    field.set(dialogInterface,closeDialog);//true表示要关闭
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                try {
+                    //下面三句控制弹框的关闭
+                    Field field = dialogInterface.getClass().getSuperclass().getDeclaredField("mShowing");
+                    field.setAccessible(true);
+                    field.set(dialogInterface,true);//true表示要关闭
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        builder.create().show();
     }
 
 

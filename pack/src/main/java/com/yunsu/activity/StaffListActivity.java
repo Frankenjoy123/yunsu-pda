@@ -65,8 +65,8 @@ public class StaffListActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent=getIntent();
-                intent.putExtra(PackDefineActivity.STAFF_ID,staffList.get(i).getId());
-                setResult(PackDefineActivity.STAFF_RESULT,intent);
+                intent.putExtra(PackSettingActivity.STAFF_ID,staffList.get(i).getId());
+                setResult(PackSettingActivity.STAFF_RESULT,intent);
                 finish();
             }
         });

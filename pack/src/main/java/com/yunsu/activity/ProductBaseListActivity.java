@@ -66,8 +66,8 @@ public class ProductBaseListActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent=getIntent();
-                intent.putExtra(PackDefineActivity.PRODUCT_BASE_ID, productBaseList.get(i).getId());
-                setResult(PackDefineActivity.PRODUCT_BASE_RESULT,intent);
+                intent.putExtra(PackSettingActivity.PRODUCT_BASE_ID, productBaseList.get(i).getId());
+                setResult(PackSettingActivity.PRODUCT_BASE_RESULT,intent);
                 finish();
             }
         });

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PackDefineActivity">
+    tools:context=".PackSettingActivity">
 
     <com.yunsu.common.view.TitleBar
         android:id="@+id/title_bar"
@@ -22,37 +22,28 @@
 
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/text_style_pack_define_value"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10.0dip"
-            android:text="@string/standard"
-            android:textColor="#ff484e43"
-            android:textSize="16.0dp" />
+            android:text="@string/standard2" />
 
         <TextView
 
             android:id="@+id/tv_standard_per"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/text_style_pack_define_value"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
-            android:hint="@string/per"
-            android:textColor="#ff484e43"
-            android:textSize="16.0dp" />
+            android:hint="@string/per" />
 
         <TextView
 
             android:id="@+id/tv_standard_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/text_style_pack_define_value"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/tv_standard_per"
             android:layout_marginRight="5dp"
-            android:text="10"
-            android:textColor="#ff484e43"
-            android:textSize="16.0dp" />
+            android:text="10" />
 
         <ImageView style="@style/right_action_style" />
 
@@ -68,24 +59,20 @@
 
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/text_style_pack_define_value"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10.0dip"
-            android:text="@string/staff"
-            android:textColor="#ff484e43"
-            android:textSize="16.0dp" />
+            android:text="@string/staff" />
 
         <TextView
             android:id="@+id/tv_staff"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/text_style_pack_define_value"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
             android:hint="@string/staff_hint"
-            android:textColor="#ff484e43"
-            android:textSize="16.0dp" />
+            android:gravity="right"
+            />
 
         <ImageView style="@style/right_action_style" />
 
@@ -101,24 +88,19 @@
 
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/text_style_pack_define_value"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10.0dip"
-            android:text="@string/product"
-            android:textColor="#ff484e43"
-            android:textSize="16.0dp" />
+            android:text="@string/product" />
 
         <TextView
             android:id="@+id/tv_product"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/text_style_pack_define_value"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
             android:hint="@string/product_hint"
-            android:textColor="#ff484e43"
-            android:textSize="16.0dp" />
+            android:gravity="right" />
 
         <ImageView style="@style/right_action_style" />
 
