@@ -113,6 +113,13 @@ public final class Constants {
         public final static String AUTO_INBOUND = "auto_inbound";
     }
 
+    public static final class PackPreference{
+        public static final String PACK_SETTING ="pack_setting";
+        public static final String STAFF_ID="staff_id";
+        public static final String STANDARD="standard";
+        public static final String PRODUCT_ID="product_id";
+    }
+
     public final static class Request {
 
         public static final String LastModified = "Last-Modified";

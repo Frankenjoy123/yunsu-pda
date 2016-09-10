@@ -1,6 +1,7 @@
 package com.yunsu.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.service.ServiceExecutor;
+import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.StringHelper;
 import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.view.TitleBar;
@@ -53,6 +55,8 @@ public class PackDefineActivity extends BaseActivity {
 
     private static final int QUERY_STAFF_MSG = 156;
 
+    private static final int RESTORE_SETTING_MSG=168;
+
     public static final String STAFF_ID = "staff_id";
 
     public static final int PRODUCT_BASE_REQUEST = 212;
@@ -63,7 +67,9 @@ public class PackDefineActivity extends BaseActivity {
 
     public static final String PRODUCT_BASE_ID = "product_base_id";
 
-    public static final String PACK_INFO="pack_info";
+    public static final String PACK_INFO = "pack_info";
+
+    private static final long FALSE_SETTING= -1;
 
     private StaffService staffService;
 
@@ -72,6 +78,8 @@ public class PackDefineActivity extends BaseActivity {
     private Staff staff;
 
     private ProductBase productBase;
+
+    private int standard=5;
 
 
     @Override
@@ -109,19 +117,19 @@ public class PackDefineActivity extends BaseActivity {
         btn_start_pack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String standardText=tv_standard_value.getText().toString();
-                String staffText=tv_staff.getText().toString();
-                String productText=tv_product.getText().toString();
-                if (StringHelper.isStringNullOrEmpty(standardText)){
-                    ToastMessageHelper.showErrorMessage(PackDefineActivity.this,R.string.set_pack_standard,true);
-                }else if (StringHelper.isStringNullOrEmpty(staffText)){
-                    ToastMessageHelper.showErrorMessage(PackDefineActivity.this,R.string.set_staff,true);
-                }else if (StringHelper.isStringNullOrEmpty(productText)){
-                    ToastMessageHelper.showErrorMessage(PackDefineActivity.this,R.string.set_product,true);
-                }else {
+                String standardText = tv_standard_value.getText().toString();
+                String staffText = tv_staff.getText().toString();
+                String productText = tv_product.getText().toString();
+                if (StringHelper.isStringNullOrEmpty(standardText)) {
+                    ToastMessageHelper.showErrorMessage(PackDefineActivity.this, R.string.set_pack_standard, true);
+                } else if (StringHelper.isStringNullOrEmpty(staffText)) {
+                    ToastMessageHelper.showErrorMessage(PackDefineActivity.this, R.string.set_staff, true);
+                } else if (StringHelper.isStringNullOrEmpty(productText)) {
+                    ToastMessageHelper.showErrorMessage(PackDefineActivity.this, R.string.set_product, true);
+                } else {
 
-                    Intent intent=new Intent(PackDefineActivity.this,ScanActivity.class);
-                    PackInfoEntity packInfoEntity=new PackInfoEntity();
+                    Intent intent = new Intent(PackDefineActivity.this, ScanActivity.class);
+                    PackInfoEntity packInfoEntity = new PackInfoEntity();
                     packInfoEntity.setProductBaseId(productBase.getId());
                     packInfoEntity.setProductBaseName(productBase.getName());
                     packInfoEntity.setProductBaseNumber(productBase.getProductNumber());
@@ -129,15 +137,18 @@ public class PackDefineActivity extends BaseActivity {
                     packInfoEntity.setStaffName(staff.getName());
                     packInfoEntity.setStaffNumber(staff.getStaffNumber());
                     try {
-                        packInfoEntity.setStandard(Integer.valueOf(standardText));
+                        standard=Integer.valueOf(standardText);
+                        packInfoEntity.setStandard(standard);
                     } catch (NumberFormatException e) {
                         packInfoEntity.setStandard(10);
                     }
-                    intent.putExtra(PACK_INFO,packInfoEntity);
+                    intent.putExtra(PACK_INFO, packInfoEntity);
                     startActivity(intent);
                 }
             }
         });
+
+        restoreSetting();
 
     }
 
@@ -191,9 +202,68 @@ public class PackDefineActivity extends BaseActivity {
                     hideLoading();
                     tv_product.setText(((ProductBase) msg.obj).getName());
                     break;
+
+                case RESTORE_SETTING_MSG:
+                    hideLoading();
+                    refreshUI();
             }
 
         }
+
+
     };
 
+    private void refreshUI() {
+        if (staff!=null){
+            tv_staff.setText(staff.getName());
+        }
+        if (productBase!=null){
+            tv_product.setText(productBase.getName());
+        }
+        tv_standard_value.setText(String.valueOf(standard));
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveSetting();
+    }
+
+    private void saveSetting(){
+        SharedPreferences.Editor editor=getSharedPreferences(Constants.PackPreference.PACK_SETTING,MODE_PRIVATE).edit();
+        if (staff!=null){
+            editor.putLong(Constants.PackPreference.STAFF_ID,staff.getId());
+        }
+        if (productBase!=null){
+            editor.putLong(Constants.PackPreference.PRODUCT_ID,productBase.getId());
+        }
+        editor.putInt(Constants.PackPreference.STANDARD,standard);
+        editor.apply();
+
+    }
+
+    private void restoreSetting(){
+        showLoading();
+        SharedPreferences preferences=getSharedPreferences(Constants.PackPreference.PACK_SETTING,MODE_PRIVATE);
+        final long tempStaffId=preferences.getLong(Constants.PackPreference.STAFF_ID,FALSE_SETTING);
+        final int tempStandard=preferences.getInt(Constants.PackPreference.STANDARD, (int) FALSE_SETTING);
+        final long tempProductId=preferences.getLong(Constants.PackPreference.PRODUCT_ID,FALSE_SETTING);
+        ServiceExecutor.getInstance().execute(new Runnable() {
+            @Override
+            public void run() {
+                if (tempStaffId!=FALSE_SETTING){
+                    staff=staffService.queryStaffById(tempStaffId);
+                }
+                if (tempProductId!=FALSE_SETTING){
+                    productBase=productBaseService.queryProductBaseById(tempProductId);
+                }
+                if (tempStandard!=FALSE_SETTING){
+                    standard=tempStandard;
+                }
+                handler.sendEmptyMessage(RESTORE_SETTING_MSG);
+            }
+        });
+
+    }
 }

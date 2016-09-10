@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"/>
     <EditText
-        android:id="@+id/et_number"
+        android:id="@+id/et_pack_key"
         android:inputType="number"
         android:layout_width="80dp"
         android:layout_height="wrap_content"

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.yunsu.activity.PackScanActivity">
+
+    <com.yunsu.common.view.TitleBar
+        android:id="@+id/title_bar"
+        layout="@layout/title_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <LinearLayout
+        android:id="@+id/ll_staff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_bg_bottom_normal"
+        android:layout_below="@id/title_bar"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/text_style_normal"
+            android:text="@string/staff_2"
+            />
+
+        <TextView
+            android:id="@+id/tv_staff"
+            style="@style/text_style_normal"
+            android:text="张三" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_standard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_bg_bottom_normal"
+        android:layout_below="@id/ll_staff"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            style="@style/text_style_normal"
+            android:text="@string/standard"
+            />
+
+        <TextView
+            android:id="@+id/tv_standard"
+            style="@style/text_style_normal"
+            android:text="5" />
+
+        <TextView
+            style="@style/text_style_normal"
+            android:text="@string/per"
+            />
+
+        <LinearLayout
+            android:id="@+id/ll_has_pack_count"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            >
+
+            <TextView
+                style="@style/text_style_normal"
+                android:text="@string/pack_count_now" />
+
+            <TextView
+                android:id="@+id/tv_pack_count"
+                style="@style/text_style_normal"
+                android:text="0"
+                />
+
+            <TextView
+                style="@style/text_style_normal"
+                android:text="@string/pack_2" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_product"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_bg_bottom_normal"
+        android:layout_below="@id/ll_standard"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            style="@style/text_style_normal"
+            android:text="@string/product_2"
+            />
+
+        <TextView
+            android:id="@+id/tv_product"
+            style="@style/text_style_normal"
+            android:text="哇哈哈" />
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/et_get_product_key"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/ll_standard"
+        android:layout_marginTop="30dp"
+        android:background="@null"
+        android:gravity="center_horizontal"
+        />
+
+    <LinearLayout
+        android:id="@+id/ll_progress_info"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_product"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:gravity=""
+        >
+        <TextView
+            style="@style/text_style_normal"
+            android:text="@string/proceeding"
+            />
+        <TextView
+            android:id="@+id/tv_product_count"
+            style="@style/text_style_biggest"
+            android:text="5"
+            android:textColor="#10f089"
+            />
+        <TextView
+            style="@style/text_style_biggest"
+            android:text="/"
+            android:textColor="#f16969"
+            />
+        <TextView
+            android:id="@+id/tv_standard_in_progress"
+            style="@style/text_style_biggest"
+            android:text="10"
+            />
+    </LinearLayout>
+
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_progress_info"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp" />
+
+    <LinearLayout
+        android:id="@+id/ll_scan_key"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/progressBar1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        >
+
+        <TextView
+            style="@style/text_style_normal"
+            android:text="@string/scan_key_now"
+            />
+        <TextView
+            android:id="@+id/tv_scan_key"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginLeft="10dp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_note_scan"
+        android:layout_below="@id/ll_scan_key"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/please_scan_package_key"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"
+        android:layout_marginTop="20dp"
+        />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        >
+        <Button
+            android:id="@+id/btn_confirm_pack"
+            android:text="@string/confirm_pack"
+            android:background="@drawable/btn_no_corner_bg"
+            android:textColor="@color/clear_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:padding="10dp"
+            />
+        <View
+            android:background="@color/app_bg_color"
+            android:layout_width="2dp"
+            android:layout_height="match_parent"/>
+
+        <Button
+            android:id="@+id/btn_revoke"
+            android:text="@string/revoke_operation"
+            android:background="@drawable/btn_no_corner_bg"
+            android:textColor="@color/clear_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_weight="0.5"
+            />
+
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/et_get_pack_key"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="30dp"
+        />
+
+</RelativeLayout>

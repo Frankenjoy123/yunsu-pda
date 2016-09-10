@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="280dp"
+    android:layout_height="100dp"
+    android:gravity="center"
+    android:background="@drawable/item_bg_normal"
+    >
+    <TextView
+        android:text="@string/scan_pack_key"
+        style="@style/text_style_normal"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:background="@drawable/item_bg_normal"
+        />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">.
+        <TextView
+            android:text="@string/pack_key"
+            style="@style/text_style_normal"
+            />
+        <TextView
+            android:id="@+id/tv_show_pack_key"
+            android:layout_width="180dp"
+            style="@style/text_style_normal"
+            android:gravity="center"/>
+        <EditText
+            android:id="@+id/et_pack_key"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            style="@style/text_style_normal"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

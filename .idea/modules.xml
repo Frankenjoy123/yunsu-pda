@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/common-pda/android-library.iml" filepath="$PROJECT_DIR$/common-pda/android-library.iml" />
       <module fileurl="file://$PROJECT_DIR$/common-pda/common-pda.iml" filepath="$PROJECT_DIR$/common-pda/common-pda.iml" />
       <module fileurl="file://$PROJECT_DIR$/green-lib/green-lib.iml" filepath="$PROJECT_DIR$/green-lib/green-lib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/common-android-library/mylibrary.iml" filepath="$PROJECT_DIR$/common-android-library/mylibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/pack/pack.iml" filepath="$PROJECT_DIR$/pack/pack.iml" />
       <module fileurl="file://$PROJECT_DIR$/pullrefreshLibrary/pullrefreshLibrary.iml" filepath="$PROJECT_DIR$/pullrefreshLibrary/pullrefreshLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/trace/trace.iml" filepath="$PROJECT_DIR$/trace/trace.iml" />
