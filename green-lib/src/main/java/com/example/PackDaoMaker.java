@@ -44,7 +44,6 @@ public class PackDaoMaker {
         //实际产品数
         pack.addIntProperty("realCount");
 
-
         //创建数据库的表
         Entity product = schema.addEntity("Product");
         product.addIdProperty().autoincrement();

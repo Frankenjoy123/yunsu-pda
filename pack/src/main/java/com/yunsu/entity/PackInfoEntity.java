@@ -21,10 +21,14 @@ public class PackInfoEntity implements Parcelable{
     public PackInfoEntity(){};
 
     protected PackInfoEntity(Parcel in) {
+        staffId=in.readLong();
         staffNumber = in.readString();
         staffName = in.readString();
+
+        productBaseId=in.readLong();
         productBaseNumber = in.readString();
         productBaseName = in.readString();
+
         standard = in.readInt();
     }
 
@@ -104,8 +108,10 @@ public class PackInfoEntity implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(staffId);
         parcel.writeString(staffNumber);
         parcel.writeString(staffName);
+        parcel.writeLong(productBaseId);
         parcel.writeString(productBaseNumber);
         parcel.writeString(productBaseName);
         parcel.writeInt(standard);

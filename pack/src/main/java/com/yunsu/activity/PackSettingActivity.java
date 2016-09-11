@@ -23,7 +23,6 @@ import com.yunsu.common.view.TitleBar;
 import com.yunsu.entity.PackInfoEntity;
 import com.yunsu.greendao.entity.ProductBase;
 import com.yunsu.greendao.entity.Staff;
-import com.yunsu.manager.SettingManager;
 import com.yunsu.sqlite.service.ProductBaseService;
 import com.yunsu.sqlite.service.StaffService;
 import com.yunsu.sqlite.service.impl.ProductBaseServiceImpl;
@@ -168,13 +167,13 @@ public class PackSettingActivity extends BaseActivity {
 
 
 
-    private void dialog(int standard){
+    private void dialog(int standardNum){
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
         builder.setTitle(R.string.set_standard);
         LayoutInflater inflater=getLayoutInflater();
         View view=inflater.inflate(R.layout.dialog_pack_standard,null);
         final EditText et_pack_standard= (EditText) view.findViewById(R.id.et_pack_standard);
-        et_pack_standard.setText(String.valueOf(standard));
+        et_pack_standard.setText(String.valueOf(standardNum));
         et_pack_standard.setSelection(et_pack_standard.getText().length());
         builder.setView(view);
         builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
@@ -187,9 +186,8 @@ public class PackSettingActivity extends BaseActivity {
                     ToastMessageHelper.showErrorMessage(PackSettingActivity.this,"请输入合法的数字",true);
                 }else if (numString.length()<=4&&(Integer.parseInt(numString)<=1000)){
                     closeDialog=true;
-                    int min=Integer.parseInt(numString);
-                    SettingManager.getInstance().saveSyncRateSetting(min);
                     tv_standard_value.setText(String.valueOf(numString));
+                    standard=Integer.parseInt(numString);
                 }else {
                     closeDialog=false;
                     ToastMessageHelper.showErrorMessage(PackSettingActivity.this,"请输入1000以内的数字",true);
