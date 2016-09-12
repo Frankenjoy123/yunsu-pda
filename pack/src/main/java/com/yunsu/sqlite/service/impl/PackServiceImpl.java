@@ -9,7 +9,6 @@ import com.yunsu.greendao.dao.PackDao;
 import com.yunsu.greendao.dao.StaffDao;
 import com.yunsu.greendao.entity.Pack;
 import com.yunsu.greendao.entity.Product;
-import com.yunsu.greendao.entity.Staff;
 import com.yunsu.manager.GreenDaoManager;
 import com.yunsu.sqlite.service.PackService;
 
@@ -71,24 +70,26 @@ public class PackServiceImpl implements PackService{
     @Override
     public List<StaffCountEntity> queryPackProductCountByDate(String date) {
 
-        Cursor c = db.rawQuery("select staff_id, count(*) , sum(real_count)  from Pack where date(last_save_time)=? group by staff_id",
-                new String[]{date});
+//        Cursor c = db.rawQuery("select staff_id, count(*) , sum(real_count)  from Pack where date(last_save_time)=? group by staff_id",
+//                new String[]{date});
+
+        StringBuilder builder=new StringBuilder();
+        builder.append("select staff_id, s.NAME, count(*) as 'product count', count(distinct p._id) as 'pack count' ");
+        builder.append("from Pack p inner join Product pr on p._id = pr.PACK_ID inner join staff s on p.STAFF_ID = s._id ");
+        builder.append("where  date(p.last_save_time)=? group by p.staff_id");
+
+        Cursor c=db.rawQuery(builder.toString(),new String[]{date});
+
         List<StaffCountEntity> staffCountEntityList=new ArrayList<>();
 
         if (c!=null){
             while(c.moveToNext()) {
                 StaffCountEntity staffCountEntity=new StaffCountEntity();
                 staffCountEntity.setId(c.getLong(0));
-                staffCountEntity.setPackCount(c.getInt(1));
+                staffCountEntity.setName(c.getString(1));
                 staffCountEntity.setProductCount(c.getInt(2));
+                staffCountEntity.setPackCount(c.getInt(3));
                 staffCountEntityList.add(staffCountEntity);
-            }
-        }
-
-        if (staffCountEntityList!=null&&staffCountEntityList.size()>0){
-            for (StaffCountEntity entity :staffCountEntityList) {
-                Staff staff=staffDao.queryBuilder().where(StaffDao.Properties.Id.eq(entity)).unique();
-                entity.setName(staff.getName());
             }
         }
 

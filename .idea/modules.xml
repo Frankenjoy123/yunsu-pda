@@ -6,7 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/green-lib/green-lib.iml" filepath="$PROJECT_DIR$/green-lib/green-lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/pack/pack.iml" filepath="$PROJECT_DIR$/pack/pack.iml" />
       <module fileurl="file://$PROJECT_DIR$/pullrefreshLibrary/pullrefreshLibrary.iml" filepath="$PROJECT_DIR$/pullrefreshLibrary/pullrefreshLibrary.iml" />
-      <module fileurl="file://$PROJECT_DIR$/trace/trace.iml" filepath="$PROJECT_DIR$/trace/trace.iml" />
       <module fileurl="file://$PROJECT_DIR$/yunsu-pda.iml" filepath="$PROJECT_DIR$/yunsu-pda.iml" />
     </modules>
   </component>

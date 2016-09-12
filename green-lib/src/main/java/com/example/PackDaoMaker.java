@@ -38,7 +38,7 @@ public class PackDaoMaker {
         //同步状态
         pack.addStringProperty("status");
         //最近操作时间
-        pack.addDateProperty("lastSaveTime");
+        pack.addStringProperty("lastSaveTime");
         //规格
         pack.addIntProperty("standard");
         //实际产品数
@@ -49,7 +49,7 @@ public class PackDaoMaker {
         product.addIdProperty().autoincrement();
         product.addStringProperty("productKey");
         product.addStringProperty("status");
-        product.addDateProperty("lastSaveTime");
+        product.addStringProperty("lastSaveTime");
 
         //建立包装和产品的一对多关联
         Property packId=product.addLongProperty("packId").getProperty();

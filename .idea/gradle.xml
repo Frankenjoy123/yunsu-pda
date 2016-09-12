@@ -13,7 +13,6 @@
             <option value="$PROJECT_DIR$/green-lib" />
             <option value="$PROJECT_DIR$/pack" />
             <option value="$PROJECT_DIR$/pullrefreshLibrary" />
-            <option value="$PROJECT_DIR$/trace" />
           </set>
         </option>
         <option name="myModules">
@@ -23,7 +22,6 @@
             <option value="$PROJECT_DIR$/green-lib" />
             <option value="$PROJECT_DIR$/pack" />
             <option value="$PROJECT_DIR$/pullrefreshLibrary" />
-            <option value="$PROJECT_DIR$/trace" />
           </set>
         </option>
       </GradleProjectSettings>

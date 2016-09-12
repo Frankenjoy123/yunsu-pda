@@ -184,5 +184,10 @@ public final class Constants {
 
     public static final boolean INIT_DATA = true;
 
+    public static final String PACK_INFO="pack_info";
+
+    public static final String PRODUCT_KEY_LIST="productKeyList";
+
+    public static final String dateFormat="yyyy-MM-dd'T'HH:mm:ss";
 
 }

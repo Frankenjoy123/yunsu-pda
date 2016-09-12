@@ -34,6 +34,7 @@ import com.yunsu.sqlite.service.impl.PackServiceImpl;
 import com.yunsu.sqlite.service.impl.ProductServiceImpl;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -83,13 +84,14 @@ public class PackScanActivity extends BaseActivity {
 
     protected static final int PACK_SUCCESS_MSG = 100;
     protected static final int MSG_FAILURE = -1;
-    public static final String PRODUCT_KEY_LIST="productKeyList";
 
     public static final int REVOKE_PACK_REQUEST=201;
-    public static final int REVOKE_PACK_RESULT=203;
+
 
     protected int packCount = 0;
     protected List<String> productKeyList;
+
+    private SimpleDateFormat format;
 
 
     @Override
@@ -126,6 +128,8 @@ public class PackScanActivity extends BaseActivity {
         soundMap = new HashMap<Integer, Integer>();
         soundMap.put(1, soundPool.load(getApplicationContext(), R.raw.short_sound, 1));
         soundMap.put(2, soundPool.load(getApplicationContext(), R.raw.long_sound, 1));
+
+        format=new SimpleDateFormat(Constants.dateFormat);
 
         packInfoEntity = getIntent().getParcelableExtra(PackSettingActivity.PACK_INFO);
         tv_staff.setText(packInfoEntity.getStaffName());
@@ -225,8 +229,8 @@ public class PackScanActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent =new Intent(PackScanActivity.this,RevokeActivity.class);
-                intent.putExtra(PackSettingActivity.PACK_INFO,packInfoEntity);
-                intent.putExtra(PRODUCT_KEY_LIST, (Serializable) productKeyList);
+                intent.putExtra(Constants.PACK_INFO,packInfoEntity);
+                intent.putExtra(Constants.PRODUCT_KEY_LIST, (Serializable) productKeyList);
                 startActivityForResult(intent,REVOKE_PACK_REQUEST);
             }
         });
@@ -234,14 +238,11 @@ public class PackScanActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (resultCode){
-            case REVOKE_PACK_RESULT:
-                productKeyList.clear();
-                ArrayList<String> list= (ArrayList<String>) data.getSerializableExtra(PRODUCT_KEY_LIST);
-                productKeyList.addAll(list);
-                refreshUI();
-                break;
-
+        if (requestCode==REVOKE_PACK_REQUEST&&requestCode==RevokeActivity.REVOKE_PACK_RESULT){
+            productKeyList.clear();
+            ArrayList<String> list= (ArrayList<String>) data.getSerializableExtra(Constants.PRODUCT_KEY_LIST);
+            productKeyList.addAll(list);
+            refreshUI();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -280,7 +281,7 @@ public class PackScanActivity extends BaseActivity {
                             PackService packService = new PackServiceImpl();
                             Pack pack = new Pack();
                             pack.setPackKey(formatKey);
-                            pack.setLastSaveTime(new Date());
+                            pack.setLastSaveTime(format.format(new Date()));
                             pack.setStatus(Constants.DB.NOT_SYNC);
                             pack.setProductBaseId(packInfoEntity.getProductBaseId());
                             pack.setStaffId(packInfoEntity.getStaffId());
@@ -290,7 +291,7 @@ public class PackScanActivity extends BaseActivity {
                             ProductService productService = new ProductServiceImpl();
                             for (int i = 0; i < productKeyList.size(); i++) {
                                 Product product = new Product();
-                                product.setLastSaveTime(new Date());
+                                product.setLastSaveTime(format.format(new Date()));
                                 product.setPackId(pack.getId());
                                 product.setProductKey(productKeyList.get(i));
                                 productService.addProduct(product);
@@ -301,7 +302,6 @@ public class PackScanActivity extends BaseActivity {
 
                         }
                     });
-
 
                 } catch (NotVerifyException e) {
                     ToastMessageHelper.showErrorMessage(PackScanActivity.this, e.getMessage(), true);

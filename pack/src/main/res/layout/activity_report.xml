@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.yunsu.activity.ReportActivity">
+
+    <com.yunsu.common.view.TitleBar
+        android:id="@+id/title_bar"
+        layout="@layout/title_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+
+    <RelativeLayout
+        android:id="@+id/rl_query_date"
+        android:layout_below="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_bg_no_stroke_line"
+        android:clickable="true"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_calendar" />
+
+        <TextView
+            android:id="@+id/tv_query_date"
+            style="@style/text_style.light"
+            android:layout_centerInParent="true"
+            android:text="@string/settings"
+            />
+
+        <ImageView style="@style/down_action_style" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_total_pack"
+        android:layout_below="@+id/rl_query_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/item_bg_top_line"
+        >
+        <TextView
+            android:text="@string/pack_total_count"
+            style="@style/text_style_normal"
+            android:layout_marginLeft="30dp"/>
+
+        <TextView
+            android:id="@+id/tv_pack_total_count"
+            style="@style/text_style_normal"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/tv_report_inbound"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_total_product"
+        android:layout_below="@+id/ll_total_pack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/item_bg_bottom_line"
+        >
+        <TextView
+            android:text="@string/product_total_count"
+            style="@style/text_style_normal"
+            android:layout_marginLeft="30dp" />
+
+        <TextView
+            android:id="@+id/tv_product_total_count"
+            style="@style/text_style_normal"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/tv_report_outbound"
+            />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lv_yunsu_report"
+        android:layout_below="@+id/ll_total_product"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="false"></ListView>
+
+</RelativeLayout>

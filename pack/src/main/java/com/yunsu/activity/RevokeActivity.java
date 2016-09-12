@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.exception.NotVerifyException;
+import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.util.YunsuKeyUtil;
 import com.yunsu.common.view.TitleBar;
@@ -60,6 +61,8 @@ public class RevokeActivity extends BaseActivity {
 
     private List<String> productKeyList;
 
+    public static final int REVOKE_PACK_RESULT=389;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +82,7 @@ public class RevokeActivity extends BaseActivity {
         soundMap.put(1, soundPool.load(getApplicationContext(), R.raw.short_sound, 1));
         soundMap.put(2, soundPool.load(getApplicationContext(), R.raw.long_sound, 1));
 
-        packInfoEntity = getIntent().getParcelableExtra(PackSettingActivity.PACK_INFO);
+        packInfoEntity = getIntent().getParcelableExtra(Constants.PACK_INFO);
         tv_staff.setText(packInfoEntity.getStaffName());
         tv_product.setText(packInfoEntity.getProductBaseName());
         tv_standard.setText(String.valueOf(packInfoEntity.getStandard()));
@@ -89,7 +92,7 @@ public class RevokeActivity extends BaseActivity {
         productKeyList=new ArrayList<>();
 
         try {
-            List<String> list= (ArrayList<String>) getIntent().getSerializableExtra(PackScanActivity.PRODUCT_KEY_LIST);
+            List<String> list= (ArrayList<String>) getIntent().getSerializableExtra(Constants.PRODUCT_KEY_LIST);
             productKeyList.addAll(list);
         } catch (Exception e) {
             e.printStackTrace();
@@ -162,20 +165,12 @@ public class RevokeActivity extends BaseActivity {
             soundPool.play(soundMap.get(2), 1, 1, 0, 0, 1);
         }
     }
-//
-//    @Override
-//    protected void onPause() {
-//        Intent intent=new Intent();
-//        intent.putExtra(PackScanActivity.PRODUCT_KEY_LIST, (Serializable) productKeyList);
-//        setResult(PackScanActivity.REVOKE_PACK_RESULT,intent);
-//        super.onPause();
-//    }
 
     @Override
     public void onBackPressed() {
         Intent intent=new Intent();
-        intent.putExtra(PackScanActivity.PRODUCT_KEY_LIST, (Serializable) productKeyList);
-        setResult(PackScanActivity.REVOKE_PACK_RESULT,intent);
+        intent.putExtra(Constants.PRODUCT_KEY_LIST, (Serializable) productKeyList);
+        setResult(REVOKE_PACK_RESULT,intent);
         super.onBackPressed();
     }
 }
