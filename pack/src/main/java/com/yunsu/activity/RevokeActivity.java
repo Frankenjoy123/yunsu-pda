@@ -8,7 +8,9 @@ import android.media.SoundPool;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -54,6 +56,12 @@ public class RevokeActivity extends BaseActivity {
     @ViewById(id = R.id.tv_scan_key)
     private TextView tv_scan_key;
 
+    @ViewById(id = R.id.tc_scan_error_tip)
+    private TextView tc_scan_error_tip;
+
+    @ViewById(id = R.id.ll_scan_key)
+    private LinearLayout ll_scan_key;
+
     SoundPool soundPool;
     HashMap<Integer, Integer> soundMap;
 
@@ -75,7 +83,7 @@ public class RevokeActivity extends BaseActivity {
         getActionBar().hide();
         titleBar.setMode(TitleBar.TitleBarMode.LEFT_BUTTON);
         titleBar.setDisplayAsBack(true);
-        titleBar.setTitle(getString(R.string.revoke_product));
+        titleBar.setTitle(getString(R.string.remove_product));
 
         soundPool = new SoundPool(2, AudioManager.STREAM_SYSTEM, 5);
         soundMap = new HashMap<Integer, Integer>();
@@ -111,6 +119,9 @@ public class RevokeActivity extends BaseActivity {
                     .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent=new Intent();
+                            intent.putExtra(Constants.PRODUCT_KEY_LIST, (Serializable) productKeyList);
+                            setResult(REVOKE_PACK_RESULT,intent);
                             finish();
                         }
                     }).setNegativeButton(R.string.no, null).create();
@@ -143,8 +154,13 @@ public class RevokeActivity extends BaseActivity {
                     String formalizeKey = YunsuKeyUtil.verifyScanKey(string);
                     if (productKeyList.contains(formalizeKey)){
                         productKeyList.remove(formalizeKey);
+                        ll_scan_key.setVisibility(View.VISIBLE);
+                        tc_scan_error_tip.setVisibility(View.INVISIBLE);
                     }else {
                         ToastMessageHelper.showErrorMessage(RevokeActivity.this,R.string.product_not_in_pack,true);
+                        ll_scan_key.setVisibility(View.INVISIBLE);
+                        tc_scan_error_tip.setVisibility(View.VISIBLE);
+                        tc_scan_error_tip.setText(R.string.product_not_in_pack);
                     }
                     tv_scan_key.setText(formalizeKey);
                     refreshUI();

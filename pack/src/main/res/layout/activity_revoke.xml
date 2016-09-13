@@ -134,6 +134,14 @@
         android:layout_marginRight="30dp"
         android:layout_marginTop="10dp" />
 
+    <TextView
+        android:id="@+id/tc_scan_error_tip"
+        style="@style/text_style_normal"
+        android:layout_below="@id/progressBar1"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible" />
+
     <LinearLayout
         android:id="@+id/ll_scan_key"
         android:layout_width="wrap_content"
@@ -142,6 +150,7 @@
         android:layout_below="@+id/progressBar1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
+        android:visibility="invisible"
         >
 
         <TextView
@@ -168,7 +177,7 @@
         />
     <TextView
         android:text="@string/scan_revoke_product_key"
-        style="@style/text_style_pack_define_value"
+        style="@style/text_style_normal"
         android:layout_below="@+id/iv_scan_key"
         android:layout_centerHorizontal="true"
         android:textColor="#cccccc"

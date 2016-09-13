@@ -85,7 +85,7 @@ public class PackScanActivity extends BaseActivity {
     protected static final int PACK_SUCCESS_MSG = 100;
     protected static final int MSG_FAILURE = -1;
 
-    public static final int REVOKE_PACK_REQUEST=201;
+    public static final int REVOKE_PACK_REQUEST = 201;
 
 
     protected int packCount = 0;
@@ -129,7 +129,7 @@ public class PackScanActivity extends BaseActivity {
         soundMap.put(1, soundPool.load(getApplicationContext(), R.raw.short_sound, 1));
         soundMap.put(2, soundPool.load(getApplicationContext(), R.raw.long_sound, 1));
 
-        format=new SimpleDateFormat(Constants.dateFormat);
+        format = new SimpleDateFormat(Constants.dateFormat);
 
         packInfoEntity = getIntent().getParcelableExtra(PackSettingActivity.PACK_INFO);
         tv_staff.setText(packInfoEntity.getStaffName());
@@ -151,7 +151,6 @@ public class PackScanActivity extends BaseActivity {
     }
 
 
-
     private void refreshUI() {
         progressBar.setProgress(productKeyList.size());
         tv_product_count.setText(String.valueOf(productKeyList.size()));
@@ -162,8 +161,7 @@ public class PackScanActivity extends BaseActivity {
         } else if (productKeyList.size() > 0 && productKeyList.size() < packInfoEntity.getStandard()) {
             btn_confirm_pack.setEnabled(true);
             btn_revoke.setEnabled(true);
-        }
-        else {
+        } else {
             showPackDialog();
         }
     }
@@ -228,31 +226,36 @@ public class PackScanActivity extends BaseActivity {
         btn_revoke.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent =new Intent(PackScanActivity.this,RevokeActivity.class);
-                intent.putExtra(Constants.PACK_INFO,packInfoEntity);
+                Intent intent = new Intent(PackScanActivity.this, RevokeActivity.class);
+                intent.putExtra(Constants.PACK_INFO, packInfoEntity);
                 intent.putExtra(Constants.PRODUCT_KEY_LIST, (Serializable) productKeyList);
-                startActivityForResult(intent,REVOKE_PACK_REQUEST);
+                startActivityForResult(intent, REVOKE_PACK_REQUEST);
             }
         });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode==REVOKE_PACK_REQUEST&&requestCode==RevokeActivity.REVOKE_PACK_RESULT){
-            productKeyList.clear();
-            ArrayList<String> list= (ArrayList<String>) data.getSerializableExtra(Constants.PRODUCT_KEY_LIST);
-            productKeyList.addAll(list);
-            refreshUI();
+        if (requestCode == REVOKE_PACK_REQUEST
+                && resultCode == RevokeActivity.REVOKE_PACK_RESULT) {
+            try {
+                ArrayList<String> list = (ArrayList<String>) data.getSerializableExtra(Constants.PRODUCT_KEY_LIST);
+                productKeyList.clear();
+                productKeyList.addAll(list);
+                refreshUI();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void showPackDialog(){
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
-        LayoutInflater inflater=getLayoutInflater();
-        View view=inflater.inflate(R.layout.dialog_scan_pack_key,null);
-        final EditText et_pack_key= (EditText) view.findViewById(R.id.et_pack_key);
-        final TextView tv_show_pack_key= (TextView) view.findViewById(R.id.tv_show_pack_key);
+    private void showPackDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_scan_pack_key, null);
+        final EditText et_pack_key = (EditText) view.findViewById(R.id.et_pack_key);
+        final TextView tv_show_pack_key = (TextView) view.findViewById(R.id.tv_show_pack_key);
         et_pack_key.requestFocus();
 
         et_pack_key.addTextChangedListener(new TextWatcher() {
@@ -315,7 +318,7 @@ public class PackScanActivity extends BaseActivity {
         });
 
         builder.setView(view);
-        packAlertDialog=builder.create();
+        packAlertDialog = builder.create();
         packAlertDialog.show();
     }
 
@@ -340,7 +343,7 @@ public class PackScanActivity extends BaseActivity {
 
 
     private void doAfterPack() {
-        ToastMessageHelper.showMessage(PackScanActivity.this,R.string.pack_finish,true);
+        ToastMessageHelper.showMessage(PackScanActivity.this, R.string.pack_finish, true);
         packCount++;
         productKeyList.clear();
         et_get_product_key.requestFocus();
