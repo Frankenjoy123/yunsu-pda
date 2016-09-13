@@ -10,17 +10,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yunsu.common.entity.AuthUser;
-import com.yunsu.manager.GreenDaoManager;
-import com.yunsu.manager.LogisticManager;
 import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.service.DataServiceImpl;
 import com.yunsu.common.service.PermanentTokenLoginService;
 import com.yunsu.common.service.ServiceExecutor;
-import com.yunsu.service.background.RecycleHeartBeatService;
-import com.yunsu.service.background.SyncFileService;
-import com.yunsu.service.background.SyncLogService;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.view.TitleBar;
+import com.yunsu.manager.GreenDaoManager;
+import com.yunsu.manager.LogisticManager;
+import com.yunsu.service.background.RecycleHeartBeatService;
+import com.yunsu.service.background.SyncFileService;
+import com.yunsu.common.service.background.SyncLogService;
 
 import org.json.JSONObject;
 
@@ -64,6 +64,7 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
         Intent intent=new Intent(this, SyncFileService.class);
         startService(intent);
         Intent intent1=new Intent(this, SyncLogService.class);
+        intent1.putExtra(Constants.APP_TYPE,Constants.TRACE_APP);
         startService(intent1);
         Intent intent2=new Intent(this, RecycleHeartBeatService.class);
         startService(intent2);

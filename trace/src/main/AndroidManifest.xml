@@ -81,7 +81,7 @@
             android:enabled="true"
             android:exported="true" />
         <service
-            android:name="com.yunsu.service.background.SyncLogService"
+            android:name="com.yunsu.common.service.background.SyncLogService"
             android:enabled="true"
             android:exported="true" />
         <service

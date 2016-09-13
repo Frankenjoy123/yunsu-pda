@@ -1,4 +1,4 @@
-package com.yunsu.util;
+package com.yunsu.common.util;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -6,8 +6,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
-
-import com.yunsu.common.util.Constants;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,6 +36,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     //用于格式化日期,作为日志文件名的一部分
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 
+    private String crashLogPath;
+
     /** 保证只有一个CrashHandler实例 */
     private CrashHandler() {}
 
@@ -51,8 +51,9 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     /**
      * 初始化
      */
-    public void init(Context context) {
+    public void init(Context context,String crashLogPath) {
         mContext = context;
+        this.crashLogPath=crashLogPath;
         //获取系统默认的UncaughtException处理器
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         //设置该CrashHandler为程序的默认处理器
@@ -172,13 +173,11 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 
 
-                String path = Environment.getExternalStorageDirectory()+ Constants.YUNSOO_FOLDERNAME
-                        + Constants.PATH_CRASH_NOT_SYNC_FOLDER;
-                File dir = new File(path);
+                File dir = new File(crashLogPath);
                 if (!dir.exists()) {
                     dir.mkdirs();
                 }
-                FileOutputStream fos = new FileOutputStream(path +File.separator+ fileName);
+                FileOutputStream fos = new FileOutputStream(crashLogPath +File.separator+ fileName);
                 fos.write(sb.toString().getBytes());
                 //发送给开发人员
 //                LogUpLoadService service=new LogUpLoadService(path+"/"+fileName);

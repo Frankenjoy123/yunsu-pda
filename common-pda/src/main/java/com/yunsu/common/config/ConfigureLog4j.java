@@ -1,8 +1,6 @@
-package com.yunsu.config;
+package com.yunsu.common.config;
 
 import android.os.Environment;
-
-import com.yunsu.common.util.Constants;
 
 import org.apache.log4j.Level;
 
@@ -18,7 +16,7 @@ import de.mindpipe.android.logging.log4j.LogConfigurator;
 public class ConfigureLog4j  {
     private static boolean configured = false;
 
-    public static void configure() {
+    public static void configure(String logPath) {
         if (configured == true) {
             return;
         }
@@ -34,8 +32,7 @@ public class ConfigureLog4j  {
             StringBuilder builder=new StringBuilder();
             builder.append(dateFormat.format(new Date()));
             builder.append(".log");
-            logConfigurator.setFileName(Environment.getExternalStorageDirectory()+ Constants.YUNSOO_FOLDERNAME
-                    + Constants.PATH_LOG_NOT_SYNC_FOLDER+ File.separator + builder.toString());
+            logConfigurator.setFileName(logPath+ File.separator + builder.toString());
         } else {
             logConfigurator.setUseFileAppender(false);
         }

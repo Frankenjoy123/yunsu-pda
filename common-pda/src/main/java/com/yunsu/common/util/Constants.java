@@ -159,6 +159,8 @@ public final class Constants {
 
     public static final String PACK_LOG_SYNC_FOLDER = "/pack/log/sync_success";
 
+    public static final String PACK_CRASH_NOT_SYNC_FOLDER = "/pack/crash/not_sync";
+    public static final String PACK_CRASH_SYNC_FOLDER = "/pack/crash/sync";
 
     public static final String PATH_SYNC_TASK_FOLDER = "/path/sync_task";
 
@@ -189,5 +191,19 @@ public final class Constants {
     public static final String PRODUCT_KEY_LIST="productKeyList";
 
     public static final String dateFormat="yyyy-MM-dd'T'HH:mm:ss";
+
+    public static final String COMMON_LOG_NOT_SYNC_PATH="commonLogNotSyncPath";
+
+    public static final String COMMON_LOG_SYNC_PATH="commonLogSyncPath";
+
+    public static final String CRASH_LOG_NOT_SYNC_PATH="crashLogNotSyncPath";
+
+    public static final String CRASH_LOG_SYNC_PATH="crashLogSyncPath";
+
+    public static final String APP_TYPE="appType";
+
+    public static final String TRACE_APP="traceApp";
+
+    public static final String PACK_APP="packApp";
 
 }
