@@ -8,4 +8,7 @@
     <string name="not_authorize">PDA授权已被取消</string>
 
     <string name="not_authorize_message">当前PDA的授权已在服务平台取消，需要重新回到授权界面进行授权</string>
+
+    <string name="clear_cache_release">将清除已经同步数据，包括物流文件和日志文件</string>
+
 </resources>

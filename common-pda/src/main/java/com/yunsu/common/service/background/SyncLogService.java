@@ -10,6 +10,7 @@ import com.yunsu.common.service.DataServiceImpl;
 import com.yunsu.common.service.LogUpLoadService;
 import com.yunsu.common.util.Constants;
 
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -95,6 +96,7 @@ public class SyncLogService extends IntentService implements DataServiceImpl.Dat
             }
 
         } catch (Exception e) {
+            Logger.getLogger(SyncLogService.class).error(e.getMessage());
             e.printStackTrace();
         }
 

@@ -122,7 +122,7 @@
 
     <string name="authorize_status">是否授权</string>
     <string name="clear_cache">清除历史数据</string>
-    <string name="clear_cache_release">将清除已经同步数据，包括物流文件和日志文件</string>
+
     <string name="current_version">当前版本</string>
     <string name="auto_sync">自动同步时间</string>
     <string name="scan_count">扫描计数</string>

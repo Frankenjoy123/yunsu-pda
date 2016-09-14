@@ -6,6 +6,7 @@ import com.yunsu.common.exception.NetworkNotAvailableException;
 import com.yunsu.common.exception.ServerAuthException;
 import com.yunsu.common.exception.ServerGeneralException;
 
+import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -70,8 +71,10 @@ public abstract class DataServiceImpl implements Runnable {
             }
 
         } catch (ServerAuthException | ServerGeneralException | LocalGeneralException | NetworkNotAvailableException e) {
+            Logger.getLogger(DataServiceImpl.class).error(e.getMessage());
             delegate.onRequestFailed(this, e);
         } catch (Exception e) {
+            Logger.getLogger(DataServiceImpl.class).error(e.getMessage());
             delegate.onRequestFailed(this, new LocalGeneralException(e.getMessage()));
         }
     }
