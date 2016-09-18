@@ -1,9 +1,6 @@
 package com.yunsu.activity;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,22 +9,22 @@ import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yunsu.adapter.LogisticActionAdapter;
 import com.yunsu.adapter.PathAdapter;
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.service.ServiceExecutor;
-import com.yunsu.common.util.ToastMessageHelper;
-import com.yunsu.sqlite.service.PackService;
-import com.yunsu.sqlite.service.impl.PackServiceImpl;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.StringUtils;
+import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.view.TitleBar;
 import com.yunsu.greendao.entity.Pack;
+import com.yunsu.sqlite.service.PackService;
+import com.yunsu.sqlite.service.impl.PackServiceImpl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -99,10 +96,13 @@ public class InboundScanActivity extends BaseActivity {
         titleBar.setDisplayAsBack(true);
         titleBar.setTitle(getString(R.string.inbound_scan));
         titleBar.setRightButtonText(getString(R.string.repeal_inbound));
-        titleBar.setOnRightButtonClickedListener(view -> {
-            Intent intent =new Intent(InboundScanActivity.this,RevokeScanActivity.class);
-            intent.putExtra(Constants.TITLE,Constants.Logistic.REVOKE_INBOUND);
-            startActivity(intent);
+        titleBar.setOnRightButtonClickedListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent =new Intent(InboundScanActivity.this,RevokeScanActivity.class);
+                intent.putExtra(Constants.TITLE,Constants.Logistic.REVOKE_INBOUND);
+                startActivity(intent);
+            }
         });
         adaper=new PathAdapter(this, getResources());
         adaper.setKeyList(keys);

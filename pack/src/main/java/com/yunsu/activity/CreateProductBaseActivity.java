@@ -1,11 +1,16 @@
 package com.yunsu.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.yunsu.common.annotation.ViewById;
+import com.yunsu.common.service.ServiceExecutor;
+import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.StringHelper;
 import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.view.TitleBar;
@@ -29,6 +34,8 @@ public class CreateProductBaseActivity extends BaseActivity {
 
     private ProductBaseService productBaseService =new ProductBaseServiceImpl();
 
+    private static final int INSERT_NEW_PRODUCT_MSG=309;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,18 +53,39 @@ public class CreateProductBaseActivity extends BaseActivity {
         btn_create_product.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String productName= et_product_name.getText().toString();
-                String productNumber=et_product_number.getText().toString();
+                final String productName= et_product_name.getText().toString();
+                final String productNumber=et_product_number.getText().toString();
                 if (StringHelper.isStringNullOrEmpty(productName)){
                     ToastMessageHelper.showErrorMessage(CreateProductBaseActivity.this,R.string.product_name_not_null,true);
                 }else if (StringHelper.isStringNullOrEmpty(productNumber)){
                     ToastMessageHelper.showErrorMessage(CreateProductBaseActivity.this,R.string.product_number_not_null,true);
                 }else {
-                    ProductBase productBase=new ProductBase(null,productNumber,productName);
-                    productBaseService.insert(productBase);
-                    finish();
+                    ServiceExecutor.getInstance().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            ProductBase productBase=new ProductBase(null,productNumber,productName);
+                            long id=productBaseService.insert(productBase);
+                            Message message=Message.obtain();
+                            message.what=INSERT_NEW_PRODUCT_MSG;
+                            message.obj=id;
+                            handler.sendMessage(message);
+                        }
+                    });
                 }
             }
         });
     }
+
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what==INSERT_NEW_PRODUCT_MSG){
+                Intent intent=getIntent();
+                intent.putExtra(Constants.PRODUCT_BASE_ID, (long) msg.obj);
+                setResult(ProductBaseListActivity.CREATE_NEW_RESULT,intent);
+                finish();
+            }
+        }
+    };
 }

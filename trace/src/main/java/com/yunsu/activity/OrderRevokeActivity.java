@@ -1,7 +1,5 @@
 package com.yunsu.activity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,7 +14,6 @@ import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.exception.NotVerifyException;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.util.Constants;
-import com.yunsu.common.util.StringUtils;
 import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.util.YunsuKeyUtil;
 import com.yunsu.common.view.TitleBar;
@@ -28,9 +25,6 @@ import com.yunsu.sqlite.service.impl.MaterialServiceImpl;
 import com.yunsu.sqlite.service.impl.PackServiceImpl;
 
 import org.apache.log4j.Logger;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class OrderRevokeActivity extends BaseActivity {
 
@@ -158,31 +152,35 @@ public class OrderRevokeActivity extends BaseActivity {
      * @param key
      */
     private void checkKeyStatus(final String key){
-        ServiceExecutor.getInstance().execute(() -> {
-            Pack queryPack=new Pack();
-            queryPack.setPackKey(key);
-            queryPack.setMaterialId(material.getId());
-            Pack resultPack=packService.queryByKeyMaterialId(queryPack);
 
-            if (resultPack!=null){
+        ServiceExecutor.getInstance().execute(new Runnable() {
+            @Override
+            public void run() {
+                Pack queryPack=new Pack();
+                queryPack.setPackKey(key);
+                queryPack.setMaterialId(material.getId());
+                Pack resultPack=packService.queryByKeyMaterialId(queryPack);
 
-                if (resultPack.getActionId().equals(Constants.Logistic.OUTBOUND_CODE)){
-                    packService.revokePackInOrder(resultPack);
-                    material.setSent(material.getSent()-1);
-                    if(material.getSent()==0){
-                        material.setProgressStatus(Constants.DB.NOT_START);
+                if (resultPack!=null){
+
+                    if (resultPack.getActionId().equals(Constants.Logistic.OUTBOUND_CODE)){
+                        packService.revokePackInOrder(resultPack);
+                        material.setSent(material.getSent()-1);
+                        if(material.getSent()==0){
+                            material.setProgressStatus(Constants.DB.NOT_START);
+                        }else {
+                            material.setProgressStatus(Constants.DB.IN_PROGRESS);
+                        }
+                        materialService.updateMaterial(material);
+                        handler.sendEmptyMessage(REVOKE_SUCCESS_MSG);
                     }else {
-                        material.setProgressStatus(Constants.DB.IN_PROGRESS);
+                        handler.sendEmptyMessage(HAS_REVOKED_MSG);
                     }
-                    materialService.updateMaterial(material);
-                    handler.sendEmptyMessage(REVOKE_SUCCESS_MSG);
-                }else {
-                    handler.sendEmptyMessage(HAS_REVOKED_MSG);
-                }
 
-            }else {
-                //返回扫描不存在
-                handler.sendEmptyMessage(KEY_NOT_EXIST_MSG);
+                }else {
+                    //返回扫描不存在
+                    handler.sendEmptyMessage(KEY_NOT_EXIST_MSG);
+                }
             }
         });
     }

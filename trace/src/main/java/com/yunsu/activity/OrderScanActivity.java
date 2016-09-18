@@ -1,10 +1,8 @@
 package com.yunsu.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,20 +10,16 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yunsu.adapter.OrderAdapter;
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.exception.NotVerifyException;
-import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.util.Constants;
-import com.yunsu.common.util.StringUtils;
 import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.util.YunsuKeyUtil;
 import com.yunsu.common.view.TitleBar;
@@ -36,12 +30,8 @@ import com.yunsu.sqlite.service.PackService;
 import com.yunsu.sqlite.service.impl.MaterialServiceImpl;
 import com.yunsu.sqlite.service.impl.PackServiceImpl;
 
-import org.apache.log4j.Logger;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class OrderScanActivity extends BaseActivity {
     @ViewById(id = R.id.title_bar)
@@ -144,29 +134,40 @@ public class OrderScanActivity extends BaseActivity {
     }
 
     private void bindRevokeOrder() {
-        btn_revoke_outbound.setOnClickListener(view -> {
-            Intent intent=new Intent(OrderScanActivity.this,OrderRevokeActivity.class);
-            intent.putExtra(Constants.DB.ID,id);
-            startActivity(intent);
+        btn_revoke_outbound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(OrderScanActivity.this, OrderRevokeActivity.class);
+                intent.putExtra(Constants.DB.ID, id);
+                startActivity(intent);
+            }
         });
     }
 
     private void bindConfirmFinishOrder() {
-        btn_confirm_finish.setOnClickListener(view -> {
-
-            AlertDialog dialog = new AlertDialog.Builder(OrderScanActivity.this).setTitle(R.string.confirm_finish).setMessage(R.string.confirm_finish_message)
-                    .setPositiveButton(R.string.confirm, (dialogInterface, i) -> {
-                        showLoading();
-                        ServiceExecutor.getInstance().execute(() -> {
-                            material.setProgressStatus(Constants.DB.FINISHED);
-                            SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                            material.setFinishTime(dateFormat.format(new Date()));
-                            materialService.updateMaterial(material);
-                            handler.sendEmptyMessage(CONFIRM_FINISH_ORDER_MSG);
-                        });
-                    }).setNegativeButton(R.string.cancel,null).create();
-            dialog.setCancelable(false);
-            dialog.show();
+        btn_confirm_finish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog dialog = new AlertDialog.Builder(OrderScanActivity.this).setTitle(R.string.confirm_finish).setMessage(R.string.confirm_finish_message)
+                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                showLoading();
+                                ServiceExecutor.getInstance().execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        material.setProgressStatus(Constants.DB.FINISHED);
+                                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                                        material.setFinishTime(dateFormat.format(new Date()));
+                                        materialService.updateMaterial(material);
+                                        handler.sendEmptyMessage(CONFIRM_FINISH_ORDER_MSG);
+                                    }
+                                });
+                            }
+                        }).setNegativeButton(R.string.cancel, null).create();
+                dialog.setCancelable(false);
+                dialog.show();
+            }
         });
     }
 

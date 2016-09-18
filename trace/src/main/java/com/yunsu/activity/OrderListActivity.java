@@ -1,6 +1,5 @@
 package com.yunsu.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,7 +15,6 @@ import com.yunsu.adapter.OrderAdapter;
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.util.Constants;
-import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.view.TitleBar;
 import com.yunsu.greendao.entity.Material;
 import com.yunsu.sqlite.service.MaterialService;
@@ -24,7 +22,6 @@ import com.yunsu.sqlite.service.impl.MaterialServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
 public class OrderListActivity extends BaseActivity {
     @ViewById(id = R.id.title_bar)
@@ -78,11 +75,14 @@ public class OrderListActivity extends BaseActivity {
         orderAdapter.setMaterialList(materialList);
         lv_order.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
         lv_order.setAdapter(orderAdapter);
-        lv_order.setOnItemClickListener((adapterView, view, i, l) -> {
-            Intent intent = new Intent(OrderListActivity.this, OrderScanActivity.class);
-            intent.putExtra(Constants.DB.ID, materialList.get(i-1).getId());
-            startActivity(intent);
-        });
+        lv_order.setOnItemClickListener((new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(OrderListActivity.this, OrderScanActivity.class);
+                intent.putExtra(Constants.DB.ID, materialList.get(i-1).getId());
+                startActivity(intent);
+            }
+        }));
         lv_order.setEmptyView(tv_empty_order_tip);
         lv_order.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
 
@@ -95,10 +95,13 @@ public class OrderListActivity extends BaseActivity {
 
     private void addEarlierList() {
         if (lv_order.getCurrentMode().equals(PullToRefreshBase.Mode.PULL_FROM_END)){
-            ServiceExecutor.getInstance().execute(() -> {
-                List<Material> resultList=materialService.queryMaterialByPage(materialList.size());
-                materialList.addAll(resultList);
-                handler.sendEmptyMessage(ADD_ORDER_LIST_MSG);
+            ServiceExecutor.getInstance().execute(new Runnable() {
+                @Override
+                public void run() {
+                    List<Material> resultList=materialService.queryMaterialByPage(materialList.size());
+                    materialList.addAll(resultList);
+                    handler.sendEmptyMessage(ADD_ORDER_LIST_MSG);
+                }
             });
         }
     }
@@ -107,11 +110,14 @@ public class OrderListActivity extends BaseActivity {
     @Override
     protected void onResume() {
         showLoading();
-        ServiceExecutor.getInstance().execute(() -> {
-            List<Material> materialList = materialService.queryMaterialByPage(0);
-            this.materialList.clear();
-            this.materialList.addAll(materialList);
-            handler.sendEmptyMessage(QUERY_ORDER_LIST_MSG);
+        ServiceExecutor.getInstance().execute(new Runnable() {
+            @Override
+            public void run() {
+                List<Material> resultList = materialService.queryMaterialByPage(0);
+                materialList.clear();
+                materialList.addAll(resultList);
+                handler.sendEmptyMessage(QUERY_ORDER_LIST_MSG);
+            }
         });
         super.onResume();
     }

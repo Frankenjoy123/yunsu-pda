@@ -1,22 +1,30 @@
 package com.yunsu.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.yunsu.adapter.StaffAdapter;
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.service.ServiceExecutor;
+import com.yunsu.common.util.Constants;
+import com.yunsu.common.util.DensityUtil;
 import com.yunsu.common.view.TitleBar;
+import com.yunsu.common.view.swipeleftrightmenulistview.SwipeLeftRightMenuListView;
+import com.yunsu.common.view.swipeleftrightmenulistview.SwipeMenu;
+import com.yunsu.common.view.swipeleftrightmenulistview.SwipeMenuCreator;
+import com.yunsu.common.view.swipeleftrightmenulistview.SwipeMenuItem;
 import com.yunsu.greendao.entity.Staff;
 import com.yunsu.sqlite.service.StaffService;
 import com.yunsu.sqlite.service.impl.StaffServiceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StaffListActivity extends BaseActivity {
@@ -24,7 +32,7 @@ public class StaffListActivity extends BaseActivity {
     TitleBar titleBar;
 
     @ViewById(id = R.id.lv_staff)
-    ListView lv_staff;
+    SwipeLeftRightMenuListView lv_staff;
 
     @ViewById(id = R.id.tv_empty_staff_tip)
     private TextView tv_empty_staff_tip;
@@ -34,6 +42,12 @@ public class StaffListActivity extends BaseActivity {
     private StaffService staffService;
 
     private static final  int QUERY_ALL_STAFF_MSG=134;
+
+    private static final int DELETE_STAFF_MSG=104;
+
+    public static final int CREATE_NEW_STAFF_REQUEST=205;
+
+    public static final int CREATE_NEW_STAFF_RESULT=207;
 
     private List<Staff> staffList;
 
@@ -46,6 +60,9 @@ public class StaffListActivity extends BaseActivity {
 
     private void init() {
         getActionBar().hide();
+
+        staffList=new ArrayList<>();
+
         titleBar.setTitle(getString(R.string.staff_list));
         titleBar.setDisplayAsBack(true);
         titleBar.setMode(TitleBar.TitleBarMode.BOTH_BUTTONS);
@@ -55,10 +72,14 @@ public class StaffListActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(StaffListActivity.this,CreateStaffActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,CREATE_NEW_STAFF_REQUEST);
             }
         });
         staffAdapter=new StaffAdapter(this);
+        staffAdapter.setStaffList(staffList);
+
+        lv_staff.setAdapter(staffAdapter);
+
         staffService=new StaffServiceImpl();
 
         lv_staff.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -71,6 +92,94 @@ public class StaffListActivity extends BaseActivity {
             }
         });
 
+        initSwipeList();
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode==CREATE_NEW_STAFF_REQUEST && resultCode==CREATE_NEW_STAFF_RESULT){
+            Intent intent=getIntent();
+            intent.putExtra(PackSettingActivity.STAFF_ID,data.getLongExtra(Constants.STAFF_ID,0));
+            setResult(PackSettingActivity.STAFF_RESULT,intent);
+            finish();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void initSwipeList() {
+
+        SwipeMenuCreator creatorRight = new SwipeMenuCreator() {
+
+            @Override
+            public void create(SwipeMenu menu) {
+                // create "open" item
+                SwipeMenuItem openItem = new SwipeMenuItem(getApplicationContext());
+//                openItem.setBackground();
+                // set item background
+//                <color name="red_btn_normal_color">#EC7272</color>
+                openItem.setBackground(new ColorDrawable(Color.rgb(0xEC, 0x72, 0x72)));
+//                openItem.setBackground(new ColorDrawable(R.color.red_btn_normal_color));
+                // set item width
+                openItem.setWidth(DensityUtil.dip2px(StaffListActivity.this,100));
+                // set item title
+                openItem.setTitle(getString(R.string.delete));
+                // set item title fontsize
+                openItem.setTitleSize(20);
+                openItem.setId(1);
+                // set item title font color
+                openItem.setTitleColor(Color.WHITE);
+                // add to menu
+                menu.addMenuItem(openItem);
+
+                // // create "delete" item
+                // SwipeMenuItem deleteItem = new
+                // SwipeMenuItem(getApplicationContext());
+                // // set item background
+                // deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                // 0x3F, 0x25)));
+                // // set item width
+                // deleteItem.setWidth(dp2px(90));
+                // // set a icon
+                // deleteItem.setIcon(R.drawable.ic_delete);
+                // // add to menu
+                // menu.addMenuItem(deleteItem);
+
+                menu.setViewType(1);
+            }
+        };
+
+        // set creator
+//        slt_collection.setLeftMenuCreator(creatorLeft);
+        lv_staff.setRightMenuCreator(creatorRight);
+
+        // step 2. listener item click event
+        lv_staff.setOnMenuItemClickListener(new SwipeLeftRightMenuListView.OnMenuItemClickListener() {
+            @Override
+            public void onMenuItemClick(final int position, SwipeMenu menu, int index) {
+
+                switch (menu.getViewType()) {
+                    case 1:// right
+                        if(staffList.size()>0){
+                            ServiceExecutor.getInstance().execute(new Runnable() {
+                                @Override
+                                public void run() {
+                                    staffService.delete(staffList.get(position));
+                                    staffList.remove(position);
+                                    handler.sendEmptyMessage(DELETE_STAFF_MSG);
+                                }
+                            });
+                        }
+
+                        break;
+
+                    default:
+                        break;
+                }
+
+            }
+        });
+
     }
 
     @Override
@@ -80,11 +189,9 @@ public class StaffListActivity extends BaseActivity {
         ServiceExecutor.getInstance().execute(new Runnable() {
             @Override
             public void run() {
-                staffList=staffService.queryAllStaff();
-                Message message=Message.obtain();
-                message.what=QUERY_ALL_STAFF_MSG;
-                message.obj=staffList;
-                handler.sendMessage(message);
+                staffList.clear();
+                staffList.addAll(staffService.queryAllStaff());
+                handler.sendEmptyMessage(QUERY_ALL_STAFF_MSG);
 
             }
         });
@@ -98,9 +205,13 @@ public class StaffListActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case QUERY_ALL_STAFF_MSG:
-                    staffAdapter.setStaffList((List<Staff>) msg.obj);
-                    lv_staff.setAdapter(staffAdapter);
+                    staffAdapter.notifyDataSetChanged();
                     hideLoading();
+                    break;
+                case DELETE_STAFF_MSG:
+                    staffAdapter.notifyDataSetChanged();
+                    break;
+                default:
                     break;
             }
 

@@ -11,4 +11,6 @@
 
     <string name="clear_cache_release">将清除已经同步数据，包括物流文件和日志文件</string>
 
+    <string name="delete">删除</string>
+
 </resources>

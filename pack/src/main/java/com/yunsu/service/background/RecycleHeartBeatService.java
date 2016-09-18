@@ -5,13 +5,20 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-
+import com.yunsu.common.entity.AuthUser;
+import com.yunsu.common.exception.BaseException;
+import com.yunsu.common.manager.SessionManager;
+import com.yunsu.common.service.DataServiceImpl;
 import com.yunsu.common.service.HeartBeatService;
+import com.yunsu.common.service.PermanentTokenLoginService;
+import com.yunsu.common.util.Constants;
+
+import org.json.JSONObject;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class RecycleHeartBeatService extends Service{
+public class RecycleHeartBeatService extends Service implements DataServiceImpl.DataServiceDelegate {
     public static final String TAG = "RecycleHeartBeatService";
 
     public RecycleHeartBeatService() {
@@ -20,7 +27,13 @@ public class RecycleHeartBeatService extends Service{
     @Override
     public void onCreate() {
         super.onCreate();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(TAG, "onStartCommand() executed");
         startSync();
+        return super.onStartCommand(intent, flags, startId);
     }
 
     private void startSync(){
@@ -28,17 +41,29 @@ public class RecycleHeartBeatService extends Service{
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                HeartBeatService service=new HeartBeatService();
-                service.start();
+
+                checkAuthorizeStatus();
+
             }
         },0,1000*60*2);
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand() executed");
-        return super.onStartCommand(intent, flags, startId);
+    /**
+     * 检查授权状态
+     */
+    private void checkAuthorizeStatus() {
+        boolean isAuthorize=getSharedPreferences(Constants.Preference.YUNSU_PDA,MODE_PRIVATE)
+                .getBoolean(Constants.Preference.IS_AUTHORIZE,false);
+        if (isAuthorize){
+            AuthUser authUser=SessionManager.getInstance().getAuthUser();
+            PermanentTokenLoginService service= new PermanentTokenLoginService(authUser.getPermanentToken());
+            service.setDelegate(this);
+            service.setContext(this);
+            service.start();
+        }
     }
+
+
 
     @Override
     public void onDestroy() {
@@ -52,4 +77,16 @@ public class RecycleHeartBeatService extends Service{
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    @Override
+    public void onRequestSucceeded(DataServiceImpl service, JSONObject data, boolean isCached) {
+        if (service instanceof PermanentTokenLoginService){
+            HeartBeatService heartBeatService=new HeartBeatService();
+            heartBeatService.start();
+        }
+    }
+
+    @Override
+    public void onRequestFailed(DataServiceImpl service, BaseException exception) {
+
+    }
 }

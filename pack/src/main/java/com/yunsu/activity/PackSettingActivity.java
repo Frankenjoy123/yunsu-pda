@@ -71,8 +71,6 @@ public class PackSettingActivity extends BaseActivity {
 
     private static final int QUERY_PRODUCT_BASE_MSG = 256;
 
-    public static final String PRODUCT_BASE_ID = "product_base_id";
-
     public static final String PACK_INFO = "pack_info";
 
     private static final long FALSE_SETTING= -1;
@@ -239,7 +237,7 @@ public class PackSettingActivity extends BaseActivity {
 
             case PRODUCT_BASE_RESULT:
                 showLoading();
-                final long productId = data.getLongExtra(PRODUCT_BASE_ID, 0);
+                final long productId = data.getLongExtra(Constants.PRODUCT_BASE_ID, 0);
                 ServiceExecutor.getInstance().execute(new Runnable() {
                     @Override
                     public void run() {

@@ -12,7 +12,8 @@
         android:layout_alignParentTop="true"
         ></com.yunsu.common.view.TitleBar>
 
-    <ListView
+
+    <com.yunsu.common.view.swipeleftrightmenulistview.SwipeLeftRightMenuListView
         android:id="@+id/lv_staff"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,8 +26,8 @@
         android:fastScrollEnabled="false"
         android:footerDividersEnabled="false"
         android:headerDividersEnabled="false"
-        android:smoothScrollbar="true"    ></ListView>
-
+        android:smoothScrollbar="true"  >
+    </com.yunsu.common.view.swipeleftrightmenulistview.SwipeLeftRightMenuListView>
 
     <TextView
         android:id="@+id/tv_empty_staff_tip"

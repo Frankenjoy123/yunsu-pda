@@ -176,6 +176,7 @@ public class RequestManager {
 		restClient.AddHeader("SDKVersion", deviceManager.getDeviceSDKVersion());
 //		restClient.AddHeader("GeoLocation", deviceManager.getDeviceGeoLocationInfo());
 		restClient.AddHeader("ClientVersion", deviceManager.getAppVersion());
+		
 		restClient.AddHeader(Constants.APP_ID,Constants.APP_ID_VALUE);
 		restClient.AddHeader(Constants.DEVICE_ID,deviceManager.getDeviceId());
 

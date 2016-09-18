@@ -1,11 +1,16 @@
 package com.yunsu.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.yunsu.common.annotation.ViewById;
+import com.yunsu.common.service.ServiceExecutor;
+import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.StringHelper;
 import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.view.TitleBar;
@@ -29,6 +34,8 @@ public class CreateStaffActivity extends BaseActivity {
 
     private StaffService staffService=new StaffServiceImpl();
 
+    private static final int INSERT_NEW_MSG=101;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,19 +52,43 @@ public class CreateStaffActivity extends BaseActivity {
         btn_create_staff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String staffName=et_staff_name.getText().toString();
-                String staffNumber=et_staff_number.getText().toString();
+                final String staffName=et_staff_name.getText().toString();
+                final String staffNumber=et_staff_number.getText().toString();
                 if (StringHelper.isStringNullOrEmpty(staffName)){
                     ToastMessageHelper.showErrorMessage(CreateStaffActivity.this,R.string.name_not_null,true);
                 }else if (StringHelper.isStringNullOrEmpty(staffNumber)){
                     ToastMessageHelper.showErrorMessage(CreateStaffActivity.this,R.string.number_not_null,true);
                 }else {
-                    Staff staff=new Staff(null,staffNumber,staffName);
-                    staffService.insert(staff);
-                    finish();
+                    ServiceExecutor.getInstance().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            Staff staff=new Staff(null,staffNumber,staffName);
+                            long id=staffService.insert(staff);
+                            Message message=new Message();
+                            message.what=INSERT_NEW_MSG;
+                            message.obj=id;
+                            handler.sendMessage(message);
+                        }
+                    });
+
+
+
                 }
             }
         });
     }
+
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what==INSERT_NEW_MSG){
+                Intent intent=getIntent();
+                intent.putExtra(Constants.STAFF_ID,(long)msg.obj);
+                setResult(StaffListActivity.CREATE_NEW_STAFF_RESULT,intent);
+                finish();
+            }
+        }
+    };
 
 }

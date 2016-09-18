@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         ></com.yunsu.common.view.TitleBar>
 
-    <ListView
+    <com.yunsu.common.view.swipeleftrightmenulistview.SwipeLeftRightMenuListView
         android:id="@+id/lv_product_base"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,7 +26,7 @@
         android:fastScrollEnabled="false"
         android:footerDividersEnabled="false"
         android:headerDividersEnabled="false"
-        android:smoothScrollbar="true"    ></ListView>
+        android:smoothScrollbar="true"    ></com.yunsu.common.view.swipeleftrightmenulistview.SwipeLeftRightMenuListView>
 
 
     <TextView
