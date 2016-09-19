@@ -55,6 +55,8 @@ public class PackSettingActivity extends BaseActivity {
     @ViewById(id = R.id.tv_standard_value)
     private TextView tv_standard_value;
 
+    private EditText et_pack_standard;
+
     public static final int STAFF_REQUEST = 123;
 
     public static final int STAFF_RESULT = 145;
@@ -166,11 +168,11 @@ public class PackSettingActivity extends BaseActivity {
 
 
     private void dialog(int standardNum){
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        final AlertDialog.Builder builder=new AlertDialog.Builder(this);
         builder.setTitle(R.string.set_standard);
         LayoutInflater inflater=getLayoutInflater();
-        View view=inflater.inflate(R.layout.dialog_pack_standard,null);
-        final EditText et_pack_standard= (EditText) view.findViewById(R.id.et_pack_standard);
+        final View view=inflater.inflate(R.layout.dialog_pack_standard,null);
+        et_pack_standard= (EditText) view.findViewById(R.id.et_pack_standard);
         et_pack_standard.setText(String.valueOf(standardNum));
         et_pack_standard.setSelection(et_pack_standard.getText().length());
         builder.setView(view);
@@ -186,6 +188,8 @@ public class PackSettingActivity extends BaseActivity {
                     closeDialog=true;
                     tv_standard_value.setText(String.valueOf(numString));
                     standard=Integer.parseInt(numString);
+//                    InputMethodManager inputMethodManager= (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+//                    inputMethodManager.hideSoftInputFromInputMethod(et_pack_standard.getWindowToken(),0);
                 }else {
                     closeDialog=false;
                     ToastMessageHelper.showErrorMessage(PackSettingActivity.this,"请输入1000以内的数字",true);
@@ -213,7 +217,31 @@ public class PackSettingActivity extends BaseActivity {
                 }
             }
         });
-        builder.create().show();
+        builder.setCancelable(false);
+        final AlertDialog dialog=builder.create();
+        dialog.show();
+
+
+//        Timer timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//
+//            @Override
+//            public void run() {
+//                if(et_pack_standard!=null){
+//                    //设置可获得焦点
+//                    et_pack_standard.setFocusable(true);
+//                    et_pack_standard.setFocusableInTouchMode(true);
+//                    //请求获得焦点
+//                    et_pack_standard.requestFocus();
+//                    //调用系统输入法
+//                    InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    inputManager.showSoftInput(et_pack_standard,InputMethodManager.SHOW_FORCED );
+//                }
+//
+//            }
+//        }, 200);
+
+
     }
 
 

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rl_root_create_product"
     tools:context="com.yunsu.activity.CreateProductBaseActivity">
 
     <com.yunsu.common.view.TitleBar
@@ -18,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/title_bar"
         android:layout_marginTop="20dp"
-        android:background="@drawable/item_bg"
+        android:background="@drawable/item_bg_normal"
         >
 
 
@@ -49,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_product_name"
         android:layout_marginTop="20dp"
-        android:background="@drawable/item_bg">
+        android:background="@drawable/item_bg_normal">
 
 
         <TextView
@@ -68,6 +69,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/fill_tip"
             android:gravity="center"
+            android:inputType="number"
             />
 
 

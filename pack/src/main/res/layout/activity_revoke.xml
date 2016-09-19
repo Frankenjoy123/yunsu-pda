@@ -180,7 +180,6 @@
         style="@style/text_style_normal"
         android:layout_below="@+id/iv_scan_key"
         android:layout_centerHorizontal="true"
-        android:textColor="#cccccc"
         />
 
 

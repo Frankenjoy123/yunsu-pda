@@ -1,12 +1,15 @@
 package com.yunsu.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.service.ServiceExecutor;
@@ -31,6 +34,9 @@ public class CreateProductBaseActivity extends BaseActivity {
 
     @ViewById(id = R.id.btn_create_product)
     private Button btn_create_product;
+
+    @ViewById(id = R.id.rl_root_create_product)
+    private RelativeLayout rl_root_create_product;
 
     private ProductBaseService productBaseService =new ProductBaseServiceImpl();
 
@@ -72,6 +78,15 @@ public class CreateProductBaseActivity extends BaseActivity {
                         }
                     });
                 }
+            }
+        });
+
+        rl_root_create_product.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InputMethodManager imm = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
         });
     }
