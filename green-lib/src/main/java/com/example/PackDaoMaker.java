@@ -32,9 +32,9 @@ public class PackDaoMaker {
         //创建数据库的表
         Entity pack = schema.addEntity("Pack");
         //主键
-        pack.addIdProperty().autoincrement();
+        pack.addIdProperty().autoincrement().index();
         //包装码
-        pack.addStringProperty("packKey").notNull();;
+        pack.addStringProperty("packKey").notNull().unique().index();;
         //同步状态
         pack.addStringProperty("status");
         //最近操作时间
@@ -46,8 +46,8 @@ public class PackDaoMaker {
 
         //创建数据库的表
         Entity product = schema.addEntity("Product");
-        product.addIdProperty().autoincrement();
-        product.addStringProperty("productKey");
+        product.addIdProperty().autoincrement().index();
+        product.addStringProperty("productKey").notNull().unique().index();
         product.addStringProperty("status");
         product.addStringProperty("lastSaveTime");
 

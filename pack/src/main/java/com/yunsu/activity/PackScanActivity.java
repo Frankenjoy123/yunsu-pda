@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yunsu.common.annotation.ViewById;
-import com.yunsu.common.exception.NotVerifyException;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.ToastMessageHelper;
@@ -198,7 +197,7 @@ public class PackScanActivity extends BaseActivity {
                     refreshUI();
                     playSound();
 
-                } catch (NotVerifyException e) {
+                } catch (Exception e) {
                     ToastMessageHelper.showErrorMessage(getApplicationContext(), e.getMessage(), true);
                 }
 
@@ -306,14 +305,15 @@ public class PackScanActivity extends BaseActivity {
                         }
                     });
 
-                } catch (NotVerifyException e) {
-                    ToastMessageHelper.showErrorMessage(PackScanActivity.this, e.getMessage(), true);
                 } catch (Exception e) {
-                    Message message = Message.obtain();
-                    message.what = MSG_FAILURE;
-                    mHandler.sendMessage(message);
-                    e.printStackTrace();
+                    ToastMessageHelper.showErrorMessage(PackScanActivity.this, e.getMessage(), true);
                 }
+//                } catch (Exception e) {
+//                    Message message = Message.obtain();
+//                    message.what = MSG_FAILURE;
+//                    mHandler.sendMessage(message);
+//                    e.printStackTrace();
+//                }
             }
         });
 

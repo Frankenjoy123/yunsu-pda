@@ -4,12 +4,7 @@ package com.yunsu.common.util;
  * Created by yunsu on 2016/8/31.
  */
 
-import android.view.Gravity;
-import android.widget.Toast;
-
 import com.yunsu.common.exception.NotVerifyException;
-
-import org.apache.log4j.Logger;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,13 +14,15 @@ import java.util.regex.Pattern;
  */
 public class YunsuKeyUtil {
 
-    public static String verifyScanKey(String scanKey) throws NotVerifyException {
+    public static String verifyScanKey(String scanKey) throws NotVerifyException{
         Pattern pattern = Pattern.compile("^https?:\\/\\/[\\w\\-\\.]+\\.yunsu\\.co(?:\\:\\d+)?(?:\\/p)?\\/([^\\/]+)\\/?$");
+//        Pattern pattern=Pattern.compile("(.*)");
         Matcher matcher = pattern.matcher(scanKey);
         if (!matcher.find()) {
             throw new NotVerifyException();
         }
         return matcher.group(1);
+
     }
 
 

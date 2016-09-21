@@ -144,7 +144,7 @@ public final class Constants {
 
     public static final String SQ_DATABASE = "yunsu_pda";
 
-    public static final String YUNSOO_FOLDERNAME = "/yunsu";
+    public static final String YUNSOO_FOLDERNAME = "/氧泡泡";
 
     public static final String PACK_SYNC_TASK_FOLDER = "/pack/sync_task";
 

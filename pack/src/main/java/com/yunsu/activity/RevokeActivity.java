@@ -15,7 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.yunsu.common.annotation.ViewById;
-import com.yunsu.common.exception.NotVerifyException;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.util.YunsuKeyUtil;
@@ -166,7 +165,7 @@ public class RevokeActivity extends BaseActivity {
                     refreshUI();
                     playSound();
 
-                } catch (NotVerifyException e) {
+                } catch (Exception e) {
                     ToastMessageHelper.showErrorMessage(getApplicationContext(), e.getMessage(), true);
                 }
 
