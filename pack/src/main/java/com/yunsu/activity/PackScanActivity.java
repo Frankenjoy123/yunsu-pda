@@ -26,11 +26,9 @@ import com.yunsu.common.util.YunsuKeyUtil;
 import com.yunsu.common.view.TitleBar;
 import com.yunsu.entity.PackInfoEntity;
 import com.yunsu.greendao.entity.Pack;
-import com.yunsu.greendao.entity.Product;
+import com.yunsu.manager.FileManager;
 import com.yunsu.sqlite.service.PackService;
-import com.yunsu.sqlite.service.ProductService;
 import com.yunsu.sqlite.service.impl.PackServiceImpl;
-import com.yunsu.sqlite.service.impl.ProductServiceImpl;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -83,6 +81,8 @@ public class PackScanActivity extends BaseActivity {
 
     protected static final int PACK_SUCCESS_MSG = 100;
     protected static final int MSG_FAILURE = -1;
+
+    protected static final int MSG_PACK_KEY_HAS_USED = -12;
 
     public static final int REVOKE_PACK_REQUEST = 201;
 
@@ -272,7 +272,7 @@ public class PackScanActivity extends BaseActivity {
             public void afterTextChanged(Editable editable) {
                 String string = et_pack_key.getText().toString();
                 try {
-                    final String formatKey = YunsuKeyUtil.verifyScanKey(string);
+                    final String formatKey = YunsuKeyUtil.verifyPackKey(string);
                     tv_show_pack_key.setText(formatKey);
                     showLoading();
                     ServiceExecutor.getInstance().execute(new Runnable() {
@@ -288,19 +288,28 @@ public class PackScanActivity extends BaseActivity {
                             pack.setProductBaseId(packInfoEntity.getProductBaseId());
                             pack.setStaffId(packInfoEntity.getStaffId());
                             pack.setStandard(packInfoEntity.getStandard());
-                            packService.addPack(pack);
+                            pack.setRealCount(productKeyList.size());
+                            try {
+                                packService.addPack(pack);
+                                FileManager.getInstance().writePackInfoToFile(pack.getPackKey(),productKeyList);
+                                Message message = Message.obtain();
+                                message.what = PACK_SUCCESS_MSG;
+                                mHandler.sendMessage(message);
 
-                            ProductService productService = new ProductServiceImpl();
-                            for (int i = 0; i < productKeyList.size(); i++) {
-                                Product product = new Product();
-                                product.setLastSaveTime(format.format(new Date()));
-                                product.setPackId(pack.getId());
-                                product.setProductKey(productKeyList.get(i));
-                                productService.addProduct(product);
+                            } catch (Exception e) {
+                                Message message = Message.obtain();
+                                message.what = MSG_PACK_KEY_HAS_USED;
+                                mHandler.sendMessage(message);
+                                e.printStackTrace();
                             }
-                            Message message = Message.obtain();
-                            message.what = PACK_SUCCESS_MSG;
-                            mHandler.sendMessage(message);
+//                            ProductService productService = new ProductServiceImpl();
+//                            for (int i = 0; i < productKeyList.size(); i++) {
+//                                Product product = new Product();
+//                                product.setPackId(pack.getId());
+//                                product.setProductKey(productKeyList.get(i));
+//                                productService.addProduct(product);
+//                            }
+
 
                         }
                     });
@@ -318,6 +327,7 @@ public class PackScanActivity extends BaseActivity {
         });
 
         builder.setView(view);
+        builder.setCancelable(false);
         packAlertDialog = builder.create();
         packAlertDialog.show();
     }
@@ -332,10 +342,15 @@ public class PackScanActivity extends BaseActivity {
                     doAfterPack();
                     break;
                 case MSG_FAILURE:
+                    hideLoading();
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "打包失败，请检查", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
+                    break;
+                case MSG_PACK_KEY_HAS_USED:
+                    hideLoading();
+                    ToastMessageHelper.showErrorMessage(PackScanActivity.this,R.string.pack_key_has_been_used,false);
                     break;
             }
         }
@@ -350,22 +365,5 @@ public class PackScanActivity extends BaseActivity {
 
         refreshUI();
     }
-
-//    public void onPause() {
-//        super.onPause();
-//        try {
-//            SharedPreferences mySharedPreferences = getSharedPreferences("MainActivity",
-//                    Activity.MODE_PRIVATE);
-//            SharedPreferences.Editor editor = mySharedPreferences.edit();
-//            editor.clear();
-//            editor.putString("ItemSize", String.valueOf(productKeyList.size()));
-//            for (int i = 0; i < productKeyList.size(); i++) {
-//                editor.putString(String.valueOf(i),productKeyList.get(i) );
-//            }
-//            editor.commit();
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//    }
 
 }

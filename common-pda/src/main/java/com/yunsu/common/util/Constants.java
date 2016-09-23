@@ -118,6 +118,12 @@ public final class Constants {
         public static final String STAFF_ID="staff_id";
         public static final String STANDARD="standard";
         public static final String PRODUCT_ID="product_id";
+
+        public static final String PATTERN="pattern";
+
+        public static final String PRODUCT_PATTERN="product_pattern";
+
+        public static final String PACK_PATTERN="pack_pattern";
     }
 
     public final static class Request {
@@ -146,7 +152,7 @@ public final class Constants {
 
     public static final String YUNSOO_FOLDERNAME = "/氧泡泡";
 
-    public static final String PACK_SYNC_TASK_FOLDER = "/pack/sync_task";
+    public static final String PACK_SYNC_TASK_FOLDER = "/包装文件";
 
     public static final String PACK_SYNC_SUCCESS_FOLDER = "/pack/sync_success";
 
@@ -155,11 +161,12 @@ public final class Constants {
     public static final String PACK_AUTO_INBOUND_SUCCESS_FOLDER = "/pack/auto_inbound/sync_success";
 
 
-    public static final String PACK_LOG_NOT_SYNC_FOLDER = "/pack/log/not_sync";
+    public static final String PACK_LOG_NOT_SYNC_FOLDER = "/log";
 
     public static final String PACK_LOG_SYNC_FOLDER = "/pack/log/sync_success";
 
-    public static final String PACK_CRASH_NOT_SYNC_FOLDER = "/pack/crash/not_sync";
+    public static final String PACK_CRASH_NOT_SYNC_FOLDER = "/log/crash";
+
     public static final String PACK_CRASH_SYNC_FOLDER = "/pack/crash/sync";
 
     public static final String PATH_SYNC_TASK_FOLDER = "/path/sync_task";
@@ -191,6 +198,8 @@ public final class Constants {
     public static final String PRODUCT_KEY_LIST="productKeyList";
 
     public static final String dateFormat="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+
+    public static final String dateOnlyDayFormat="yyyy-MM-dd";
 
     public static final String COMMON_LOG_NOT_SYNC_PATH="commonLogNotSyncPath";
 

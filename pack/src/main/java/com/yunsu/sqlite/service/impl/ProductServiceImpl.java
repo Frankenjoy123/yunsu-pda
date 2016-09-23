@@ -42,8 +42,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void removeAllProductByPackId(long packId) {
         List<Product> productList=queryAllProductByPackId(packId);
-        for (Product product :productList){
-            productDao.delete(product);
-        }
+        productDao.deleteInTx(productList);
     }
 }

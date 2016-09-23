@@ -6,7 +6,11 @@ package com.yunsu.common.exception;
 public class NotVerifyException extends BaseException {
 
     public NotVerifyException( ) {
-        super("扫码非云溯官方认证");
+        super("扫码非氧泡泡官方认证");
+    }
+
+    public NotVerifyException(String msg ) {
+        super(msg);
     }
 
 }

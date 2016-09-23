@@ -80,5 +80,11 @@ public class PackDaoMaker {
         Property productBaseId=pack.addLongProperty("productBaseId").getProperty();
         pack.addToOne(productBase,productBaseId);
 
+        //正则表达式表
+        Entity patternInfo=schema.addEntity("PatternInfo");
+        patternInfo.addIdProperty().autoincrement();
+        patternInfo.addStringProperty("name");
+        patternInfo.addStringProperty("regex");
+
     }
 }
