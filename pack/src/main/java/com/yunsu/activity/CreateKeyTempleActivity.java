@@ -111,7 +111,7 @@ public class CreateKeyTempleActivity extends BaseActivity {
             if (msg.what==INSERT_NEW_MSG){
                 Intent intent=getIntent();
                 intent.putExtra(Constants.PackPreference.PATTERN_ID,(long)msg.obj);
-                setResult(KeyTempleListActivity.CREATE_NEW_TEMPLE_RESULT,intent);
+                setResult(KeyTemplateListActivity.CREATE_NEW_TEMPLE_RESULT,intent);
                 finish();
             }
         }

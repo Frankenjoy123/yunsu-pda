@@ -123,7 +123,7 @@
             android:screenOrientation="portrait" />
         <activity android:name=".UnPackActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".KeyTempleListActivity"
+        <activity android:name=".KeyTemplateListActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".CreateKeyTempleActivity"
             android:screenOrientation="portrait"

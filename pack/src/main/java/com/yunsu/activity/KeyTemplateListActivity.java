@@ -21,7 +21,7 @@ import com.yunsu.sqlite.service.impl.PatternServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KeyTempleListActivity extends BaseActivity {
+public class KeyTemplateListActivity extends BaseActivity {
 
     @ViewById(id = R.id.temple_title_bar)
     TitleBar titleBar;
@@ -53,7 +53,7 @@ public class KeyTempleListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_key_temple_list);
-//        init();
+        init();
     }
 
     private void init() {
@@ -70,7 +70,7 @@ public class KeyTempleListActivity extends BaseActivity {
         titleBar.setOnRightButtonClickedListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(KeyTempleListActivity.this,CreateKeyTempleActivity.class);
+                Intent intent=new Intent(KeyTemplateListActivity.this,CreateKeyTempleActivity.class);
                 startActivityForResult(intent,CREATE_NEW_TEMPLE_REQUEST);
             }
         });

@@ -124,18 +124,17 @@ public class GlobalSettingActivity extends BaseActivity {
         rl_product_key_type.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(GlobalSettingActivity.this,KeyTempleListActivity.class);
-                startActivity(intent);
-//                intent.putExtra(Constants.PackPreference.PATTERN,Constants.PackPreference.PRODUCT_PATTERN);
-//                startActivityForResult(intent,KeyTempleListActivity.PRODUCT_REQUEST);
+                Intent intent=new Intent(GlobalSettingActivity.this,KeyTemplateListActivity.class);
+                intent.putExtra(Constants.PackPreference.PATTERN,Constants.PackPreference.PRODUCT_PATTERN);
+                startActivityForResult(intent, KeyTemplateListActivity.PRODUCT_REQUEST);
             }
         });
         rl_pack_key_type.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(GlobalSettingActivity.this,KeyTempleListActivity.class);
+                Intent intent=new Intent(GlobalSettingActivity.this,KeyTemplateListActivity.class);
                 intent.putExtra(Constants.PackPreference.PATTERN,Constants.PackPreference.PACK_PATTERN);
-                startActivityForResult(intent,KeyTempleListActivity.PACK_REQUEST);
+                startActivityForResult(intent, KeyTemplateListActivity.PACK_REQUEST);
             }
         });
 
@@ -146,7 +145,7 @@ public class GlobalSettingActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode==KeyTempleListActivity.PACK_REQUEST && resultCode == KeyTempleListActivity.PATTERN_RESULT ){
+        if (requestCode== KeyTemplateListActivity.PACK_REQUEST && resultCode == KeyTemplateListActivity.PATTERN_RESULT ){
             final long patternInfoId=data.getLongExtra(PATTERN_ID,0);
 
             ServiceExecutor.getInstance().execute(new Runnable() {
@@ -158,7 +157,7 @@ public class GlobalSettingActivity extends BaseActivity {
             });
         }
 
-        if (requestCode==KeyTempleListActivity.PRODUCT_REQUEST && resultCode == KeyTempleListActivity.PATTERN_RESULT ){
+        if (requestCode== KeyTemplateListActivity.PRODUCT_REQUEST && resultCode == KeyTemplateListActivity.PATTERN_RESULT ){
             final long patternInfoId=data.getLongExtra(PATTERN_ID,0);
 
             ServiceExecutor.getInstance().execute(new Runnable() {
@@ -195,8 +194,12 @@ public class GlobalSettingActivity extends BaseActivity {
     @Override
     protected void onPause() {
         saveSetting();
-        YunsuKeyUtil.getInstance().storePackKeyPattern(packPatternInfo.getRegex());
-        YunsuKeyUtil.getInstance().storeProductKeyPattern(productPatternInfo.getRegex());
+        if (packPatternInfo!=null){
+            YunsuKeyUtil.getInstance().storePackKeyPattern(packPatternInfo.getRegex());
+        }
+        if (productPatternInfo!=null){
+            YunsuKeyUtil.getInstance().storeProductKeyPattern(productPatternInfo.getRegex());
+        }
         super.onPause();
     }
 

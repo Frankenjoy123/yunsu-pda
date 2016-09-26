@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.yunsu.activity.KeyTempleListActivity">
+    tools:context=".KeyTemplateListActivity">
 
     <com.yunsu.common.view.TitleBar
         android:id="@+id/temple_title_bar"
