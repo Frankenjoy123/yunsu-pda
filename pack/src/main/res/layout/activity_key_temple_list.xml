@@ -6,7 +6,7 @@
     tools:context="com.yunsu.activity.KeyTempleListActivity">
 
     <com.yunsu.common.view.TitleBar
-        android:id="@+id/title_bar"
+        android:id="@+id/temple_title_bar"
         layout="@layout/title_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
         android:id="@+id/lv_temple"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/title_bar"
+        android:layout_below="@+id/temple_title_bar"
         android:cacheColorHint="#00000000"
         android:divider="@color/app_bg_color"
         android:dividerHeight="15dp"

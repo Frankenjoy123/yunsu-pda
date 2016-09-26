@@ -7,7 +7,6 @@ import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.yunsu.adapter.KeyPatternAdapter;
 import com.yunsu.common.annotation.ViewById;
@@ -24,14 +23,11 @@ import java.util.List;
 
 public class KeyTempleListActivity extends BaseActivity {
 
-    @ViewById(id = R.id.title_bar)
+    @ViewById(id = R.id.temple_title_bar)
     TitleBar titleBar;
 
     @ViewById(id = R.id.lv_temple)
     ListView lv_temple;
-
-    @ViewById(id = R.id.tv_empty_staff_tip)
-    private TextView tv_empty_staff_tip;
 
     private KeyPatternAdapter keyPatternAdapter;
 
@@ -57,7 +53,7 @@ public class KeyTempleListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_key_temple_list);
-        init();
+//        init();
     }
 
     private void init() {
@@ -167,7 +163,6 @@ public class KeyTempleListActivity extends BaseActivity {
                 default:
                     break;
             }
-
 
             super.handleMessage(msg);
         }

@@ -1,5 +1,7 @@
 package com.yunsu.activity;
 
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -23,6 +25,7 @@ import com.yunsu.sqlite.service.impl.ProductServiceImpl;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 public class UnPackActivity extends BaseActivity {
 
@@ -41,6 +44,10 @@ public class UnPackActivity extends BaseActivity {
 
     private static final int QUERY_PACK_FAIL_MSG=167;
 
+    protected SoundPool soundPool;
+
+    protected HashMap<Integer, Integer> soundMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +60,10 @@ public class UnPackActivity extends BaseActivity {
         titleBar.setMode(TitleBar.TitleBarMode.LEFT_BUTTON);
         titleBar.setDisplayAsBack(true);
         titleBar.setTitle(getString(R.string.unpack_package));
+
+        soundPool = new SoundPool(2, AudioManager.STREAM_SYSTEM, 5);
+        soundMap = new HashMap<Integer, Integer>();
+        soundMap.put(1, soundPool.load(getApplicationContext(), R.raw.pack_discard, 1));
 
         packService=new PackServiceImpl();
         productService=new ProductServiceImpl();
@@ -117,6 +128,7 @@ public class UnPackActivity extends BaseActivity {
             switch (msg.what){
                 case QUERY_PACK_SUCCESS_MSG:
                     hideLoading();
+                    soundPool.play(soundMap.get(1), 1, 1, 0, 0, 1);
                     ToastMessageHelper.showMessage(UnPackActivity.this,"移除包装"+queryResultPack.getPackKey()+"成功",true);
                     break;
 

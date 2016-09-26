@@ -66,7 +66,7 @@ public class PackDaoMaker {
         staff.addStringProperty("name");
 
         //建立员工和包装的一对多关联
-        Property staffId=pack.addLongProperty("staffId").getProperty();
+        Property staffId=pack.addLongProperty("staffId").index().getProperty();
         pack.addToOne(staff,staffId);
 
         //产品信息表

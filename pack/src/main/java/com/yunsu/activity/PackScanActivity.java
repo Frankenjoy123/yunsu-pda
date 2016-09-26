@@ -86,6 +86,9 @@ public class PackScanActivity extends BaseActivity {
 
     public static final int REVOKE_PACK_REQUEST = 201;
 
+    private String formatPackKey;
+
+    private TextView tv_show_pack_key;
 
     protected int packCount = 0;
     protected List<String> productKeyList;
@@ -127,6 +130,7 @@ public class PackScanActivity extends BaseActivity {
         soundMap = new HashMap<Integer, Integer>();
         soundMap.put(1, soundPool.load(getApplicationContext(), R.raw.short_sound, 1));
         soundMap.put(2, soundPool.load(getApplicationContext(), R.raw.long_sound, 1));
+        soundMap.put(3,soundPool.load(getApplicationContext(),R.raw.pack_complete,1));
 
         format = new SimpleDateFormat(Constants.dateFormat);
 
@@ -155,13 +159,16 @@ public class PackScanActivity extends BaseActivity {
         tv_product_count.setText(String.valueOf(productKeyList.size()));
         tv_pack_count.setText(String.valueOf(packCount));
         if (productKeyList.size() == 0) {
+            et_get_product_key.setVisibility(View.VISIBLE);
+            et_get_product_key.requestFocus();
             btn_confirm_pack.setEnabled(false);
             btn_revoke.setEnabled(false);
         } else if (productKeyList.size() > 0 && productKeyList.size() < packInfoEntity.getStandard()) {
+            et_get_product_key.setVisibility(View.VISIBLE);
             btn_confirm_pack.setEnabled(true);
             btn_revoke.setEnabled(true);
         } else {
-            showPackDialog();
+            et_get_product_key.setVisibility(View.GONE);
         }
     }
 
@@ -196,6 +203,9 @@ public class PackScanActivity extends BaseActivity {
                     productKeyList.add(formalizeKey);
                     refreshUI();
                     playSound();
+                    if (productKeyList.size()==packInfoEntity.getStandard()){
+                        showPackDialog();
+                    }
 
                 } catch (Exception e) {
                     ToastMessageHelper.showErrorMessage(getApplicationContext(), e.getMessage(), true);
@@ -210,7 +220,6 @@ public class PackScanActivity extends BaseActivity {
             soundPool.play(soundMap.get(1), 1, 1, 0, 0, 1);
         } else {
             soundPool.play(soundMap.get(2), 1, 1, 0, 0, 1);
-            et_get_product_key.clearFocus();
         }
     }
 
@@ -225,13 +234,19 @@ public class PackScanActivity extends BaseActivity {
         btn_revoke.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PackScanActivity.this, RevokeActivity.class);
-                intent.putExtra(Constants.PACK_INFO, packInfoEntity);
-                intent.putExtra(Constants.PRODUCT_KEY_LIST, (Serializable) productKeyList);
-                startActivityForResult(intent, REVOKE_PACK_REQUEST);
+                revokeProduct();
             }
         });
     }
+
+    private void revokeProduct(){
+        Intent intent = new Intent(PackScanActivity.this, RevokeActivity.class);
+        intent.putExtra(Constants.PACK_INFO, packInfoEntity);
+        intent.putExtra(Constants.PRODUCT_KEY_LIST, (Serializable) productKeyList);
+        startActivityForResult(intent, REVOKE_PACK_REQUEST);
+    }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -254,8 +269,7 @@ public class PackScanActivity extends BaseActivity {
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_scan_pack_key, null);
         final EditText et_pack_key = (EditText) view.findViewById(R.id.et_pack_key);
-        final TextView tv_show_pack_key = (TextView) view.findViewById(R.id.tv_show_pack_key);
-        et_pack_key.requestFocus();
+        tv_show_pack_key = (TextView) view.findViewById(R.id.tv_show_pack_key);
 
         et_pack_key.addTextChangedListener(new TextWatcher() {
             @Override
@@ -272,9 +286,7 @@ public class PackScanActivity extends BaseActivity {
             public void afterTextChanged(Editable editable) {
                 String string = et_pack_key.getText().toString();
                 try {
-                    final String formatKey = YunsuKeyUtil.getInstance().verifyPackageKey(string);
-
-                    tv_show_pack_key.setText(formatKey);
+                    formatPackKey = YunsuKeyUtil.getInstance().verifyPackageKey(string);
                     showLoading();
                     ServiceExecutor.getInstance().execute(new Runnable() {
 
@@ -283,7 +295,7 @@ public class PackScanActivity extends BaseActivity {
 
                             PackService packService = new PackServiceImpl();
                             Pack pack = new Pack();
-                            pack.setPackKey(formatKey);
+                            pack.setPackKey(formatPackKey);
                             pack.setLastSaveTime(format.format(new Date()));
                             pack.setStatus(Constants.DB.NOT_SYNC);
                             pack.setProductBaseId(packInfoEntity.getProductBaseId());
@@ -316,19 +328,14 @@ public class PackScanActivity extends BaseActivity {
                     });
 
                 } catch (Exception e) {
-                    ToastMessageHelper.showErrorMessage(PackScanActivity.this, e.getMessage(), true);
+                    ToastMessageHelper.showMessage(PackScanActivity.this, e.getMessage(), true);
                 }
-//                } catch (Exception e) {
-//                    Message message = Message.obtain();
-//                    message.what = MSG_FAILURE;
-//                    mHandler.sendMessage(message);
-//                    e.printStackTrace();
-//                }
             }
         });
 
         builder.setView(view);
         builder.setCancelable(false);
+        builder.setPositiveButton(R.string.cancel, null);
         packAlertDialog = builder.create();
         packAlertDialog.show();
     }
@@ -339,6 +346,7 @@ public class PackScanActivity extends BaseActivity {
             switch (msg.what) {
                 case PACK_SUCCESS_MSG:
                     hideLoading();
+                    tv_show_pack_key.setText(formatPackKey);
                     packAlertDialog.dismiss();
                     doAfterPack();
                     break;
@@ -351,7 +359,7 @@ public class PackScanActivity extends BaseActivity {
                     break;
                 case MSG_PACK_KEY_HAS_USED:
                     hideLoading();
-                    ToastMessageHelper.showErrorMessage(PackScanActivity.this,R.string.pack_key_has_been_used,false);
+                    ToastMessageHelper.showMessage(PackScanActivity.this,R.string.pack_key_has_been_used,false);
                     break;
             }
         }
@@ -359,11 +367,10 @@ public class PackScanActivity extends BaseActivity {
 
 
     private void doAfterPack() {
+        soundPool.play(soundMap.get(3), 1, 1, 0, 0, 1);
         ToastMessageHelper.showMessage(PackScanActivity.this, R.string.pack_finish, true);
         packCount++;
         productKeyList.clear();
-        et_get_product_key.requestFocus();
-
         refreshUI();
     }
 

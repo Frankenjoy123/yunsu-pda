@@ -157,6 +157,7 @@ public class PackSettingActivity extends BaseActivity {
                     }
                     intent.putExtra(PACK_INFO, packInfoEntity);
                     startActivity(intent);
+                    finish();
                 }
             }
         });
