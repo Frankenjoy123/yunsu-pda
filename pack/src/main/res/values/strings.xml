@@ -88,7 +88,7 @@
     <string name="title_activity_fix_pack">FixPackActivity</string>
     <string name="fix_tip">请扫描需要修改的包装码</string>
     <string name="unpack_tip">请扫描需要解除的包装码</string>
-    <string name="unpack_tip_des">说明：请解除今日的包装，解除后的包装和产品可到打包扫描界面重新打包。</string>
+    <string name="unpack_tip_des">说明：解除后包装后会删除文件对应的记录，解除后的包装和产品可到打包扫描界面重新打包。</string>
     <string name="file_not_found">文件%1$s已被移除，请在“/氧泡泡/包装文件”中查看</string>
     <string name="device_no_authorize"> 设备未授权,请扫描授权码</string>
     <string name="scan_authorize">扫码授权</string>
