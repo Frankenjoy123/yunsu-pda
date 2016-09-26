@@ -51,6 +51,8 @@ public class StaffListActivity extends BaseActivity {
 
     private List<Staff> staffList;
 
+    private long staffId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +62,8 @@ public class StaffListActivity extends BaseActivity {
 
     private void init() {
         getActionBar().hide();
+
+        staffId=getIntent().getLongExtra(PackSettingActivity.STAFF_ID,0);
 
         staffList=new ArrayList<>();
 
@@ -77,6 +81,7 @@ public class StaffListActivity extends BaseActivity {
         });
         staffAdapter=new StaffAdapter(this);
         staffAdapter.setStaffList(staffList);
+        staffAdapter.setStaffId(staffId);
 
         lv_staff.setAdapter(staffAdapter);
 

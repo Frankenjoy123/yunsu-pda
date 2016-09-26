@@ -52,6 +52,8 @@ public class ProductBaseListActivity extends BaseActivity {
 
     private List<ProductBase> productBaseList;
 
+    private long productBaseId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +63,9 @@ public class ProductBaseListActivity extends BaseActivity {
 
     private void init() {
         getActionBar().hide();
+
+        productBaseId=getIntent().getLongExtra(PackSettingActivity.PRODUCT_BASE_ID,0);
+
         titleBar.setTitle(getString(R.string.product_list));
         titleBar.setDisplayAsBack(true);
         titleBar.setMode(TitleBar.TitleBarMode.BOTH_BUTTONS);

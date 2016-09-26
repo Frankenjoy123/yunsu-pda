@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yunsu.activity.R.id;
@@ -23,6 +24,16 @@ public class StaffAdapter extends BaseAdapter
     Activity activity;
 
     List<Staff> staffList;
+
+    private long staffId;
+
+    public long getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(long staffId) {
+        this.staffId = staffId;
+    }
 
     public List<Staff> getStaffList() {
         return staffList;
@@ -60,17 +71,22 @@ public class StaffAdapter extends BaseAdapter
             ViewHolder holder=new ViewHolder();
             holder.tv_staff_name = (TextView) view.findViewById(id.tv_staff_name);
             holder.tv_staff_number= (TextView) view.findViewById(id.tv_staff_number);
+            holder.iv_check= (ImageView) view.findViewById(id.iv_check);
             view.setTag(holder);
         }
         ViewHolder holder= (ViewHolder) view.getTag();
         holder.tv_staff_name.setText(staffList.get(i).getName());
         holder.tv_staff_number.setText(String.valueOf(staffList.get(i).getStaffNumber()));
+        if (staffId==staffList.get(i).getId()){
+            holder.iv_check.setVisibility(View.VISIBLE);
+        }
         return view;
     }
 
     private final static class ViewHolder {
         TextView tv_staff_number;
         TextView tv_staff_name;
+        ImageView iv_check;
     }
 
 }

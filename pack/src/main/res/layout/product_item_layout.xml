@@ -65,6 +65,16 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/iv_check"
+        android:visibility="invisible"
+        android:src="@drawable/ic_check"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_width="25dp"
+        android:layout_height="25dp" />
+
+
 
 
 

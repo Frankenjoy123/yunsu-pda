@@ -67,6 +67,8 @@ public class PackSettingActivity extends BaseActivity {
 
     public static final String STAFF_ID = "staff_id";
 
+    public static final String PRODUCT_BASE_ID = "product_base_id";
+
     public static final int PRODUCT_BASE_REQUEST = 212;
 
     public static final int PRODUCT_BASE_RESULT = 245;
@@ -115,6 +117,9 @@ public class PackSettingActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent staffIntent = new Intent(PackSettingActivity.this, StaffListActivity.class);
+                if (staff!=null){
+                    staffIntent.putExtra(STAFF_ID,staff.getId());
+                }
                 startActivityForResult(staffIntent, STAFF_REQUEST);
             }
         });
@@ -123,6 +128,9 @@ public class PackSettingActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent productIntent = new Intent(PackSettingActivity.this, ProductBaseListActivity.class);
+                if (productBase!=null){
+                    productIntent.putExtra(PRODUCT_BASE_ID,productBase.getId());
+                }
                 startActivityForResult(productIntent, PRODUCT_BASE_REQUEST);
             }
         });
