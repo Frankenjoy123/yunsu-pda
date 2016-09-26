@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.yunsu.adapter.KeyPatternAdapter;
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.service.ServiceExecutor;
+import com.yunsu.common.util.Constants;
+import com.yunsu.common.util.YunsuKeyUtil;
 import com.yunsu.common.view.TitleBar;
 import com.yunsu.greendao.entity.PatternInfo;
 import com.yunsu.sqlite.service.PatternService;
@@ -37,13 +39,19 @@ public class KeyTempleListActivity extends BaseActivity {
 
     private static final  int QUERY_ALL_PATTERN_MSG =134;
 
-    private static final int DELETE_PATTERN_MSG =104;
-
-    public static final int CREATE_NEW_STAFF_REQUEST=205;
-
-    public static final int CREATE_NEW_STAFF_RESULT=207;
-
     private List<PatternInfo> patternInfoList;
+
+    public static final int PACK_REQUEST=303;
+
+    public static final int PRODUCT_REQUEST=306;
+
+    public static final int PATTERN_RESULT=307;
+
+    public static final int CREATE_NEW_TEMPLE_REQUEST=205;
+
+    public static final int CREATE_NEW_TEMPLE_RESULT=207;
+
+    private String patternType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,23 +60,25 @@ public class KeyTempleListActivity extends BaseActivity {
         init();
     }
 
-
     private void init() {
         getActionBar().hide();
 
         patternInfoList =new ArrayList<>();
 
-        titleBar.setTitle(getString(R.string.staff_list));
+        patternType=getIntent().getStringExtra(Constants.PackPreference.PATTERN);
+
+        titleBar.setTitle(getString(R.string.temple_list));
         titleBar.setDisplayAsBack(true);
         titleBar.setMode(TitleBar.TitleBarMode.BOTH_BUTTONS);
         titleBar.setRightButtonText(getString(R.string.create));
-//        titleBar.setOnRightButtonClickedListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent=new Intent(StaffListActivity.this,CreateStaffActivity.class);
-//                startActivityForResult(intent,CREATE_NEW_STAFF_REQUEST);
-//            }
-//        });
+        titleBar.setOnRightButtonClickedListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(KeyTempleListActivity.this,CreateKeyTempleActivity.class);
+                startActivityForResult(intent,CREATE_NEW_TEMPLE_REQUEST);
+            }
+        });
+
         keyPatternAdapter =new KeyPatternAdapter(this);
         keyPatternAdapter.setPatternInfoList(patternInfoList);
 
@@ -79,12 +89,31 @@ public class KeyTempleListActivity extends BaseActivity {
         lv_temple.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                if (patternType.equals(Constants.PackPreference.PACK_PATTERN)){
+                    YunsuKeyUtil.getInstance().storePackKeyPattern(patternInfoList.get(i).getRegex());
+                }else {
+                    YunsuKeyUtil.getInstance().storeProductKeyPattern(patternInfoList.get(i).getRegex());
+                }
+
                 Intent intent=getIntent();
-                intent.putExtra(PackSettingActivity.STAFF_ID, patternInfoList.get(i).getId());
-                setResult(PackSettingActivity.STAFF_RESULT,intent);
+                intent.putExtra(GlobalSettingActivity.PATTERN_ID, patternInfoList.get(i).getId());
+                setResult(PATTERN_RESULT,intent);
                 finish();
             }
         });
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode==CREATE_NEW_TEMPLE_REQUEST && resultCode==CREATE_NEW_TEMPLE_RESULT){
+            Intent intent=getIntent();
+            intent.putExtra(GlobalSettingActivity.PATTERN_ID,data.getLongExtra(Constants.PackPreference.PATTERN_ID,0));
+            setResult(PATTERN_RESULT,intent);
+            finish();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -100,17 +129,21 @@ public class KeyTempleListActivity extends BaseActivity {
                     patternInfoList.addAll(tempPatternList);
                 }else {
                     String s1="^https?:\\/\\/[\\w\\-\\.]+\\.yunsu\\.co(?:\\:\\d+)?(?:\\/p)?\\/([^\\/]+)\\/?$";
-                    PatternInfo patternInfo=new PatternInfo(null,"云溯官方码",s1);
+                    String example1="http://dev.yunsu.co:7080/fBC8IFwlR9K65E87Udt86x";
+                    PatternInfo patternInfo=new PatternInfo(null,"云溯官方码",s1,example1);
                     patternService.insert(patternInfo);
                     String s2="^https?://ws.oyao.com/fw\\?f=([^\\/]+)$";
-                    PatternInfo patternInfo2=new PatternInfo(null,"氧泡泡官方码",s2);
+                    String example2="http://ws.oyao.com/fw?=6569340860261171";
+                    PatternInfo patternInfo2=new PatternInfo(null,"氧泡泡官方码",s2,example2);
                     patternService.insert(patternInfo2);
                     String s3="^(\\d+)$";
-                    PatternInfo patternInfo3=new PatternInfo(null,"纯数字",s3);
+                    PatternInfo patternInfo3=new PatternInfo(null,"纯数字",s3,"12345678");
                     patternService.insert(patternInfo3);
                     String s4="^([a-zA-Z\\d]+)$";
-                    PatternInfo patternInfo4=new PatternInfo(null,"纯数字+字母",s4);
+                    PatternInfo patternInfo4=new PatternInfo(null,"纯数字+字母",s4,"fBC8IFwlR9K65E87Udt86x");
                     patternService.insert(patternInfo4);
+                    tempPatternList=patternService.queryAllPatternInfo();
+                    patternInfoList.addAll(tempPatternList);
                 }
 
                 handler.sendEmptyMessage(QUERY_ALL_PATTERN_MSG);

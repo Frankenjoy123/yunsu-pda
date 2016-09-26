@@ -17,4 +17,6 @@ public interface PatternService {
 
     List<PatternInfo> queryAllPatternInfo();
 
+    PatternInfo queryPatternById(long id);
+
 }

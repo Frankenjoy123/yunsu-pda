@@ -33,4 +33,10 @@ public class PatternServiceImpl implements PatternService {
     public List<PatternInfo> queryAllPatternInfo() {
         return patternDao.queryBuilder().list();
     }
+
+    @Override
+    public PatternInfo queryPatternById(long id) {
+        return patternDao.queryBuilder()
+                .where(PatternInfoDao.Properties.Id.eq(id)).unique();
+    }
 }

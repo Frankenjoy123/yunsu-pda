@@ -85,6 +85,7 @@ public class PackDaoMaker {
         patternInfo.addIdProperty().autoincrement();
         patternInfo.addStringProperty("name");
         patternInfo.addStringProperty("regex");
+        patternInfo.addStringProperty("example");
 
     }
 }

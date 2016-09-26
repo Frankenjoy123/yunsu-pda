@@ -76,7 +76,7 @@ public class UnPackActivity extends BaseActivity {
             public void afterTextChanged(Editable editable) {
                 final String string = new StringBuilder(editable).toString();
                 try {
-                    final String formatKey= YunsuKeyUtil.verifyPackKey(string);
+                    final String formatKey= YunsuKeyUtil.getInstance().verifyPackageKey(string);
                     showLoading();
                     ServiceExecutor.getInstance().execute(new Runnable() {
                         @Override

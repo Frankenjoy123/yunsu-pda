@@ -185,7 +185,7 @@ public class PackScanActivity extends BaseActivity {
             public void afterTextChanged(Editable s) {
                 String string = new StringBuilder(s).toString();
                 try {
-                    String formalizeKey = YunsuKeyUtil.verifyScanKey(string);
+                    String formalizeKey=YunsuKeyUtil.getInstance().verifyProductKey(string);
                     if (productKeyList != null && productKeyList.size() > 0) {
                         if (productKeyList.contains(formalizeKey)) {
                             ToastMessageHelper.showErrorMessage(PackScanActivity.this, R.string.product_key_exist_in_this_pack, true);
@@ -272,7 +272,8 @@ public class PackScanActivity extends BaseActivity {
             public void afterTextChanged(Editable editable) {
                 String string = et_pack_key.getText().toString();
                 try {
-                    final String formatKey = YunsuKeyUtil.verifyPackKey(string);
+                    final String formatKey = YunsuKeyUtil.getInstance().verifyPackageKey(string);
+
                     tv_show_pack_key.setText(formatKey);
                     showLoading();
                     ServiceExecutor.getInstance().execute(new Runnable() {

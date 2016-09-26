@@ -58,19 +58,19 @@ public class KeyPatternAdapter extends BaseAdapter
         if(view==null){
             view=inflater.inflate(layout.key_pattern_item_layout,viewGroup,false);
             ViewHolder holder=new ViewHolder();
-            holder.tv_express = (TextView) view.findViewById(id.tv_express);
+            holder.tv_example = (TextView) view.findViewById(id.tv_express);
             holder.tv_pattern_name = (TextView) view.findViewById(id.tv_pattern_name);
             view.setTag(holder);
         }
         ViewHolder holder= (ViewHolder) view.getTag();
-        holder.tv_express.setText(patternInfoList.get(i).getName());
-        holder.tv_pattern_name.setText(String.valueOf(patternInfoList.get(i).getRegex()));
+        holder.tv_example.setText(patternInfoList.get(i).getExample());
+        holder.tv_pattern_name.setText(String.valueOf(patternInfoList.get(i).getName()));
         return view;
     }
 
     private final static class ViewHolder {
         TextView tv_pattern_name;
-        TextView tv_express;
+        TextView tv_example;
     }
 
 }

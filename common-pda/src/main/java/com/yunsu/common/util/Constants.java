@@ -121,9 +121,15 @@ public final class Constants {
 
         public static final String PATTERN="pattern";
 
+        public static final String PATTERN_ID="pattern_id";
+
         public static final String PRODUCT_PATTERN="product_pattern";
 
         public static final String PACK_PATTERN="pack_pattern";
+
+        public static final String PACK_PATTERN_ID="pack_pattern_id";
+
+        public static final String PRODUCT_PATTERN_ID="product_pattern_id";
     }
 
     public final static class Request {

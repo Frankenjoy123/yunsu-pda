@@ -21,43 +21,12 @@ public class YunsuKeyUtil {
 
     private static YunsuKeyUtil yunsuKeyUtil;
 
-    private static Pattern productKeyPattern;
+    private  static Pattern productKeyPattern;
 
-    private static Pattern packKeyPattern;
+    private  static Pattern packKeyPattern;
 
     private Context context;
-
-    public YunsuKeyUtil(Context context) {
-        this.context=context;
-        SharedPreferences preferences=context.getSharedPreferences(Constants.PackPreference.PATTERN,Context.MODE_PRIVATE);
-
-        String productString=preferences.getString(Constants.PackPreference.PRODUCT_PATTERN,"^(.*)$");
-
-        String packString=preferences.getString(Constants.PackPreference.PACK_PATTERN,"^(.*)$");
-
-    }
-
-    public  String verifyProductKey(String productKey) throws NotVerifyException{
-        Pattern pattern = Pattern.compile("^https?:\\/\\/[\\w\\-\\.]+\\.yunsu\\.co(?:\\:\\d+)?(?:\\/p)?\\/([^\\/]+)\\/?$");
-        Pattern pattern2 = Pattern.compile("^https?://ws.oyao.com/fw\\?f=(\\d+)$");
-        Matcher matcher = pattern2.matcher(productKey);
-        if (!matcher.find()) {
-            throw new NotVerifyException();
-        }
-        return matcher.group(1);
-    }
-
-    public  String verifyPackageKey(String packKey) throws NotVerifyException{
-//        Pattern pattern = Pattern.compile("^https?:\\/\\/[\\w\\-\\.]+\\.yunsu\\.co(?:\\:\\d+)?(?:\\/p)?\\/([^\\/]+)\\/?$");
-        Pattern pattern2 = Pattern.compile("^https?://ws.oyao.com/fw\\?f=(\\d+)$");
-        Matcher matcher = pattern2.matcher(packKey);
-        if (!matcher.find()) {
-            throw new NotVerifyException();
-        }
-        return matcher.group(1);
-    }
-
-
+    private SharedPreferences preferences;
 
     public static YunsuKeyUtil initializeIntance(Context context) {
 
@@ -74,6 +43,46 @@ public class YunsuKeyUtil {
         }
         return yunsuKeyUtil;
     }
+
+    public YunsuKeyUtil(Context context) {
+        this.context=context;
+        preferences=context.getSharedPreferences(Constants.PackPreference.PATTERN,Context.MODE_PRIVATE);
+
+        String packString=preferences.getString(Constants.PackPreference.PACK_PATTERN,"^(.*)$");
+
+        packKeyPattern=Pattern.compile(packString);
+
+        String productString=preferences.getString(Constants.PackPreference.PRODUCT_PATTERN,"^(.*)$");
+
+        productKeyPattern=Pattern.compile(productString);
+    }
+
+    public void storePackKeyPattern(String packKeyPatternString){
+        preferences.edit().putString(Constants.PackPreference.PACK_PATTERN,packKeyPatternString).apply();
+        packKeyPattern=Pattern.compile(packKeyPatternString);
+    }
+
+    public void storeProductKeyPattern(String productKeyPatternString){
+        preferences.edit().putString(Constants.PackPreference.PRODUCT_PATTERN,productKeyPatternString).apply();
+        productKeyPattern=Pattern.compile(productKeyPatternString);
+    }
+
+    public  String verifyProductKey(String productKey) throws NotVerifyException{
+        Matcher matcher = productKeyPattern.matcher(productKey);
+        if (!matcher.find()) {
+            throw new NotVerifyException("扫码非官方认证产品码");
+        }
+        return matcher.group(matcher.groupCount());
+    }
+
+    public  String verifyPackageKey(String packKey) throws NotVerifyException{
+        Matcher matcher = packKeyPattern.matcher(packKey);
+        if (!matcher.find()) {
+            throw new NotVerifyException("扫码非官方认证包装码");
+        }
+        return matcher.group(matcher.groupCount());
+    }
+
 
 
     public static String verifyScanKey(String scanKey) throws NotVerifyException{

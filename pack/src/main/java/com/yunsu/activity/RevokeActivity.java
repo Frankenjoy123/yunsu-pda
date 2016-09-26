@@ -150,7 +150,7 @@ public class RevokeActivity extends BaseActivity {
             public void afterTextChanged(Editable s) {
                 String string = new StringBuilder(s).toString();
                 try {
-                    String formalizeKey = YunsuKeyUtil.verifyScanKey(string);
+                    String formalizeKey=YunsuKeyUtil.getInstance().verifyProductKey(string);
                     if (productKeyList.contains(formalizeKey)){
                         productKeyList.remove(formalizeKey);
                         ll_scan_key.setVisibility(View.VISIBLE);

@@ -45,7 +45,7 @@
         android:layout_below="@+id/ll_staff_number"
         >
         <TextView
-            android:text="@string/express"
+            android:text="@string/example"
             style="@style/text_style_normal"
             android:textColor="@color/material_blue_grey_950"
             android:focusable="false"
@@ -56,7 +56,6 @@
 
         <TextView
             android:id="@+id/tv_express"
-            android:text="张三"
             style="@style/text_style_normal"
             android:textColor="@color/material_blue_grey_950"
             android:focusable="false"

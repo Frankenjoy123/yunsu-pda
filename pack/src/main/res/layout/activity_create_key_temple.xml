@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rl_root_create_product"
-    tools:context="com.yunsu.activity.CreateProductBaseActivity">
+    android:id="@+id/rl_root_create_temple"
+    tools:context="com.yunsu.activity.CreateKeyTempleActivity">
 
     <com.yunsu.common.view.TitleBar
         android:id="@+id/title_bar"
@@ -28,16 +28,16 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10.0dip"
-            android:text="@string/product_name"
+            android:text="@string/temple_name"
             android:textColor="#ff484e43"
             android:textSize="16.0dp" />
 
         <EditText
-            android:id="@+id/et_product_name"
+            android:id="@+id/et_temple_name"
             android:layout_alignParentRight="true"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:hint="@string/fill_tip"
+            android:hint="@string/temple_name_instance"
             android:gravity="center"
             />
 
@@ -58,28 +58,57 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10.0dip"
-            android:text="@string/product_number"
+            android:text="@string/key_example"
             android:textColor="#ff484e43"
             android:textSize="16.0dp" />
 
         <EditText
-            android:id="@+id/et_product_number"
+            android:id="@+id/et_key_example"
             android:layout_alignParentRight="true"
-            android:layout_width="200dp"
+            android:layout_width="240dp"
+            android:lines="3"
             android:layout_height="wrap_content"
-            android:hint="@string/fill_tip"
+            android:hint="@string/key_example_instance"
             android:gravity="center"
-            android:inputType="number"
             />
 
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/rl_key_prefix"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_key_example"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/item_bg_normal">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10.0dip"
+            android:text="@string/key_prefix"
+            android:textColor="#ff484e43"
+            android:textSize="16.0dp" />
+
+        <EditText
+            android:id="@+id/et_key_prefix"
+            android:layout_alignParentRight="true"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/key_prefix_instance"
+            android:gravity="center"
+            />
+
+    </RelativeLayout>
+
 
     <Button
-        android:id="@+id/btn_create_product"
+        android:id="@+id/btn_create_temple"
         android:text="@string/confirm_create"
-        android:layout_below="@+id/rl_key_example"
+        android:layout_below="@+id/rl_key_prefix"
         android:textColor="@color/white"
         android:background="@drawable/btn_bg"
         android:layout_width="match_parent"
