@@ -25,6 +25,10 @@ public class YunsuKeyUtil {
 
     private  static Pattern packKeyPattern;
 
+    private  String packPatternString;
+
+    private  String productPatternString;
+
     private Context context;
     private SharedPreferences preferences;
 
@@ -48,21 +52,29 @@ public class YunsuKeyUtil {
         this.context=context;
         preferences=context.getSharedPreferences(Constants.PackPreference.PATTERN,Context.MODE_PRIVATE);
 
-        String packString=preferences.getString(Constants.PackPreference.PACK_PATTERN,"^(.*)$");
+        String packString=preferences.getString(Constants.PackPreference.PACK_PATTERN,"^(\\d+)$");
 
         packKeyPattern=Pattern.compile(packString);
 
-        String productString=preferences.getString(Constants.PackPreference.PRODUCT_PATTERN,"^(.*)$");
+        String productString=preferences.getString(Constants.PackPreference.PRODUCT_PATTERN,"^https?:\\/\\/zsm\\.oyao\\.com(?:\\/external\\/([^\\/]+))?\\/([^\\/]+)$");
 
         productKeyPattern=Pattern.compile(productString);
     }
 
-    public void storePackKeyPattern(String packKeyPatternString){
+    public  String getProductPatternString() {
+        return productPatternString;
+    }
+
+    public  String getPackPatternString() {
+        return packPatternString;
+    }
+
+    public void savePackKeyPattern(String packKeyPatternString){
         preferences.edit().putString(Constants.PackPreference.PACK_PATTERN,packKeyPatternString).apply();
         packKeyPattern=Pattern.compile(packKeyPatternString);
     }
 
-    public void storeProductKeyPattern(String productKeyPatternString){
+    public void saveProductKeyPattern(String productKeyPatternString){
         preferences.edit().putString(Constants.PackPreference.PRODUCT_PATTERN,productKeyPatternString).apply();
         productKeyPattern=Pattern.compile(productKeyPatternString);
     }

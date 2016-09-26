@@ -87,9 +87,9 @@ public class KeyTemplateListActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 if (patternType.equals(Constants.PackPreference.PACK_PATTERN)){
-                    YunsuKeyUtil.getInstance().storePackKeyPattern(patternInfoList.get(i).getRegex());
+                    YunsuKeyUtil.getInstance().savePackKeyPattern(patternInfoList.get(i).getRegex());
                 }else {
-                    YunsuKeyUtil.getInstance().storeProductKeyPattern(patternInfoList.get(i).getRegex());
+                    YunsuKeyUtil.getInstance().saveProductKeyPattern(patternInfoList.get(i).getRegex());
                 }
 
                 Intent intent=getIntent();
