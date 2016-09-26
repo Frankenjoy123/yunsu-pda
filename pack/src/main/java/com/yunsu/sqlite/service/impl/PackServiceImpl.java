@@ -74,8 +74,8 @@ public class PackServiceImpl implements PackService{
 //                new String[]{date});
 
         StringBuilder builder=new StringBuilder();
-        builder.append("select staff_id, s.NAME, count(*) as 'product count', count(distinct p._id) as 'pack count' ");
-        builder.append("from Pack p inner join Product pr on p._id = pr.PACK_ID inner join staff s on p.STAFF_ID = s._id ");
+        builder.append("select staff_id, s.NAME, count(p.real_count) as 'product count', count(distinct p._id) as 'pack count' ");
+        builder.append("from Pack p inner join staff s on p.STAFF_ID = s._id ");
         builder.append("where  date(p.last_save_time)=? group by p.staff_id");
 
         Cursor c=db.rawQuery(builder.toString(),new String[]{date});
