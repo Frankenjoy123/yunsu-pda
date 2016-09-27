@@ -52,7 +52,7 @@ public class CreateProductBaseActivity extends BaseActivity {
 
     private void init() {
         getActionBar().hide();
-        titleBar.setTitle(getString(R.string.staff_list));
+        titleBar.setTitle(getString(R.string.create_product));
         titleBar.setDisplayAsBack(true);
         titleBar.setMode(TitleBar.TitleBarMode.LEFT_BUTTON);
 
