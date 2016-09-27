@@ -331,9 +331,8 @@ datetime: 2016-07-20T14:20:30.123Z
 
     private String createPackProductItemString(String packKey,List<String> productKeyList){
         if (!StringHelper.isStringNullOrEmpty(packKey) && productKeyList!=null && productKeyList.size() >0){
-            SimpleDateFormat format=new SimpleDateFormat(Constants.dateFormat);
-            StringBuilder builder=new StringBuilder(format.format(new Date()));
-            builder.append(" ");
+//            SimpleDateFormat format=new SimpleDateFormat(Constants.dateFormat);
+            StringBuilder builder=new StringBuilder();
             builder.append(packKey);
             builder.append(":");
             for (int i = 0; i < productKeyList.size(); i ++) {

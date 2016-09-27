@@ -52,7 +52,7 @@ public class YunsuKeyUtil {
         this.context=context;
         preferences=context.getSharedPreferences(Constants.PackPreference.PATTERN,Context.MODE_PRIVATE);
 
-        packPatternString=preferences.getString(Constants.PackPreference.PACK_PATTERN,"^(\\d+)$");
+        packPatternString=preferences.getString(Constants.PackPreference.PACK_PATTERN,"^(S?\\d{3,})$");
 
         packKeyPattern=Pattern.compile(packPatternString);
 

@@ -135,6 +135,7 @@ public class PackScanActivity extends BaseActivity {
         soundMap.put(4,soundPool.load(getApplicationContext(),R.raw.prod_invalid,1));
         soundMap.put(5,soundPool.load(getApplicationContext(),R.raw.pack_invalid,1));
         soundMap.put(6,soundPool.load(getApplicationContext(),R.raw.pack_packed,1));
+        soundMap.put(7,soundPool.load(getApplicationContext(),R.raw.prod_exist,1));
 
         format = new SimpleDateFormat(Constants.dateFormat);
 
@@ -201,6 +202,7 @@ public class PackScanActivity extends BaseActivity {
                     String formalizeKey=YunsuKeyUtil.getInstance().verifyProductKey(string);
                     if (productKeyList != null && productKeyList.size() > 0) {
                         if (productKeyList.contains(formalizeKey)) {
+                            soundPool.play(soundMap.get(7), 1, 1, 0, 0, 1);
                             ToastMessageHelper.showErrorMessage(PackScanActivity.this, R.string.product_key_exist_in_this_pack, true);
                             return;
                         }
