@@ -15,6 +15,7 @@ import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.DensityUtil;
+import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.view.TitleBar;
 import com.yunsu.common.view.swipeleftrightmenulistview.SwipeLeftRightMenuListView;
 import com.yunsu.common.view.swipeleftrightmenulistview.SwipeMenu;
@@ -45,6 +46,8 @@ public class StaffListActivity extends BaseActivity {
 
     private static final int DELETE_STAFF_MSG=104;
 
+    private static final int EXIST_PACK_DATA_MSG= 106;
+
     public static final int CREATE_NEW_STAFF_REQUEST=205;
 
     public static final int CREATE_NEW_STAFF_RESULT=207;
@@ -52,6 +55,8 @@ public class StaffListActivity extends BaseActivity {
     private List<Staff> staffList;
 
     private long staffId;
+
+    private static final long NULL_STAFF_ID=-2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,9 +174,17 @@ public class StaffListActivity extends BaseActivity {
                             ServiceExecutor.getInstance().execute(new Runnable() {
                                 @Override
                                 public void run() {
-                                    staffService.delete(staffList.get(position));
-                                    staffList.remove(position);
-                                    handler.sendEmptyMessage(DELETE_STAFF_MSG);
+                                    boolean existPackData = staffService.existPackDataByStaffId(staffList.get(position).getId());
+                                    if (existPackData){
+                                        handler.sendEmptyMessage(EXIST_PACK_DATA_MSG);
+                                    }else {
+                                        Message message=Message.obtain();
+                                        message.what=DELETE_STAFF_MSG;
+                                        message.obj=staffList.get(position).getId();
+                                        staffService.delete(staffList.get(position));
+                                        staffList.remove(position);
+                                        handler.sendMessage(message);
+                                    }
                                 }
                             });
                         }
@@ -204,6 +217,14 @@ public class StaffListActivity extends BaseActivity {
         super.onResume();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent();
+        intent.putExtra(PackSettingActivity.STAFF_ID,staffId);
+        setResult(PackSettingActivity.STAFF_RESULT,intent);
+        super.onBackPressed();
+    }
+
 
     private Handler handler=new Handler(){
         @Override
@@ -215,6 +236,12 @@ public class StaffListActivity extends BaseActivity {
                     break;
                 case DELETE_STAFF_MSG:
                     staffAdapter.notifyDataSetChanged();
+                    if (staffId!=0 && staffId == (long)msg.obj){
+                        staffId=NULL_STAFF_ID;
+                    }
+                    break;
+                case EXIST_PACK_DATA_MSG:
+                    ToastMessageHelper.showMessage(StaffListActivity.this,R.string.exist_pack_data,true);
                     break;
                 default:
                     break;

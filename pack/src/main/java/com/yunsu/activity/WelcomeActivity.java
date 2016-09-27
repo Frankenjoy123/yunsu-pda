@@ -9,9 +9,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.yunsu.common.annotation.ViewById;
-//import com.itxiaowu.manager.DeviceGeoLocationManager;
-
+import com.yunsu.common.service.ServiceExecutor;
+import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.DensityUtil;
+import com.yunsu.greendao.entity.ProductBase;
+import com.yunsu.greendao.entity.Staff;
+import com.yunsu.sqlite.service.ProductBaseService;
+import com.yunsu.sqlite.service.StaffService;
+import com.yunsu.sqlite.service.impl.ProductBaseServiceImpl;
+import com.yunsu.sqlite.service.impl.StaffServiceImpl;
+
+import java.util.List;
+
+//import com.itxiaowu.manager.DeviceGeoLocationManager;
 
 
 public class WelcomeActivity extends BaseActivity {
@@ -24,14 +34,24 @@ public class WelcomeActivity extends BaseActivity {
 
     private boolean isAuthorize;
 
+    private StaffService staffService;
+
+    private ProductBaseService productBaseService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
+        staffService=new StaffServiceImpl();
+
+        productBaseService=new ProductBaseServiceImpl();
+
         SharedPreferences preferences=getSharedPreferences("yunsoo_pda",MODE_PRIVATE);
         isAuthorize=preferences.getBoolean("isAuthorize",false);
         init();
+
+        initDefaultPackSetting();
 
         new Handler().postDelayed(new Runnable() {
 
@@ -41,6 +61,28 @@ public class WelcomeActivity extends BaseActivity {
             }
         }, 1000);
 
+    }
+
+    private void initDefaultPackSetting() {
+        ServiceExecutor.getInstance().execute(new Runnable() {
+            @Override
+            public void run() {
+                List<ProductBase> productBaseList = productBaseService.queryAllProductBase();
+                if (productBaseList==null || productBaseList.size()==0){
+                    long productBaseId= productBaseService.insert(new ProductBase(null,"001","默认"));
+                    SharedPreferences.Editor editor=getSharedPreferences(Constants.PackPreference.PACK_SETTING,MODE_PRIVATE).edit();
+                    editor.putLong(Constants.PackPreference.PRODUCT_ID,productBaseId);
+                    editor.apply();
+                }
+                List<Staff> staffList=staffService.queryAllStaff();
+                if (staffList==null || staffList.size()==0){
+                    long staffId= staffService.insert(new Staff(null,"001","默认"));
+                    SharedPreferences.Editor editor=getSharedPreferences(Constants.PackPreference.PACK_SETTING,MODE_PRIVATE).edit();
+                    editor.putLong(Constants.PackPreference.STAFF_ID,staffId);
+                    editor.apply();
+                }
+            }
+        });
     }
 
 

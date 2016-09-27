@@ -15,6 +15,7 @@ import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.DensityUtil;
+import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.view.TitleBar;
 import com.yunsu.common.view.swipeleftrightmenulistview.SwipeLeftRightMenuListView;
 import com.yunsu.common.view.swipeleftrightmenulistview.SwipeMenu;
@@ -46,6 +47,8 @@ public class ProductBaseListActivity extends BaseActivity {
 
     private static final int DELETE_PRODUCT_MSG=201;
 
+    private static final int EXIST_PACK_DATA_MSG= 107;
+
     public static final int CREATE_NEW_REQUEST=301;
 
     public static final int CREATE_NEW_RESULT=306;
@@ -53,6 +56,8 @@ public class ProductBaseListActivity extends BaseActivity {
     private List<ProductBase> productBaseList;
 
     private long productBaseId;
+
+    private static final long NUL_PRODUCT_BASE_ID=-2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +86,7 @@ public class ProductBaseListActivity extends BaseActivity {
         productBaseAdapter =new ProductBaseAdapter(this);
         productBaseList=new ArrayList<>();
         productBaseAdapter.setProductBaseList(productBaseList);
+        productBaseAdapter.setProductBaseId(productBaseId);
         lv_product_base.setAdapter(productBaseAdapter);
 
         productBaseService =new ProductBaseServiceImpl();
@@ -157,9 +163,18 @@ public class ProductBaseListActivity extends BaseActivity {
                             ServiceExecutor.getInstance().execute(new Runnable() {
                                 @Override
                                 public void run() {
-                                    productBaseService.delete(productBaseList.get(position));
-                                    productBaseList.remove(position);
-                                    handler.sendEmptyMessage(DELETE_PRODUCT_MSG);
+                                    boolean existPackData = productBaseService.existPackDataByProductBaseId(productBaseList.get(position).getId());
+                                    if (existPackData){
+                                        handler.sendEmptyMessage(EXIST_PACK_DATA_MSG);
+                                    }else {
+                                        Message message=Message.obtain();
+                                        message.what=DELETE_PRODUCT_MSG;
+                                        message.obj=productBaseList.get(position).getId();
+                                        productBaseService.delete(productBaseList.get(position));
+                                        productBaseList.remove(position);
+                                        handler.sendMessage(message);
+                                    }
+
                                 }
                             });
                         }
@@ -192,6 +207,14 @@ public class ProductBaseListActivity extends BaseActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        Intent intent=new Intent();
+        intent.putExtra(Constants.PRODUCT_BASE_ID,productBaseId);
+        setResult(PackSettingActivity.PRODUCT_BASE_RESULT,intent);
+        super.onBackPressed();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode== CREATE_NEW_REQUEST && resultCode==CREATE_NEW_RESULT){
             Intent intent=getIntent();
@@ -212,6 +235,12 @@ public class ProductBaseListActivity extends BaseActivity {
                     break;
                 case DELETE_PRODUCT_MSG:
                     productBaseAdapter.notifyDataSetChanged();
+                    if (productBaseId!=0 && productBaseId == (long)msg.obj){
+                        productBaseId=NUL_PRODUCT_BASE_ID;
+                    }
+                    break;
+                case EXIST_PACK_DATA_MSG:
+                    ToastMessageHelper.showMessage(ProductBaseListActivity.this,R.string.exist_pack_data,true);
                     break;
                 default:
                     break;

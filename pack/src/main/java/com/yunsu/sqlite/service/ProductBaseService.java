@@ -19,4 +19,6 @@ public interface ProductBaseService {
 
     ProductBase queryProductBaseById(long id);
 
+    boolean existPackDataByProductBaseId(long id);
+
 }

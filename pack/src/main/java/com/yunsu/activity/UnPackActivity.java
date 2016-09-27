@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 
 import com.yunsu.common.annotation.ViewById;
+import com.yunsu.common.exception.NotVerifyException;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.ToastMessageHelper;
@@ -64,7 +65,8 @@ public class UnPackActivity extends BaseActivity {
         soundPool = new SoundPool(2, AudioManager.STREAM_SYSTEM, 5);
         soundMap = new HashMap<Integer, Integer>();
         soundMap.put(1, soundPool.load(getApplicationContext(), R.raw.pack_discard, 1));
-
+        soundMap.put(2, soundPool.load(getApplicationContext(), R.raw.pack_invalid, 1));
+        soundMap.put(3, soundPool.load(getApplicationContext(), R.raw.pack_not_exist, 1));
         packService=new PackServiceImpl();
         productService=new ProductServiceImpl();
 
@@ -95,7 +97,6 @@ public class UnPackActivity extends BaseActivity {
                             queryResultPack = packService.QueryPack(formatKey);
 
                             if (queryResultPack!=null){
-//                                productService.removeAllProductByPackId(queryResultPack.getId());
                                 packService.removePack(queryResultPack);
 
                                 SimpleDateFormat format=new SimpleDateFormat(Constants.dateFormat);
@@ -114,6 +115,9 @@ public class UnPackActivity extends BaseActivity {
                         }
                     });
 
+                } catch (NotVerifyException e) {
+                    soundPool.play(soundMap.get(2), 1, 1, 0, 0, 1);
+                    ToastMessageHelper.showErrorMessage(UnPackActivity.this,e.getMessage(),true);
                 } catch (Exception e) {
                     ToastMessageHelper.showErrorMessage(UnPackActivity.this,e.getMessage(),true);
                 }
@@ -134,6 +138,7 @@ public class UnPackActivity extends BaseActivity {
 
                 case QUERY_PACK_FAIL_MSG:
                     hideLoading();
+                    soundPool.play(soundMap.get(3), 1, 1, 0, 0, 1);
                     ToastMessageHelper.showErrorMessage(UnPackActivity.this,R.string.not_find_pack,true);
                     break;
             }

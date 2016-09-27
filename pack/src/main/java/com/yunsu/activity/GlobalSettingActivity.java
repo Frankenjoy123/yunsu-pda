@@ -35,12 +35,6 @@ public class GlobalSettingActivity extends BaseActivity {
     @ViewById(id = R.id.rl_pack_key_type)
     private RelativeLayout rl_pack_key_type;
 
-    @ViewById(id = R.id.tv_pack_pattern_value)
-    private TextView tv_pack_pattern_value;
-
-    @ViewById(id = R.id.tv_product_pattern_value)
-    private TextView tv_product_pattern_value;
-
     @ViewById(id = R.id.et_product_regex)
     private  EditText et_product_regex;
 
@@ -92,7 +86,7 @@ public class GlobalSettingActivity extends BaseActivity {
             YunsuKeyUtil.getInstance().savePackKeyPattern(packRegex);
         }
         if (!StringHelper.isStringNullOrEmpty(productRegex)){
-            YunsuKeyUtil.getInstance().saveProductKeyPattern(packRegex);
+            YunsuKeyUtil.getInstance().saveProductKeyPattern(productRegex);
         }
         super.onPause();
     }

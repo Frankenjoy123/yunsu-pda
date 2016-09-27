@@ -19,4 +19,6 @@ public interface StaffService {
 
     Staff queryStaffById(long id);
 
+    boolean existPackDataByStaffId(long staffId);
+
 }

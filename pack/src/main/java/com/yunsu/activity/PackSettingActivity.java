@@ -190,7 +190,10 @@ public class PackSettingActivity extends BaseActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 boolean closeDialog;
                 String numString=et_pack_standard.getText().toString();
-                if (numString.startsWith("0")){
+                if (StringHelper.isStringNullOrEmpty(numString)){
+                    closeDialog=false;
+                    ToastMessageHelper.showErrorMessage(PackSettingActivity.this,"规格不能为空",true);
+                } else if (numString.startsWith("0")){
                     closeDialog=false;
                     ToastMessageHelper.showErrorMessage(PackSettingActivity.this,"请输入合法的数字",true);
                 }else if (numString.length()<=4&&(Integer.parseInt(numString)<=1000)){
@@ -296,12 +299,20 @@ public class PackSettingActivity extends BaseActivity {
             switch (msg.what) {
                 case QUERY_STAFF_MSG:
                     hideLoading();
-                    tv_staff.setText(((Staff) msg.obj).getName());
+                    if (msg.obj==null){
+                        tv_staff.setText("");
+                    }else {
+                        tv_staff.setText(((Staff) msg.obj).getName());
+                    }
                     break;
 
                 case QUERY_PRODUCT_BASE_MSG:
                     hideLoading();
-                    tv_product.setText(((ProductBase) msg.obj).getName());
+                    if (msg.obj==null){
+                        tv_product.setText("");
+                    }else {
+                        tv_product.setText(((ProductBase) msg.obj).getName());
+                    }
                     break;
 
                 case RESTORE_SETTING_MSG:
@@ -348,7 +359,7 @@ public class PackSettingActivity extends BaseActivity {
         showLoading();
         SharedPreferences preferences=getSharedPreferences(Constants.PackPreference.PACK_SETTING,MODE_PRIVATE);
         final long tempStaffId=preferences.getLong(Constants.PackPreference.STAFF_ID,FALSE_SETTING);
-        final int tempStandard=preferences.getInt(Constants.PackPreference.STANDARD, (int) FALSE_SETTING);
+        final int tempStandard=preferences.getInt(Constants.PackPreference.STANDARD, 32);
         final long tempProductId=preferences.getLong(Constants.PackPreference.PRODUCT_ID,FALSE_SETTING);
         ServiceExecutor.getInstance().execute(new Runnable() {
             @Override

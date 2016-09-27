@@ -299,8 +299,6 @@ datetime: 2016-07-20T14:20:30.123Z
                 pack_task_folder.mkdirs();
             SimpleDateFormat format =new SimpleDateFormat(Constants.dateOnlyDayFormat);
             File file = new File(pack_task_folder, format.format(new Date())+".txt");
-            if (!pack_task_folder.exists())
-                pack_task_folder.mkdirs();
             FileWriter writer=null;
             BufferedWriter bufferedWriter=null;
             try {

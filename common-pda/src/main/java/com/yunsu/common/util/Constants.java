@@ -221,8 +221,8 @@ public final class Constants {
 
     public static final String PACK_APP="packApp";
 
-    public static final String STAFF_ID="staffId";
+    public static final String STAFF_ID="staff_id";
 
-    public static final String PRODUCT_BASE_ID="productBaseId";
+    public static final String PRODUCT_BASE_ID="product_base_id";
 
 }

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yunsu.common.annotation.ViewById;
+import com.yunsu.common.exception.NotVerifyException;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.ToastMessageHelper;
@@ -131,6 +132,9 @@ public class PackScanActivity extends BaseActivity {
         soundMap.put(1, soundPool.load(getApplicationContext(), R.raw.short_sound, 1));
         soundMap.put(2, soundPool.load(getApplicationContext(), R.raw.long_sound, 1));
         soundMap.put(3,soundPool.load(getApplicationContext(),R.raw.pack_complete,1));
+        soundMap.put(4,soundPool.load(getApplicationContext(),R.raw.prod_invalid,1));
+        soundMap.put(5,soundPool.load(getApplicationContext(),R.raw.pack_invalid,1));
+        soundMap.put(6,soundPool.load(getApplicationContext(),R.raw.pack_packed,1));
 
         format = new SimpleDateFormat(Constants.dateFormat);
 
@@ -169,6 +173,8 @@ public class PackScanActivity extends BaseActivity {
             btn_revoke.setEnabled(true);
         } else {
             et_get_product_key.setVisibility(View.GONE);
+            btn_confirm_pack.setEnabled(true);
+            btn_revoke.setEnabled(true);
         }
     }
 
@@ -207,7 +213,10 @@ public class PackScanActivity extends BaseActivity {
                         showPackDialog();
                     }
 
-                } catch (Exception e) {
+                } catch (NotVerifyException e) {
+                    soundPool.play(soundMap.get(4), 1, 1, 0, 0, 1);
+                    ToastMessageHelper.showErrorMessage(getApplicationContext(), e.getMessage(), true);
+                }catch (Exception e){
                     ToastMessageHelper.showErrorMessage(getApplicationContext(), e.getMessage(), true);
                 }
 
@@ -326,7 +335,10 @@ public class PackScanActivity extends BaseActivity {
                         }
                     });
 
-                } catch (Exception e) {
+                } catch (NotVerifyException e) {
+                    soundPool.play(soundMap.get(5), 1, 1, 0, 0, 1);
+                    ToastMessageHelper.showMessage(PackScanActivity.this, e.getMessage(), true);
+                }catch (Exception e) {
                     ToastMessageHelper.showMessage(PackScanActivity.this, e.getMessage(), true);
                 }
             }
@@ -358,6 +370,7 @@ public class PackScanActivity extends BaseActivity {
                     break;
                 case MSG_PACK_KEY_HAS_USED:
                     hideLoading();
+                    soundPool.play(soundMap.get(6), 1, 1, 0, 0, 1);
                     ToastMessageHelper.showMessage(PackScanActivity.this,R.string.pack_key_has_been_used,false);
                     break;
             }
