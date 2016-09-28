@@ -329,8 +329,15 @@ datetime: 2016-07-20T14:20:30.123Z
         SimpleDateFormat format =new SimpleDateFormat(Constants.dateOnlyDayFormat);
 
         String deviceId=DeviceManager.getInstance().getDeviceId();
+        String tempId=null;
 
-        StringBuilder fileNameBuilder=new StringBuilder(deviceId.substring(deviceId.length()-6,deviceId.length()));
+        if (deviceId.length()>6){
+            tempId=deviceId.substring(deviceId.length()-6,deviceId.length());
+        }else {
+            tempId=deviceId;
+        }
+
+        StringBuilder fileNameBuilder=new StringBuilder(tempId);
         fileNameBuilder.append("-");
         fileNameBuilder.append(format.format(date)+".txt");
         return fileNameBuilder.toString();

@@ -243,6 +243,7 @@
     <string name="scan_update_setting_key">请扫描更新设置的二维码</string>
     <string name="update_wrong">更新设置的二维码不正确</string>
     <string name="update_success">更新设置成功</string>
+    <string name="device_code">设备编号</string>
 
     <!--createKeyTemple-->
     <string name="temple_name">模板名称</string>

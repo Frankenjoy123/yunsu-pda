@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yunsu.common.annotation.ViewById;
+import com.yunsu.common.manager.DeviceManager;
 import com.yunsu.common.util.StringHelper;
 import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.util.YunsuKeyUtil;
@@ -52,6 +53,9 @@ public class GlobalSettingActivity extends BaseActivity {
     @ViewById(id = R.id.btn_change_setting)
     private Button btn_change_setting;
 
+    @ViewById(id = R.id.tv_device_code)
+    private TextView tv_device_code;
+
     private final int CLEAR_SUCCESS=1;
 
     private PatternService patternService;
@@ -88,6 +92,7 @@ public class GlobalSettingActivity extends BaseActivity {
         titleBar.setDisplayAsBack(true);
         tv_pack_regex.setText(YunsuKeyUtil.getInstance().getPackPatternString());
         tv_product_regex.setText(YunsuKeyUtil.getInstance().getProductPatternString());
+        tv_device_code.setText(DeviceManager.getInstance().getDeviceId());
 
         btn_change_setting.setOnClickListener(new View.OnClickListener() {
             @Override

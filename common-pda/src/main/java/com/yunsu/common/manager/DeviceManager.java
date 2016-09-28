@@ -1,7 +1,5 @@
 package com.yunsu.common.manager;
 
-import java.util.UUID;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -10,11 +8,11 @@ import android.util.Log;
 
 import com.yunsu.common.network.NetworkManager;
 import com.yunsu.common.util.Constants;
-import com.yunsu.common.util.HashUtils;
-import com.yunsu.common.util.HexStringUtils;
 import com.yunsu.common.util.StringHelper;
 
 import org.apache.log4j.Logger;
+
+import java.util.UUID;
 
 
 public class DeviceManager extends BaseManager {
@@ -45,8 +43,6 @@ public class DeviceManager extends BaseManager {
 				deviceId = previousDeviceId;
 			}
 		}
-		byte[] data=HashUtils.sha1(deviceId+Constants.APP_ID_VALUE);
-		deviceId=HexStringUtils.encode(data);
 //		saveDeviceIdToPreference(deviceId);
 
 		try {
