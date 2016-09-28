@@ -10,7 +10,6 @@ import com.yunsu.common.manager.DeviceManager;
 import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.StringHelper;
-import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.util.YSFile;
 import com.yunsu.greendao.entity.Pack;
 import com.yunsu.greendao.entity.Product;
@@ -224,7 +223,7 @@ datetime: 2016-07-20T14:20:30.123Z
 
     }
 
-    public void deleteRowInPackFile(String fileName, String packKey){
+    public void deleteRowInPackFile(String fileName, String packKey) throws IOException {
         if (!StringHelper.isStringNullOrEmpty(fileName) && !StringHelper.isStringNullOrEmpty(packKey)){
             String folderName = android.os.Environment.getExternalStorageDirectory() +
                     Constants.YUNSOO_FOLDERNAME + Constants.PACK_SYNC_TASK_FOLDER;
@@ -246,12 +245,11 @@ datetime: 2016-07-20T14:20:30.123Z
                         }
                     }
                 } catch (FileNotFoundException e) {
-                    ToastMessageHelper.showErrorMessage(context, R.string.file_not_found,false);
-                    e.printStackTrace();
+                    String showMessage=String.format(this.context.getString(R.string.file_not_found),fileName);
+                    throw new FileNotFoundException(showMessage);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new IOException("读取文件"+fileName+"错误");
                 }
-
 
                 FileWriter writer=null;
                     BufferedWriter bufferedWriter=null;
@@ -279,10 +277,9 @@ datetime: 2016-07-20T14:20:30.123Z
                         }
                     }
             }else {
-                ToastMessageHelper.showErrorMessage(context, R.string.file_not_found,false);
+                String showMessage=String.format(this.context.getString(R.string.file_not_found),fileName);
+                throw new FileNotFoundException(showMessage);
             }
-
-
 
         }
     }

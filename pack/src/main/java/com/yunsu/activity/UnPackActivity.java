@@ -23,6 +23,7 @@ import com.yunsu.sqlite.service.ProductService;
 import com.yunsu.sqlite.service.impl.PackServiceImpl;
 import com.yunsu.sqlite.service.impl.ProductServiceImpl;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,6 +45,8 @@ public class UnPackActivity extends BaseActivity {
     private static final int QUERY_PACK_SUCCESS_MSG =145;
 
     private static final int QUERY_PACK_FAIL_MSG=167;
+
+    private static final int FILE_PROCESS_FAIL_MSG=189;
 
     protected SoundPool soundPool;
 
@@ -98,17 +101,23 @@ public class UnPackActivity extends BaseActivity {
 
                             if (queryResultPack!=null){
                                 packService.removePack(queryResultPack);
-
                                 SimpleDateFormat format=new SimpleDateFormat(Constants.dateFormat);
-                                SimpleDateFormat format1=new SimpleDateFormat(Constants.dateOnlyDayFormat);
                                 try {
                                     Date  date=format.parse( queryResultPack.getLastSaveTime());
                                     String fileName=FileManager.getInstance().generateFileName(date);
                                     FileManager.getInstance().deleteRowInPackFile(fileName,formatKey);
+                                    handler.sendEmptyMessage(QUERY_PACK_SUCCESS_MSG);
                                 } catch (ParseException e) {
-                                    e.printStackTrace();
+                                    Message message=Message.obtain();
+                                    message.what=FILE_PROCESS_FAIL_MSG;
+                                    message.obj=e.getMessage();
+                                    handler.sendMessage(message);
+                                } catch (IOException e) {
+                                    Message message=Message.obtain();
+                                    message.what=FILE_PROCESS_FAIL_MSG;
+                                    message.obj=e.getMessage();
+                                    handler.sendMessage(message);
                                 }
-                                handler.sendEmptyMessage(QUERY_PACK_SUCCESS_MSG);
                             }else {
                                 handler.sendEmptyMessage(QUERY_PACK_FAIL_MSG);
                             }
@@ -117,8 +126,6 @@ public class UnPackActivity extends BaseActivity {
 
                 } catch (NotVerifyException e) {
                     soundPool.play(soundMap.get(2), 1, 1, 0, 0, 1);
-                    ToastMessageHelper.showErrorMessage(UnPackActivity.this,e.getMessage(),true);
-                } catch (Exception e) {
                     ToastMessageHelper.showErrorMessage(UnPackActivity.this,e.getMessage(),true);
                 }
             }
@@ -140,6 +147,13 @@ public class UnPackActivity extends BaseActivity {
                     hideLoading();
                     soundPool.play(soundMap.get(3), 1, 1, 0, 0, 1);
                     ToastMessageHelper.showErrorMessage(UnPackActivity.this,R.string.not_find_pack,true);
+                    break;
+
+                case FILE_PROCESS_FAIL_MSG:
+                    hideLoading();
+                    ToastMessageHelper.showMessage(UnPackActivity.this, (String) msg.obj,false);
+
+                default:
                     break;
             }
             super.handleMessage(msg);
