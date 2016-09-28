@@ -1,5 +1,6 @@
 package com.yunsu.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -38,6 +39,9 @@ public class WelcomeActivity extends BaseActivity {
 
     private ProductBaseService productBaseService;
 
+    private static final String PREF_SHORTCUT = "Short_CUT";
+    private static final String KEY_SHORTCUT = "key_has_shortcut";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +69,15 @@ public class WelcomeActivity extends BaseActivity {
 
     }
 
+    private boolean hasShortcut() {
+        SharedPreferences preferences = getSharedPreferences(PREF_SHORTCUT, Context.MODE_PRIVATE);
+        return preferences.getBoolean(KEY_SHORTCUT, false);
+    }
+
     private void installShortCut(){
+        if (hasShortcut()){
+            return;
+        }
         Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
 
         shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.app_name));
@@ -79,6 +91,9 @@ public class WelcomeActivity extends BaseActivity {
         Intent.ShortcutIconResource iconRes = Intent.ShortcutIconResource.fromContext(this, R.drawable.app_icon);
         shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
         sendBroadcast(shortcut);
+
+        SharedPreferences.Editor editor = getSharedPreferences(PREF_SHORTCUT, Context.MODE_PRIVATE).edit();
+        editor.putBoolean(KEY_SHORTCUT, true).apply();
     }
 
     private void initDefaultPackSetting() {
