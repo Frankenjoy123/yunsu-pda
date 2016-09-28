@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.util.Constants;
+import com.yunsu.common.util.StringHelper;
 import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.util.YunsuKeyUtil;
 import com.yunsu.common.view.TitleBar;
@@ -149,6 +150,9 @@ public class RevokeActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String string = new StringBuilder(s).toString();
+                if (StringHelper.isStringNullOrEmpty(string)){
+                    return;
+                }
                 try {
                     String formalizeKey=YunsuKeyUtil.getInstance().verifyProductKey(string);
                     if (productKeyList.contains(formalizeKey)){
@@ -167,6 +171,8 @@ public class RevokeActivity extends BaseActivity {
 
                 } catch (Exception e) {
                     ToastMessageHelper.showErrorMessage(getApplicationContext(), e.getMessage(), true);
+                } finally {
+                    et_get_product_key.setText("");
                 }
 
             }
