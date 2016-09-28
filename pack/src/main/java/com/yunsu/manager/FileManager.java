@@ -297,8 +297,8 @@ datetime: 2016-07-20T14:20:30.123Z
             File pack_task_folder = new File(folderName);
             if (!pack_task_folder.exists())
                 pack_task_folder.mkdirs();
-            SimpleDateFormat format =new SimpleDateFormat(Constants.dateOnlyDayFormat);
-            File file = new File(pack_task_folder, format.format(new Date())+".txt");
+
+            File file = new File(pack_task_folder, generateFileName(new Date()));
             FileWriter writer=null;
             BufferedWriter bufferedWriter=null;
             try {
@@ -326,6 +326,17 @@ datetime: 2016-07-20T14:20:30.123Z
             }
 
         }
+    }
+
+    public String generateFileName(Date date){
+        SimpleDateFormat format =new SimpleDateFormat(Constants.dateOnlyDayFormat);
+
+        String deviceId=DeviceManager.getInstance().getDeviceId();
+
+        StringBuilder fileNameBuilder=new StringBuilder(deviceId.substring(deviceId.length()-6,deviceId.length()));
+        fileNameBuilder.append("-");
+        fileNameBuilder.append(format.format(date)+".txt");
+        return fileNameBuilder.toString();
     }
 
 

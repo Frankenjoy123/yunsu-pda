@@ -139,7 +139,6 @@ public class GlobalSettingActivity extends BaseActivity {
         });
 
         builder.setView(view);
-        builder.setCancelable(false);
         builder.setPositiveButton(R.string.cancel, null);
         packAlertDialog = builder.create();
         packAlertDialog.show();

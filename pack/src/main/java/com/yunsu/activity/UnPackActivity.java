@@ -103,7 +103,7 @@ public class UnPackActivity extends BaseActivity {
                                 SimpleDateFormat format1=new SimpleDateFormat(Constants.dateOnlyDayFormat);
                                 try {
                                     Date  date=format.parse( queryResultPack.getLastSaveTime());
-                                    String fileName=format1.format(date)+".txt";
+                                    String fileName=FileManager.getInstance().generateFileName(date);
                                     FileManager.getInstance().deleteRowInPackFile(fileName,formatKey);
                                 } catch (ParseException e) {
                                     e.printStackTrace();
