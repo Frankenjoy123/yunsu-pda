@@ -13,6 +13,7 @@ import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.exception.NotVerifyException;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.util.Constants;
+import com.yunsu.common.util.StringHelper;
 import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.util.YunsuKeyUtil;
 import com.yunsu.common.view.TitleBar;
@@ -91,6 +92,9 @@ public class UnPackActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 final String string = new StringBuilder(editable).toString();
+                if (StringHelper.isStringNullOrEmpty(string)){
+                    return;
+                }
                 try {
                     final String formatKey= YunsuKeyUtil.getInstance().verifyPackageKey(string);
                     showLoading();
@@ -127,6 +131,8 @@ public class UnPackActivity extends BaseActivity {
                 } catch (NotVerifyException e) {
                     soundPool.play(soundMap.get(2), 1, 1, 0, 0, 1);
                     ToastMessageHelper.showErrorMessage(UnPackActivity.this,e.getMessage(),true);
+                } finally {
+                    et_get_pack_key.setText("");
                 }
             }
         });

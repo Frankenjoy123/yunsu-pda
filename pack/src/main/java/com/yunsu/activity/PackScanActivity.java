@@ -22,6 +22,7 @@ import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.exception.NotVerifyException;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.util.Constants;
+import com.yunsu.common.util.StringHelper;
 import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.util.YunsuKeyUtil;
 import com.yunsu.common.view.TitleBar;
@@ -198,6 +199,9 @@ public class PackScanActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String string = new StringBuilder(s).toString();
+                if(StringHelper.isStringNullOrEmpty(string)){
+                    return;
+                }
                 try {
                     String formalizeKey=YunsuKeyUtil.getInstance().verifyProductKey(string);
                     if (productKeyList != null && productKeyList.size() > 0) {
@@ -220,6 +224,8 @@ public class PackScanActivity extends BaseActivity {
                     ToastMessageHelper.showErrorMessage(getApplicationContext(), e.getMessage(), true);
                 }catch (Exception e){
                     ToastMessageHelper.showErrorMessage(getApplicationContext(), e.getMessage(), true);
+                }finally {
+                    et_get_product_key.setText("");
                 }
 
             }
@@ -295,6 +301,9 @@ public class PackScanActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 String string = et_pack_key.getText().toString();
+                if (StringHelper.isStringNullOrEmpty(string)){
+                    return;
+                }
                 try {
                     formatPackKey = YunsuKeyUtil.getInstance().verifyPackageKey(string);
                     showLoading();
@@ -325,15 +334,6 @@ public class PackScanActivity extends BaseActivity {
                                 mHandler.sendMessage(message);
                                 e.printStackTrace();
                             }
-//                            ProductService productService = new ProductServiceImpl();
-//                            for (int i = 0; i < productKeyList.size(); i++) {
-//                                Product product = new Product();
-//                                product.setPackId(pack.getId());
-//                                product.setProductKey(productKeyList.get(i));
-//                                productService.addProduct(product);
-//                            }
-
-
                         }
                     });
 
@@ -342,6 +342,8 @@ public class PackScanActivity extends BaseActivity {
                     ToastMessageHelper.showMessage(PackScanActivity.this, e.getMessage(), true);
                 }catch (Exception e) {
                     ToastMessageHelper.showMessage(PackScanActivity.this, e.getMessage(), true);
+                } finally {
+                    et_pack_key.setText("");
                 }
             }
         });

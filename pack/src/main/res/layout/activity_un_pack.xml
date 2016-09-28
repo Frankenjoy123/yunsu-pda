@@ -49,7 +49,7 @@
             android:id="@+id/et_get_pack_key"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:text=" "/>
+            />
 
     </LinearLayout>
 

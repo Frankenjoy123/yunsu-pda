@@ -120,8 +120,12 @@ public class GlobalSettingActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                    try {
-                        String string = et_key.getText().toString();
+
+                    String string = et_key.getText().toString();
+                    if (StringHelper.isStringNullOrEmpty(string)){
+                        return;
+                    }
+                     try {
                         JSONObject object=new JSONObject(string);
                         String pack_pattern=object.getString("p");
                         String prod_pattern=object.getString("pr");
@@ -139,6 +143,8 @@ public class GlobalSettingActivity extends BaseActivity {
                     } catch (Exception e) {
                         ToastMessageHelper.showMessage(GlobalSettingActivity.this,R.string.update_wrong,true);
                         e.printStackTrace();
+                    }finally {
+                        et_key.setText("");
                     }
             }
         });
