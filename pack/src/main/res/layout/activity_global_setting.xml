@@ -63,16 +63,15 @@
             android:textColor="#ff484e43"
             android:textSize="16.0dp" />
 
-        <EditText
+        <TextView
 
-            android:id="@+id/et_product_regex"
+            android:id="@+id/tv_product_regex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tv_product_key_des"
             android:layout_marginLeft="10dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:hint="@string/choose_product_key_type"
             android:textColor="#ff484e43"
             android:textSize="16.0dp" />
 
@@ -99,15 +98,14 @@
             android:textSize="16.0dp" />
 
 
-        <EditText
+        <TextView
 
-            android:id="@+id/et_pack_regex"
+            android:id="@+id/tv_pack_regex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tv_pack_key_des"
             android:layout_marginLeft="10dp"
             android:layout_centerVertical="true"
-            android:hint="@string/choose_pack_key_type"
             android:textColor="#ff484e43"
             android:textSize="16.0dp" />
 
@@ -115,12 +113,24 @@
     </RelativeLayout>
 
 
+    <Button
+        android:id="@+id/btn_change_setting"
+        android:layout_below="@+id/rl_pack_key_type"
+        android:background="@drawable/btn_bg"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/update_setting"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <RelativeLayout
         android:id="@+id/rl_auto_sync"
         android:layout_width="match_parent"
         android:layout_height="45.0dip"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/rl_pack_key_type"
+        android:layout_below="@+id/btn_change_setting"
         android:visibility="gone"
         android:background="@drawable/item_bg">
 
@@ -219,19 +229,6 @@
 
 
 
-    <Button
-        android:id="@+id/btn_authorize_status"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/btn_red_bg"
 
-        android:text="@string/confirm_cancel_authorize"
-        android:textColor="@color/clear_color"
-        android:visibility="gone"
-        android:layout_below="@+id/rl_default_inbound"/>
 
 </RelativeLayout>
