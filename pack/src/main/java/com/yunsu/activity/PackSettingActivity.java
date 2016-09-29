@@ -157,15 +157,12 @@ public class PackSettingActivity extends BaseActivity {
                     packInfoEntity.setStaffId(staff.getId());
                     packInfoEntity.setStaffName(staff.getName());
                     packInfoEntity.setStaffNumber(staff.getStaffNumber());
-                    try {
+
                         standard=Integer.valueOf(standardText);
                         packInfoEntity.setStandard(standard);
-                    } catch (NumberFormatException e) {
-                        packInfoEntity.setStandard(10);
-                    }
+
                     intent.putExtra(PACK_INFO, packInfoEntity);
                     startActivity(intent);
-                    finish();
                 }
             }
         });

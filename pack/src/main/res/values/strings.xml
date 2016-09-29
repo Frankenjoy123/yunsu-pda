@@ -103,6 +103,7 @@
     <string name="pack_key_has_been_used">包装码已被打包</string>
 
     <string name="cancel">取消</string>
+    <string name="cancel_pack">返回，不想打包了</string>
     <string name="save">保存</string>
     <string name="title_activity_pack_main">PackMainActivity</string>
     <string name="title_activity_path_main">PathMainActivity</string>
@@ -202,6 +203,7 @@
     <string name="scan_pack_key">请扫包装码</string>
     <string name="pack_key">包装码：</string>
     <string name="pack_finish">打包完成</string>
+    <string name="press_back_button">取消打包，请按返回键</string>
 
 
     <!--revokeAcitity-->

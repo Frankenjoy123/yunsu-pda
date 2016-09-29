@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="280dp"
-    android:layout_height="100dp"
+    android:layout_height="180dp"
     android:gravity="center"
     android:background="@drawable/item_bg_normal"
     >
@@ -31,6 +31,13 @@
             android:gravity="center"/>
 
     </LinearLayout>
+
+    <TextView
+        android:text="@string/press_back_button"
+        style="@style/text_style_normal"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        />
 
 
 </LinearLayout>

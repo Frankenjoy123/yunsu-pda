@@ -1,6 +1,7 @@
 package com.yunsu.activity;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -349,9 +350,14 @@ public class PackScanActivity extends BaseActivity {
         });
 
         builder.setView(view);
-        builder.setCancelable(false);
-        builder.setPositiveButton(R.string.cancel, null);
         packAlertDialog = builder.create();
+        packAlertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                onBackPressed();
+            }
+        });
+        packAlertDialog.setCanceledOnTouchOutside(false);
         packAlertDialog.show();
     }
 
