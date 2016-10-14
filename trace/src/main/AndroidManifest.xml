@@ -30,6 +30,8 @@
         android:theme="@style/AppTheme">
         <uses-library android:name="android.test.runner" />
 
+        <meta-data android:name="app_id" android:value="2mlvpegbfroxlyiej4y"/>
+
         <activity
             android:name=".WelcomeActivity"
             android:icon="@drawable/app_icon"

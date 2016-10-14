@@ -27,6 +27,8 @@ public class RequestManager {
 
 	private final static String TAG = RequestManager.class.getSimpleName();
 
+
+
 	public static JSONObject Post(String url, String postJsonString) throws ServerAuthException, ServerGeneralException,
 			Exception {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
@@ -177,7 +179,7 @@ public class RequestManager {
 //		restClient.AddHeader("GeoLocation", deviceManager.getDeviceGeoLocationInfo());
 		restClient.AddHeader("ClientVersion", deviceManager.getAppVersion());
 		
-		restClient.AddHeader(Constants.APP_ID,Constants.APP_ID_VALUE);
+		restClient.AddHeader(Constants.APP_ID,deviceManager.getAppId());
 		restClient.AddHeader(Constants.DEVICE_ID,deviceManager.getDeviceId());
 
 	}

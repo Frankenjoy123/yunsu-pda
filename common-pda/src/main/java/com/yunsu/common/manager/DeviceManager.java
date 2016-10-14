@@ -3,6 +3,8 @@ package com.yunsu.common.manager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
@@ -24,6 +26,8 @@ public class DeviceManager extends BaseManager {
 	private String deviceSDKVersion;
 	// private String secondsFromGMT;
 	private String appVersion;
+
+	private String appId;
 
 	private DeviceManager(Context context) {
 		deviceModel = android.os.Build.MODEL;
@@ -51,7 +55,19 @@ public class DeviceManager extends BaseManager {
 			appVersion = Constants.App.APP_VERSION;
 		}
 
+		ApplicationInfo appInfo = null;
+		try {
+			appInfo = context.getPackageManager().getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+			appId=appInfo.metaData.getString("app_id");
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
+		}
+
 		// refreshTimeZone();
+	}
+
+	public String getAppId() {
+		return appId;
 	}
 
 	public static DeviceManager initializeIntance(Context context) {
