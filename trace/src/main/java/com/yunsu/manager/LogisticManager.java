@@ -5,15 +5,16 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Log;
 
+import com.yunsu.common.manager.BaseManager;
+import com.yunsu.common.manager.DeviceManager;
+import com.yunsu.common.manager.SessionManager;
+import com.yunsu.common.util.Constants;
+import com.yunsu.common.util.YSFile;
 import com.yunsu.entity.OrgAgency;
+import com.yunsu.greendao.entity.Material;
+import com.yunsu.greendao.entity.Pack;
 import com.yunsu.sqlite.service.PackService;
 import com.yunsu.sqlite.service.impl.PackServiceImpl;
-import com.yunsu.common.manager.DeviceManager;
-import com.yunsu.common.util.Constants;
-import com.yunsu.common.manager.BaseManager;
-import com.yunsu.common.manager.SessionManager;
-import com.yunsu.common.util.YSFile;
-import com.yunsu.greendao.entity.Pack;
 
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
@@ -178,6 +179,46 @@ public class LogisticManager extends BaseManager {
         }
     }
 
+    public void createOutOrderFile(Material material,List<Pack> packList){
+        if (packList!=null&&packList.size()>0){
+            String actionId=packList.get(0).getActionId();
+            YSFile ysFile=  buildYunsuFileDetail(packList);
+            String folderName = android.os.Environment.getExternalStorageDirectory() +
+                    Constants.YUNSOO_FOLDERNAME+Constants.PATH_SYNC_TASK_FOLDER;
+            File path_task_folder = new File(folderName);
+            try {
+
+                if (!path_task_folder.exists())
+                    path_task_folder.mkdirs();
+
+                SimpleDateFormat format=new SimpleDateFormat(Constants.dateOnlyDayFormat);
+                StringBuilder fileNameBuilder=new StringBuilder(format.format(new Date()));
+                fileNameBuilder.append("_");
+                fileNameBuilder.append(material.getAgencyName());
+                fileNameBuilder.append("_");
+                fileNameBuilder.append(material.getId());
+                fileNameBuilder.append(".txt");
+
+                File file=new File(path_task_folder,fileNameBuilder.toString());
+                FileOutputStream fos = new FileOutputStream(file);
+                BufferedOutputStream bos = new BufferedOutputStream(fos);
+                bos.write(ysFile.toBytes());
+                bos.flush();
+                bos.close();
+                fos.close();
+
+            } catch (Exception ex) {
+                Logger logger=Logger.getLogger(LogisticManager.class);
+                logger.error(ex.getMessage());
+                logger.error(ex.toString());
+                ex.printStackTrace();
+            }
+
+        }
+
+    }
+
+
     public  void createLogisticFile() {
         List<String> actionList = packService.queryDistinctAction();
         for (String action :actionList){
@@ -217,13 +258,9 @@ public class LogisticManager extends BaseManager {
                     break;
             }
         }
-
-
-
-
-
-
     }
+
+
 
 
     public  void buildYSFile(List<Pack> packList){
@@ -236,6 +273,9 @@ public class LogisticManager extends BaseManager {
             createFileByYunsuFile(path_task_folder,ysFile,actionId);
         }
     }
+
+
+
 
     /**
      * 创建YSFile

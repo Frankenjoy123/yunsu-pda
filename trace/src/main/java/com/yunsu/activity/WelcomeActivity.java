@@ -9,11 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.yunsu.common.annotation.ViewById;
-import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.DensityUtil;
-
-import org.apache.log4j.Logger;
 
 
 public class WelcomeActivity extends BaseActivity{
@@ -73,6 +70,7 @@ public class WelcomeActivity extends BaseActivity{
         startActivity(intent);
         finish();
     }
+
     private void gotoPathMainActivity() {
         Intent intent = new Intent(WelcomeActivity.this, PathMainActivity.class);
         startActivity(intent);

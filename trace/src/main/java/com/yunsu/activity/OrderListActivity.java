@@ -1,5 +1,7 @@
 package com.yunsu.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +21,7 @@ import com.yunsu.common.view.TitleBar;
 import com.yunsu.greendao.entity.Material;
 import com.yunsu.sqlite.service.MaterialService;
 import com.yunsu.sqlite.service.impl.MaterialServiceImpl;
+import com.yunsu.sqlite.service.impl.PackServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +52,9 @@ public class OrderListActivity extends BaseActivity {
 
     public static final int PAGE_SIZE = 20;
 
+    private static final int DELETE_MSG=101;
+    private PackServiceImpl packService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +76,8 @@ public class OrderListActivity extends BaseActivity {
                 startActivityForResult(intent, ADD_NEW_ORDER_REQUEST);
             }
         });
-        materialService = new MaterialServiceImpl();
+        materialService=new MaterialServiceImpl();
+        packService=new PackServiceImpl();
         orderAdapter = new OrderAdapter(this);
         orderAdapter.setMaterialList(materialList);
         lv_order.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
@@ -83,12 +90,50 @@ public class OrderListActivity extends BaseActivity {
                 startActivity(intent);
             }
         }));
+
         lv_order.setEmptyView(tv_empty_order_tip);
         lv_order.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
 
             @Override
             public void onRefresh(PullToRefreshBase<ListView> refreshView) {
                 addEarlierList();
+            }
+        });
+        lv_order.getRefreshableView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                final int tempIndex=i-1;
+                if (materialList.get(tempIndex).getProgressStatus()==Constants.DB.FINISHED
+                        || materialList.get(tempIndex).getSent()== materialList.get(tempIndex).getAmount()
+                        ){
+                    AlertDialog dialog = new AlertDialog.Builder(OrderListActivity.this).setMessage(R.string.finished_order_can_not_delete)
+                            .setNegativeButton(R.string.confirm, null).create();
+                    dialog.setCancelable(false);
+                    dialog.show();
+                }else {
+
+                    AlertDialog dialog = new AlertDialog.Builder(OrderListActivity.this).setMessage(R.string.confirm_delete_order)
+                            .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    ServiceExecutor.getInstance().execute(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            packService.batchDelete(materialService.queryPacks(materialList.get(tempIndex)));
+                                            materialService.deleteMaterial(materialList.get(tempIndex));
+                                            materialList.remove(tempIndex);
+                                            handler.sendEmptyMessage(DELETE_MSG);
+                                        }
+                                    });
+
+                                }
+                            })
+                            .setNegativeButton(R.string.cancel, null).create();
+                    dialog.setCancelable(false);
+                    dialog.show();
+                }
+                return false;
             }
         });
     }
@@ -135,6 +180,10 @@ public class OrderListActivity extends BaseActivity {
                 case ADD_ORDER_LIST_MSG:
                     orderAdapter.notifyDataSetChanged();
                     lv_order.onRefreshComplete();
+                    break;
+
+                case DELETE_MSG:
+                    orderAdapter.notifyDataSetChanged();
                     break;
 
             }

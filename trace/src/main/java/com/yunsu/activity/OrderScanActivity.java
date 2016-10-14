@@ -20,11 +20,13 @@ import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.exception.NotVerifyException;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.util.Constants;
+import com.yunsu.common.util.StringHelper;
 import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.util.YunsuKeyUtil;
 import com.yunsu.common.view.TitleBar;
 import com.yunsu.greendao.entity.Material;
 import com.yunsu.greendao.entity.Pack;
+import com.yunsu.manager.LogisticManager;
 import com.yunsu.sqlite.service.MaterialService;
 import com.yunsu.sqlite.service.PackService;
 import com.yunsu.sqlite.service.impl.MaterialServiceImpl;
@@ -66,6 +68,9 @@ public class OrderScanActivity extends BaseActivity {
 
     @ViewById(id = R.id.ll_scan_key)
     LinearLayout ll_scan_key;
+
+    @ViewById(id = R.id.tv_create_time)
+    TextView tv_create_time;
     
     private MaterialService materialService;
 
@@ -174,7 +179,8 @@ public class OrderScanActivity extends BaseActivity {
     private void refreshUI(){
         hideLoading();
         tv_agency_name.setText(material.getAgencyName());;
-        tv_order_id.setText(String.valueOf(material.getMaterialNumber()));
+        tv_order_id.setText(String.valueOf(material.getId()));
+        tv_create_time.setText(material.getCreateTime());
         tv_outbound_amount.setText(String.valueOf(material.getAmount()));
         tv_outbound_count.setText(String.valueOf(material.getSent()));
         String progressStatus=null;
@@ -241,8 +247,14 @@ public class OrderScanActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String string=new StringBuilder(s).toString();
+                if (StringHelper.isStringNullOrEmpty(string)){
+                    return;
+                }
+                if (material.getProgressStatus()==Constants.DB.FINISHED){
+                    return;
+                }
                 try {
-                    String formatKey=YunsuKeyUtil.verifyScanKey(string);
+                    String formatKey=YunsuKeyUtil.getInstance().verifyPackageKey(string);
                     submitToDB(formatKey);
                     tv_scan_key.setText(formatKey);
                 } catch (NotVerifyException e) {
@@ -250,6 +262,8 @@ public class OrderScanActivity extends BaseActivity {
                             e.getMessage() , Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER , 0, 0);
                     toast.show();
+                }finally {
+                    et_scan.setText("");
                 }
 
             }
@@ -324,7 +338,7 @@ public class OrderScanActivity extends BaseActivity {
                         else {
 
                             Message message=Message.obtain();
-                            message.obj=materialService.queryById(resultPack.getMaterialId()).getMaterialNumber();
+                            message.obj=resultPack.getMaterialId();
                             message.what=REVOKE_KEY_IN_OTHER_ORDER_MSG;
                             handler.sendMessage(message);
 
@@ -345,6 +359,7 @@ public class OrderScanActivity extends BaseActivity {
             material.setProgressStatus(Constants.DB.FINISHED);
             SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             material.setFinishTime(dateFormat.format(new Date()));
+            LogisticManager.getInstance().createOutOrderFile( material,materialService.queryPacks(material));
         }
         materialService.updateMaterial(material);
     }
@@ -363,6 +378,7 @@ public class OrderScanActivity extends BaseActivity {
                 case INSERT_PACK_SUCCESS:
                     refreshUI();
                     if (material.getSent()==material.getAmount()){
+
                         AlertDialog dialog = new AlertDialog.Builder(OrderScanActivity.this).setTitle(R.string.order_finish).setMessage(R.string.order_finish_message)
                                 .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                                     @Override
@@ -378,12 +394,11 @@ public class OrderScanActivity extends BaseActivity {
 
                 case EXIST_IN_ORDER_MSG:
                     ToastMessageHelper.showMessage(OrderScanActivity.this,
-                            R.string.key_exist_in_this_order,false);
+                            R.string.key_exist_in_this_order,true);
                     break;
 
                 case REVOKE_KEY_IN_OTHER_ORDER_MSG:
-                    ToastMessageHelper.showMessage(OrderScanActivity.this,
-                            String.format(getString(R.string.key_exist_in_other_order),msg.obj),false);
+                    ToastMessageHelper.showMessage(OrderScanActivity.this,getString(R.string.key_exist_in_other_order)+msg.obj,true);
                     break;
 
                 case CONFIRM_FINISH_ORDER_MSG:

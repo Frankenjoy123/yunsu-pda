@@ -175,17 +175,17 @@ public final class Constants {
 
     public static final String PACK_CRASH_SYNC_FOLDER = "/pack/crash/sync";
 
-    public static final String PATH_SYNC_TASK_FOLDER = "/path/sync_task";
+    public static final String PATH_SYNC_TASK_FOLDER = "/物流/未同步";
 
-    public static final String PATH_SYNC_SUCCESS_FOLDER = "/path/sync_success";
+    public static final String PATH_SYNC_SUCCESS_FOLDER = "/物流/已同步";
 
-    public static final String PATH_LOG_NOT_SYNC_FOLDER = "/path/log/not_sync";
+    public static final String PATH_LOG_NOT_SYNC_FOLDER = "/物流/log/not_sync";
 
-    public static final String PATH_LOG_SYNC_FOLDER = "/path/log/sync";
+    public static final String PATH_LOG_SYNC_FOLDER = "/物流/log/sync";
 
-    public static final String PATH_CRASH_SYNC_FOLDER = "/path/crash/sync";
+    public static final String PATH_CRASH_SYNC_FOLDER = "/物流/crash/sync";
 
-    public static final String PATH_CRASH_NOT_SYNC_FOLDER = "/path/crash/not_sync";
+    public static final String PATH_CRASH_NOT_SYNC_FOLDER = "/物流/crash/not_sync";
 
     public static final String PATH_CACHE_DB = "/path/cache/db";
 

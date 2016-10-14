@@ -149,6 +149,7 @@
     <string name="outbound_order">出库订单</string>
     <string name="add">添加</string>
     <string name="order">订单：</string>
+    <string name="create_time">创建时间：</string>
     <string name="create_new_order">新建订单</string>
     <string name="done">完成</string>
     <string name="please_type_in_amount">请输入发货数</string>
@@ -172,7 +173,9 @@
     <string name="revoke_operation">撤销操作</string>
     <string name="scan_key_tip">请扫描需要出库的包装</string>
     <string name="key_exist_in_this_order">该包装已存在于当前订单中，请检查</string>
-    <string name="key_exist_in_other_order">该包装已存在于其它订单中，请在订单%s中先撤销该包装</string>
+    <string name="key_exist_in_other_order">该包装已存在于订单</string>
+    <string name="finished_order_can_not_delete">完成订单不能删除</string>
+    <string name="confirm_delete_order">确认删除订单</string>
 
     <!--<inboundScan>-->
     <string name="key_inbound_already">该包装已入库，请检查</string>

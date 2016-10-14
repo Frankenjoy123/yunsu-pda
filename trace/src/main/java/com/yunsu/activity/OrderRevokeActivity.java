@@ -14,6 +14,7 @@ import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.exception.NotVerifyException;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.util.Constants;
+import com.yunsu.common.util.StringHelper;
 import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.util.YunsuKeyUtil;
 import com.yunsu.common.view.TitleBar;
@@ -99,7 +100,7 @@ public class OrderRevokeActivity extends BaseActivity {
     private void refreshUI(){
         hideLoading();
         tv_agency_name.setText(material.getAgencyName());
-        tv_order_id.setText(String.valueOf(material.getMaterialNumber()));
+        tv_order_id.setText(String.valueOf(material.getId()));
         tv_outbound_amount.setText(String.valueOf(material.getAmount()));
         tv_outbound_count.setText(String.valueOf(material.getSent()));
     }
@@ -128,19 +129,24 @@ public class OrderRevokeActivity extends BaseActivity {
             public void afterTextChanged(Editable s) {
 
                 String string=new StringBuilder(s).toString();
+                if (StringHelper.isStringNullOrEmpty(string)){
+                    return;
+                }
                 try {
-                    String formatKey=YunsuKeyUtil.verifyScanKey(string);
+                    String formatKey=YunsuKeyUtil.getInstance().verifyPackageKey(string);
                     checkKeyStatus(formatKey);
                     tv_scan_key.setText(formatKey);
 
                 } catch (NotVerifyException e) {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            getString(R.string.key_not_verify) , Toast.LENGTH_SHORT);
+                            e.getMessage() , Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER , 0, 0);
                     toast.show();
                 }catch (Exception e) {
                     Logger logger=Logger.getLogger(OrderRevokeActivity.class);
                     logger.error(e.getMessage());
+                }finally {
+                    et_scan.setText("");
                 }
 
             }

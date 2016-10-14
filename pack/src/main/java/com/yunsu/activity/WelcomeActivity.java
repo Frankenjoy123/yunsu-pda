@@ -96,6 +96,7 @@ public class WelcomeActivity extends BaseActivity {
         editor.putBoolean(KEY_SHORTCUT, true).apply();
     }
 
+
     private void initDefaultPackSetting() {
         ServiceExecutor.getInstance().execute(new Runnable() {
             @Override

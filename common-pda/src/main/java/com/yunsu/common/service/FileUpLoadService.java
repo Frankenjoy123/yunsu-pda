@@ -53,9 +53,9 @@ public class FileUpLoadService extends DataServiceImpl {
         String[] arrName=filePath.split("/");
         if (arrName.length>0){
             String fileName=arrName[arrName.length-1];
-            url="/taskfile?file_name="+fileName;
+            url="/taskfile?file_name="+fileName + "&ignored=true";
         }else {
-            url="/taskfile";
+            url="/taskfile" + "&ignored=true";
         }
          return  RequestManager.PostByFile(url,filePath);
     }

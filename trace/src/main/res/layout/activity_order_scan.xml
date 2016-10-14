@@ -59,12 +59,31 @@
 
     </LinearLayout>
 
+
+    <LinearLayout
+        android:id="@+id/ll_create_time"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_order_number"
+        android:background="@drawable/item_bg_bottom_normal"
+        >
+        <TextView
+            style="@style/text_style_order_list"
+            android:text="@string/create_time"/>
+        <TextView
+            android:id="@+id/tv_create_time"
+            style="@style/text_style_order_list"
+            />
+
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/ll_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/ll_order_number"
+        android:layout_below="@+id/ll_create_time"
         android:layout_marginTop="30dp"
         android:gravity="center"
         android:layout_centerHorizontal="true"
@@ -142,6 +161,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
+        android:visibility="gone"
         >
         <Button
             android:id="@+id/btn_confirm_finish"

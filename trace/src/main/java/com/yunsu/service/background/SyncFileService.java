@@ -7,17 +7,14 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.yunsu.common.exception.BaseException;
-import com.yunsu.manager.FileManager;
-import com.yunsu.manager.LogisticManager;
-import com.yunsu.manager.SettingManager;
 import com.yunsu.common.service.DataServiceImpl;
 import com.yunsu.common.service.FileUpLoadService;
 import com.yunsu.common.util.Constants;
+import com.yunsu.manager.SettingManager;
 
 import org.json.JSONObject;
 
 import java.io.File;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -47,12 +44,11 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                LogisticManager.getInstance().createLogisticFile();
-                List<String> fileNames=FileManager.getInstance().getPackFileNames();
-                if (fileNames!=null&&fileNames.size()>0){
-                    String folderName = android.os.Environment.getExternalStorageDirectory() +
-                            Constants.YUNSOO_FOLDERNAME+Constants.PATH_SYNC_TASK_FOLDER;
-                    File path_task_folder = new File(folderName);
+
+                String folderName = android.os.Environment.getExternalStorageDirectory() +
+                        Constants.YUNSOO_FOLDERNAME+Constants.PATH_SYNC_TASK_FOLDER;
+                File path_task_folder = new File(folderName);
+                try {
                     File[] files=path_task_folder.listFiles();
                     for(int i=0;i<files.length;i++){
                         FileUpLoadService fileUpLoadService=new FileUpLoadService(files[i].getAbsolutePath());
@@ -61,9 +57,11 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
                         fileUpLoadService.setDelegate((DataServiceImpl.DataServiceDelegate) context);
                         fileUpLoadService.start();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-
             }
+
         },0,1000*60* SettingManager.getInstance().getSyncRateMin());
     }
 

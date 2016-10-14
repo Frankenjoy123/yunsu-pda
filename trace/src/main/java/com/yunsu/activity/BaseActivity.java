@@ -10,8 +10,6 @@ import android.view.View;
 
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.dialog.LoadingDialog;
-import com.yunsu.common.entity.AuthUser;
-import com.yunsu.common.entity.LoginResult;
 import com.yunsu.common.exception.BaseException;
 import com.yunsu.common.exception.ServerAuthException;
 import com.yunsu.common.manager.SessionManager;

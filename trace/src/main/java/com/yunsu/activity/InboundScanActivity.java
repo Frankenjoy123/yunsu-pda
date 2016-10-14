@@ -17,10 +17,12 @@ import android.widget.Toast;
 
 import com.yunsu.adapter.PathAdapter;
 import com.yunsu.common.annotation.ViewById;
+import com.yunsu.common.exception.NotVerifyException;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.util.Constants;
-import com.yunsu.common.util.StringUtils;
+import com.yunsu.common.util.StringHelper;
 import com.yunsu.common.util.ToastMessageHelper;
+import com.yunsu.common.util.YunsuKeyUtil;
 import com.yunsu.common.view.TitleBar;
 import com.yunsu.greendao.entity.Pack;
 import com.yunsu.sqlite.service.PackService;
@@ -30,8 +32,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class InboundScanActivity extends BaseActivity {
 	SharedPreferences preferences;
@@ -179,34 +179,22 @@ public class InboundScanActivity extends BaseActivity {
 			@Override
 			public void afterTextChanged(Editable s) {
                 String string=new StringBuilder(s).toString();
-                Pattern pattern = null;
-                switch (BuildConfig.FLAVOR){
-                    case Constants.Favor.KANGCAI:
-                        pattern=Pattern.compile("^https?:\\/\\/[\\w\\-\\.]+\\.yunsu\\.co(?:\\:\\d+)?(?:\\/p)?\\/([^\\/]+)\\/?$");
-                        break;
-                    default:
-                        pattern=Pattern.compile("^https?:\\/\\/[\\w\\-\\.]+\\.yunsu\\.co(?:\\:\\d+)?(?:\\/p)?\\/([^\\/]+)\\/?$");
+                if (StringHelper.isStringNullOrEmpty(string)){
+                    return;
                 }
-                Matcher matcher=pattern.matcher(string);
-                if (matcher.find()){
-                    String formatKey=StringUtils.replaceBlank(StringUtils.getLastString(string));
-                    try {
 
-                        if(string.isEmpty()||string=="\n"){
-                            return;
-                        }
-                        submitToDB(formatKey);
+                try {
+                    String formatKey=YunsuKeyUtil.getInstance().verifyPackageKey(string);
+                    submitToDB(formatKey);
 
-                    } catch (Exception e) {
-                        // TODO: handle exception
-                    }
-                }else {
+                } catch (NotVerifyException e) {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            getString(R.string.key_not_verify) , Toast.LENGTH_SHORT);
+                            e.getMessage() , Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER , 0, 0);
                     toast.show();
+                }finally {
+                    et_path.setText("");
                 }
-
 			}
 		});
 	}
@@ -228,8 +216,6 @@ public class InboundScanActivity extends BaseActivity {
                     ToastMessageHelper.showMessage(InboundScanActivity.this,
                             R.string.key_inbound_already,true);
                     break;
-
-
             }
         }
     };

@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.entity.AuthUser;
 import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.service.DataServiceImpl;
@@ -34,6 +36,10 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
     TitleBar titleBar;
 
     public static PathMainActivity pathMainActivity;
+
+
+    @ViewById(id = R.id.rl_action_inbound)
+    RelativeLayout rl_action_inbound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +83,7 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
         titleBar.setTitle(getString(R.string.home));
         titleBar.setMode(TitleBar.TitleBarMode.TITLE_ONLY);
         pathMainActivity=this;
+        rl_action_inbound.setEnabled(false);
     }
 
 
@@ -92,6 +99,9 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
         iv.setImageResource(imageResourceId);
         TextView tv = (TextView) view.findViewById(R.id.tv_action_name);
         tv.setText(textResourceId);
+        if (textResourceId==R.string.inbound_scan){
+            tv.setTextColor(getResources().getColor(R.color.grey));
+        }
         view.setOnClickListener(this);
     }
 

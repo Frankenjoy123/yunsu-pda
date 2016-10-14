@@ -10,6 +10,7 @@ import com.yunsu.common.network.CacheService;
 import com.yunsu.common.network.NetworkManager;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.config.ConfigureLog4j;
+import com.yunsu.common.util.YunsuKeyUtil;
 import com.yunsu.manager.FileManager;
 import com.yunsu.manager.GreenDaoManager;
 import com.yunsu.manager.LogisticManager;
@@ -26,6 +27,8 @@ public class MyApplication extends Application{
         super.onCreate();
 
         Context appContext=this;
+
+        YunsuKeyUtil.initializeIntance(appContext);
 
         GreenDaoManager.initializeIntance(appContext);
 
