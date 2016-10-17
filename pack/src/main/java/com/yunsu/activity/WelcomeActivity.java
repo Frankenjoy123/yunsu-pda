@@ -1,6 +1,5 @@
 package com.yunsu.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -47,8 +46,6 @@ public class WelcomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        installShortCut();
-
         staffService=new StaffServiceImpl();
 
         productBaseService=new ProductBaseServiceImpl();
@@ -63,37 +60,14 @@ public class WelcomeActivity extends BaseActivity {
 
             @Override
             public void run() {
+                if (isAuthorize){
                     gotoMainActivity();
+                }else {
+                    gotoAuthorizeActivity();
+                }
             }
         }, 1000);
 
-    }
-
-    private boolean hasShortcut() {
-        SharedPreferences preferences = getSharedPreferences(PREF_SHORTCUT, Context.MODE_PRIVATE);
-        return preferences.getBoolean(KEY_SHORTCUT, false);
-    }
-
-    private void installShortCut(){
-        if (hasShortcut()){
-            return;
-        }
-        Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
-
-        shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.app_name));
-        shortcut.putExtra("duplicate", false);
-
-        Intent shortcutIntent = new Intent(Intent.ACTION_MAIN);
-        shortcutIntent.setClassName(this, this.getClass().getName());
-        //shortcutIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-
-        Intent.ShortcutIconResource iconRes = Intent.ShortcutIconResource.fromContext(this, R.drawable.app_icon);
-        shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
-        sendBroadcast(shortcut);
-
-        SharedPreferences.Editor editor = getSharedPreferences(PREF_SHORTCUT, Context.MODE_PRIVATE).edit();
-        editor.putBoolean(KEY_SHORTCUT, true).apply();
     }
 
 
