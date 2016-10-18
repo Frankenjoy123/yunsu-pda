@@ -1,5 +1,6 @@
 package com.yunsu.sqlite.service;
 
+import com.yunsu.entity.PackProductsEntity;
 import com.yunsu.entity.StaffCountEntity;
 import com.yunsu.greendao.entity.Pack;
 import com.yunsu.greendao.entity.Product;
@@ -55,5 +56,9 @@ public interface PackService {
     //查询未提交后台的日期列表
     List<String> queryNotCommitDateList();
 
+    //根据日期查询所有的包装关系
+    List<PackProductsEntity> queryPackProductsByDate(String date);
 
+    //更新日期中的所有包装的状态
+    void updatePacksStatus(String date , String status);
 }

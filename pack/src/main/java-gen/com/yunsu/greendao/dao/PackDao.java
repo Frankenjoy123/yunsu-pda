@@ -68,6 +68,10 @@ public class PackDao extends AbstractDao<Pack, Long> {
                 " (\"_id\");");
         db.execSQL("CREATE INDEX " + constraint + "IDX_PACK_PACK_KEY ON PACK" +
                 " (\"PACK_KEY\");");
+        db.execSQL("CREATE INDEX " + constraint + "IDX_PACK_STATUS ON PACK" +
+                " (\"STATUS\");");
+        db.execSQL("CREATE INDEX " + constraint + "IDX_PACK_LAST_SAVE_TIME ON PACK" +
+                " (\"LAST_SAVE_TIME\");");
         db.execSQL("CREATE INDEX " + constraint + "IDX_PACK_STAFF_ID ON PACK" +
                 " (\"STAFF_ID\");");
     }

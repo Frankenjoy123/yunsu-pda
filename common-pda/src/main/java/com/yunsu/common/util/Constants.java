@@ -128,9 +128,14 @@ public final class Constants {
 
         public static final String PACK_PATTERN="pack_pattern";
 
+        public static final String EXPRESS_PATTERN="express_pattern";
+
         public static final String PACK_PATTERN_ID="pack_pattern_id";
 
         public static final String PRODUCT_PATTERN_ID="product_pattern_id";
+
+        public static  final  String DATE="date";
+        public static final String PAIR_COUNT="pair_count";
     }
 
     public final static class Request {
@@ -160,6 +165,8 @@ public final class Constants {
     public static final String YUNSOO_FOLDERNAME = "/氧泡泡";
 
     public static final String PACK_SYNC_TASK_FOLDER = "/包装文件";
+
+    public static final String EXPRESS_FOLDER="/快递文件";
 
     public static final String PACK_SYNC_SUCCESS_FOLDER = "/pack/sync_success";
 

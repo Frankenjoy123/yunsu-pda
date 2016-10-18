@@ -36,9 +36,9 @@ public class PackDaoMaker {
         //包装码
         pack.addStringProperty("packKey").notNull().unique().index();;
         //同步状态
-        pack.addStringProperty("status");
+        pack.addStringProperty("status").index();
         //最近操作时间
-        pack.addStringProperty("lastSaveTime");
+        pack.addStringProperty("lastSaveTime").index();
         //规格
         pack.addIntProperty("standard");
         //实际产品数

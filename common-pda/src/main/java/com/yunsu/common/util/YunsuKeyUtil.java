@@ -25,12 +25,20 @@ public class YunsuKeyUtil {
 
     private  static Pattern packKeyPattern;
 
+    private static Pattern expressKeyPattern;
+
     private  String packPatternString;
 
     private  String productPatternString;
 
+    private String expressPatternString;
+
     private Context context;
     private SharedPreferences preferences;
+
+    public String getExpressPatternString() {
+        return expressPatternString;
+    }
 
     public static YunsuKeyUtil initializeIntance(Context context) {
 
@@ -54,7 +62,11 @@ public class YunsuKeyUtil {
 
         packPatternString=preferences.getString(Constants.PackPreference.PACK_PATTERN,"^(\\d{8})$");
 
+        expressPatternString=preferences.getString(Constants.PackPreference.EXPRESS_PATTERN,"^(\\d{13})$");
+
         packKeyPattern=Pattern.compile(packPatternString);
+
+        expressKeyPattern=Pattern.compile(expressPatternString);
 
         productPatternString=preferences.getString(Constants.PackPreference.PRODUCT_PATTERN,"^https?:\\/\\/zsm\\.oyao\\.com(?:\\/external\\/([^\\/]+))?\\/([^\\/]+)$");
 
@@ -81,6 +93,12 @@ public class YunsuKeyUtil {
         productKeyPattern=Pattern.compile(productKeyPatternString);
     }
 
+    public void saveExpressKeyPattern(String expressKeyPatternString){
+        this.expressPatternString=expressKeyPatternString;
+        preferences.edit().putString(Constants.PackPreference.EXPRESS_PATTERN,expressKeyPatternString).apply();
+        expressKeyPattern=Pattern.compile(expressKeyPatternString);
+    }
+
     public  String verifyProductKey(String productKey) throws NotVerifyException{
         Matcher matcher = productKeyPattern.matcher(productKey);
         if (!matcher.find()) {
@@ -93,6 +111,14 @@ public class YunsuKeyUtil {
         Matcher matcher = packKeyPattern.matcher(packKey);
         if (!matcher.find()) {
             throw new NotVerifyException("扫码非官方认证包装码");
+        }
+        return matcher.group(matcher.groupCount());
+    }
+
+    public  String verifyExpressKey(String expressKey) throws NotVerifyException{
+        Matcher matcher = expressKeyPattern.matcher(expressKey);
+        if (!matcher.find()) {
+            throw new NotVerifyException("扫码非官方认证快递码");
         }
         return matcher.group(matcher.groupCount());
     }

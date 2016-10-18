@@ -4,8 +4,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.yunsu.common.util.Constants;
+import com.yunsu.entity.PackProductsEntity;
 import com.yunsu.entity.StaffCountEntity;
 import com.yunsu.greendao.dao.PackDao;
+import com.yunsu.greendao.dao.ProductDao;
 import com.yunsu.greendao.dao.StaffDao;
 import com.yunsu.greendao.entity.Pack;
 import com.yunsu.greendao.entity.Product;
@@ -23,6 +25,8 @@ import de.greenrobot.dao.query.Query;
 public class PackServiceImpl implements PackService{
     private PackDao packDao=GreenDaoManager.getInstance().getDaoSession().getPackDao();
     private StaffDao staffDao=GreenDaoManager.getInstance().getDaoSession().getStaffDao();
+    private ProductDao productDao=GreenDaoManager.getInstance().getDaoSession().getProductDao();
+
 
     private SQLiteDatabase db=GreenDaoManager.getInstance().getDb();
     @Override
@@ -103,7 +107,7 @@ public class PackServiceImpl implements PackService{
         builder.append("from Pack p");
         builder.append("where  p.status != ?");
 
-        Cursor c=db.rawQuery(builder.toString(),new String[]{"commit"});
+        Cursor c=db.rawQuery(builder.toString(),new String[]{Constants.DB.COMMIT});
 
         List<String> dateList=new ArrayList<>();
 
@@ -116,5 +120,38 @@ public class PackServiceImpl implements PackService{
         return dateList;
     }
 
+    @Override
+    public List<PackProductsEntity> queryPackProductsByDate(String date) {
+        List<PackProductsEntity> packProductsEntityList =new ArrayList<>();
+        StringBuilder builder=new StringBuilder();
+        builder.append("select  p._id as 'pack id' , p.PACK_KEY as 'pack key' , p.last_save_time , p.standard,  p.real_count , group_concat(pr.product_key) as 'product keys'  ");
+        builder.append(" from Pack p inner join product pr on pr.PACK_ID = p._id ");
+        builder.append("where  date(p.last_save_time)=? group by p._id");
+        Cursor c=db.rawQuery(builder.toString(),new String[]{date});
+
+        if (c!=null){
+            while(c.moveToNext()) {
+                PackProductsEntity entity=new PackProductsEntity();
+                Pack pack =new Pack();
+                pack.setId(c.getLong(0));
+                pack.setPackKey(c.getString(1));
+                pack.setLastSaveTime(c.getString(2));
+                pack.setStandard(c.getInt(3));
+                pack.setRealCount(c.getInt(4));
+                entity.setPack(pack);
+                entity.setProductsString(c.getString(5));
+
+                packProductsEntityList.add(entity);
+            }
+        }
+
+
+        return packProductsEntityList;
+    }
+
+    @Override
+    public void updatePacksStatus(String date, String status) {
+
+    }
 
 }

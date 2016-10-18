@@ -11,12 +11,10 @@ import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.StringHelper;
 import com.yunsu.common.util.YSFile;
+import com.yunsu.entity.PackProductsEntity;
 import com.yunsu.greendao.entity.Pack;
-import com.yunsu.greendao.entity.Product;
 import com.yunsu.sqlite.service.PackService;
-import com.yunsu.sqlite.service.ProductService;
 import com.yunsu.sqlite.service.impl.PackServiceImpl;
-import com.yunsu.sqlite.service.impl.ProductServiceImpl;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -142,48 +140,32 @@ address: {string(255)}
 details: {? 待定}
 datetime: 2016-07-20T14:20:30.123Z
   */
-    public void createPackFile() {
+    public String createPackFile(List<PackProductsEntity> packProductsEntityList) {
 
-        ProductService productService=new ProductServiceImpl();
         PackService packService=new PackServiceImpl();
-        List<Pack> queryPackList=packService.queryNotSyncPacks();
-        createSyncInboundPackFile(queryPackList);
-
-        if (queryPackList!=null&&queryPackList.size()>0) {
+        if (packProductsEntityList!=null&&packProductsEntityList.size()>0) {
             int productCount=0;
             StringBuilder builder = new StringBuilder();
-            for (Pack pack : queryPackList) {
-                builder.append(pack.getLastSaveTime());
+            for (PackProductsEntity entity : packProductsEntityList) {
+                builder.append(entity.getPack().getLastSaveTime());
                 builder.append(Constants.BLANK);
-                builder.append(pack.getPackKey());
+                builder.append(entity.getPack().getPackKey());
                 builder.append(":");
-                List<Product> queryProductList = productService.queryAllProductByPackId(pack.getId());
-
-                if (queryProductList!=null){
-
-                    productCount+=queryProductList.size();
-                    for (int i = 0; i < queryProductList.size(); i ++) {
-                        builder.append(queryProductList.get(i).getProductKey());
-                        if (i < queryProductList.size() - 1) {
-                            builder.append(",");
-                        }
-                    }
-                }
-
+                builder.append(entity.getProductsString());
                 builder.append("\r\n");
-
+                productCount+=entity.getPack().getRealCount();
             }
 
             YSFile ysFile = new YSFile(YSFile.EXT_TF);
             ysFile.putHeader("file_type", "package");
             ysFile.putHeader("org_id", SessionManager.getInstance().getAuthUser().getOrgId());
-            ysFile.putHeader("package_count",String.valueOf(queryPackList.size()));
-            ysFile.putHeader("package_size","100");
+            ysFile.putHeader("package_count",String.valueOf(packProductsEntityList.size()));
+            ysFile.putHeader("package_size",String.valueOf(packProductsEntityList.get(0).getPack().getStandard()));
             ysFile.putHeader("product_count",String.valueOf(productCount));
-            ysFile.putHeader("factory","杭州工厂");
+            ysFile.putHeader("factory","氧泡泡工厂");
             ysFile.putHeader("workshop","第一车间");
             ysFile.putHeader("production_line","第一生产线");
-            ysFile.putHeader("address","杭州西湖");
+            ysFile.putHeader("address","杭州");
             ysFile.setContent(builder.toString().getBytes(Charset.forName("UTF-8")));
 
             try {
@@ -194,27 +176,26 @@ datetime: 2016-07-20T14:20:30.123Z
                 if (!pack_task_folder.exists())
                     pack_task_folder.mkdirs();
 
-                StringBuilder fileNameBuilder = new StringBuilder("Pack_");
-                fileNameBuilder.append(DeviceManager.getInstance().getDeviceId());
-                fileNameBuilder.append("_");
-                fileNameBuilder.append(FileManager.getInstance().getPackFileLastIndex() + 1);
-                fileNameBuilder.append(".tf");
+                File file = new File(pack_task_folder, generateFileName(date));
 
-                File file = new File(pack_task_folder, fileNameBuilder.toString());
                 FileOutputStream fos = new FileOutputStream(file);
                 BufferedOutputStream bos = new BufferedOutputStream(fos);
                 bos.write(ysFile.toBytes());
                 bos.flush();
                 bos.close();
                 fos.close();
-                FileManager.getInstance().savePackFileIndex(FileManager.getInstance().getPackFileLastIndex() + 1);
 
-                for (Pack pack : queryPackList){
-                    pack.setStatus(Constants.DB.SYNC);
-                    SimpleDateFormat format=new SimpleDateFormat(Constants.dateFormat);
-                    pack.setLastSaveTime(format.format(new Date()));
-                    packService.updatePack(pack);
-                }
+                return file.getAbsolutePath();
+
+
+//                FileManager.getInstance().savePackFileIndex(FileManager.getInstance().getPackFileLastIndex() + 1);
+
+//                for (Pack pack : queryPackList){
+//                    pack.setStatus(Constants.DB.SYNC);
+//                    SimpleDateFormat format=new SimpleDateFormat(Constants.dateFormat);
+//                    pack.setLastSaveTime(format.format(new Date()));
+//                    packService.updatePack(pack);
+//                }
 
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -342,6 +323,23 @@ datetime: 2016-07-20T14:20:30.123Z
         fileNameBuilder.append(format.format(date)+".txt");
         return fileNameBuilder.toString();
     }
+
+    public String generateFileName(String date){
+        String deviceId=DeviceManager.getInstance().getDeviceId();
+        String tempId=null;
+
+        if (deviceId.length()>6){
+            tempId=deviceId.substring(deviceId.length()-6,deviceId.length());
+        }else {
+            tempId=deviceId;
+        }
+
+        StringBuilder fileNameBuilder=new StringBuilder(tempId);
+        fileNameBuilder.append("-");
+        fileNameBuilder.append(date+".txt");
+        return fileNameBuilder.toString();
+    }
+
 
 
     private String createPackProductItemString(String packKey,List<String> productKeyList){
