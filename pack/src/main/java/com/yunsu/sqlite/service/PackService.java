@@ -13,7 +13,7 @@ public interface PackService {
     /*
      增加包装
      */
-    void addPack(Pack pack);
+    long addPack(Pack pack);
 
     /*
     删除包装
@@ -50,6 +50,10 @@ public interface PackService {
 
     //根据日期查询员工的打包数和产品数
     List<StaffCountEntity>  queryPackProductCountByDate(String date);
+
+
+    //查询未提交后台的日期列表
+    List<String> queryNotCommitDateList();
 
 
 }

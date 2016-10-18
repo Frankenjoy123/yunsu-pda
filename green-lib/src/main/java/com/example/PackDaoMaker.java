@@ -48,8 +48,6 @@ public class PackDaoMaker {
         Entity product = schema.addEntity("Product");
         product.addIdProperty().autoincrement().index();
         product.addStringProperty("productKey").notNull().unique().index();
-        product.addStringProperty("status");
-        product.addStringProperty("lastSaveTime");
 
         //建立包装和产品的一对多关联
         Property packId=product.addLongProperty("packId").getProperty();

@@ -29,9 +29,11 @@ import com.yunsu.common.util.YunsuKeyUtil;
 import com.yunsu.common.view.TitleBar;
 import com.yunsu.entity.PackInfoEntity;
 import com.yunsu.greendao.entity.Pack;
-import com.yunsu.manager.FileManager;
+import com.yunsu.greendao.entity.Product;
 import com.yunsu.sqlite.service.PackService;
+import com.yunsu.sqlite.service.ProductService;
 import com.yunsu.sqlite.service.impl.PackServiceImpl;
+import com.yunsu.sqlite.service.impl.ProductServiceImpl;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -314,6 +316,7 @@ public class PackScanActivity extends BaseActivity {
                         public void run() {
 
                             PackService packService = new PackServiceImpl();
+                            ProductService productService=new ProductServiceImpl();
                             Pack pack = new Pack();
                             pack.setPackKey(formatPackKey);
                             pack.setLastSaveTime(format.format(new Date()));
@@ -323,8 +326,14 @@ public class PackScanActivity extends BaseActivity {
                             pack.setStandard(packInfoEntity.getStandard());
                             pack.setRealCount(productKeyList.size());
                             try {
-                                packService.addPack(pack);
-                                FileManager.getInstance().writePackInfoToFile(pack.getPackKey(),productKeyList);
+                                long packId=packService.addPack(pack);
+                                for(String string : productKeyList){
+                                    Product product=new Product();
+                                    product.setProductKey(string);
+                                    product.setPackId(packId);
+                                    productService.addProduct(product);
+                                }
+//                                FileManager.getInstance().writePackInfoToFile(pack.getPackKey(),productKeyList);
                                 Message message = Message.obtain();
                                 message.what = PACK_SUCCESS_MSG;
                                 mHandler.sendMessage(message);

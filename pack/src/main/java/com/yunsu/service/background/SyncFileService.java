@@ -57,7 +57,7 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
                     }
                 }
 
-                uploadAutoInboundPackFile();
+//                uploadAutoInboundPackFile();
 
                 List<String> logFileNames=FileManager.getInstance().getUnSyncLogFileNames();
                 if (logFileNames!=null&&logFileNames.size()>0){

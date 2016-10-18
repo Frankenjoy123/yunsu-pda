@@ -32,9 +32,7 @@ public class ProductDao extends AbstractDao<Product, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property ProductKey = new Property(1, String.class, "productKey", false, "PRODUCT_KEY");
-        public final static Property Status = new Property(2, String.class, "status", false, "STATUS");
-        public final static Property LastSaveTime = new Property(3, String.class, "lastSaveTime", false, "LAST_SAVE_TIME");
-        public final static Property PackId = new Property(4, Long.class, "packId", false, "PACK_ID");
+        public final static Property PackId = new Property(2, Long.class, "packId", false, "PACK_ID");
     };
 
     private DaoSession daoSession;
@@ -56,9 +54,7 @@ public class ProductDao extends AbstractDao<Product, Long> {
         db.execSQL("CREATE TABLE " + constraint + "\"PRODUCT\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"PRODUCT_KEY\" TEXT NOT NULL UNIQUE ," + // 1: productKey
-                "\"STATUS\" TEXT," + // 2: status
-                "\"LAST_SAVE_TIME\" TEXT," + // 3: lastSaveTime
-                "\"PACK_ID\" INTEGER);"); // 4: packId
+                "\"PACK_ID\" INTEGER);"); // 2: packId
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_PRODUCT__id ON PRODUCT" +
                 " (\"_id\");");
@@ -83,19 +79,9 @@ public class ProductDao extends AbstractDao<Product, Long> {
         }
         stmt.bindString(2, entity.getProductKey());
  
-        String status = entity.getStatus();
-        if (status != null) {
-            stmt.bindString(3, status);
-        }
- 
-        String lastSaveTime = entity.getLastSaveTime();
-        if (lastSaveTime != null) {
-            stmt.bindString(4, lastSaveTime);
-        }
- 
         Long packId = entity.getPackId();
         if (packId != null) {
-            stmt.bindLong(5, packId);
+            stmt.bindLong(3, packId);
         }
     }
 
@@ -117,9 +103,7 @@ public class ProductDao extends AbstractDao<Product, Long> {
         Product entity = new Product( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getString(offset + 1), // productKey
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // status
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // lastSaveTime
-            cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4) // packId
+            cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2) // packId
         );
         return entity;
     }
@@ -129,9 +113,7 @@ public class ProductDao extends AbstractDao<Product, Long> {
     public void readEntity(Cursor cursor, Product entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setProductKey(cursor.getString(offset + 1));
-        entity.setStatus(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setLastSaveTime(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setPackId(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
+        entity.setPackId(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
      }
     
     /** @inheritdoc */

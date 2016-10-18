@@ -15,8 +15,6 @@ public class Product {
     private Long id;
     /** Not-null value. */
     private String productKey;
-    private String status;
-    private String lastSaveTime;
     private Long packId;
 
     /** Used to resolve relations */
@@ -36,11 +34,9 @@ public class Product {
         this.id = id;
     }
 
-    public Product(Long id, String productKey, String status, String lastSaveTime, Long packId) {
+    public Product(Long id, String productKey, Long packId) {
         this.id = id;
         this.productKey = productKey;
-        this.status = status;
-        this.lastSaveTime = lastSaveTime;
         this.packId = packId;
     }
 
@@ -66,22 +62,6 @@ public class Product {
     /** Not-null value; ensure this value is available before it is saved to the database. */
     public void setProductKey(String productKey) {
         this.productKey = productKey;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getLastSaveTime() {
-        return lastSaveTime;
-    }
-
-    public void setLastSaveTime(String lastSaveTime) {
-        this.lastSaveTime = lastSaveTime;
     }
 
     public Long getPackId() {

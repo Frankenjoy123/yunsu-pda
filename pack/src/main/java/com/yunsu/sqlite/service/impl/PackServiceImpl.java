@@ -26,8 +26,8 @@ public class PackServiceImpl implements PackService{
 
     private SQLiteDatabase db=GreenDaoManager.getInstance().getDb();
     @Override
-    public void addPack(Pack pack) {
-        packDao.insert(pack);
+    public long addPack(Pack pack) {
+        return packDao.insert(pack);
     }
 
     @Override
@@ -96,6 +96,25 @@ public class PackServiceImpl implements PackService{
         return staffCountEntityList;
     }
 
+    @Override
+    public List<String> queryNotCommitDateList() {
+        StringBuilder builder=new StringBuilder();
+        builder.append("select distinct date(p.last_save_time) ");
+        builder.append("from Pack p");
+        builder.append("where  p.status != ?");
+
+        Cursor c=db.rawQuery(builder.toString(),new String[]{"commit"});
+
+        List<String> dateList=new ArrayList<>();
+
+        if (c!=null){
+            while(c.moveToNext()) {
+                dateList.add(c.getString(0));
+            }
+        }
+
+        return dateList;
+    }
 
 
 }

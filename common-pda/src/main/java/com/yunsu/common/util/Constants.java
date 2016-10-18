@@ -46,6 +46,7 @@ public final class Constants {
         public final static String STATUS_COLUMN = "status";
         public final static String SYNC = "sync";
         public final static String NOT_SYNC = "not_sync";
+        public final static String COMMIT="commit";
         public final static String DISABLE = "disable";
         public static final String DB_NAME = "trace";
 

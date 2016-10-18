@@ -35,6 +35,8 @@ public class PackMainActivity extends BaseActivity implements View.OnClickListen
         setContentView(R.layout.activity_pack_main);
         getActionBar().hide();
         setupActionItems();
+        checkAuthorizeStatus();
+        startService();
     }
 
     private void startService() {

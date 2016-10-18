@@ -1,5 +1,3 @@
-import java.util.regex.Pattern
-
 apply plugin: 'com.android.application'
 
 android {
@@ -10,8 +8,8 @@ android {
         applicationId "com.yunsu.pack.yangpaopao"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.2"
     }
     buildTypes {
         release {
