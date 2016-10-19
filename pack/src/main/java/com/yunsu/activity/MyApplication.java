@@ -8,6 +8,7 @@ import com.yunsu.common.config.ConfigureLog4j;
 import com.yunsu.common.manager.DeviceManager;
 import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.network.CacheService;
+import com.yunsu.common.network.NetworkManager;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.CrashHandler;
 import com.yunsu.common.util.YunsuKeyUtil;
@@ -36,7 +37,7 @@ public class MyApplication extends Application{
 
         DeviceManager deviceManager= DeviceManager.initializeIntance(appContext);
 
-//        NetworkManager.initializeIntance(appContext).isNetworkConnected();
+        NetworkManager.initializeIntance(appContext).isNetworkConnected();
 
         CacheService.initializeInstance(appContext);
 

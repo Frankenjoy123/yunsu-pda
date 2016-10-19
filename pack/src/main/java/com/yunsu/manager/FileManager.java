@@ -140,7 +140,9 @@ address: {string(255)}
 details: {? 待定}
 datetime: 2016-07-20T14:20:30.123Z
   */
-    public String createPackFile(List<PackProductsEntity> packProductsEntityList) {
+    public String createPackFile(List<PackProductsEntity> packProductsEntityList ,String date) {
+
+        String filePath=null;
 
         PackService packService=new PackServiceImpl();
         if (packProductsEntityList!=null&&packProductsEntityList.size()>0) {
@@ -185,7 +187,7 @@ datetime: 2016-07-20T14:20:30.123Z
                 bos.close();
                 fos.close();
 
-                return file.getAbsolutePath();
+                filePath= file.getAbsolutePath();
 
 
 //                FileManager.getInstance().savePackFileIndex(FileManager.getInstance().getPackFileLastIndex() + 1);
@@ -201,6 +203,8 @@ datetime: 2016-07-20T14:20:30.123Z
                 ex.printStackTrace();
             }
         }
+
+        return filePath;
 
     }
 

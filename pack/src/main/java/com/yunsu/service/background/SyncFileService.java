@@ -65,10 +65,9 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
                     List<String> dateList=packService.queryNotCommitDateList();
                     for (String date : dateList){
                         List<PackProductsEntity> packProductsEntityList=packService.queryPackProductsByDate(date);
-                        String filePath=FileManager.getInstance().createPackFile(packProductsEntityList);
+                        String filePath=FileManager.getInstance().createPackFile(packProductsEntityList,date);
                         FileUpLoadService fileUpLoadService=new FileUpLoadService(filePath);
                         fileUpLoadService.setFileType(FileUpLoadService.PACK_FILE);
-                        fileUpLoadService.setIndex(i);
                         fileUpLoadService.setDelegate((DataServiceImpl.DataServiceDelegate) context);
                         fileUpLoadService.start();
                     }
