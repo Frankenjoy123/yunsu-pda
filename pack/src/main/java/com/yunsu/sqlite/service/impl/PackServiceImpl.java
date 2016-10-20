@@ -104,8 +104,8 @@ public class PackServiceImpl implements PackService{
     public List<String> queryNotCommitDateList() {
         StringBuilder builder=new StringBuilder();
         builder.append("select distinct date(p.last_save_time) ");
-        builder.append("from Pack p");
-        builder.append("where  p.status != ?");
+        builder.append(" from Pack p ");
+        builder.append(" where  p.status != ?");
 
         Cursor c=db.rawQuery(builder.toString(),new String[]{Constants.DB.COMMIT});
 
@@ -126,7 +126,7 @@ public class PackServiceImpl implements PackService{
         StringBuilder builder=new StringBuilder();
         builder.append("select  p._id as 'pack id' , p.PACK_KEY as 'pack key' , p.last_save_time , p.standard,  p.real_count , group_concat(pr.product_key) as 'product keys'  ");
         builder.append(" from Pack p inner join product pr on pr.PACK_ID = p._id ");
-        builder.append("where  date(p.last_save_time)=? group by p._id");
+        builder.append("where  date(p.last_save_time)=? and p.status != 'commit' group by p._id");
         Cursor c=db.rawQuery(builder.toString(),new String[]{date});
 
         if (c!=null){
@@ -152,6 +152,11 @@ public class PackServiceImpl implements PackService{
     @Override
     public void updatePacksStatus(String date, String status) {
 
+    }
+
+    @Override
+    public void updateInTx(List<Pack> packList) {
+        packDao.updateInTx(packList);
     }
 
 }

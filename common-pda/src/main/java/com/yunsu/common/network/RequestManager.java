@@ -13,6 +13,7 @@ import com.yunsu.common.util.Constants;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -68,14 +69,26 @@ public class RequestManager {
 
 	public static JSONObject PostByFile(String url, String sFilePath) throws ServerAuthException, ServerGeneralException,
 			Exception {
+
+		return  PostByFile(url,null,sFilePath);
+
+	}
+
+	public static JSONObject PostByFile(String url, List<BasicNameValuePair> nameValuePairs, String sFilePath) throws ServerAuthException, ServerGeneralException,
+			Exception {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
 		Log.d(TAG, "Request started: at " + format.format(new Date()));
 		Logger logger=Logger.getLogger(RequestManager.class);
 		logger.debug("Request "+url+" started: at "  + format.format(new Date()));
 		JSONObject jsonObject = null;
+		String query = Constants.EmptyString;
+		if (nameValuePairs != null && nameValuePairs.size() > 0) {
+			query = URLEncodedUtils.format(nameValuePairs, HTTP.UTF_8);
+		}
 		AuthUser authUser=SessionManager.getInstance().getAuthUser();
 		String api=authUser.getApi();
-		RestClient restClient = new RestClient(SessionManager.getInstance().getAuthUser().getApi() + url);
+		RestClient restClient = new RestClient(SessionManager.getInstance().getAuthUser().getApi() + url
+				+ (query == Constants.EmptyString ? Constants.EmptyString : Constants.QuestionMark + query));
 		restClient.SetIsJsonContent(false);
 		restClient.setIsFilePost(true);
 
@@ -87,6 +100,7 @@ public class RequestManager {
 
 		return HandleResponseResult(jsonObject);
 	}
+
 
 	public static JSONObject PUT(String url, String postJsonString) throws ServerAuthException, ServerGeneralException,
 			Exception {

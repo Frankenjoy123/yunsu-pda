@@ -26,6 +26,14 @@ public interface PackService {
      */
      void updatePack(Pack pack);
 
+    //更新日期中的所有包装的状态
+    void updatePacksStatus(String date , String status);
+
+    /*
+    批量更新
+     */
+    void updateInTx(List<Pack> packList);
+
     /*
     根据包装码查询包装信息
      */
@@ -59,6 +67,5 @@ public interface PackService {
     //根据日期查询所有的包装关系
     List<PackProductsEntity> queryPackProductsByDate(String date);
 
-    //更新日期中的所有包装的状态
-    void updatePacksStatus(String date , String status);
+
 }

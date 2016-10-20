@@ -12,17 +12,17 @@ import android.widget.TextView;
 import com.yunsu.adapter.FileSyncAdapter;
 import com.yunsu.common.exception.BaseException;
 import com.yunsu.common.exception.ServerAuthException;
+import com.yunsu.common.manager.DeviceManager;
+import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.service.DataServiceImpl;
 import com.yunsu.common.service.FileUpLoadService;
 import com.yunsu.common.service.PermanentTokenLoginService;
-import com.yunsu.common.manager.DeviceManager;
-import com.yunsu.manager.FileManager;
-import com.yunsu.manager.SQLiteManager;
-import com.yunsu.common.manager.SessionManager;
-import com.yunsu.sqlite.PackDataBaseHelper;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.YSFile;
 import com.yunsu.common.view.TitleBar;
+import com.yunsu.manager.FileManager;
+import com.yunsu.manager.SQLiteManager;
+import com.yunsu.sqlite.PackDataBaseHelper;
 
 import org.json.JSONObject;
 
@@ -157,20 +157,23 @@ public class PackSyncActivity extends BaseActivity implements DataServiceImpl.Da
             });
         }
 
-        if (service instanceof PermanentTokenLoginService){
-            String folderName = android.os.Environment.getExternalStorageDirectory() +
-                    Constants.YUNSOO_FOLDERNAME+Constants.PACK_SYNC_TASK_FOLDER;
-            File pack_task_folder = new File(folderName);
-            File[] files=pack_task_folder.listFiles();
-            for(int i=0;i<files.length;i++){
-                status.set(i,1);
-                FileUpLoadService fileUpLoadService=new FileUpLoadService(files[i].getAbsolutePath());
-                fileUpLoadService.setFileType(FileUpLoadService.PACK_FILE);
-                fileUpLoadService.setIndex(i);
-                fileUpLoadService.setDelegate(this);
-                fileUpLoadService.start();
-            }
-        }
+//        if (service instanceof PermanentTokenLoginService){
+//            String folderName = android.os.Environment.getExternalStorageDirectory() +
+//                    Constants.YUNSOO_FOLDERNAME+Constants.PACK_SYNC_TASK_FOLDER;
+//            File pack_task_folder = new File(folderName);
+//            File[] files=pack_task_folder.listFiles();
+//            for(int i=0;i<files.length;i++){
+//                status.set(i,1);
+//
+//                List<NameValuePair> queryList=new ArrayList<>();
+//                queryList.add(new QueryNameValuePair(FileUpLoadService.FILE_NAME,fi))
+//                FileUpLoadService fileUpLoadService=new FileUpLoadService(files[i].getAbsolutePath());
+//                fileUpLoadService.setFileType(FileUpLoadService.PACK_FILE);
+//                fileUpLoadService.setIndex(i);
+//                fileUpLoadService.setDelegate(this);
+//                fileUpLoadService.start();
+//            }
+//        }
     }
 
     @Override

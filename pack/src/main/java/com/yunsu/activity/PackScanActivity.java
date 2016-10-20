@@ -283,6 +283,7 @@ public class PackScanActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    //弹出扫描包装码弹窗
     private void showPackDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();

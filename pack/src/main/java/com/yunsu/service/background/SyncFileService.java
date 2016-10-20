@@ -8,19 +8,25 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.yunsu.common.exception.BaseException;
+import com.yunsu.common.network.NetworkManager;
 import com.yunsu.common.service.DataServiceImpl;
-import com.yunsu.common.service.FileUpLoadService;
 import com.yunsu.common.service.LogUpLoadService;
 import com.yunsu.common.util.Constants;
 import com.yunsu.entity.PackProductsEntity;
+import com.yunsu.greendao.entity.Pack;
 import com.yunsu.manager.FileManager;
 import com.yunsu.manager.SettingManager;
+import com.yunsu.service.FileUpLoadService;
 import com.yunsu.sqlite.service.PackService;
 import com.yunsu.sqlite.service.impl.PackServiceImpl;
 
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,6 +35,8 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
     public static final String TAG = "SyncFileService";
 
     ConnectivityManager manager;
+
+    SimpleDateFormat dateFormat;
 
     PackService packService;
 
@@ -40,20 +48,10 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
         super.onCreate();
         Log.d(TAG, "onCreate() executed");
         packService=new PackServiceImpl();
+        dateFormat=new SimpleDateFormat(Constants.dateOnlyDayFormat);
         startSync();
     }
 
-    private boolean checkNetworkState() {
-        boolean flag = false;
-        //得到网络连接信息
-        manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        //去进行判断网络是否连接
-        if (manager.getActiveNetworkInfo() != null) {
-            flag = manager.getActiveNetworkInfo().isAvailable();
-        }
-
-        return flag;
-    }
 
     private void startSync(){
         Timer timer = new Timer();
@@ -61,48 +59,52 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (checkNetworkState()){
+                NetworkManager.getInstance().updateConnectStatus();
+                if (NetworkManager.getInstance().isNetworkConnected()){
                     List<String> dateList=packService.queryNotCommitDateList();
                     for (String date : dateList){
+                        //查询出状态不是commit的当天的数据
                         List<PackProductsEntity> packProductsEntityList=packService.queryPackProductsByDate(date);
+
                         String filePath=FileManager.getInstance().createPackFile(packProductsEntityList,date);
+
+                        List<BasicNameValuePair> queryList=new ArrayList<BasicNameValuePair>();
+
+                        String[] arrName=filePath.split("/");
+                        if (arrName.length>0){
+                            String fileName=arrName[arrName.length-1];
+                            queryList.add(new BasicNameValuePair(FileUpLoadService.FILE_NAME,fileName));
+                        }
+
+                        if (date.compareTo(dateFormat.format(new Date()))<0){
+                            queryList.add(new BasicNameValuePair(FileUpLoadService.COMMITTED,FileUpLoadService.TRUE));
+                        }else {
+                            queryList.add(new BasicNameValuePair(FileUpLoadService.COMMITTED,FileUpLoadService.FALSE));
+                        }
+                        queryList.add(new BasicNameValuePair(FileUpLoadService.IGNORED,FileUpLoadService.TRUE));
+
                         FileUpLoadService fileUpLoadService=new FileUpLoadService(filePath);
-                        fileUpLoadService.setFileType(FileUpLoadService.PACK_FILE);
                         fileUpLoadService.setDelegate((DataServiceImpl.DataServiceDelegate) context);
+                        fileUpLoadService.setQueryPairList(queryList);
+                        fileUpLoadService.setPackProductsEntityList(packProductsEntityList);
                         fileUpLoadService.start();
                     }
 
                 }
 
 
-
-                List<String> fileNames=FileManager.getInstance().getPackFileNames();
-                if (fileNames!=null&&fileNames.size()>0){
-                    String folderName = android.os.Environment.getExternalStorageDirectory() +
-                            Constants.YUNSOO_FOLDERNAME+Constants.PACK_SYNC_TASK_FOLDER;
-                    File path_task_folder = new File(folderName);
-                    File[] files=path_task_folder.listFiles();
-                    for(int i=0;i<files.length;i++){
-                        FileUpLoadService fileUpLoadService=new FileUpLoadService(files[i].getAbsolutePath());
-                        fileUpLoadService.setFileType(FileUpLoadService.PACK_FILE);
-                        fileUpLoadService.setIndex(i);
-                        fileUpLoadService.setDelegate((DataServiceImpl.DataServiceDelegate) context);
-                        fileUpLoadService.start();
-                    }
-                }
-
-                List<String> logFileNames=FileManager.getInstance().getUnSyncLogFileNames();
-                if (logFileNames!=null&&logFileNames.size()>0){
-                    String folderName = android.os.Environment.getExternalStorageDirectory() +
-                            Constants.YUNSOO_FOLDERNAME+Constants.PACK_LOG_NOT_SYNC_FOLDER;
-                    File path_task_folder = new File(folderName);
-                    File[] files=path_task_folder.listFiles();
-                    for(int i=0;i<files.length;i++){
-                        LogUpLoadService service=new LogUpLoadService(files[i].getAbsolutePath());
-                        service.setDelegate((DataServiceImpl.DataServiceDelegate) context);
-                        service.start();
-                    }
-                }
+//                List<String> logFileNames=FileManager.getInstance().getUnSyncLogFileNames();
+//                if (logFileNames!=null&&logFileNames.size()>0){
+//                    String folderName = android.os.Environment.getExternalStorageDirectory() +
+//                            Constants.YUNSOO_FOLDERNAME+Constants.PACK_LOG_NOT_SYNC_FOLDER;
+//                    File path_task_folder = new File(folderName);
+//                    File[] files=path_task_folder.listFiles();
+//                    for(int i=0;i<files.length;i++){
+//                        LogUpLoadService service=new LogUpLoadService(files[i].getAbsolutePath());
+//                        service.setDelegate((DataServiceImpl.DataServiceDelegate) context);
+//                        service.start();
+//                    }
+//                }
 
             }
 
@@ -150,29 +152,47 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    private boolean isFileCommitted( List<BasicNameValuePair> queryPairs){
+        boolean committed=false;
+        for (BasicNameValuePair pair :queryPairs){
+            if (pair.getName().equals(FileUpLoadService.COMMITTED) && pair.getValue().equals(FileUpLoadService.TRUE)){
+                committed=true;
+            }
+        }
+        return committed;
+    }
+
+    private void updatePackListStatus(List<PackProductsEntity> entityList , String status){
+        List<Pack> packList=new ArrayList<>();
+        for (PackProductsEntity entity : entityList){
+            Pack pack=entity.getPack();
+            pack.setStatus(status);
+            packList.add(pack);
+        }
+        if (packList.size()>0){
+            packService.updateInTx(packList);
+        }
+    }
+
+
     @Override
     public void onRequestSucceeded(DataServiceImpl service, JSONObject data, boolean isCached) {
         if (service instanceof FileUpLoadService){
-
-            String folderName=null;
-            if (((FileUpLoadService) service).getFileType().equals(FileUpLoadService.PACK_FILE)){
-
-                folderName = android.os.Environment.getExternalStorageDirectory() +
-                        Constants.YUNSOO_FOLDERNAME+Constants.PACK_SYNC_SUCCESS_FOLDER;
-            }else if (((FileUpLoadService) service).getFileType().equals(FileUpLoadService.PATH_FILE)){
-
-                folderName = android.os.Environment.getExternalStorageDirectory() +
-                        Constants.YUNSOO_FOLDERNAME+Constants.PACK_AUTO_INBOUND_SUCCESS_FOLDER;
-            }
-
-            File path_success_folder = new File(folderName);
-            if (!path_success_folder.exists()){
-                path_success_folder.mkdirs();
+            FileUpLoadService fileUpLoadService= (FileUpLoadService) service;
+            List<BasicNameValuePair> queryPairs=fileUpLoadService.getQueryPairList();
+            //判断是否需要更新状态为commit
+            if (isFileCommitted(queryPairs)){
+                //更新状态为commit
+                updatePackListStatus(fileUpLoadService.getPackProductsEntityList(),Constants.DB.COMMIT);
+            }else {
+                //更新状态为sync
+                updatePackListStatus(fileUpLoadService.getPackProductsEntityList(),Constants.DB.SYNC);
             }
 
             File oldFile=new File(((FileUpLoadService) service).getFilePath());
-            File newFile=new File(path_success_folder,oldFile.getName());
-            oldFile.renameTo(newFile);
+            if (oldFile.exists()){
+                oldFile.delete();
+            }
         }
 
         if (service instanceof LogUpLoadService){
@@ -183,11 +203,9 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
             if (!path_success_folder.exists()){
                 path_success_folder.mkdirs();
             }
-
             File oldFile=new File(((LogUpLoadService) service).getFilePath());
             File newFile=new File(path_success_folder,oldFile.getName());
             oldFile.renameTo(newFile);
-
         }
 
     }

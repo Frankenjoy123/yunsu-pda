@@ -229,28 +229,6 @@ public class PackSettingActivity extends BaseActivity {
         builder.setCancelable(false);
         final AlertDialog dialog=builder.create();
         dialog.show();
-
-
-//        Timer timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//
-//            @Override
-//            public void run() {
-//                if(et_pack_standard!=null){
-//                    //设置可获得焦点
-//                    et_pack_standard.setFocusable(true);
-//                    et_pack_standard.setFocusableInTouchMode(true);
-//                    //请求获得焦点
-//                    et_pack_standard.requestFocus();
-//                    //调用系统输入法
-//                    InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    inputManager.showSoftInput(et_pack_standard,InputMethodManager.SHOW_FORCED );
-//                }
-//
-//            }
-//        }, 200);
-
-
     }
 
 

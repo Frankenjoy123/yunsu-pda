@@ -15,10 +15,7 @@ import com.yunsu.common.exception.ServerAuthException;
 import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.service.DataServiceImpl;
 import com.yunsu.common.service.PermanentTokenLoginService;
-import com.yunsu.common.service.background.SyncLogService;
-import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.ToastMessageHelper;
-import com.yunsu.service.background.RecycleHeartBeatService;
 import com.yunsu.service.background.SyncFileService;
 
 import org.json.JSONObject;
@@ -42,11 +39,11 @@ public class PackMainActivity extends BaseActivity implements View.OnClickListen
     private void startService() {
         Intent intent=new Intent(this, SyncFileService.class);
         startService(intent);
-        Intent intent1=new Intent(this, SyncLogService.class);
-        intent1.putExtra(Constants.APP_TYPE,Constants.TRACE_APP);
-        startService(intent1);
-        Intent intent2=new Intent(this, RecycleHeartBeatService.class);
-        startService(intent2);
+//        Intent intent1=new Intent(this, SyncLogService.class);
+//        intent1.putExtra(Constants.APP_TYPE,Constants.TRACE_APP);
+//        startService(intent1);
+//        Intent intent2=new Intent(this, RecycleHeartBeatService.class);
+//        startService(intent2);
     }
 
     private void checkAuthorizeStatus() {
