@@ -328,12 +328,14 @@ public class PackScanActivity extends BaseActivity {
                             pack.setRealCount(productKeyList.size());
                             try {
                                 long packId=packService.addPack(pack);
+                                List<Product> productList=new ArrayList<Product>();
                                 for(String string : productKeyList){
                                     Product product=new Product();
                                     product.setProductKey(string);
                                     product.setPackId(packId);
-                                    productService.addProduct(product);
+                                    productList.add(product);
                                 }
+                                productService.addProductsInTx(productList);
 //                                FileManager.getInstance().writePackInfoToFile(pack.getPackKey(),productKeyList);
                                 Message message = Message.obtain();
                                 message.what = PACK_SUCCESS_MSG;

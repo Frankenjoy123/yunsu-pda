@@ -64,7 +64,7 @@ public interface PackService {
     //查询未提交后台的日期列表
     List<String> queryNotCommitDateList();
 
-    //根据日期查询所有的包装关系
+    //根据日期查询status不是commit的所有的包装关系
     List<PackProductsEntity> queryPackProductsByDate(String date);
 
 

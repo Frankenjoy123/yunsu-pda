@@ -12,22 +12,16 @@ import android.widget.EditText;
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.exception.NotVerifyException;
 import com.yunsu.common.service.ServiceExecutor;
-import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.StringHelper;
 import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.util.YunsuKeyUtil;
 import com.yunsu.common.view.TitleBar;
 import com.yunsu.greendao.entity.Pack;
-import com.yunsu.manager.FileManager;
 import com.yunsu.sqlite.service.PackService;
 import com.yunsu.sqlite.service.ProductService;
 import com.yunsu.sqlite.service.impl.PackServiceImpl;
 import com.yunsu.sqlite.service.impl.ProductServiceImpl;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 
 public class UnPackActivity extends BaseActivity {
@@ -40,8 +34,9 @@ public class UnPackActivity extends BaseActivity {
 
     private Pack queryResultPack;
 
-    private ProductService productService;
     private PackService packService;
+
+    private ProductService productService;
 
     private static final int QUERY_PACK_SUCCESS_MSG =145;
 
@@ -105,23 +100,8 @@ public class UnPackActivity extends BaseActivity {
 
                             if (queryResultPack!=null){
                                 packService.removePack(queryResultPack);
-                                SimpleDateFormat format=new SimpleDateFormat(Constants.dateFormat);
-                                try {
-                                    Date  date=format.parse( queryResultPack.getLastSaveTime());
-                                    String fileName=FileManager.getInstance().generateFileName(date);
-                                    FileManager.getInstance().deleteRowInPackFile(fileName,formatKey);
-                                    handler.sendEmptyMessage(QUERY_PACK_SUCCESS_MSG);
-                                } catch (ParseException e) {
-                                    Message message=Message.obtain();
-                                    message.what=FILE_PROCESS_FAIL_MSG;
-                                    message.obj=e.getMessage();
-                                    handler.sendMessage(message);
-                                } catch (IOException e) {
-                                    Message message=Message.obtain();
-                                    message.what=FILE_PROCESS_FAIL_MSG;
-                                    message.obj=e.getMessage();
-                                    handler.sendMessage(message);
-                                }
+                                productService.removeAllProductByPackId(queryResultPack.getId());
+                                handler.sendEmptyMessage(QUERY_PACK_SUCCESS_MSG);
                             }else {
                                 handler.sendEmptyMessage(QUERY_PACK_FAIL_MSG);
                             }

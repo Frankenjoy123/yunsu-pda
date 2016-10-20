@@ -1,7 +1,6 @@
 package com.yunsu.activity;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,19 +23,13 @@ import com.yunsu.sqlite.service.PatternService;
 
 import org.json.JSONObject;
 
-public class GlobalSettingActivity extends BaseActivity {
+public class KeyTypeSettingActivity extends BaseActivity {
     private TitleBar titleBar;
     private Button btn_authorize_status;
     private RelativeLayout rl_auto_sync;
     private TextView tv_time_gap;
     private CheckBox cb_auto_inbound;
     private boolean autoInbound;
-
-    @ViewById(id = R.id.rl_sync_data)
-    private RelativeLayout rl_sync_data;
-
-    @ViewById(id = R.id.rl_set_key_type)
-    private RelativeLayout rl_set_key_type;
 
     @ViewById(id = R.id.tv_cache_size)
     private TextView tv_cache_size;
@@ -86,7 +79,7 @@ public class GlobalSettingActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_global_setting);
+        setContentView(R.layout.activity_key_type_setting);
         init();
     }
 
@@ -94,7 +87,7 @@ public class GlobalSettingActivity extends BaseActivity {
         getActionBar().hide();
 
         titleBar = (TitleBar) findViewById(R.id.global_setting_title_bar);
-        titleBar.setTitle(getString(R.string.settings));
+        titleBar.setTitle(getString(R.string.set_key_type));
         titleBar.setMode(TitleBar.TitleBarMode.LEFT_BUTTON);
         titleBar.setDisplayAsBack(true);
         tv_pack_regex.setText(YunsuKeyUtil.getInstance().getPackPatternString());
@@ -105,26 +98,6 @@ public class GlobalSettingActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 showUpdateDialog();
-            }
-        });
-
-        bindClickEvent();
-    }
-
-    private void bindClickEvent() {
-        rl_sync_data.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(GlobalSettingActivity.this,SyncDataActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        rl_set_key_type.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(GlobalSettingActivity.this,KeyTypeSettingActivity.class);
-                startActivity(intent);
             }
         });
     }
@@ -164,11 +137,11 @@ public class GlobalSettingActivity extends BaseActivity {
                             YunsuKeyUtil.getInstance().saveProductKeyPattern(prod_pattern);
                             tv_product_regex.setText(prod_pattern);
                         }
-                        ToastMessageHelper.showMessage(GlobalSettingActivity.this,R.string.update_success,true);
+                        ToastMessageHelper.showMessage(KeyTypeSettingActivity.this,R.string.update_success,true);
                         packAlertDialog.dismiss();
 
                     } catch (Exception e) {
-                        ToastMessageHelper.showMessage(GlobalSettingActivity.this,R.string.update_wrong,true);
+                        ToastMessageHelper.showMessage(KeyTypeSettingActivity.this,R.string.update_wrong,true);
                         e.printStackTrace();
                     }finally {
                         et_key.setText("");

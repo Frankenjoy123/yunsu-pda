@@ -12,6 +12,12 @@ public interface ProductService {
      */
      void addProduct(Product product);
 
+    /**
+     * 批量增加产品
+     */
+    void addProductsInTx(List<Product> productList);
+
+
     /*
     删除产品
     */

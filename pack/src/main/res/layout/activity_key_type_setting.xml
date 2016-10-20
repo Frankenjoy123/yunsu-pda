@@ -50,7 +50,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_check_version"
         android:layout_marginTop="20dp"
-        android:visibility="gone"
         android:background="@drawable/item_bg">
 
 
@@ -85,7 +84,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_product_key_type"
         android:layout_marginTop="20dp"
-        android:visibility="gone"
         android:background="@drawable/item_bg">
 
 
@@ -125,7 +123,6 @@
         android:text="@string/update_setting"
         android:textColor="@color/white"
         android:layout_width="match_parent"
-        android:visibility="gone"
         android:layout_height="wrap_content" />
 
 
@@ -165,7 +162,8 @@
         android:layout_width="match_parent"
         android:layout_height="45.0dip"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/rl_check_version"
+        android:layout_below="@+id/btn_change_setting"
+        android:visibility="gone"
         android:background="@drawable/item_bg">
 
 
@@ -196,75 +194,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/rl_sync_data"
-        android:layout_width="match_parent"
-        android:layout_height="45.0dip"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/rl_auto_sync"
-        android:background="@drawable/item_bg">
-
-
-        <TextView
-            android:id="@+id/tv_sync_data"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10.0dip"
-            android:text="@string/sync_data"
-            android:textColor="#ff484e43"
-            android:textSize="16.0dp" />
-
-        <ImageView style="@style/right_action_style" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_set_key_type"
-        android:layout_width="match_parent"
-        android:layout_height="45.0dip"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/rl_sync_data"
-        android:background="@drawable/item_bg">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10.0dip"
-            android:text="@string/set_key_type"
-            android:textColor="#ff484e43"
-            android:textSize="16.0dp" />
-
-        <ImageView style="@style/right_action_style" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_pack_setting"
-        android:layout_width="match_parent"
-        android:layout_height="45.0dip"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/rl_set_key_type"
-        android:background="@drawable/item_bg">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10.0dip"
-            android:text="@string/pack_setting"
-            android:textColor="#ff484e43"
-            android:textSize="16.0dp" />
-
-        <ImageView style="@style/right_action_style" />
-
-    </RelativeLayout>
-
-
-
-    <RelativeLayout
         android:id="@+id/rl_clear_cache"
         android:layout_width="match_parent"
         android:layout_height="45.0dip"
@@ -272,6 +201,7 @@
         android:layout_marginTop="20dp"
         android:visibility="gone"
         android:background="@drawable/item_bg">
+
 
         <TextView
             android:id="@+id/tv_clear_cache"

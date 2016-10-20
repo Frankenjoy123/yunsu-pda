@@ -18,6 +18,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public void addProductsInTx(List<Product> productList) {
+        productDao.insertInTx(productList);
+    }
+
+    @Override
     public void removeProduct(Product product) {
         productDao.delete(product);
     }

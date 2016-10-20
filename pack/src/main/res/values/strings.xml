@@ -142,6 +142,8 @@
     <string name="title_activity_org_agency">OrgAgencyActivity</string>
 
     <string name="auto_sync">自动同步时间</string>
+    <string name="sync_data">同步数据</string>
+    <string name="set_key_type">码类型设置</string>
     <string name="default_auto_inbound">默认自动入库</string>
     <string name="cancel_auto_inbound">打包完成后的包装将不再默认自动入库</string>
     <string name="confirm_auto_inbound">打包完成后的包装将默认自动入库</string>
@@ -246,6 +248,7 @@
     <string name="update_wrong">更新设置的二维码不正确</string>
     <string name="update_success">更新设置成功</string>
     <string name="device_code">设备编号</string>
+    <string name="today_not_sync">今日未同步</string>
 
     <!--createKeyTemple-->
     <string name="temple_name">模板名称</string>

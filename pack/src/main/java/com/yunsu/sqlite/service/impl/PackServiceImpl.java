@@ -124,7 +124,7 @@ public class PackServiceImpl implements PackService{
     public List<PackProductsEntity> queryPackProductsByDate(String date) {
         List<PackProductsEntity> packProductsEntityList =new ArrayList<>();
         StringBuilder builder=new StringBuilder();
-        builder.append("select  p._id as 'pack id' , p.PACK_KEY as 'pack key' , p.last_save_time , p.standard,  p.real_count , group_concat(pr.product_key) as 'product keys'  ");
+        builder.append("select  p._id as 'pack id' , p.PACK_KEY as 'pack key' , p.last_save_time , p.standard,  p.real_count , p.staff_id , p.product_base_id , p.status , group_concat(pr.product_key) as 'product keys'  ");
         builder.append(" from Pack p inner join product pr on pr.PACK_ID = p._id ");
         builder.append("where  date(p.last_save_time)=? and p.status != 'commit' group by p._id");
         Cursor c=db.rawQuery(builder.toString(),new String[]{date});
@@ -138,8 +138,11 @@ public class PackServiceImpl implements PackService{
                 pack.setLastSaveTime(c.getString(2));
                 pack.setStandard(c.getInt(3));
                 pack.setRealCount(c.getInt(4));
+                pack.setStaffId(c.getLong(5));
+                pack.setProductBaseId(c.getLong(6));
+                pack.setStatus(c.getString(7));
                 entity.setPack(pack);
-                entity.setProductsString(c.getString(5));
+                entity.setProductsString(c.getString(8));
 
                 packProductsEntityList.add(entity);
             }
