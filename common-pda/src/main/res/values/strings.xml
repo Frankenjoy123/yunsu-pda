@@ -13,4 +13,7 @@
 
     <string name="delete">删除</string>
 
+    <string name="net_connect">网络已连接</string>
+    <string name="net_disconnect">网络已断开，请检查</string>
+
 </resources>

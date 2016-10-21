@@ -175,13 +175,13 @@ public final class Constants {
     public static final String PACK_AUTO_INBOUND_SUCCESS_FOLDER = "/pack/auto_inbound/sync_success";
 
 
-    public static final String PACK_LOG_NOT_SYNC_FOLDER = "/log";
+    public static final String PACK_LOG_NOT_SYNC_FOLDER = "/pack/log/not_sync";
 
     public static final String PACK_LOG_SYNC_FOLDER = "/pack/log/sync_success";
 
-    public static final String PACK_CRASH_NOT_SYNC_FOLDER = "/log/crash";
+    public static final String PACK_CRASH_NOT_SYNC_FOLDER = "/pack/log/crash/not_sync";
 
-    public static final String PACK_CRASH_SYNC_FOLDER = "/pack/crash/sync";
+    public static final String PACK_CRASH_SYNC_FOLDER = "/pack/log/crash/sync";
 
     public static final String PATH_SYNC_TASK_FOLDER = "/物流/未同步";
 

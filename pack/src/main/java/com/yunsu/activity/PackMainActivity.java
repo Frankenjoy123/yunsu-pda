@@ -14,8 +14,11 @@ import com.yunsu.common.entity.AuthUser;
 import com.yunsu.common.exception.BaseException;
 import com.yunsu.common.exception.ServerAuthException;
 import com.yunsu.common.manager.SessionManager;
+import com.yunsu.common.network.NetworkManager;
 import com.yunsu.common.service.DataServiceImpl;
 import com.yunsu.common.service.PermanentTokenLoginService;
+import com.yunsu.common.service.background.SyncLogService;
+import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.view.PasswordInputView;
 import com.yunsu.service.background.RecycleHeartBeatService;
@@ -39,14 +42,25 @@ public class PackMainActivity extends BaseActivity implements View.OnClickListen
         setupActionItems();
         checkAuthorizeStatus();
         startService();
+        showNetStatus();
+    }
+
+    private void showNetStatus() {
+        NetworkManager.getInstance().updateConnectStatus();
+        boolean isNetWork=NetworkManager.getInstance().isNetworkConnected();
+        if (isNetWork){
+            ToastMessageHelper.showMessage(this,R.string.net_connect,true);
+        }else {
+            ToastMessageHelper.showMessage(this,R.string.net_disconnect,true);
+        }
     }
 
     private void startService() {
         Intent intent=new Intent(this, SyncFileService.class);
         startService(intent);
-//        Intent intent1=new Intent(this, SyncLogService.class);
-//        intent1.putExtra(Constants.APP_TYPE,Constants.TRACE_APP);
-//        startService(intent1);
+        Intent intent1=new Intent(this, SyncLogService.class);
+        intent1.putExtra(Constants.APP_TYPE,Constants.PACK_APP);
+        startService(intent1);
         Intent intent2=new Intent(this, RecycleHeartBeatService.class);
         startService(intent2);
     }

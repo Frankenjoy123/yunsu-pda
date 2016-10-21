@@ -92,20 +92,6 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
 
                 }
 
-
-//                List<String> logFileNames=FileManager.getInstance().getUnSyncLogFileNames();
-//                if (logFileNames!=null&&logFileNames.size()>0){
-//                    String folderName = android.os.Environment.getExternalStorageDirectory() +
-//                            Constants.YUNSOO_FOLDERNAME+Constants.PACK_LOG_NOT_SYNC_FOLDER;
-//                    File path_task_folder = new File(folderName);
-//                    File[] files=path_task_folder.listFiles();
-//                    for(int i=0;i<files.length;i++){
-//                        LogUpLoadService service=new LogUpLoadService(files[i].getAbsolutePath());
-//                        service.setDelegate((DataServiceImpl.DataServiceDelegate) context);
-//                        service.start();
-//                    }
-//                }
-
             }
 
             private void uploadAutoInboundPackFile() {
