@@ -53,7 +53,7 @@ public class ProductDao extends AbstractDao<Product, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"PRODUCT\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "\"PRODUCT_KEY\" TEXT NOT NULL UNIQUE ," + // 1: productKey
+                "\"PRODUCT_KEY\" TEXT NOT NULL ," + // 1: productKey
                 "\"PACK_ID\" INTEGER);"); // 2: packId
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_PRODUCT__id ON PRODUCT" +

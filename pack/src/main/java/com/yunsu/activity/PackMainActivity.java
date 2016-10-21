@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,10 +17,13 @@ import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.service.DataServiceImpl;
 import com.yunsu.common.service.PermanentTokenLoginService;
 import com.yunsu.common.util.ToastMessageHelper;
+import com.yunsu.common.view.PasswordInputView;
 import com.yunsu.service.background.RecycleHeartBeatService;
 import com.yunsu.service.background.SyncFileService;
 
 import org.json.JSONObject;
+
+import java.lang.reflect.Field;
 
 public class PackMainActivity extends BaseActivity implements View.OnClickListener {
     private AuthUser tempAuthUser;
@@ -91,11 +95,51 @@ public class PackMainActivity extends BaseActivity implements View.OnClickListen
                 startActivity(intent3);
                 break;
             case R.id.rl_settting:
-                Intent intent4=new Intent(PackMainActivity.this,GlobalSettingActivity.class);
-                startActivity(intent4);
+
+                passwordDialog();
                 break;
         }
     }
+
+
+
+    private void passwordDialog(){
+        final AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setTitle(R.string.input_password);
+        LayoutInflater inflater=getLayoutInflater();
+        final View view=inflater.inflate(R.layout.dialog_password,null);
+        final PasswordInputView passwordInputView = (PasswordInputView) view.findViewById(R.id.passwordInputView);
+        builder.setView(view);
+        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String pw=passwordInputView.getText().toString();
+                if (pw.equals("2468")){
+                        Intent intent4=new Intent(PackMainActivity.this,GlobalSettingActivity.class);
+                        startActivity(intent4);
+                }else {
+                    ToastMessageHelper.showMessage(PackMainActivity.this,R.string.password_wrong,true);
+                }
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                try {
+                    //下面三句控制弹框的关闭
+                    Field field = dialogInterface.getClass().getSuperclass().getDeclaredField("mShowing");
+                    field.setAccessible(true);
+                    field.set(dialogInterface,true);//true表示要关闭
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        builder.setCancelable(false);
+        final AlertDialog dialog=builder.create();
+        dialog.show();
+    }
+
 
     @Override
     public void onRequestSucceeded(DataServiceImpl service, JSONObject data, boolean isCached) {

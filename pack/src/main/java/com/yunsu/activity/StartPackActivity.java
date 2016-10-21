@@ -1,13 +1,10 @@
 package com.yunsu.activity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,8 +24,6 @@ import com.yunsu.sqlite.service.ProductBaseService;
 import com.yunsu.sqlite.service.StaffService;
 import com.yunsu.sqlite.service.impl.ProductBaseServiceImpl;
 import com.yunsu.sqlite.service.impl.StaffServiceImpl;
-
-import java.lang.reflect.Field;
 
 public class StartPackActivity extends BaseActivity {
     @ViewById(id = R.id.title_bar)
@@ -106,34 +101,6 @@ public class StartPackActivity extends BaseActivity {
         staffService = new StaffServiceImpl();
         productBaseService = new ProductBaseServiceImpl();
 
-//        rl_choose_standard.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                dialog(standard);
-//            }
-//        });
-//
-//        rl_choose_staff.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent staffIntent = new Intent(StartPackActivity.this, StaffListActivity.class);
-//                if (staff!=null){
-//                    staffIntent.putExtra(STAFF_ID,staff.getId());
-//                }
-//                startActivityForResult(staffIntent, STAFF_REQUEST);
-//            }
-//        });
-//
-//        rl_choose_product.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent productIntent = new Intent(StartPackActivity.this, ProductBaseListActivity.class);
-//                if (productBase!=null){
-//                    productIntent.putExtra(PRODUCT_BASE_ID,productBase.getId());
-//                }
-//                startActivityForResult(productIntent, PRODUCT_BASE_REQUEST);
-//            }
-//        });
 
         btn_start_pack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,6 +130,7 @@ public class StartPackActivity extends BaseActivity {
 
                     intent.putExtra(PACK_INFO, packInfoEntity);
                     startActivity(intent);
+                    finish();
                 }
             }
         });
@@ -171,102 +139,6 @@ public class StartPackActivity extends BaseActivity {
 
     }
 
-
-
-    private void dialog(int standardNum){
-        final AlertDialog.Builder builder=new AlertDialog.Builder(this);
-        builder.setTitle(R.string.set_standard);
-        LayoutInflater inflater=getLayoutInflater();
-        final View view=inflater.inflate(R.layout.dialog_pack_standard,null);
-        et_pack_standard= (EditText) view.findViewById(R.id.et_pack_standard);
-        et_pack_standard.setText(String.valueOf(standardNum));
-        et_pack_standard.setSelection(et_pack_standard.getText().length());
-        builder.setView(view);
-        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                boolean closeDialog;
-                String numString=et_pack_standard.getText().toString();
-                if (StringHelper.isStringNullOrEmpty(numString)){
-                    closeDialog=false;
-                    ToastMessageHelper.showErrorMessage(StartPackActivity.this,"规格不能为空",true);
-                } else if (numString.startsWith("0")){
-                    closeDialog=false;
-                    ToastMessageHelper.showErrorMessage(StartPackActivity.this,"请输入合法的数字",true);
-                }else if (numString.length()<=4&&(Integer.parseInt(numString)<=1000)){
-                    closeDialog=true;
-                    tv_standard_value.setText(String.valueOf(numString));
-                    standard=Integer.parseInt(numString);
-//                    InputMethodManager inputMethodManager= (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-//                    inputMethodManager.hideSoftInputFromInputMethod(et_pack_standard.getWindowToken(),0);
-                }else {
-                    closeDialog=false;
-                    ToastMessageHelper.showErrorMessage(StartPackActivity.this,"请输入1000以内的数字",true);
-                }
-                try {
-                    //下面三句控制弹框的关闭
-                    Field field = dialogInterface.getClass().getSuperclass().getDeclaredField("mShowing");
-                    field.setAccessible(true);
-                    field.set(dialogInterface,closeDialog);//true表示要关闭
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                try {
-                    //下面三句控制弹框的关闭
-                    Field field = dialogInterface.getClass().getSuperclass().getDeclaredField("mShowing");
-                    field.setAccessible(true);
-                    field.set(dialogInterface,true);//true表示要关闭
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        builder.setCancelable(false);
-        final AlertDialog dialog=builder.create();
-        dialog.show();
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (resultCode) {
-            case STAFF_RESULT:
-                showLoading();
-                final long staffId = data.getLongExtra(STAFF_ID, 0);
-                ServiceExecutor.getInstance().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        staff = staffService.queryStaffById(staffId);
-                        Message message = Message.obtain();
-                        message.what = QUERY_STAFF_MSG;
-                        message.obj = staff;
-                        handler.sendMessage(message);
-                    }
-                });
-                break;
-
-            case PRODUCT_BASE_RESULT:
-                showLoading();
-                final long productId = data.getLongExtra(Constants.PRODUCT_BASE_ID, 0);
-                ServiceExecutor.getInstance().execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        productBase = productBaseService.queryProductBaseById(productId);
-                        Message message = Message.obtain();
-                        message.what = QUERY_PRODUCT_BASE_MSG;
-                        message.obj = productBase;
-                        handler.sendMessage(message);
-                    }
-                });
-                break;
-
-        }
-    }
 
     private Handler handler = new Handler() {
         @Override
@@ -308,26 +180,6 @@ public class StartPackActivity extends BaseActivity {
             tv_product.setText(productBase.getName());
         }
         tv_standard_value.setText(String.valueOf(standard));
-    }
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        saveSetting();
-    }
-
-    private void saveSetting(){
-        SharedPreferences.Editor editor=getSharedPreferences(Constants.PackPreference.PACK_SETTING,MODE_PRIVATE).edit();
-        if (staff!=null){
-            editor.putLong(Constants.PackPreference.STAFF_ID,staff.getId());
-        }
-        if (productBase!=null){
-            editor.putLong(Constants.PackPreference.PRODUCT_ID,productBase.getId());
-        }
-        editor.putInt(Constants.PackPreference.STANDARD,standard);
-        editor.apply();
-
     }
 
     private void restoreSetting(){

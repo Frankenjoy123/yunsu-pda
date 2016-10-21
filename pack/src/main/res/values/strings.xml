@@ -173,6 +173,8 @@
     <string name="set_staff">请先设置操作人</string>
     <string name="set_product">请先选择产品</string>
     <string name="set_standard">设置规格</string>
+    <string name="input_password">输入密码</string>
+    <string name="password_wrong">密码不正确</string>
 
     <!--StaffListActivity-->
     <string name="staff_list">操作人列表</string>
