@@ -20,6 +20,7 @@ import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.StringHelper;
 import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.view.TitleBar;
+import com.yunsu.entity.PackInfoEntity;
 import com.yunsu.greendao.entity.ProductBase;
 import com.yunsu.greendao.entity.Staff;
 import com.yunsu.sqlite.service.ProductBaseService;
@@ -29,7 +30,7 @@ import com.yunsu.sqlite.service.impl.StaffServiceImpl;
 
 import java.lang.reflect.Field;
 
-public class PackSettingActivity extends BaseActivity {
+public class StartPackActivity extends BaseActivity {
     @ViewById(id = R.id.title_bar)
     private TitleBar titleBar;
 
@@ -49,7 +50,7 @@ public class PackSettingActivity extends BaseActivity {
     private TextView tv_product;
 
     @ViewById(id = R.id.btn_save)
-    private Button btn_save;
+    private Button btn_start_pack;
 
     @ViewById(id = R.id.tv_standard_value)
     private TextView tv_standard_value;
@@ -92,63 +93,76 @@ public class PackSettingActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_pack);
+        setContentView(R.layout.activity_start_pack);
         init();
     }
 
     private void init() {
         getActionBar().hide();
-        titleBar.setTitle(getString(R.string.pack_setting));
+        titleBar.setTitle(getString(R.string.start_pack));
         titleBar.setMode(TitleBar.TitleBarMode.LEFT_BUTTON);
         titleBar.setDisplayAsBack(true);
 
         staffService = new StaffServiceImpl();
         productBaseService = new ProductBaseServiceImpl();
 
-        rl_choose_standard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog(standard);
-            }
-        });
+//        rl_choose_standard.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                dialog(standard);
+//            }
+//        });
+//
+//        rl_choose_staff.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent staffIntent = new Intent(StartPackActivity.this, StaffListActivity.class);
+//                if (staff!=null){
+//                    staffIntent.putExtra(STAFF_ID,staff.getId());
+//                }
+//                startActivityForResult(staffIntent, STAFF_REQUEST);
+//            }
+//        });
+//
+//        rl_choose_product.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent productIntent = new Intent(StartPackActivity.this, ProductBaseListActivity.class);
+//                if (productBase!=null){
+//                    productIntent.putExtra(PRODUCT_BASE_ID,productBase.getId());
+//                }
+//                startActivityForResult(productIntent, PRODUCT_BASE_REQUEST);
+//            }
+//        });
 
-        rl_choose_staff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent staffIntent = new Intent(PackSettingActivity.this, StaffListActivity.class);
-                if (staff!=null){
-                    staffIntent.putExtra(STAFF_ID,staff.getId());
-                }
-                startActivityForResult(staffIntent, STAFF_REQUEST);
-            }
-        });
-
-        rl_choose_product.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent productIntent = new Intent(PackSettingActivity.this, ProductBaseListActivity.class);
-                if (productBase!=null){
-                    productIntent.putExtra(PRODUCT_BASE_ID,productBase.getId());
-                }
-                startActivityForResult(productIntent, PRODUCT_BASE_REQUEST);
-            }
-        });
-
-        btn_save.setOnClickListener(new View.OnClickListener() {
+        btn_start_pack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String standardText = tv_standard_value.getText().toString();
                 String staffText = tv_staff.getText().toString();
                 String productText = tv_product.getText().toString();
                 if (StringHelper.isStringNullOrEmpty(standardText)) {
-                    ToastMessageHelper.showErrorMessage(PackSettingActivity.this, R.string.set_pack_standard, true);
+                    ToastMessageHelper.showErrorMessage(StartPackActivity.this, R.string.set_pack_standard, true);
                 } else if (StringHelper.isStringNullOrEmpty(staffText)) {
-                    ToastMessageHelper.showErrorMessage(PackSettingActivity.this, R.string.set_staff, true);
+                    ToastMessageHelper.showErrorMessage(StartPackActivity.this, R.string.set_staff, true);
                 } else if (StringHelper.isStringNullOrEmpty(productText)) {
-                    ToastMessageHelper.showErrorMessage(PackSettingActivity.this, R.string.set_product, true);
+                    ToastMessageHelper.showErrorMessage(StartPackActivity.this, R.string.set_product, true);
                 } else {
-                    saveSetting();
-                    ToastMessageHelper.showMessage(PackSettingActivity.this,R.string.save_pack_setting,true);
+
+                    Intent intent = new Intent(StartPackActivity.this, PackScanActivity.class);
+                    PackInfoEntity packInfoEntity = new PackInfoEntity();
+                    packInfoEntity.setProductBaseId(productBase.getId());
+                    packInfoEntity.setProductBaseName(productBase.getName());
+                    packInfoEntity.setProductBaseNumber(productBase.getProductNumber());
+                    packInfoEntity.setStaffId(staff.getId());
+                    packInfoEntity.setStaffName(staff.getName());
+                    packInfoEntity.setStaffNumber(staff.getStaffNumber());
+
+                        standard=Integer.valueOf(standardText);
+                        packInfoEntity.setStandard(standard);
+
+                    intent.putExtra(PACK_INFO, packInfoEntity);
+                    startActivity(intent);
                 }
             }
         });
@@ -175,10 +189,10 @@ public class PackSettingActivity extends BaseActivity {
                 String numString=et_pack_standard.getText().toString();
                 if (StringHelper.isStringNullOrEmpty(numString)){
                     closeDialog=false;
-                    ToastMessageHelper.showErrorMessage(PackSettingActivity.this,"规格不能为空",true);
+                    ToastMessageHelper.showErrorMessage(StartPackActivity.this,"规格不能为空",true);
                 } else if (numString.startsWith("0")){
                     closeDialog=false;
-                    ToastMessageHelper.showErrorMessage(PackSettingActivity.this,"请输入合法的数字",true);
+                    ToastMessageHelper.showErrorMessage(StartPackActivity.this,"请输入合法的数字",true);
                 }else if (numString.length()<=4&&(Integer.parseInt(numString)<=1000)){
                     closeDialog=true;
                     tv_standard_value.setText(String.valueOf(numString));
@@ -187,7 +201,7 @@ public class PackSettingActivity extends BaseActivity {
 //                    inputMethodManager.hideSoftInputFromInputMethod(et_pack_standard.getWindowToken(),0);
                 }else {
                     closeDialog=false;
-                    ToastMessageHelper.showErrorMessage(PackSettingActivity.this,"请输入1000以内的数字",true);
+                    ToastMessageHelper.showErrorMessage(StartPackActivity.this,"请输入1000以内的数字",true);
                 }
                 try {
                     //下面三句控制弹框的关闭
@@ -296,6 +310,12 @@ public class PackSettingActivity extends BaseActivity {
         tv_standard_value.setText(String.valueOf(standard));
     }
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveSetting();
+    }
 
     private void saveSetting(){
         SharedPreferences.Editor editor=getSharedPreferences(Constants.PackPreference.PACK_SETTING,MODE_PRIVATE).edit();

@@ -171,22 +171,28 @@ public class StaffListActivity extends BaseActivity {
                 switch (menu.getViewType()) {
                     case 1:// right
                         if(staffList.size()>0){
-                            ServiceExecutor.getInstance().execute(new Runnable() {
-                                @Override
-                                public void run() {
-                                    boolean existPackData = staffService.existPackDataByStaffId(staffList.get(position).getId());
-                                    if (existPackData){
-                                        handler.sendEmptyMessage(EXIST_PACK_DATA_MSG);
-                                    }else {
-                                        Message message=Message.obtain();
-                                        message.what=DELETE_STAFF_MSG;
-                                        message.obj=staffList.get(position).getId();
-                                        staffService.delete(staffList.get(position));
-                                        staffList.remove(position);
-                                        handler.sendMessage(message);
+                            if (staffList.get(position).getId()==1){
+                                ToastMessageHelper.showMessage(StaffListActivity.this,R.string.can_not_delete_default_staff,true);
+                            }else {
+                                ServiceExecutor.getInstance().execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        boolean existPackData = staffService.existPackDataByStaffId(staffList.get(position).getId());
+                                        if (existPackData){
+                                            handler.sendEmptyMessage(EXIST_PACK_DATA_MSG);
+                                        }else {
+                                            Message message=Message.obtain();
+                                            message.what=DELETE_STAFF_MSG;
+                                            message.obj=staffList.get(position).getId();
+                                            staffService.delete(staffList.get(position));
+                                            staffList.remove(position);
+                                            handler.sendMessage(message);
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            }
+
+
                         }
 
                         break;

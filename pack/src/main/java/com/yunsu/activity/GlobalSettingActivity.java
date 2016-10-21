@@ -63,6 +63,12 @@ public class GlobalSettingActivity extends BaseActivity {
     @ViewById(id = R.id.tv_device_code)
     private TextView tv_device_code;
 
+    @ViewById(id = R.id.tv_current_version)
+    private TextView tv_current_version;
+
+    @ViewById(id = R.id.rl_pack_setting)
+    private RelativeLayout rl_pack_setting;
+
     private final int CLEAR_SUCCESS=1;
 
     private PatternService patternService;
@@ -100,6 +106,7 @@ public class GlobalSettingActivity extends BaseActivity {
         tv_pack_regex.setText(YunsuKeyUtil.getInstance().getPackPatternString());
         tv_product_regex.setText(YunsuKeyUtil.getInstance().getProductPatternString());
         tv_device_code.setText(DeviceManager.getInstance().getDeviceId());
+        tv_current_version.setText(BuildConfig.VERSION_NAME);
 
         btn_change_setting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +131,14 @@ public class GlobalSettingActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(GlobalSettingActivity.this,KeyTypeSettingActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        rl_pack_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent =new Intent(GlobalSettingActivity.this,PackSettingActivity.class);
                 startActivity(intent);
             }
         });

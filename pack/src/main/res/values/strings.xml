@@ -164,6 +164,9 @@
     <string name="pack_setting">打包设置</string>
     <string name="standard">规格：</string>
     <string name="standard2">规格</string>
+    <string name="can_not_delete_default_staff">默认操作人为系统设置，不能删除</string>
+    <string name="can_not_delete_default_product">默认产品为系统设置，不能删除</string>
+    <string name="save_pack_setting">保存打包设置成功</string>
 
     <string name="start_pack">开始打包</string>
     <string name="set_pack_standard">请先设置打包规格</string>

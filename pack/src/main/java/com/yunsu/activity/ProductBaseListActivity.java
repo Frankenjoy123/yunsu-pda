@@ -160,23 +160,27 @@ public class ProductBaseListActivity extends BaseActivity {
                 switch (menu.getViewType()) {
                     case 1:// right
                         if(productBaseList.size()>0){
-                            ServiceExecutor.getInstance().execute(new Runnable() {
-                                @Override
-                                public void run() {
-                                    boolean existPackData = productBaseService.existPackDataByProductBaseId(productBaseList.get(position).getId());
-                                    if (existPackData){
-                                        handler.sendEmptyMessage(EXIST_PACK_DATA_MSG);
-                                    }else {
-                                        Message message=Message.obtain();
-                                        message.what=DELETE_PRODUCT_MSG;
-                                        message.obj=productBaseList.get(position).getId();
-                                        productBaseService.delete(productBaseList.get(position));
-                                        productBaseList.remove(position);
-                                        handler.sendMessage(message);
-                                    }
+                            if (productBaseList.get(position).getId()==1){
+                                ToastMessageHelper.showMessage(ProductBaseListActivity.this,R.string.can_not_delete_default_product,true);
+                            }else {
+                                ServiceExecutor.getInstance().execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        boolean existPackData = productBaseService.existPackDataByProductBaseId(productBaseList.get(position).getId());
+                                        if (existPackData){
+                                            handler.sendEmptyMessage(EXIST_PACK_DATA_MSG);
+                                        }else {
+                                            Message message=Message.obtain();
+                                            message.what=DELETE_PRODUCT_MSG;
+                                            message.obj=productBaseList.get(position).getId();
+                                            productBaseService.delete(productBaseList.get(position));
+                                            productBaseList.remove(position);
+                                            handler.sendMessage(message);
+                                        }
 
-                                }
-                            });
+                                    }
+                                });
+                            }
                         }
 
                         break;

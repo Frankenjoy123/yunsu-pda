@@ -16,6 +16,7 @@ import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.service.DataServiceImpl;
 import com.yunsu.common.service.PermanentTokenLoginService;
 import com.yunsu.common.util.ToastMessageHelper;
+import com.yunsu.service.background.RecycleHeartBeatService;
 import com.yunsu.service.background.SyncFileService;
 
 import org.json.JSONObject;
@@ -42,8 +43,8 @@ public class PackMainActivity extends BaseActivity implements View.OnClickListen
 //        Intent intent1=new Intent(this, SyncLogService.class);
 //        intent1.putExtra(Constants.APP_TYPE,Constants.TRACE_APP);
 //        startService(intent1);
-//        Intent intent2=new Intent(this, RecycleHeartBeatService.class);
-//        startService(intent2);
+        Intent intent2=new Intent(this, RecycleHeartBeatService.class);
+        startService(intent2);
     }
 
     private void checkAuthorizeStatus() {
@@ -78,7 +79,7 @@ public class PackMainActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.rl_pack_scan:
-                Intent intent1=new Intent(PackMainActivity.this,PackSettingActivity.class);
+                Intent intent1=new Intent(PackMainActivity.this,StartPackActivity.class);
                 startActivity(intent1);
                 break;
             case R.id.rl_pack_modify:

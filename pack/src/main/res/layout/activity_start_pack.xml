@@ -18,7 +18,8 @@
         android:layout_height="45.0dip"
         android:layout_below="@+id/title_bar"
         android:layout_marginTop="20dp"
-        android:background="@drawable/item_bg">
+        android:clickable="false"
+        android:background="@drawable/item_bg_normal">
 
 
         <TextView
@@ -45,8 +46,6 @@
             android:layout_marginRight="5dp"
             android:text="10" />
 
-        <ImageView style="@style/right_action_style" />
-
     </RelativeLayout>
 
     <RelativeLayout
@@ -55,7 +54,8 @@
         android:layout_height="45.0dip"
         android:layout_below="@+id/rl_choose_standard"
         android:layout_marginTop="20dp"
-        android:background="@drawable/item_bg">
+        android:clickable="false"
+        android:background="@drawable/item_bg_normal">
 
 
         <TextView
@@ -74,7 +74,6 @@
             android:gravity="right"
             />
 
-        <ImageView style="@style/right_action_style" />
 
     </RelativeLayout>
 
@@ -84,7 +83,8 @@
         android:layout_height="45.0dip"
         android:layout_below="@+id/rl_choose_staff"
         android:layout_marginTop="20dp"
-        android:background="@drawable/item_bg">
+        android:clickable="false"
+        android:background="@drawable/item_bg_normal">
 
 
         <TextView
@@ -102,7 +102,6 @@
             android:hint="@string/product_hint"
             android:gravity="right" />
 
-        <ImageView style="@style/right_action_style" />
 
     </RelativeLayout>
 
@@ -114,7 +113,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:text="@string/save"
+        android:text="@string/start_pack"
         android:textColor="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
