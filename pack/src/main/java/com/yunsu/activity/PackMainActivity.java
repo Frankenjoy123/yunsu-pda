@@ -80,7 +80,6 @@ public class PackMainActivity extends BaseActivity implements View.OnClickListen
     private void setupActionItems() {
 
         buildViewContent(this.findViewById(R.id.rl_pack_scan), R.drawable.ic_pack_scan, R.string.pack_scan);
-        buildViewContent(this.findViewById(R.id.rl_pack_modify), R.drawable.ic_modify_pack_2, R.string.unpack_package);
         buildViewContent(this.findViewById(R.id.rl_data_report), R.drawable.ic_report, R.string.data_report);
         buildViewContent(this.findViewById(R.id.rl_settting), R.drawable.ic_setting_2, R.string.settings);
     }
@@ -100,16 +99,11 @@ public class PackMainActivity extends BaseActivity implements View.OnClickListen
                 Intent intent1=new Intent(PackMainActivity.this,StartPackActivity.class);
                 startActivity(intent1);
                 break;
-            case R.id.rl_pack_modify:
-                Intent intent2=new Intent(PackMainActivity.this,UnPackActivity.class);
-                startActivity(intent2);
-                break;
             case R.id.rl_data_report:
                 Intent intent3=new Intent(PackMainActivity.this,ReportActivity.class);
                 startActivity(intent3);
                 break;
             case R.id.rl_settting:
-
                 passwordDialog();
                 break;
         }

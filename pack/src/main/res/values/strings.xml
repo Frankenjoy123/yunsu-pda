@@ -208,8 +208,8 @@
 
     <!--<scanActivity>-->
     <string name="product_key_exist_in_this_pack">该产品码已存在于当前包装中</string>
-    <string name="scan_pack_key">请扫包装码</string>
-    <string name="pack_key">包装码：</string>
+    <string name="scan_pack_key">请扫箱码</string>
+    <string name="pack_key">箱码：</string>
     <string name="pack_finish">打包完成</string>
     <string name="press_back_button">取消打包，请按返回键</string>
 
@@ -226,7 +226,7 @@
     <string name="fix_pack_done">修改完成</string>
     <string name="new_product">新产品：</string>
     <string name="fix_pack">修改包装</string>
-    <string name="not_find_pack">包装码不存在</string>
+    <string name="not_find_pack">箱码不存在</string>
     <string name="pack_fill_up">该包已被装满，如需新增产品，请先撤销</string>
     <string name="pack_fix_summary">包装原有产品%1$d个，现有产品%2$d个，其中新增%3$d个，删除%4$d个</string>
     <string name="click_wrong">点错了,不返回</string>
@@ -246,9 +246,9 @@
 
     <!--GlobalSetting-->
     <string name="product_key_type">产品码类型</string>
-    <string name="pack_key_type">包装码类型</string>
+    <string name="pack_key_type">箱码类型</string>
     <string name="choose_product_key_type">请选择产品码类型</string>
-    <string name="choose_pack_key_type">请选择包装码类型</string>
+    <string name="choose_pack_key_type">请选择箱码类型</string>
     <string name="update_setting">更新设置</string>
     <string name="scan_update_setting_key">请扫描更新设置的二维码</string>
     <string name="update_wrong">更新设置的二维码不正确</string>
@@ -268,7 +268,7 @@
     <string name="key_example_not_null">码示例不能为空</string>
     <string name="key_prefix_not_null">码前缀不能为空</string>
 
-    <string name="not_verify_pack_key">扫码非官方认证包装码</string>
+    <string name="not_verify_pack_key">扫码非官方认证箱码</string>
 
     <string name="not_verify_product_key">扫码非官方认证产品码</string>
 

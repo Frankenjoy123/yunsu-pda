@@ -25,9 +25,6 @@
                     android:id="@+id/rl_pack_scan"
                     layout="@layout/action_item_layout_top_bottom" />
 
-                <include
-                    android:id="@+id/rl_pack_modify"
-                    layout="@layout/action_item_layout_top_bottom" />
 
                 <include
                     android:id="@+id/rl_data_report"
