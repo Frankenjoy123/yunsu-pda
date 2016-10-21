@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.yunsu.activity.RevokeActivity">
+
+    <com.yunsu.common.view.TitleBar
+        android:id="@+id/revoke_title_bar"
+        layout="@layout/title_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <LinearLayout
+        android:id="@+id/ll_staff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_bg_bottom_normal"
+        android:layout_below="@id/revoke_title_bar"
+        android:orientation="horizontal" >
+
+        <TextView
+            style="@style/text_style_normal"
+            android:text="@string/staff_2"
+            />
+
+        <TextView
+            android:id="@+id/tv_staff"
+            style="@style/text_style_normal"
+            android:text="张三" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_standard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_bg_bottom_normal"
+        android:layout_below="@id/ll_staff"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            style="@style/text_style_normal"
+            android:text="@string/standard"
+            />
+
+        <TextView
+            android:id="@+id/tv_standard"
+            style="@style/text_style_normal"
+            android:text="5" />
+
+        <TextView
+            style="@style/text_style_normal"
+            android:text="@string/per"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_product"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_bg_bottom_normal"
+        android:layout_below="@id/ll_standard"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            style="@style/text_style_normal"
+            android:text="@string/product_2"
+            />
+
+        <TextView
+            android:id="@+id/tv_product"
+            style="@style/text_style_normal"
+            android:text="哇哈哈" />
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/et_get_pack_key"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/ll_standard"
+        android:layout_marginTop="30dp"
+        android:background="@null"
+        android:gravity="center_horizontal"
+        />
+
+    <LinearLayout
+        android:id="@+id/ll_progress_info"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_product"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"
+        android:gravity=""
+        >
+        <TextView
+            style="@style/text_style_normal"
+            android:text="@string/remain_product"
+            />
+        <TextView
+            android:id="@+id/tv_product_count"
+            style="@style/text_style_biggest"
+            android:text="5"
+            android:textColor="#10f089"
+            />
+        <TextView
+            style="@style/text_style_biggest"
+            android:text="/"
+            android:textColor="#f16969"
+            />
+        <TextView
+            android:id="@+id/tv_standard_in_progress"
+            style="@style/text_style_biggest"
+            android:text="10"
+            />
+    </LinearLayout>
+
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_progress_info"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:id="@+id/tc_scan_error_tip"
+        style="@style/text_style_normal"
+        android:layout_below="@id/progressBar1"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:id="@+id/ll_scan_key"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/progressBar1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:visibility="invisible"
+        >
+
+        <TextView
+            style="@style/text_style_normal"
+            android:text="@string/revoke_now"
+            />
+        <TextView
+            android:id="@+id/tv_scan_key"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:lines="2"
+            android:layout_marginLeft="10dp"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_scan_key"
+        android:layout_below="@+id/ll_scan_key"
+        android:src="@drawable/ic_scan"
+        android:layout_width="80dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        />
+    <TextView
+        android:text="@string/scan_revoke_product_key"
+        style="@style/text_style_normal"
+        android:layout_below="@+id/iv_scan_key"
+        android:layout_centerHorizontal="true"
+        />
+
+
+
+</RelativeLayout>

@@ -1,0 +1,86 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.yunsu.activity.SettingActivity">
+
+    <com.yunsu.common.view.TitleBar
+        android:id="@+id/setting_title_bar"
+        layout="@layout/title_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <LinearLayout
+        android:id="@+id/ll_standard_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/setting_title_bar"
+        >
+        <TextView
+            android:id="@+id/tv_standard_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:text="@string/standard"
+            android:textSize="30sp"
+            />
+
+        <EditText
+            android:id="@+id/et_standard"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:inputType="number"
+            />
+        <TextView
+            android:id="@+id/tv_standard_per"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="wrap_content"
+            android:text="@string/per"
+            android:textSize="30sp"
+            android:gravity="right"
+            />
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_count_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/ll_standard_setting"
+        >
+        <TextView
+            android:id="@+id/tv_count_name"
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:textSize="30sp"
+            android:layout_height="wrap_content"
+            android:text="@string/pack_count"
+            />
+
+        <EditText
+            android:id="@+id/et_count"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:inputType="number"
+            />
+        <TextView
+            android:id="@+id/tv_count_unit"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="wrap_content"
+            android:text="@string/count_unit"
+            android:textSize="30sp"
+            android:gravity="right"
+            />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

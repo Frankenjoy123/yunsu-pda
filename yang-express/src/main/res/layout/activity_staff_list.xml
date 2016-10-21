@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.yunsu.activity.StaffListActivity">
+
+    <com.yunsu.common.view.TitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        ></com.yunsu.common.view.TitleBar>
+
+
+    <com.yunsu.common.view.swipeleftrightmenulistview.SwipeLeftRightMenuListView
+        android:id="@+id/lv_staff"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title_bar"
+        android:cacheColorHint="#00000000"
+        android:divider="@color/app_bg_color"
+        android:dividerHeight="15dp"
+        android:listSelector="@android:color/transparent"
+        android:fadingEdge="none"
+        android:fastScrollEnabled="false"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
+        android:smoothScrollbar="true"  >
+    </com.yunsu.common.view.swipeleftrightmenulistview.SwipeLeftRightMenuListView>
+
+    <TextView
+        android:id="@+id/tv_empty_staff_tip"
+        android:text="@string/create_new_staff"
+        style="@style/text_style_normal"
+        android:layout_centerInParent="true"
+        />
+
+</RelativeLayout>

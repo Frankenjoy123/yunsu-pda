@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/rl_order_item"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_bg_bottom"
+    android:layout_marginTop="20dp">
+
+    <LinearLayout
+        android:id="@+id/ll_staff_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:text="@string/staff_number"
+            style="@style/text_style_normal"
+            android:textColor="@color/material_blue_grey_950"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:layout_toRightOf="@+id/ic_agency"
+            android:layout_marginLeft="10dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_staff_number"
+            android:text="A001"
+            style="@style/text_style_normal"
+            android:textColor="@color/material_blue_grey_950"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:layout_toRightOf="@+id/ic_agency"
+            android:layout_marginLeft="10dp"
+            />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_staff_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/ll_staff_number"
+        >
+        <TextView
+            android:text="@string/staff_name"
+            style="@style/text_style_normal"
+            android:textColor="@color/material_blue_grey_950"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:layout_toRightOf="@+id/ic_agency"
+            android:layout_marginLeft="10dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_staff_name"
+            android:text="张三"
+            style="@style/text_style_normal"
+            android:textColor="@color/material_blue_grey_950"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:layout_toRightOf="@+id/ic_agency"
+            android:layout_marginLeft="10dp"
+            />
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_check"
+        android:visibility="invisible"
+        android:src="@drawable/ic_check"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_width="25dp"
+        android:layout_height="25dp" />
+
+
+
+
+
+</RelativeLayout>

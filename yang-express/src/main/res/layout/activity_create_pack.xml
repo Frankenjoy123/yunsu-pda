@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PackSettingActivity">
+
+    <com.yunsu.common.view.TitleBar
+        android:id="@+id/title_bar"
+        layout="@layout/title_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
+    <RelativeLayout
+        android:id="@+id/rl_choose_standard"
+        android:layout_width="match_parent"
+        android:layout_height="45.0dip"
+        android:layout_below="@+id/title_bar"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/item_bg">
+
+
+        <TextView
+            style="@style/text_style_pack_define_value"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10.0dip"
+            android:text="@string/standard2" />
+
+        <TextView
+
+            android:id="@+id/tv_standard_per"
+            style="@style/text_style_pack_define_value"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:hint="@string/per" />
+
+        <TextView
+
+            android:id="@+id/tv_standard_value"
+            style="@style/text_style_pack_define_value"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/tv_standard_per"
+            android:layout_marginRight="5dp"
+            android:text="10" />
+
+        <ImageView style="@style/right_action_style" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_choose_staff"
+        android:layout_width="match_parent"
+        android:layout_height="45.0dip"
+        android:layout_below="@+id/rl_choose_standard"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/item_bg">
+
+
+        <TextView
+            style="@style/text_style_pack_define_value"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10.0dip"
+            android:text="@string/staff" />
+
+        <TextView
+            android:id="@+id/tv_staff"
+            style="@style/text_style_pack_define_value"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:hint="@string/staff_hint"
+            android:gravity="right"
+            />
+
+        <ImageView style="@style/right_action_style" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_choose_product"
+        android:layout_width="match_parent"
+        android:layout_height="45.0dip"
+        android:layout_below="@+id/rl_choose_staff"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/item_bg">
+
+
+        <TextView
+            style="@style/text_style_pack_define_value"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10.0dip"
+            android:text="@string/product" />
+
+        <TextView
+            android:id="@+id/tv_product"
+            style="@style/text_style_pack_define_value"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:hint="@string/product_hint"
+            android:gravity="right" />
+
+        <ImageView style="@style/right_action_style" />
+
+    </RelativeLayout>
+
+
+    <Button
+        android:id="@+id/btn_start_pack"
+        android:layout_below="@+id/rl_choose_product"
+        android:background="@drawable/btn_bg"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/start_pack"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+
+</RelativeLayout>

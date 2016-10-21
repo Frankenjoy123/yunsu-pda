@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="280dp"
+    android:layout_height="100dp"
+    android:gravity="center"
+    android:background="@drawable/item_bg_normal"
+    >
+    <TextView
+        android:text="@string/scan_update_setting_key"
+        style="@style/text_style_normal"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:background="@drawable/item_bg_normal"
+        />
+
+
+
+        <EditText
+            android:id="@+id/et_key"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_below="@id/ll_standard"
+            android:layout_marginTop="30dp"
+            android:background="@null"
+            android:gravity="center_horizontal"
+            />
+
+
+</LinearLayout>
