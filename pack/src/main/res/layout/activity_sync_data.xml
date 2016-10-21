@@ -50,6 +50,43 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_today_not_sync"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:background="@drawable/item_bg">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10.0dip"
+            android:text="@string/history_not_sync"
+            android:textColor="#ff484e43"
+            android:textSize="16.0dp" />
+
+        <TextView
+            android:id="@+id/tv_history_count_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:layout_marginLeft="100dp"
+            android:textColor="#ff484e43"
+            android:textSize="16.0dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="@string/pack"
+            android:textColor="#ff484e43"
+            android:textSize="16.0dp" />
+
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/btn_sync_data"

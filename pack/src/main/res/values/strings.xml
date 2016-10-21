@@ -255,6 +255,7 @@
     <string name="update_success">更新设置成功</string>
     <string name="device_code">设备编号</string>
     <string name="today_not_sync">今日未同步</string>
+    <string name="history_not_sync">历史未同步</string>
 
     <!--createKeyTemple-->
     <string name="temple_name">模板名称</string>
