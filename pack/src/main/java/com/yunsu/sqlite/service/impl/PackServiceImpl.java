@@ -153,6 +153,26 @@ public class PackServiceImpl implements PackService{
     }
 
     @Override
+    public long queryUnCommitPackCountBeforeDate(String date) {
+        long count=0;
+        StringBuilder builder=new StringBuilder();
+        builder.append("select count(*) ");
+        builder.append(" from Pack p ");
+        builder.append(" where  p.status != ? and date(p.last_save_time)<?");
+
+        Cursor c=db.rawQuery(builder.toString(),new String[]{Constants.DB.COMMIT , date});
+
+        List<String> dateList=new ArrayList<>();
+
+        if (c!=null){
+            c.moveToFirst();
+            count=c.getLong(0);
+        }
+
+        return count;
+    }
+
+    @Override
     public void updatePacksStatus(String date, String status) {
 
     }

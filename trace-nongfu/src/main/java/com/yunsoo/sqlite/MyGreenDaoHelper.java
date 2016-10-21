@@ -3,6 +3,7 @@ package com.yunsu.sqlite;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+
 import com.yunsu.greendao.dao.DaoMaster;
 
 /**

@@ -40,9 +40,14 @@ public class SyncDataActivity extends BaseActivity {
     @ViewById(id = R.id.tv_count_value)
     private TextView tv_count_value;
 
+    @ViewById(id = R.id.tv_history_count_value)
+    private TextView tv_history_count_value;
+
     private PackService packService;
 
-    private long notSyncCount=0;
+    private long todayNotSyncCount =0;
+
+    private long historyNotSyncCount=0;
 
     private SimpleDateFormat dateFormat;
 
@@ -112,7 +117,8 @@ public class SyncDataActivity extends BaseActivity {
             @Override
             public void run() {
                 packProductsEntityList= packService.queryPackProductsByDate(dateFormat.format(new Date()));
-                notSyncCount=packProductsEntityList.size();
+                todayNotSyncCount =packProductsEntityList.size();
+                historyNotSyncCount=packService.queryUnCommitPackCountBeforeDate(dateFormat.format(new Date()));
                 handler.sendEmptyMessage(QUERY_PACKS_MSG);
             }
         });
@@ -122,8 +128,9 @@ public class SyncDataActivity extends BaseActivity {
 
     private void refreshUI(){
 
-        tv_count_value.setText(String.valueOf(notSyncCount));
-        if (notSyncCount>0){
+        tv_count_value.setText(String.valueOf(todayNotSyncCount));
+        tv_history_count_value.setText(String.valueOf(historyNotSyncCount));
+        if (todayNotSyncCount >0){
             btn_sync_data.setEnabled(true);
         }else {
             btn_sync_data.setEnabled(false);
@@ -176,7 +183,7 @@ public class SyncDataActivity extends BaseActivity {
                 oldFile.delete();
             }
 
-            notSyncCount=0;
+            todayNotSyncCount =0;
 
             handler.sendEmptyMessage(SYNC_DATA_MSG);
 

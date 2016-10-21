@@ -62,7 +62,7 @@
     <string name="off_line_upload">离线上传</string>
     <string name="wifi_upload">WIFI上传(推荐)</string>
 
-    <string name="check_pack_repeat">该包装码已被扫描，请检查是否重复</string>
+    <string name="check_pack_repeat">该箱码已被扫描，请检查是否重复</string>
 
     <string name="settings">设置</string>
     <string name="login">登录</string>
@@ -75,19 +75,19 @@
 
     <string name="per">个/箱</string>
     <string name="proceeding">打包进度：</string>
-    <string name="please_scan_package_key">该包已装满，请扫描包装码</string>
+    <string name="please_scan_package_key">该包已装满，请扫描箱码</string>
     <string name="please_scan_product_key">请扫产品码</string>
     <string name="pack_count_now">已打包</string>
     <string name="pack_count">计数：</string>
     <string name="count_unit">箱</string>
-    <string name="pack_barcode">包装码：</string>
+    <string name="pack_barcode">箱码：</string>
     <string name="pack">包装</string>
     <string name="pack_2">箱</string>
     <string name="pack_3">打包</string>
     <string name="product_barcode">产品码</string>
     <string name="title_activity_fix_pack">FixPackActivity</string>
-    <string name="fix_tip">请扫描需要修改的包装码</string>
-    <string name="unpack_tip">请扫描需要解除的包装码</string>
+    <string name="fix_tip">请扫描需要修改的箱码</string>
+    <string name="unpack_tip">请扫描需要解除的箱码</string>
     <string name="unpack_tip_des">说明：解除后包装后会删除文件对应的记录，解除后的包装和产品可到打包扫描界面重新打包。</string>
     <string name="file_not_found">文件%1$s已被移除，请在“/氧泡泡/包装文件”中查看</string>
     <string name="device_no_authorize"> 设备未授权,请扫描授权码</string>
@@ -100,7 +100,7 @@
     <string name="revoke_operation">撤销操作</string>
     <string name="confirm_pack">强制打包</string>
     <string name="remove_product">剔除产品</string>
-    <string name="pack_key_has_been_used">包装码已被打包</string>
+    <string name="pack_key_has_been_used">箱码已被打包</string>
 
     <string name="cancel">取消</string>
     <string name="cancel_pack">返回，不想打包了</string>
@@ -143,6 +143,7 @@
 
     <string name="auto_sync">自动同步时间</string>
     <string name="sync_data">同步数据</string>
+    <string name="sync_today_data">同步今日数据</string>
     <string name="set_key_type">码类型设置</string>
     <string name="default_auto_inbound">默认自动入库</string>
     <string name="cancel_auto_inbound">打包完成后的包装将不再默认自动入库</string>
@@ -175,6 +176,7 @@
     <string name="set_standard">设置规格</string>
     <string name="input_password">输入密码</string>
     <string name="password_wrong">密码不正确</string>
+    <string name="not_sync_data_des">历史未同步数据由系统自动同步</string>
 
 
     <!--StaffListActivity-->

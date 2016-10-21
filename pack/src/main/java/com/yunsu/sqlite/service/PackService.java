@@ -67,5 +67,8 @@ public interface PackService {
     //根据日期查询status不是commit的所有的包装关系
     List<PackProductsEntity> queryPackProductsByDate(String date);
 
+    // 查询日期前的未commit数量
+    long queryUnCommitPackCountBeforeDate(String date);
+
 
 }

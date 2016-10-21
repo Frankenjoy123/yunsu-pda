@@ -5,10 +5,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.yunsu.sqlite.MyGreenDaoHelper;
-import com.yunsu.util.Constants;
 import com.yunsu.greendao.dao.DaoMaster;
 import com.yunsu.greendao.dao.DaoSession;
+import com.yunsu.sqlite.MyGreenDaoHelper;
+import com.yunsu.util.Constants;
 
 public class GreenDaoManager extends BaseManager {
 
