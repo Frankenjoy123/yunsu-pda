@@ -71,7 +71,6 @@ public class AuthorizeActivity extends BaseActivity {
                     AuthUser tempAuthUser=new AuthUser();
                     tempAuthUser.setApi(api);
                     SessionManager.getInstance().saveLoginCredential(tempAuthUser);
-                    SessionManager.getInstance().restore();
 
                     AuthLoginService authLoginService=new AuthLoginService(token);
                     authLoginService.setDelegate(AuthorizeActivity.this);
@@ -101,7 +100,6 @@ public class AuthorizeActivity extends BaseActivity {
                     authUser.setAccessToken(accessToken);
                     authUser.setPermanentToken(permanentToken);
                     SessionManager.getInstance().saveLoginCredential(authUser);
-                    SessionManager.getInstance().restore();
                     try {
                         JSONObject object=new JSONObject(content);
 
@@ -111,7 +109,6 @@ public class AuthorizeActivity extends BaseActivity {
                         AuthorizeRequest request=new AuthorizeRequest();
                         request.setAccountId(scanAuthorizeInfo.getAccountId());
                         request.setComments(scanAuthorizeInfo.getDeviceComments());
-                        DeviceManager.initializeIntance(AuthorizeActivity.this);
                         DeviceManager deviceManager=DeviceManager.getInstance();
                         request.setDeviceCode(deviceManager.getDeviceId());
                         request.setDeviceName(scanAuthorizeInfo.getDeviceName());
@@ -133,6 +130,13 @@ public class AuthorizeActivity extends BaseActivity {
                     SharedPreferences.Editor editor=preferences.edit();
                     editor.putBoolean("isAuthorize",true);
                     editor.commit();
+
+                    AuthUser authUser=SessionManager.getInstance().getAuthUser();
+                    String orgId=data.optString("org_id");
+                    AuthUser tempAuthUser=new AuthUser(authUser);
+                    tempAuthUser.setOrgId(orgId);
+                    SessionManager.getInstance().saveLoginCredential(tempAuthUser);
+
                     hideLoading();
                     ToastMessageHelper.showMessage(AuthorizeActivity.this,R.string.scan_success,true);
 

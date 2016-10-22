@@ -24,8 +24,6 @@ import com.yunsu.common.view.PasswordInputView;
 import com.yunsu.service.background.RecycleHeartBeatService;
 import com.yunsu.service.background.SyncFileService;
 
-import org.json.JSONObject;
-
 import java.lang.reflect.Field;
 
 public class PackMainActivity extends BaseActivity implements View.OnClickListener {
@@ -148,24 +146,6 @@ public class PackMainActivity extends BaseActivity implements View.OnClickListen
         dialog.show();
     }
 
-
-    @Override
-    public void onRequestSucceeded(DataServiceImpl service, JSONObject data, boolean isCached) {
-        if (service instanceof PermanentTokenLoginService){
-            String newAccessToken=data.optString("token");
-            int expires_in=data.optInt("expires_in");
-            SharedPreferences preferences=getSharedPreferences("yunsoo_pda",MODE_PRIVATE);
-            SharedPreferences.Editor editor=preferences.edit();
-            editor.putBoolean("isAuthorize", true);
-            editor.commit();
-            tempAuthUser=new AuthUser();
-            tempAuthUser.setAccessToken(newAccessToken);
-            tempAuthUser.setApi(api);
-            tempAuthUser.setPermanentToken(permanentToken);
-            SessionManager.getInstance().saveLoginCredential(tempAuthUser);
-        }
-
-    }
 
     @Override
     public void onRequestFailed(final DataServiceImpl service, final BaseException exception) {

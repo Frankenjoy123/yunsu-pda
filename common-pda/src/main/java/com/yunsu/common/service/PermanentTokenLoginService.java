@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.yunsu.common.entity.AuthUser;
-import com.yunsu.common.entity.LoginResult;
 import com.yunsu.common.exception.LocalGeneralException;
 import com.yunsu.common.exception.NetworkNotAvailableException;
 import com.yunsu.common.exception.ServerAuthException;
@@ -41,8 +40,9 @@ public class PermanentTokenLoginService extends DataServiceImpl {
         String newAccessToken=data.optString("token");
 
         AuthUser authUser=SessionManager.getInstance().getAuthUser();
-        authUser.setAccessToken(newAccessToken);
-        SessionManager.getInstance().saveLoginCredential(authUser);
+        AuthUser tempAuthUser=new AuthUser(authUser);
+        tempAuthUser.setAccessToken(newAccessToken);
+        SessionManager.getInstance().saveLoginCredential(tempAuthUser);
 
         if (context!=null){
             SharedPreferences preferences=context.getSharedPreferences(Constants.Preference.YUNSU_PDA,Context.MODE_PRIVATE);

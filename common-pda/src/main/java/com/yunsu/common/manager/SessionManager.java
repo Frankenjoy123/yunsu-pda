@@ -36,7 +36,7 @@ import java.lang.ref.WeakReference;
 public class SessionManager extends BaseManager {
 
     private static SessionManager sessionManager;
-    private static AuthUser authUser;
+    private  AuthUser authUser;
     private WeakReference<Activity> topActivityReference;
 
     public static SessionManager initializeIntance(Context context) {
