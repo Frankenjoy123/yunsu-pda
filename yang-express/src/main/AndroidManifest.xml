@@ -29,6 +29,14 @@
 
         <meta-data android:name="app_id" android:value="2m9h243c7uw40njbh98"/>
 
+        <meta-data
+            android:name="org_folder"
+            android:value="/氧泡泡" />
+
+        <meta-data
+            android:name="business_folder"
+            android:value="/快递文件"/>
+
         <activity
             android:name=".PackScanActivity"
             android:label="@string/app_name"

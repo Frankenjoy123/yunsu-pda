@@ -10,14 +10,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.exception.NotVerifyException;
@@ -85,7 +83,6 @@ public class PackScanActivity extends BaseActivity {
     protected PackInfoEntity packInfoEntity;
 
     protected static final int PACK_SUCCESS_MSG = 100;
-    protected static final int MSG_FAILURE = -1;
 
     protected static final int MSG_PACK_KEY_HAS_USED = -12;
 
@@ -201,7 +198,7 @@ public class PackScanActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                String string = new StringBuilder(s).toString();
+                String string = et_get_product_key.getText().toString();
                 if(StringHelper.isStringNullOrEmpty(string)){
                     return;
                 }
@@ -336,7 +333,6 @@ public class PackScanActivity extends BaseActivity {
                                     productList.add(product);
                                 }
                                 productService.addProductsInTx(productList);
-//                                FileManager.getInstance().writePackInfoToFile(pack.getPackKey(),productKeyList);
                                 Message message = Message.obtain();
                                 message.what = PACK_SUCCESS_MSG;
                                 mHandler.sendMessage(message);
@@ -382,13 +378,6 @@ public class PackScanActivity extends BaseActivity {
                     tv_show_pack_key.setText(formatPackKey);
                     packAlertDialog.dismiss();
                     doAfterPack();
-                    break;
-                case MSG_FAILURE:
-                    hideLoading();
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            "打包失败，请检查", Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER, 0, 0);
-                    toast.show();
                     break;
                 case MSG_PACK_KEY_HAS_USED:
                     hideLoading();

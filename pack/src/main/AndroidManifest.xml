@@ -30,6 +30,14 @@
             android:name="app_id"
             android:value="2m9h243c7uw40njbh98" />
 
+        <meta-data
+            android:name="org_folder"
+            android:value="氧泡泡" />
+
+        <meta-data
+            android:name="business_folder"
+            android:value="pack"/>
+
         <receiver android:name="com.yunsu.common.network.NetworkChangeReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -85,10 +93,7 @@
             android:label="@string/title_activity_pack_main"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".PackSyncActivity"
-            android:label="@string/title_activity_pack_sync"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".OffLineUploadActivity"
             android:label="@string/title_activity_off_line_upload"

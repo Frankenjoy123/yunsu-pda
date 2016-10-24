@@ -40,7 +40,7 @@ public class SettingManager extends BaseManager {
     public void restore() {
         SharedPreferences preferences = context.getSharedPreferences(Constants.Preference.SETTING,
                 Context.MODE_PRIVATE);
-        syncRateMin = preferences.getInt(Constants.Preference.SYNC_RATE, 30);
+        syncRateMin = preferences.getInt(Constants.Preference.SYNC_RATE, 2);
         isAutoInbound=preferences.getBoolean(Constants.Preference.AUTO_INBOUND,false);
     }
 

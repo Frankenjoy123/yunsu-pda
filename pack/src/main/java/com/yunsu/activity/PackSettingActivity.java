@@ -149,6 +149,7 @@ public class PackSettingActivity extends BaseActivity {
                 } else {
                     saveSetting();
                     ToastMessageHelper.showMessage(PackSettingActivity.this,R.string.save_pack_setting,true);
+                    finish();
                 }
             }
         });

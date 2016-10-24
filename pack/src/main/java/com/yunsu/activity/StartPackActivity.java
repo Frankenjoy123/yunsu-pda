@@ -7,8 +7,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yunsu.common.annotation.ViewById;
@@ -29,15 +27,6 @@ public class StartPackActivity extends BaseActivity {
     @ViewById(id = R.id.title_bar)
     private TitleBar titleBar;
 
-    @ViewById(id = R.id.rl_choose_standard)
-    private RelativeLayout rl_choose_standard;
-
-    @ViewById(id = R.id.rl_choose_staff)
-    private RelativeLayout rl_choose_staff;
-
-    @ViewById(id = R.id.rl_choose_product)
-    private RelativeLayout rl_choose_product;
-
     @ViewById(id = R.id.tv_staff)
     private TextView tv_staff;
 
@@ -50,25 +39,7 @@ public class StartPackActivity extends BaseActivity {
     @ViewById(id = R.id.tv_standard_value)
     private TextView tv_standard_value;
 
-    private EditText et_pack_standard;
-
-    public static final int STAFF_REQUEST = 123;
-
-    public static final int STAFF_RESULT = 145;
-
-    private static final int QUERY_STAFF_MSG = 156;
-
     private static final int RESTORE_SETTING_MSG=168;
-
-    public static final String STAFF_ID = "staff_id";
-
-    public static final String PRODUCT_BASE_ID = "product_base_id";
-
-    public static final int PRODUCT_BASE_REQUEST = 212;
-
-    public static final int PRODUCT_BASE_RESULT = 245;
-
-    private static final int QUERY_PRODUCT_BASE_MSG = 256;
 
     public static final String PACK_INFO = "pack_info";
 
@@ -144,27 +115,10 @@ public class StartPackActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case QUERY_STAFF_MSG:
-                    hideLoading();
-                    if (msg.obj==null){
-                        tv_staff.setText("");
-                    }else {
-                        tv_staff.setText(((Staff) msg.obj).getName());
-                    }
-                    break;
-
-                case QUERY_PRODUCT_BASE_MSG:
-                    hideLoading();
-                    if (msg.obj==null){
-                        tv_product.setText("");
-                    }else {
-                        tv_product.setText(((ProductBase) msg.obj).getName());
-                    }
-                    break;
-
                 case RESTORE_SETTING_MSG:
                     hideLoading();
                     refreshUI();
+                    break;
             }
 
         }

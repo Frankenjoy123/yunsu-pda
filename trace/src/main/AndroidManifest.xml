@@ -32,6 +32,10 @@
 
         <meta-data android:name="app_id" android:value="2mlvpegbfroxlyiej4y"/>
 
+        <meta-data
+            android:name="org_folder"
+            android:value="/氧泡泡" />
+
         <activity
             android:name=".WelcomeActivity"
             android:icon="@drawable/app_icon"

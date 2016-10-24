@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Environment;
 
 import com.yunsu.common.manager.DeviceManager;
+import com.yunsu.common.manager.FileLocationManager;
 import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.network.CacheService;
 import com.yunsu.common.network.NetworkManager;
@@ -39,6 +40,9 @@ public class MyApplication extends Application{
         settingManager.restore();
 
         DeviceManager deviceManager= DeviceManager.initializeIntance(appContext);
+
+        FileLocationManager.initializeIntance(appContext);
+
         NetworkManager.initializeIntance(appContext).isNetworkConnected();
 
         CacheService.initializeInstance(appContext);
@@ -50,20 +54,15 @@ public class MyApplication extends Application{
         LogisticManager logisticManager=LogisticManager.initializeInstance(appContext);
         logisticManager.restore();
 
-        String logPath=Environment.getExternalStorageDirectory()+ Constants.YUNSOO_FOLDERNAME
+        String logPath=Environment.getExternalStorageDirectory()+ FileLocationManager.getInstance().getOrgFolder()
                 + Constants.PATH_LOG_NOT_SYNC_FOLDER;
         ConfigureLog4j.configure(logPath);
 
         CrashHandler catchHandler = CrashHandler.getInstance();
-        String path = Environment.getExternalStorageDirectory()+ Constants.YUNSOO_FOLDERNAME
+        String path = Environment.getExternalStorageDirectory()+ FileLocationManager.getInstance().getOrgFolder()
                 + Constants.PATH_CRASH_NOT_SYNC_FOLDER;
         catchHandler.init(appContext,path);
 
     }
 
-//    @Override
-//    public void onTerminate() {
-//        super.onTerminate();
-//        LogManager.getManager(getApplicationContext()).unregisterCrashHandler();
-//    }
 }

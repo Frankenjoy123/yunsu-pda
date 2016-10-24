@@ -6,6 +6,7 @@ import android.os.Environment;
 
 import com.yunsu.common.config.ConfigureLog4j;
 import com.yunsu.common.manager.DeviceManager;
+import com.yunsu.common.manager.FileLocationManager;
 import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.network.CacheService;
 import com.yunsu.common.util.Constants;
@@ -35,6 +36,8 @@ public class MyApplication extends Application{
         sessionManager.restore();
 
         DeviceManager deviceManager= DeviceManager.initializeIntance(appContext);
+
+        FileLocationManager.initializeIntance(appContext);
 
 //        NetworkManager.initializeIntance(appContext).isNetworkConnected();
 

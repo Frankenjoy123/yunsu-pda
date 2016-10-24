@@ -8,9 +8,6 @@ public final class Constants {
 
     }
 
-    public final static class Favor {
-        public static final String KANGCAI = "KangCai";
-    }
 
     public final static class Logistic {
         public final static String INBOUND_CODE = "inbound";
@@ -29,11 +26,6 @@ public final class Constants {
         public static final String ACTION_ID = "action_id";
         public static final String ACTION_NAME = "action_name";
 
-    }
-
-    public final static class Key {
-        public final static String KEY_STATUS = "key_status";
-        public final static String NOT_EXIST = "not_exist";
     }
 
     public final static class DB {
@@ -55,9 +47,6 @@ public final class Constants {
         public static final String FINISHED = "finished";
 
         public static final String ID = "id";
-
-        public static final int HAS_OUTBOUND_IN_ORDER = 11;
-        public static final int NOT_OUTBOUND = 22;
 
         public static final int PAGE_SIZE = 20;
 
@@ -130,10 +119,6 @@ public final class Constants {
 
         public static final String EXPRESS_PATTERN="express_pattern";
 
-        public static final String PACK_PATTERN_ID="pack_pattern_id";
-
-        public static final String PRODUCT_PATTERN_ID="product_pattern_id";
-
         public static  final  String DATE="date";
         public static final String PAIR_COUNT="pair_count";
     }
@@ -145,8 +130,7 @@ public final class Constants {
 
     // we need / slash
     public static final String SERVER_URL = "http://dev.yunsu.co:6080";
-    //	public static final String SERVER_URL = "http://api.test.yunsu.co:6080";
-//    public static final String SERVER_URL = "http://enterprise.test.yunsu.co:9080";
+
     public static final String USER_AGREEMENT_URL = "http://t.m.yunsu.co/usercontract";
 
     public static final String EmptyString = "";
@@ -155,7 +139,6 @@ public final class Constants {
 
     public static final String ACCESS_TOKEN = "X-YS-AccessToken";
     public static final String APP_ID = "X-YS-AppId";
-    public static final String APP_ID_VALUE = "2m9h243c7uw40njbh98";
     public static final String DEVICE_ID = "X-YS-DeviceId";
 
     public static final String CODE_BASE_URL = "http://t.m.yunsu.co/";
@@ -180,8 +163,6 @@ public final class Constants {
     public static final String PACK_LOG_SYNC_FOLDER = "/pack/log/sync_success";
 
     public static final String PACK_CRASH_NOT_SYNC_FOLDER = "/pack/log/crash/not_sync";
-
-    public static final String PACK_CRASH_SYNC_FOLDER = "/pack/log/crash/sync";
 
     public static final String PATH_SYNC_TASK_FOLDER = "/物流/未同步";
 

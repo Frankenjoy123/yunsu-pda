@@ -10,7 +10,6 @@ import android.util.Log;
 import com.yunsu.common.exception.BaseException;
 import com.yunsu.common.network.NetworkManager;
 import com.yunsu.common.service.DataServiceImpl;
-import com.yunsu.common.service.LogUpLoadService;
 import com.yunsu.common.util.Constants;
 import com.yunsu.entity.PackProductsEntity;
 import com.yunsu.greendao.entity.Pack;
@@ -94,29 +93,6 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
 
             }
 
-            private void uploadAutoInboundPackFile() {
-                String folderName = android.os.Environment.getExternalStorageDirectory() +
-                        Constants.YUNSOO_FOLDERNAME+Constants.PACK_AUTO_INBOUND_TASK_FOLDER;
-
-                try {
-                    File path_task_folder = new File(folderName);
-                    if (path_task_folder.exists()){
-                        File[] files=path_task_folder.listFiles();
-                        for(int i=0;i<files.length;i++){
-                            FileUpLoadService fileUpLoadService=new FileUpLoadService(files[i].getAbsolutePath());
-                            fileUpLoadService.setFileType(FileUpLoadService.PATH_FILE);
-                            fileUpLoadService.setIndex(i);
-                            fileUpLoadService.setDelegate((DataServiceImpl.DataServiceDelegate) context);
-                            fileUpLoadService.start();
-                        }
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-
         },0,1000*60* SettingManager.getInstance().getSyncRateMin());
     }
 
@@ -180,20 +156,6 @@ public class SyncFileService extends Service implements DataServiceImpl.DataServ
                 oldFile.delete();
             }
         }
-
-        if (service instanceof LogUpLoadService){
-
-            String folderName = android.os.Environment.getExternalStorageDirectory() +
-                    Constants.YUNSOO_FOLDERNAME+Constants.PACK_LOG_SYNC_FOLDER;
-            File path_success_folder = new File(folderName);
-            if (!path_success_folder.exists()){
-                path_success_folder.mkdirs();
-            }
-            File oldFile=new File(((LogUpLoadService) service).getFilePath());
-            File newFile=new File(path_success_folder,oldFile.getName());
-            oldFile.renameTo(newFile);
-        }
-
     }
 
     @Override

@@ -18,6 +18,7 @@ import com.yunsu.common.service.PermanentTokenLoginService;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.ToastMessageHelper;
 
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
@@ -103,6 +104,8 @@ public abstract class BaseActivity extends Activity implements DataServiceImpl.D
 
     @Override
     public void onRequestFailed(final DataServiceImpl service, final BaseException exception) {
+
+        Logger.getLogger(BaseActivity.class).error(exception.getMessage());
 
         runOnUiThread(new Runnable() {
             @Override

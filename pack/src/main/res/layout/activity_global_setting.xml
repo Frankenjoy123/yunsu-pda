@@ -45,165 +45,11 @@
 
 
     <RelativeLayout
-        android:id="@+id/rl_product_key_type"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rl_check_version"
-        android:layout_marginTop="20dp"
-        android:visibility="gone"
-        android:background="@drawable/item_bg">
-
-
-        <TextView
-            android:id="@+id/tv_today_not_sync"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10.0dip"
-            android:text="@string/product_key_type"
-            android:textColor="#ff484e43"
-            android:textSize="16.0dp" />
-
-        <TextView
-
-            android:id="@+id/tv_product_regex"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/tv_today_not_sync"
-            android:layout_marginLeft="10dp"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:textColor="#ff484e43"
-            android:textSize="16.0dp" />
-
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/rl_pack_key_type"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rl_product_key_type"
-        android:layout_marginTop="20dp"
-        android:visibility="gone"
-        android:background="@drawable/item_bg">
-
-
-        <TextView
-            android:id="@+id/tv_pack_key_des"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10.0dip"
-            android:text="@string/pack_key_type"
-            android:textColor="#ff484e43"
-            android:textSize="16.0dp" />
-
-
-        <TextView
-
-            android:id="@+id/tv_pack_regex"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/tv_pack_key_des"
-            android:layout_marginLeft="10dp"
-            android:layout_centerVertical="true"
-            android:textColor="#ff484e43"
-            android:textSize="16.0dp" />
-
-
-    </RelativeLayout>
-
-
-    <Button
-        android:id="@+id/btn_change_setting"
-        android:layout_below="@+id/rl_pack_key_type"
-        android:background="@drawable/btn_bg"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:text="@string/update_setting"
-        android:textColor="@color/white"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="wrap_content" />
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        >
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/device_code"
-            android:textColor="#cccccc"
-            android:textSize="16.0dp" />
-
-
-        <TextView
-
-            android:id="@+id/tv_device_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:textColor="#cccccc"
-            android:textSize="16.0dp" />
-
-
-    </LinearLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/rl_auto_sync"
-        android:layout_width="match_parent"
-        android:layout_height="45.0dip"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/rl_check_version"
-        android:visibility="gone"
-        android:background="@drawable/item_bg">
-
-
-        <TextView
-            android:id="@+id/tv_auto_sync"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10.0dip"
-            android:text="@string/auto_sync"
-            android:textColor="#ff484e43"
-            android:textSize="16.0dp" />
-
-        <TextView
-
-            android:id="@+id/tv_time_gap"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:text="@string/auto_sync"
-            android:textColor="#ff484e43"
-            android:textSize="16.0dp" />
-
-        <ImageView style="@style/right_action_style" />
-
-    </RelativeLayout>
-
-
-
-    <RelativeLayout
         android:id="@+id/rl_set_key_type"
         android:layout_width="match_parent"
         android:layout_height="45.0dip"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/rl_auto_sync"
+        android:layout_below="@+id/rl_check_version"
         android:background="@drawable/item_bg">
 
 
@@ -243,11 +89,46 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/rl_sync_data"
+        android:id="@+id/rl_sync_time"
         android:layout_width="match_parent"
         android:layout_height="45.0dip"
         android:layout_marginTop="20dp"
         android:layout_below="@+id/rl_pack_setting"
+        android:background="@drawable/item_bg">
+
+
+        <TextView
+            android:id="@+id/tv_auto_sync"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10.0dip"
+            android:text="@string/auto_sync"
+            android:textColor="#ff484e43"
+            android:textSize="16.0dp" />
+
+        <TextView
+
+            android:id="@+id/tv_time_gap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:text="@string/auto_sync"
+            android:textColor="#ff484e43"
+            android:textSize="16.0dp" />
+
+        <ImageView style="@style/right_action_style" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_sync_data"
+        android:layout_width="match_parent"
+        android:layout_height="45.0dip"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/rl_sync_time"
         android:background="@drawable/item_bg">
 
 
@@ -330,6 +211,37 @@
 
 
     </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        >
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/device_code"
+            android:textColor="#cccccc"
+            android:textSize="16.0dp" />
+
+
+        <TextView
+
+            android:id="@+id/tv_device_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textColor="#cccccc"
+            android:textSize="16.0dp" />
+
+
+    </LinearLayout>
 
 
 
