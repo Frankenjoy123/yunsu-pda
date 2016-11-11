@@ -96,18 +96,33 @@ public class PackScanActivity extends BaseActivity {
 
     private String keyType;
 
+    private Date lastScanDate;
+
 
     // 当按键按下，便会触发一条广播，在此被接收
     public class BarcodeReceiver extends BroadcastReceiver {
         public void onReceive(Context ctx, Intent intent) {
             if (intent.getAction().equals(ACTION_BARCODE_SERVICE_BROADCAST)) {
-                String strBarcode = intent.getExtras().getString(KEY_BARCODE_STR);
-                if (keyType.equals(Constants.PACK_KEY)){
-                    dealWithPackKey(strBarcode);
-                }else if (keyType.equals(Constants.EXPRESS_KEY)){
-                    dealWithExpressKey(strBarcode);
+                if (lastScanDate==null){
+                    lastScanDate=new Date();
+                    doWithReceiver(intent);
+                }else {
+                    Date date=new Date();
+                    if ((date.getTime()-lastScanDate.getTime())>300){
+                        lastScanDate=date;
+                        doWithReceiver(intent);
+                    }
                 }
             }
+        }
+    }
+
+    private  void doWithReceiver(Intent intent){
+        String strBarcode = intent.getExtras().getString(KEY_BARCODE_STR);
+        if (keyType.equals(Constants.PACK_KEY)){
+            dealWithPackKey(strBarcode);
+        }else if (keyType.equals(Constants.EXPRESS_KEY)){
+            dealWithExpressKey(strBarcode);
         }
     }
 
