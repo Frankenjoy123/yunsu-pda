@@ -3,6 +3,7 @@ package com.yunsu.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.yunsu.common.view.TitleBar;
 import com.yunsu.entity.PackInfoEntity;
 import com.yunsu.greendao.entity.Pack;
 import com.yunsu.greendao.entity.Product;
+import com.yunsu.receiver.BarcodeReceiver;
 import com.yunsu.sqlite.service.PackService;
 import com.yunsu.sqlite.service.ProductService;
 import com.yunsu.sqlite.service.impl.PackServiceImpl;
@@ -97,6 +99,11 @@ public class PackScanActivity extends BaseActivity {
 
     private SimpleDateFormat format;
 
+    private String keyType;
+    private EditText et_pack_key;
+
+    private ScanBarcodeReceiver mReceiver=new ScanBarcodeReceiver();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +111,34 @@ public class PackScanActivity extends BaseActivity {
         setContentView(R.layout.activity_scan);
         findId();
         init();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // register receiver
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constants.ACTION_BARCODE_SERVICE_BROADCAST);
+        this.registerReceiver(mReceiver, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        unregisterReceiver(mReceiver);
+        super.onPause();
+    }
+
+    private class ScanBarcodeReceiver extends BarcodeReceiver {
+
+        @Override
+        protected void doWithReceiver(Intent intent) {
+            String string = intent.getStringExtra(Constants.KEY_BARCODE_STR);
+            if (keyType.equals(Constants.PRODUCT_KEY)){
+                dealWithProductKey(string);
+            }else if (keyType.equals(Constants.PACK_KEY)){
+                dealWithPackKey(string);
+            }
+        }
     }
 
     private void findId() {
@@ -126,6 +161,8 @@ public class PackScanActivity extends BaseActivity {
     }
 
     private void init() {
+
+        keyType=Constants.PRODUCT_KEY;
 
         productKeyList = new ArrayList<String>();
         soundPool = new SoundPool(2, AudioManager.STREAM_SYSTEM, 5);
@@ -202,34 +239,37 @@ public class PackScanActivity extends BaseActivity {
                 if(StringHelper.isStringNullOrEmpty(string)){
                     return;
                 }
-                try {
-                    String formalizeKey=YunsuKeyUtil.getInstance().verifyProductKey(string);
-                    if (productKeyList != null && productKeyList.size() > 0) {
-                        if (productKeyList.contains(formalizeKey)) {
-                            soundPool.play(soundMap.get(7), 1, 1, 0, 0, 1);
-                            ToastMessageHelper.showErrorMessage(PackScanActivity.this, R.string.product_key_exist_in_this_pack, true);
-                            return;
-                        }
-                    }
-                    tv_scan_key.setText(formalizeKey);
-                    productKeyList.add(formalizeKey);
-                    refreshUI();
-                    playSound();
-                    if (productKeyList.size()==packInfoEntity.getStandard()){
-                        showPackDialog();
-                    }
-
-                } catch (NotVerifyException e) {
-                    soundPool.play(soundMap.get(4), 1, 1, 0, 0, 1);
-                    ToastMessageHelper.showErrorMessage(getApplicationContext(), e.getMessage(), true);
-                }catch (Exception e){
-                    ToastMessageHelper.showErrorMessage(getApplicationContext(), e.getMessage(), true);
-                }finally {
-                    et_get_product_key.setText("");
-                }
-
+                dealWithProductKey(string);
             }
         });
+    }
+
+    private void dealWithProductKey(String string){
+        try {
+            String formalizeKey=YunsuKeyUtil.getInstance().verifyProductKey(string);
+            if (productKeyList != null && productKeyList.size() > 0) {
+                if (productKeyList.contains(formalizeKey)) {
+                    soundPool.play(soundMap.get(7), 1, 1, 0, 0, 1);
+                    ToastMessageHelper.showErrorMessage(PackScanActivity.this, R.string.product_key_exist_in_this_pack, true);
+                    return;
+                }
+            }
+            tv_scan_key.setText(formalizeKey);
+            productKeyList.add(formalizeKey);
+            refreshUI();
+            playSound();
+            if (productKeyList.size()==packInfoEntity.getStandard()){
+                showPackDialog();
+            }
+
+        } catch (NotVerifyException e) {
+            soundPool.play(soundMap.get(4), 1, 1, 0, 0, 1);
+            ToastMessageHelper.showErrorMessage(getApplicationContext(), e.getMessage(), true);
+        }catch (Exception e){
+            ToastMessageHelper.showErrorMessage(getApplicationContext(), e.getMessage(), true);
+        }finally {
+            et_get_product_key.setText("");
+        }
     }
 
     private void playSound() {
@@ -282,10 +322,13 @@ public class PackScanActivity extends BaseActivity {
 
     //弹出扫描包装码弹窗
     private void showPackDialog() {
+
+        keyType=Constants.PACK_KEY;
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_scan_pack_key, null);
-        final EditText et_pack_key = (EditText) view.findViewById(R.id.et_pack_key);
+        et_pack_key = (EditText) view.findViewById(R.id.et_pack_key);
         tv_show_pack_key = (TextView) view.findViewById(R.id.tv_show_pack_key);
 
         et_pack_key.addTextChangedListener(new TextWatcher() {
@@ -305,55 +348,7 @@ public class PackScanActivity extends BaseActivity {
                 if (StringHelper.isStringNullOrEmpty(string)){
                     return;
                 }
-                try {
-                    formatPackKey = YunsuKeyUtil.getInstance().verifyPackageKey(string);
-                    showLoading();
-                    ServiceExecutor.getInstance().execute(new Runnable() {
-
-                        @Override
-                        public void run() {
-
-                            PackService packService = new PackServiceImpl();
-                            ProductService productService=new ProductServiceImpl();
-                            Pack pack = new Pack();
-                            pack.setPackKey(formatPackKey);
-                            pack.setLastSaveTime(format.format(new Date()));
-                            pack.setStatus(Constants.DB.NOT_SYNC);
-                            pack.setProductBaseId(packInfoEntity.getProductBaseId());
-                            pack.setStaffId(packInfoEntity.getStaffId());
-                            pack.setStandard(packInfoEntity.getStandard());
-                            pack.setRealCount(productKeyList.size());
-                            try {
-                                long packId=packService.addPack(pack);
-                                List<Product> productList=new ArrayList<Product>();
-                                for(String string : productKeyList){
-                                    Product product=new Product();
-                                    product.setProductKey(string);
-                                    product.setPackId(packId);
-                                    productList.add(product);
-                                }
-                                productService.addProductsInTx(productList);
-                                Message message = Message.obtain();
-                                message.what = PACK_SUCCESS_MSG;
-                                mHandler.sendMessage(message);
-
-                            } catch (Exception e) {
-                                Message message = Message.obtain();
-                                message.what = MSG_PACK_KEY_HAS_USED;
-                                mHandler.sendMessage(message);
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-
-                } catch (NotVerifyException e) {
-                    soundPool.play(soundMap.get(5), 1, 1, 0, 0, 1);
-                    ToastMessageHelper.showMessage(PackScanActivity.this, e.getMessage(), true);
-                }catch (Exception e) {
-                    ToastMessageHelper.showMessage(PackScanActivity.this, e.getMessage(), true);
-                } finally {
-                    et_pack_key.setText("");
-                }
+                dealWithPackKey(string);
             }
         });
 
@@ -370,11 +365,65 @@ public class PackScanActivity extends BaseActivity {
     }
 
 
+    private void dealWithPackKey(String string){
+        try {
+            formatPackKey = YunsuKeyUtil.getInstance().verifyPackageKey(string);
+            showLoading();
+            ServiceExecutor.getInstance().execute(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    PackService packService = new PackServiceImpl();
+                    ProductService productService=new ProductServiceImpl();
+                    Pack pack = new Pack();
+                    pack.setPackKey(formatPackKey);
+                    pack.setLastSaveTime(format.format(new Date()));
+                    pack.setStatus(Constants.DB.NOT_SYNC);
+                    pack.setProductBaseId(packInfoEntity.getProductBaseId());
+                    pack.setStaffId(packInfoEntity.getStaffId());
+                    pack.setStandard(packInfoEntity.getStandard());
+                    pack.setRealCount(productKeyList.size());
+                    try {
+                        long packId=packService.addPack(pack);
+                        List<Product> productList=new ArrayList<Product>();
+                        for(String string : productKeyList){
+                            Product product=new Product();
+                            product.setProductKey(string);
+                            product.setPackId(packId);
+                            productList.add(product);
+                        }
+                        productService.addProductsInTx(productList);
+                        Message message = Message.obtain();
+                        message.what = PACK_SUCCESS_MSG;
+                        mHandler.sendMessage(message);
+
+                    } catch (Exception e) {
+                        Message message = Message.obtain();
+                        message.what = MSG_PACK_KEY_HAS_USED;
+                        mHandler.sendMessage(message);
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+        } catch (NotVerifyException e) {
+            soundPool.play(soundMap.get(5), 1, 1, 0, 0, 1);
+            ToastMessageHelper.showMessage(PackScanActivity.this, e.getMessage(), true);
+        }catch (Exception e) {
+            ToastMessageHelper.showMessage(PackScanActivity.this, e.getMessage(), true);
+        } finally {
+            et_pack_key.setText("");
+        }
+    }
+
+
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case PACK_SUCCESS_MSG:
                     hideLoading();
+                    keyType=Constants.PRODUCT_KEY;
                     tv_show_pack_key.setText(formatPackKey);
                     packAlertDialog.dismiss();
                     doAfterPack();

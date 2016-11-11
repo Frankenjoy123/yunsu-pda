@@ -1,6 +1,7 @@
 package com.yunsu.activity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,14 +13,16 @@ import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.entity.AuthUser;
 import com.yunsu.common.entity.AuthorizeRequest;
 import com.yunsu.common.entity.LoginResult;
+import com.yunsu.common.entity.ScanAuthorizeInfo;
 import com.yunsu.common.manager.DeviceManager;
 import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.service.AuthLoginService;
 import com.yunsu.common.service.AuthorizeRegisterService;
 import com.yunsu.common.service.DataServiceImpl;
+import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.ToastMessageHelper;
-import com.yunsu.common.entity.ScanAuthorizeInfo;
 import com.yunsu.common.view.TitleBar;
+import com.yunsu.receiver.BarcodeReceiver;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +38,8 @@ public class AuthorizeActivity extends BaseActivity {
     @ViewById(id = R.id.title_bar)
     private TitleBar titleBar;
 
+    private AuthorizeBarcodeReceiver mReceiver=new AuthorizeBarcodeReceiver();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +50,21 @@ public class AuthorizeActivity extends BaseActivity {
         titleBar.setMode(TitleBar.TitleBarMode.TITLE_ONLY);
         et_authorize_code= (EditText) findViewById(R.id.et_authorize_code);
         bindScanAuthorize();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // register receiver
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constants.ACTION_BARCODE_SERVICE_BROADCAST);
+        this.registerReceiver(mReceiver, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        unregisterReceiver(mReceiver);
+        super.onPause();
     }
 
     private void bindScanAuthorize() {
@@ -63,25 +83,39 @@ public class AuthorizeActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 content=s.toString();
-                try {
-                    //start AuthLoginService
-                    JSONObject object=new JSONObject(content);
-                    String token=object.optString("t");
-                    api=object.optString("api");
-                    AuthUser tempAuthUser=new AuthUser();
-                    tempAuthUser.setApi(api);
-                    SessionManager.getInstance().saveLoginCredential(tempAuthUser);
-
-                    AuthLoginService authLoginService=new AuthLoginService(token);
-                    authLoginService.setDelegate(AuthorizeActivity.this);
-                    authLoginService.start();
-                    showLoading();
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                doWithContent(content);
             }
         });
+    }
+
+    private  void doWithContent(String content){
+        try {
+            //start AuthLoginService
+            JSONObject object=new JSONObject(content);
+            String token=object.optString("t");
+            api=object.optString("api");
+            AuthUser tempAuthUser=new AuthUser();
+            tempAuthUser.setApi(api);
+            SessionManager.getInstance().saveLoginCredential(tempAuthUser);
+
+            AuthLoginService authLoginService=new AuthLoginService(token);
+            authLoginService.setDelegate(AuthorizeActivity.this);
+            authLoginService.start();
+            showLoading();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private class AuthorizeBarcodeReceiver extends BarcodeReceiver{
+
+        @Override
+        protected void doWithReceiver(Intent intent) {
+            content = intent.getExtras().getString(KEY_BARCODE_STR);
+            doWithContent(content);
+        }
     }
 
     @Override

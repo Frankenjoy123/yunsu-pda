@@ -215,7 +215,12 @@ public final class Constants {
     public static final String PRODUCT_BASE_ID="product_base_id";
 
     public static final String KEY_TYPE="KEY_TYPE";
+    public static final String PRODUCT_KEY="product_key";
     public static final String PACK_KEY="pack_key";
     public static final String EXPRESS_KEY="express_key";
+
+    public static final String ACTION_BARCODE_SERVICE_BROADCAST = "action_barcode_broadcast";
+    //send by the BarcodeService
+    public static final String KEY_BARCODE_STR = "key_barcode_string";
 
 }

@@ -100,7 +100,7 @@ public class PackScanActivity extends BaseActivity {
 
 
     // 当按键按下，便会触发一条广播，在此被接收
-    public class BarcodeReceiver extends BroadcastReceiver {
+    private class BarcodeReceiver extends BroadcastReceiver {
         public void onReceive(Context ctx, Intent intent) {
             if (intent.getAction().equals(ACTION_BARCODE_SERVICE_BROADCAST)) {
                 if (lastScanDate==null){
@@ -108,6 +108,7 @@ public class PackScanActivity extends BaseActivity {
                     doWithReceiver(intent);
                 }else {
                     Date date=new Date();
+                    // 防止扫码抖动
                     if ((date.getTime()-lastScanDate.getTime())>300){
                         lastScanDate=date;
                         doWithReceiver(intent);

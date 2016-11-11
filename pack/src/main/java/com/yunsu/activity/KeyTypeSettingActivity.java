@@ -1,6 +1,8 @@
 package com.yunsu.activity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,11 +16,13 @@ import android.widget.TextView;
 
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.manager.DeviceManager;
+import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.StringHelper;
 import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.util.YunsuKeyUtil;
 import com.yunsu.common.view.TitleBar;
 import com.yunsu.greendao.entity.PatternInfo;
+import com.yunsu.receiver.BarcodeReceiver;
 import com.yunsu.sqlite.service.PatternService;
 
 import org.json.JSONObject;
@@ -76,11 +80,24 @@ public class KeyTypeSettingActivity extends BaseActivity {
 
     protected AlertDialog packAlertDialog;
 
+    private ScanBarcodeReceiver mReceiver=new ScanBarcodeReceiver();
+    private EditText et_key;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_key_type_setting);
         init();
+    }
+
+
+    private class ScanBarcodeReceiver extends BarcodeReceiver {
+
+        @Override
+        protected void doWithReceiver(Intent intent) {
+            String string = intent.getStringExtra(Constants.KEY_BARCODE_STR);
+            dealWithScanContent(string);
+        }
     }
 
     private void init() {
@@ -97,6 +114,11 @@ public class KeyTypeSettingActivity extends BaseActivity {
         btn_change_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // register receiver
+                IntentFilter filter = new IntentFilter();
+                filter.addAction(Constants.ACTION_BARCODE_SERVICE_BROADCAST);
+                registerReceiver(mReceiver, filter);
+
                 showUpdateDialog();
             }
         });
@@ -106,7 +128,7 @@ public class KeyTypeSettingActivity extends BaseActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_update_setting, null);
-        final EditText et_key = (EditText) view.findViewById(R.id.et_key);
+        et_key = (EditText) view.findViewById(R.id.et_key);
         et_key.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -125,27 +147,8 @@ public class KeyTypeSettingActivity extends BaseActivity {
                     if (StringHelper.isStringNullOrEmpty(string)){
                         return;
                     }
-                     try {
-                        JSONObject object=new JSONObject(string);
-                        String pack_pattern=object.getString("p");
-                        String prod_pattern=object.getString("pr");
-                        if (!StringHelper.isStringNullOrEmpty(pack_pattern)){
-                            YunsuKeyUtil.getInstance().savePackKeyPattern(pack_pattern);
-                            tv_pack_regex.setText(pack_pattern);
-                        }
-                        if (!StringHelper.isStringNullOrEmpty(prod_pattern)){
-                            YunsuKeyUtil.getInstance().saveProductKeyPattern(prod_pattern);
-                            tv_product_regex.setText(prod_pattern);
-                        }
-                        ToastMessageHelper.showMessage(KeyTypeSettingActivity.this,R.string.update_success,true);
-                        packAlertDialog.dismiss();
+                dealWithScanContent(string);
 
-                    } catch (Exception e) {
-                        ToastMessageHelper.showMessage(KeyTypeSettingActivity.this,R.string.update_wrong,true);
-                        e.printStackTrace();
-                    }finally {
-                        et_key.setText("");
-                    }
             }
         });
 
@@ -156,8 +159,34 @@ public class KeyTypeSettingActivity extends BaseActivity {
 
     }
 
+    private void dealWithScanContent(String string){
+        try {
+            JSONObject object=new JSONObject(string);
+            String pack_pattern=object.getString("p");
+            String prod_pattern=object.getString("pr");
+            if (!StringHelper.isStringNullOrEmpty(pack_pattern)){
+                YunsuKeyUtil.getInstance().savePackKeyPattern(pack_pattern);
+                tv_pack_regex.setText(pack_pattern);
+            }
+            if (!StringHelper.isStringNullOrEmpty(prod_pattern)){
+                YunsuKeyUtil.getInstance().saveProductKeyPattern(prod_pattern);
+                tv_product_regex.setText(prod_pattern);
+            }
+            ToastMessageHelper.showMessage(KeyTypeSettingActivity.this,R.string.update_success,true);
+            unregisterReceiver(mReceiver);
+            packAlertDialog.dismiss();
+
+        } catch (Exception e) {
+            ToastMessageHelper.showMessage(KeyTypeSettingActivity.this,R.string.update_wrong,true);
+            e.printStackTrace();
+        }finally {
+            et_key.setText("");
+        }
+    }
+
     @Override
     protected void onPause() {
+
         String productRegex= tv_product_regex.getText().toString();
         String packRegex= tv_pack_regex.getText().toString();
 
