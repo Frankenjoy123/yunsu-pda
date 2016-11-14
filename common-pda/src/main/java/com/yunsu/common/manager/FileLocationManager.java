@@ -24,6 +24,8 @@ public class FileLocationManager extends BaseManager {
 
 	private String dataTaskFolder;
 
+	private String dataTaskSuccessFolder;
+
 	private String org;
 
 	private String business;
@@ -43,6 +45,8 @@ public class FileLocationManager extends BaseManager {
 
 
 		dataTaskFolder=getBusinessFolder().append("/").append("数据").toString();
+
+		dataTaskSuccessFolder=getBusinessFolder().append("/").append("数据").append("/").append("已同步").toString();
 
 		commonLogTaskFolder=getBusinessFolder().append("/").append("log").append("/").append("not_sync").toString();
 
@@ -108,5 +112,9 @@ public class FileLocationManager extends BaseManager {
 
 	public String getDataTaskFolder() {
 		return dataTaskFolder;
+	}
+
+	public String getDataTaskSuccessFolder() {
+		return dataTaskSuccessFolder;
 	}
 }

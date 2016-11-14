@@ -2,22 +2,21 @@ package com.yunsu.activity;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.Environment;
 
+import com.yunsu.common.activity.BaseActivity;
+import com.yunsu.common.config.ConfigureLog4j;
 import com.yunsu.common.manager.DeviceManager;
 import com.yunsu.common.manager.FileLocationManager;
 import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.network.CacheService;
 import com.yunsu.common.network.NetworkManager;
-import com.yunsu.common.util.Constants;
-import com.yunsu.common.config.ConfigureLog4j;
+import com.yunsu.common.util.CrashHandler;
 import com.yunsu.common.util.YunsuKeyUtil;
 import com.yunsu.manager.FileManager;
 import com.yunsu.manager.GreenDaoManager;
 import com.yunsu.manager.LogisticManager;
 import com.yunsu.manager.SQLiteManager;
 import com.yunsu.manager.SettingManager;
-import com.yunsu.common.util.CrashHandler;
 
 /**
  * Created by Frank zhou on 2015/7/20.
@@ -54,14 +53,14 @@ public class MyApplication extends Application{
         LogisticManager logisticManager=LogisticManager.initializeInstance(appContext);
         logisticManager.restore();
 
-        String logPath=Environment.getExternalStorageDirectory()+ FileLocationManager.getInstance().getOrgFolder()
-                + Constants.PATH_LOG_NOT_SYNC_FOLDER;
+        String logPath=FileLocationManager.getInstance().getCommonLogTaskFolder();
         ConfigureLog4j.configure(logPath);
 
         CrashHandler catchHandler = CrashHandler.getInstance();
-        String path = Environment.getExternalStorageDirectory()+ FileLocationManager.getInstance().getOrgFolder()
-                + Constants.PATH_CRASH_NOT_SYNC_FOLDER;
+        String path = FileLocationManager.getInstance().getCrashLogTaskFolder();
         catchHandler.init(appContext,path);
+
+        BaseActivity.configAuthorizeActivity(AuthorizeActivityImpl.class);
 
     }
 

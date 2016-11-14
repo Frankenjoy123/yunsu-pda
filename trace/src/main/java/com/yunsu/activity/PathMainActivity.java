@@ -10,19 +10,21 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.yunsu.common.activity.BaseActivity;
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.entity.AuthUser;
 import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.service.DataServiceImpl;
 import com.yunsu.common.service.PermanentTokenLoginService;
 import com.yunsu.common.service.ServiceExecutor;
+import com.yunsu.common.service.background.SyncLogService;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.view.TitleBar;
 import com.yunsu.manager.GreenDaoManager;
 import com.yunsu.manager.LogisticManager;
+import com.yunsu.service.OrganizationAgencyService;
 import com.yunsu.service.background.RecycleHeartBeatService;
 import com.yunsu.service.background.SyncFileService;
-import com.yunsu.common.service.background.SyncLogService;
 
 import org.json.JSONObject;
 
@@ -48,6 +50,8 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
         init();
         setupActionItems();
         checkAuthorizeStatus();
+        OrganizationAgencyService organizationAgencyService=new OrganizationAgencyService();
+        organizationAgencyService.start();
 //        initData();
     }
 
@@ -67,6 +71,12 @@ public class PathMainActivity extends BaseActivity implements View.OnClickListen
      * 启动同步文件日志的Service，启动心跳的Service
      */
     private void startService() {
+
+        if (LogisticManager.getInstance().getAgencies()!=null && LogisticManager.getInstance().getAgencies().size()>0){
+            OrganizationAgencyService organizationAgencyService=new OrganizationAgencyService();
+            organizationAgencyService.start();
+        }
+
         Intent intent=new Intent(this, SyncFileService.class);
         startService(intent);
         Intent intent1=new Intent(this, SyncLogService.class);

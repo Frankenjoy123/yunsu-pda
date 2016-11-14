@@ -14,19 +14,19 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.yunsu.manager.FileManager;
-import com.yunsu.manager.LogisticManager;
+import com.yunsu.common.activity.BaseActivity;
 import com.yunsu.common.manager.SessionManager;
-import com.yunsu.manager.SettingManager;
 import com.yunsu.common.service.ServiceExecutor;
-import com.yunsu.sqlite.service.PackService;
-import com.yunsu.sqlite.service.impl.PackServiceImpl;
 import com.yunsu.common.util.Constants;
-
+import com.yunsu.common.util.DateUtil;
 import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.view.TitleBar;
-import com.yunsu.common.util.DateUtil;
 import com.yunsu.greendao.entity.Pack;
+import com.yunsu.manager.FileManager;
+import com.yunsu.manager.LogisticManager;
+import com.yunsu.manager.SettingManager;
+import com.yunsu.sqlite.service.PackService;
+import com.yunsu.sqlite.service.impl.PackServiceImpl;
 
 import java.lang.reflect.Field;
 import java.util.Calendar;
@@ -178,10 +178,9 @@ public class GlobalSettingActivity extends BaseActivity {
                                 editor.putBoolean(Constants.Preference.IS_AUTHORIZE, false);
                                 editor.commit();
                                 SessionManager.getInstance().logout();
-                                Intent intent=new Intent(GlobalSettingActivity.this,AuthorizeActivity.class);
+                                Intent intent=new Intent(GlobalSettingActivity.this,AuthorizeActivityImpl.class);
                                 startActivity(intent);
                                 finish();
-                                PathMainActivity.pathMainActivity.finish();
                             }
                         }).setNegativeButton(R.string.no, null).create();
                 dialog.setCancelable(false);

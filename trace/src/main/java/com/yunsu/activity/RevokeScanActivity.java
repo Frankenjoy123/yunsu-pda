@@ -1,6 +1,5 @@
 package com.yunsu.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,22 +12,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yunsu.adapter.PathAdapter;
+import com.yunsu.common.activity.BaseActivity;
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.exception.NotVerifyException;
 import com.yunsu.common.service.ServiceExecutor;
-import com.yunsu.common.util.YunsuKeyUtil;
-import com.yunsu.sqlite.service.PackService;
-import com.yunsu.sqlite.service.impl.PackServiceImpl;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.StringUtils;
 import com.yunsu.common.util.ToastMessageHelper;
+import com.yunsu.common.util.YunsuKeyUtil;
 import com.yunsu.common.view.TitleBar;
 import com.yunsu.greendao.entity.Pack;
+import com.yunsu.sqlite.service.PackService;
+import com.yunsu.sqlite.service.impl.PackServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class RevokeScanActivity extends BaseActivity {
     private TitleBar titleBar;

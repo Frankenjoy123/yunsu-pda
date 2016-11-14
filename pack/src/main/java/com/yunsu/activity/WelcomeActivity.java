@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.yunsu.common.activity.BaseActivity;
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.util.Constants;
@@ -106,7 +107,7 @@ public class WelcomeActivity extends BaseActivity {
         ll_btn_area.setVisibility(View.GONE);
     }
     private void gotoAuthorizeActivity() {
-        Intent intent=new Intent(WelcomeActivity.this, AuthorizeActivity.class);
+        Intent intent=new Intent(WelcomeActivity.this, AuthorizeActivityImpl.class);
         startActivity(intent);
         finish();
     }

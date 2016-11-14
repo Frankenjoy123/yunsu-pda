@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.yunsu.common.activity.BaseActivity;
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.StringHelper;

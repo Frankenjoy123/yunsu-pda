@@ -3,19 +3,16 @@ package com.yunsu.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.yunsu.common.activity.BaseActivity;
 import com.yunsu.common.entity.AuthUser;
-import com.yunsu.common.exception.BaseException;
-import com.yunsu.common.exception.ServerAuthException;
 import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.network.NetworkManager;
-import com.yunsu.common.service.DataServiceImpl;
 import com.yunsu.common.service.PermanentTokenLoginService;
 import com.yunsu.common.service.background.SyncLogService;
 import com.yunsu.common.util.Constants;
@@ -146,36 +143,5 @@ public class PackMainActivity extends BaseActivity implements View.OnClickListen
         dialog.show();
     }
 
-
-    @Override
-    public void onRequestFailed(final DataServiceImpl service, final BaseException exception) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (service instanceof PermanentTokenLoginService && exception instanceof ServerAuthException){
-                    SharedPreferences preferences=getSharedPreferences("yunsoo_pda",MODE_PRIVATE);
-                    SharedPreferences.Editor editor=preferences.edit();
-                    editor.putBoolean("isAuthorize", false);
-                    editor.commit();
-                    SessionManager.getInstance().logout();
-                    AlertDialog dialog = new AlertDialog.Builder(PackMainActivity.this).setTitle(R.string.not_authorize)
-                            .setMessage(R.string.not_authorize_message)
-                            .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Intent intent=new Intent(PackMainActivity.this,AuthorizeActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            }).create();
-                    dialog.setCancelable(false);
-                    dialog.show();
-                }else {
-                    ToastMessageHelper.showErrorMessage(PackMainActivity.this,exception.getMessage(),true);
-                }
-            }
-        });
-
-    }
 
 }

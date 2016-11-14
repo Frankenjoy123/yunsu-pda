@@ -1,25 +1,17 @@
 package com.yunsu.service.background;
 
-import android.app.AlertDialog;
 import android.app.Service;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.yunsu.activity.AuthorizeActivity;
-import com.yunsu.activity.BaseActivity;
-import com.yunsu.activity.R;
 import com.yunsu.common.entity.AuthUser;
 import com.yunsu.common.exception.BaseException;
-import com.yunsu.common.exception.ServerAuthException;
 import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.service.DataServiceImpl;
 import com.yunsu.common.service.HeartBeatService;
 import com.yunsu.common.service.PermanentTokenLoginService;
 import com.yunsu.common.util.Constants;
-import com.yunsu.common.util.ToastMessageHelper;
 
 import org.json.JSONObject;
 

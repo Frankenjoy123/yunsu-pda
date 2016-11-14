@@ -1,8 +1,6 @@
 package com.yunsu.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,14 +8,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.yunsu.common.activity.BaseActivity;
 import com.yunsu.common.annotation.ViewById;
-import com.yunsu.common.network.ImageViewInfo;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.StringHelper;

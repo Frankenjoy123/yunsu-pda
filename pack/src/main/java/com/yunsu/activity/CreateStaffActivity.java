@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.yunsu.common.activity.BaseActivity;
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.util.Constants;

@@ -3,6 +3,7 @@ package com.yunsu.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,8 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yunsu.common.activity.BaseActivity;
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.exception.NotVerifyException;
+import com.yunsu.common.receiver.BarcodeReceiver;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.StringHelper;
@@ -93,6 +96,17 @@ public class OrderScanActivity extends BaseActivity {
     private  long id;
 
     SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+    private ScanBarcodeReceiver mReceiver=new ScanBarcodeReceiver();
+
+    private class ScanBarcodeReceiver extends BarcodeReceiver {
+
+        @Override
+        protected void doWithReceiver(Intent intent) {
+            String string = intent.getStringExtra(Constants.KEY_BARCODE_STR);
+            doWithScanKey(string);
+        }
+    }
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +133,16 @@ public class OrderScanActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         init();
+        // register receiver
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constants.ACTION_BARCODE_SERVICE_BROADCAST);
+        this.registerReceiver(mReceiver, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        unregisterReceiver(mReceiver);
+        super.onPause();
     }
 
     private void init() {
@@ -250,24 +274,27 @@ public class OrderScanActivity extends BaseActivity {
                 if (StringHelper.isStringNullOrEmpty(string)){
                     return;
                 }
-                if (material.getProgressStatus()==Constants.DB.FINISHED){
-                    return;
-                }
-                try {
-                    String formatKey=YunsuKeyUtil.getInstance().verifyPackageKey(string);
-                    submitToDB(formatKey);
-                    tv_scan_key.setText(formatKey);
-                } catch (NotVerifyException e) {
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            e.getMessage() , Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER , 0, 0);
-                    toast.show();
-                }finally {
-                    et_scan.setText("");
-                }
-
+                doWithScanKey(string);
             }
         });
+    }
+
+    private void doWithScanKey(String string){
+        if (material.getProgressStatus()==Constants.DB.FINISHED){
+            return;
+        }
+        try {
+            String formatKey=YunsuKeyUtil.getInstance().verifyPackageKey(string);
+            submitToDB(formatKey);
+            tv_scan_key.setText(formatKey);
+        } catch (NotVerifyException e) {
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    e.getMessage() , Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER , 0, 0);
+            toast.show();
+        }finally {
+            et_scan.setText("");
+        }
     }
 
     /**

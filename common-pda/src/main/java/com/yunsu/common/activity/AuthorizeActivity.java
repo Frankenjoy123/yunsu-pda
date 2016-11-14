@@ -1,34 +1,35 @@
-package com.yunsu.activity;
+package com.yunsu.common.activity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 
-import com.yunsu.common.annotation.ViewById;
+import com.example.android_library.R;
 import com.yunsu.common.entity.AuthUser;
 import com.yunsu.common.entity.AuthorizeRequest;
 import com.yunsu.common.entity.LoginResult;
-import com.yunsu.common.service.AuthorizeRegisterService;
-import com.yunsu.common.util.Constants;
 import com.yunsu.common.entity.ScanAuthorizeInfo;
-import com.yunsu.common.exception.BaseException;
 import com.yunsu.common.manager.DeviceManager;
 import com.yunsu.common.manager.SessionManager;
+import com.yunsu.common.receiver.BarcodeReceiver;
 import com.yunsu.common.service.AuthLoginService;
+import com.yunsu.common.service.AuthorizeRegisterService;
 import com.yunsu.common.service.DataServiceImpl;
-import com.yunsu.common.view.TitleBar;
-import com.yunsu.service.OrganizationAgencyService;
+import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.ToastMessageHelper;
+import com.yunsu.common.view.TitleBar;
 
-import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class AuthorizeActivity extends BaseActivity implements DataServiceImpl.DataServiceDelegate{
+public abstract class AuthorizeActivity extends BaseActivity {
 
     private EditText et_authorize_code;
     private String content;
@@ -36,20 +37,47 @@ public class AuthorizeActivity extends BaseActivity implements DataServiceImpl.D
     private String accessToken;
     private String permanentToken;
 
-    @ViewById(id = R.id.title_bar)
     private TitleBar titleBar;
 
+    private AuthorizeBarcodeReceiver mReceiver=new AuthorizeBarcodeReceiver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_authorize);
+        setContentView(R.layout.activity_authorize2);
         getActionBar().hide();
-        titleBar.setTitle(getString(R.string.app_name));
+
+        ApplicationInfo appInfo = null;
+
+        String appName="云溯科技";
+
+        try {
+            appInfo = this.getPackageManager().getApplicationInfo(this.getPackageName(), PackageManager.GET_META_DATA);
+            appName=appInfo.metaData.getString("app_name");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        titleBar= (TitleBar) findViewById(R.id.title_bar);
+        titleBar.setTitle(appName);
         titleBar.setDisplayAsBack(true);
         titleBar.setMode(TitleBar.TitleBarMode.TITLE_ONLY);
         et_authorize_code= (EditText) findViewById(R.id.et_authorize_code);
         bindScanAuthorize();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // register receiver
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constants.ACTION_BARCODE_SERVICE_BROADCAST);
+        this.registerReceiver(mReceiver, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        unregisterReceiver(mReceiver);
+        super.onPause();
     }
 
     private void bindScanAuthorize() {
@@ -68,27 +96,39 @@ public class AuthorizeActivity extends BaseActivity implements DataServiceImpl.D
             @Override
             public void afterTextChanged(Editable s) {
                 content=s.toString();
-                try {
-                    //start AuthLoginService
-                    JSONObject object=new JSONObject(content);
-                    String token=object.optString("t");
-                    api=object.optString("api");
-                    AuthUser authUser=SessionManager.getInstance().getAuthUser();
-                    authUser.setApi(api);
-                    SessionManager.getInstance().saveLoginCredential(authUser);
-
-                    AuthLoginService authLoginService=new AuthLoginService(token);
-                    authLoginService.setDelegate(AuthorizeActivity.this);
-                    authLoginService.start();
-                    showLoading();
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Logger logger=Logger.getLogger(AuthorizeActivity.class);
-                    logger.error(e.getMessage());
-                }
+                doWithContent(content);
             }
         });
+    }
+
+    private  void doWithContent(String content){
+        try {
+            //start AuthLoginService
+            JSONObject object=new JSONObject(content);
+            String token=object.optString("t");
+            api=object.optString("api");
+            AuthUser tempAuthUser=new AuthUser();
+            tempAuthUser.setApi(api);
+            SessionManager.getInstance().saveLoginCredential(tempAuthUser);
+
+            AuthLoginService authLoginService=new AuthLoginService(token);
+            authLoginService.setDelegate(AuthorizeActivity.this);
+            authLoginService.start();
+            showLoading();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private class AuthorizeBarcodeReceiver extends BarcodeReceiver {
+
+        @Override
+        protected void doWithReceiver(Intent intent) {
+            content = intent.getExtras().getString(KEY_BARCODE_STR);
+            doWithContent(content);
+        }
     }
 
     @Override
@@ -102,12 +142,11 @@ public class AuthorizeActivity extends BaseActivity implements DataServiceImpl.D
                     loginResult.populate(data);
                     accessToken=loginResult.getAccessToken();
                     permanentToken=loginResult.getPermanentToken();
-
-                    AuthUser authUser=SessionManager.getInstance().getAuthUser();
+                    AuthUser authUser=new AuthUser();
+                    authUser.setApi(api);
                     authUser.setAccessToken(accessToken);
                     authUser.setPermanentToken(permanentToken);
                     SessionManager.getInstance().saveLoginCredential(authUser);
-
                     try {
                         JSONObject object=new JSONObject(content);
 
@@ -117,7 +156,6 @@ public class AuthorizeActivity extends BaseActivity implements DataServiceImpl.D
                         AuthorizeRequest request=new AuthorizeRequest();
                         request.setAccountId(scanAuthorizeInfo.getAccountId());
                         request.setComments(scanAuthorizeInfo.getDeviceComments());
-                        DeviceManager.initializeIntance(AuthorizeActivity.this);
                         DeviceManager deviceManager=DeviceManager.getInstance();
                         request.setDeviceCode(deviceManager.getDeviceId());
                         request.setDeviceName(scanAuthorizeInfo.getDeviceName());
@@ -128,9 +166,6 @@ public class AuthorizeActivity extends BaseActivity implements DataServiceImpl.D
                         service.setDelegate(AuthorizeActivity.this);
                         service.start();
 
-                        OrganizationAgencyService organizationAgencyService=new OrganizationAgencyService();
-                        organizationAgencyService.start();
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -138,23 +173,22 @@ public class AuthorizeActivity extends BaseActivity implements DataServiceImpl.D
                 }
 
                 if(service instanceof AuthorizeRegisterService){
-
-                    String orgId=data.optString("org_id");
-                    SessionManager manager=SessionManager.getInstance();
-                    AuthUser authUser=manager.getAuthUser();
-                    authUser.setOrgId(orgId);
-                    manager.saveLoginCredential(authUser);
-
-                    SharedPreferences preferences=getSharedPreferences(Constants.Preference.YUNSU_PDA,MODE_PRIVATE);
+                    SharedPreferences preferences=getSharedPreferences("yunsoo_pda",MODE_PRIVATE);
                     SharedPreferences.Editor editor=preferences.edit();
-                    editor.putBoolean(Constants.Preference.IS_AUTHORIZE,true);
+                    editor.putBoolean("isAuthorize",true);
                     editor.commit();
+
+                    AuthUser authUser=SessionManager.getInstance().getAuthUser();
+                    String orgId=data.optString("org_id");
+                    AuthUser tempAuthUser=new AuthUser(authUser);
+                    tempAuthUser.setOrgId(orgId);
+                    SessionManager.getInstance().saveLoginCredential(tempAuthUser);
 
                     hideLoading();
                     ToastMessageHelper.showMessage(AuthorizeActivity.this,R.string.scan_success,true);
 
-                    Intent intent=new Intent(AuthorizeActivity.this,PathMainActivity.class);
-                    startActivity(intent);
+                    startTargetActivity();
+
                     finish();
 
                 }
@@ -164,10 +198,7 @@ public class AuthorizeActivity extends BaseActivity implements DataServiceImpl.D
 
     }
 
-    @Override
-    public void onRequestFailed(DataServiceImpl service, BaseException exception) {
-        Log.d("ZXW","register failed");
-        ToastMessageHelper.showErrorMessage(AuthorizeActivity.this,R.string.authorize_failed,true);
-        super.onRequestFailed(service,exception);
-    }
+    public abstract void startTargetActivity();
+
 }
+

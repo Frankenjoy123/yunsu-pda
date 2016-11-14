@@ -9,11 +9,17 @@
 
     <string name="not_authorize_message">当前PDA的授权已在服务平台取消，需要重新回到授权界面进行授权</string>
 
+    <string name="confirm">确认</string>
+
     <string name="clear_cache_release">将清除已经同步数据，包括物流文件和日志文件</string>
 
     <string name="delete">删除</string>
 
     <string name="net_connect">网络已连接</string>
     <string name="net_disconnect">网络已断开，请检查</string>
+
+    <string name="device_no_authorize"> 设备未授权,请扫描授权码</string>
+
+    <string name="scan_success">授权成功</string>
 
 </resources>

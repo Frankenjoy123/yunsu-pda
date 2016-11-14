@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.yunsu.adapter.FileSyncAdapter;
+import com.yunsu.common.activity.BaseActivity;
 import com.yunsu.common.exception.BaseException;
 import com.yunsu.common.exception.ServerAuthException;
 import com.yunsu.common.manager.FileLocationManager;
@@ -17,7 +18,6 @@ import com.yunsu.common.manager.SessionManager;
 import com.yunsu.common.service.DataServiceImpl;
 import com.yunsu.common.service.FileUpLoadService;
 import com.yunsu.common.service.PermanentTokenLoginService;
-import com.yunsu.common.util.Constants;
 import com.yunsu.common.view.TitleBar;
 import com.yunsu.manager.FileManager;
 import com.yunsu.sqlite.MyDataBaseHelper;
@@ -121,8 +121,7 @@ public class PathSyncActivity extends BaseActivity implements DataServiceImpl.Da
 
     private void uploadFiles() {
         showLoading();
-        String folderName = android.os.Environment.getExternalStorageDirectory() +
-                FileLocationManager.getInstance().getOrgFolder()+Constants.PATH_SYNC_TASK_FOLDER;
+        String folderName = FileLocationManager.getInstance().getDataTaskFolder();
         File pack_task_folder = new File(folderName);
         File[] files=pack_task_folder.listFiles();
         for(int i=0;i<files.length;i++){
@@ -140,8 +139,8 @@ public class PathSyncActivity extends BaseActivity implements DataServiceImpl.Da
     public void onRequestSucceeded(final DataServiceImpl service, JSONObject data, boolean isCached) {
         super.onRequestSucceeded(service, data, isCached);
         if (service instanceof FileUpLoadService){
-            String folderName = android.os.Environment.getExternalStorageDirectory() +
-                    FileLocationManager.getInstance().getOrgFolder()+Constants.PATH_SYNC_SUCCESS_FOLDER;
+            String folderName =
+                    FileLocationManager.getInstance().getDataTaskSuccessFolder();
             File path_success_folder = new File(folderName);
             if (!path_success_folder.exists()){
                 path_success_folder.mkdirs();
@@ -165,8 +164,7 @@ public class PathSyncActivity extends BaseActivity implements DataServiceImpl.Da
         }
 
         if (service instanceof PermanentTokenLoginService){
-            String folderName = android.os.Environment.getExternalStorageDirectory() +
-                    FileLocationManager.getInstance().getOrgFolder()+Constants.PATH_SYNC_TASK_FOLDER;
+            String folderName = FileLocationManager.getInstance().getDataTaskFolder();
             File path_task_folder = new File(folderName);
             File[] files=path_task_folder.listFiles();
             for(int i=0;i<files.length;i++){
@@ -193,8 +191,7 @@ public class PathSyncActivity extends BaseActivity implements DataServiceImpl.Da
 
     private void getPackFileNames() {
         try {
-            String folderName = android.os.Environment.getExternalStorageDirectory() +
-                    FileLocationManager.getInstance().getOrgFolder()+Constants.PATH_SYNC_TASK_FOLDER;
+            String folderName = FileLocationManager.getInstance().getDataTaskFolder();
             File pack_task_folder = new File(folderName);
             String[] packFiles= pack_task_folder.list();
             if (packFiles!=null&&packFiles.length>0){

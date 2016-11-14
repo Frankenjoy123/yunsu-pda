@@ -1,4 +1,4 @@
-package com.yunsu.activity;
+package com.yunsu.common.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.android_library.R;
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.dialog.LoadingDialog;
 import com.yunsu.common.exception.BaseException;
@@ -24,12 +25,11 @@ import org.json.JSONObject;
 import java.lang.reflect.Field;
 
 
-
-
-public abstract class BaseActivity extends Activity implements DataServiceImpl.DataServiceDelegate {
+public  class BaseActivity extends Activity implements DataServiceImpl.DataServiceDelegate {
 
     protected boolean isLoading;
     LoadingDialog loadingDialog;
+    private static Class<?> authorizeActivityClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +122,7 @@ public abstract class BaseActivity extends Activity implements DataServiceImpl.D
                             .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    Intent intent=new Intent(BaseActivity.this,AuthorizeActivity.class);
+                                    Intent intent=new Intent(BaseActivity.this,authorizeActivityClass);
                                     startActivity(intent);
                                     finish();
                                 }
@@ -135,6 +135,11 @@ public abstract class BaseActivity extends Activity implements DataServiceImpl.D
 
             }
         });
+    }
+
+    public static void configAuthorizeActivity(Class<?> authorizeActivityImplClass)
+    {
+            authorizeActivityClass=authorizeActivityImplClass;
     }
 
 

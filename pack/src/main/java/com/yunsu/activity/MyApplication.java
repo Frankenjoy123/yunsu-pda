@@ -3,6 +3,7 @@ package com.yunsu.activity;
 import android.app.Application;
 import android.content.Context;
 
+import com.yunsu.common.activity.BaseActivity;
 import com.yunsu.common.config.ConfigureLog4j;
 import com.yunsu.common.manager.DeviceManager;
 import com.yunsu.common.manager.FileLocationManager;
@@ -52,6 +53,8 @@ public class MyApplication extends Application{
         CrashHandler catchHandler = CrashHandler.getInstance();
         String path = FileLocationManager.getInstance().getCrashLogTaskFolder();
         catchHandler.init(appContext,path);
+
+        BaseActivity.configAuthorizeActivity(AuthorizeActivityImpl.class);
 
     }
 }

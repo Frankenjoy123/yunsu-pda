@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.yunsu.adapter.OrderAdapter;
+import com.yunsu.common.activity.BaseActivity;
 import com.yunsu.common.annotation.ViewById;
 import com.yunsu.common.service.ServiceExecutor;
 import com.yunsu.common.util.Constants;
