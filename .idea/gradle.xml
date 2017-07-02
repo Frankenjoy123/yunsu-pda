@@ -5,7 +5,7 @@
       <GradleProjectSettings>
         <option name="distributionType" value="LOCAL" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="C:\Program Files\Android\Android Studio\gradle\gradle-2.14.1" />
+        <option name="gradleHome" value="$USER_HOME$/Downloads/gradle-2.14.1" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -17,17 +17,7 @@
             <option value="$PROJECT_DIR$/yang-express" />
           </set>
         </option>
-        <option name="myModules">
-          <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/common-pda" />
-            <option value="$PROJECT_DIR$/green-lib" />
-            <option value="$PROJECT_DIR$/pack" />
-            <option value="$PROJECT_DIR$/pullrefreshLibrary" />
-            <option value="$PROJECT_DIR$/trace" />
-            <option value="$PROJECT_DIR$/yang-express" />
-          </set>
-        </option>
+        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

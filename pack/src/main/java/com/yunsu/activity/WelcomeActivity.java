@@ -61,11 +61,11 @@ public class WelcomeActivity extends BaseActivity {
 
             @Override
             public void run() {
-                if (isAuthorize){
+//                if (isAuthorize){
                     gotoMainActivity();
-                }else {
-                    gotoAuthorizeActivity();
-                }
+//                }else {
+//                    gotoAuthorizeActivity();
+//                }
             }
         }, 1000);
 

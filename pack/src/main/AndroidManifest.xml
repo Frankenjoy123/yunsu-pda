@@ -29,7 +29,7 @@
 
         <meta-data
             android:name="app_name"
-            android:value="云溯包装" />
+            android:value="氧泡泡打包" />
 
         <meta-data
             android:name="app_id"
@@ -41,7 +41,7 @@
 
         <meta-data
             android:name="business_folder"
-            android:value="pack"/>
+            android:value="包装文件"/>
 
         <receiver android:name="com.yunsu.common.network.NetworkChangeReceiver">
             <intent-filter>

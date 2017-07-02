@@ -47,13 +47,11 @@ public class MyApplication extends Application{
 
         SQLiteManager.initializeIntance(appContext);
 
-        String logPath=Environment.getExternalStorageDirectory()+ Constants.YUNSOO_FOLDERNAME
-                + Constants.PACK_LOG_NOT_SYNC_FOLDER;
+        String logPath=FileLocationManager.getInstance().getCommonLogTaskFolder();
         ConfigureLog4j.configure(logPath);
 
         CrashHandler catchHandler = CrashHandler.getInstance();
-        String path = Environment.getExternalStorageDirectory()+ Constants.YUNSOO_FOLDERNAME
-                + Constants.PACK_CRASH_NOT_SYNC_FOLDER;
+        String path = FileLocationManager.getInstance().getCrashLogTaskFolder();
         catchHandler.init(appContext,path);
 
     }

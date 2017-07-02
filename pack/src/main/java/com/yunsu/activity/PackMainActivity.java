@@ -34,10 +34,14 @@ public class PackMainActivity extends BaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pack_main);
         getActionBar().hide();
+
         setupActionItems();
-        checkAuthorizeStatus();
-        startService();
-        showNetStatus();
+
+//        checkAuthorizeStatus();
+
+//        startService();
+
+//        showNetStatus();
     }
 
     private void showNetStatus() {

@@ -167,6 +167,57 @@ datetime: 2016-07-20T14:20:30.123Z
 
     }
 
+    public void createPackFileOffline(PackProductsEntity entity){
+        if (entity!=null ){
+            StringBuilder builder = new StringBuilder();
+            builder.append(entity.getPack().getPackKey());
+            builder.append(":");
+            builder.append(entity.getProductsString());
+            builder.append("\r\n");
+
+            try {
+
+                String folderName = FileLocationManager.getInstance().getDataTaskFolder();
+                File pack_task_folder = new File(folderName);
+                if (!pack_task_folder.exists())
+                    pack_task_folder.mkdirs();
+
+                File file = new File(pack_task_folder, generateFileName(new Date()));
+                FileWriter writer=null;
+                BufferedWriter bufferedWriter=null;
+                try {
+                    writer=new FileWriter(file,true);
+                    bufferedWriter=new BufferedWriter(writer);
+                    bufferedWriter.append(builder.toString());
+                    bufferedWriter.flush();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    if (bufferedWriter!=null){
+                        try {
+                            bufferedWriter.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (writer!=null){
+                        try {
+                            writer.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+        }
+
+
+    }
+
     public void deleteRowInPackFile(String fileName, String packKey) throws IOException {
         if (!StringHelper.isStringNullOrEmpty(fileName) && !StringHelper.isStringNullOrEmpty(packKey)) {
             String folderName = FileLocationManager.getInstance().getDataTaskFolder();

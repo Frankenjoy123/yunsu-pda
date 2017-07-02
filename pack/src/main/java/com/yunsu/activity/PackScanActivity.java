@@ -28,8 +28,10 @@ import com.yunsu.common.util.ToastMessageHelper;
 import com.yunsu.common.util.YunsuKeyUtil;
 import com.yunsu.common.view.TitleBar;
 import com.yunsu.entity.PackInfoEntity;
+import com.yunsu.entity.PackProductsEntity;
 import com.yunsu.greendao.entity.Pack;
 import com.yunsu.greendao.entity.Product;
+import com.yunsu.manager.FileManager;
 import com.yunsu.receiver.BarcodeReceiver;
 import com.yunsu.sqlite.service.PackService;
 import com.yunsu.sqlite.service.ProductService;
@@ -387,14 +389,28 @@ public class PackScanActivity extends BaseActivity {
                     pack.setRealCount(productKeyList.size());
                     try {
                         long packId=packService.addPack(pack);
+
+                        StringBuilder productStringBuilder = new StringBuilder();
                         List<Product> productList=new ArrayList<Product>();
-                        for(String string : productKeyList){
+                        for(int i=0 ; i<productKeyList.size();i++){
                             Product product=new Product();
-                            product.setProductKey(string);
+                            product.setProductKey(productKeyList.get(i));
                             product.setPackId(packId);
                             productList.add(product);
+
+                            productStringBuilder.append(productKeyList.get(i));
+                            if (i<productKeyList.size()-1){
+                                productStringBuilder.append(",");
+                            }
                         }
                         productService.addProductsInTx(productList);
+
+                        PackProductsEntity entity = new PackProductsEntity();
+                        entity.setPack(pack);
+                        entity.setProductsString(productStringBuilder.toString());
+
+                        FileManager.getInstance().createPackFileOffline(entity);
+
                         Message message = Message.obtain();
                         message.what = PACK_SUCCESS_MSG;
                         mHandler.sendMessage(message);

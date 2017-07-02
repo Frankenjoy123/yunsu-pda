@@ -60,7 +60,7 @@ public class YunsuKeyUtil {
         this.context=context;
         preferences=context.getSharedPreferences(Constants.PackPreference.PATTERN,Context.MODE_PRIVATE);
 
-        packPatternString=preferences.getString(Constants.PackPreference.PACK_PATTERN,"^(\\d{8})$");
+        packPatternString=preferences.getString(Constants.PackPreference.PACK_PATTERN,"^(\\d{8}|\\d{10})$");
 
         expressPatternString=preferences.getString(Constants.PackPreference.EXPRESS_PATTERN,"^(\\d{13})$");
 
@@ -100,11 +100,23 @@ public class YunsuKeyUtil {
     }
 
     public  String verifyProductKey(String productKey) throws NotVerifyException{
+
+        String result;
+
         Matcher matcher = productKeyPattern.matcher(productKey);
-        if (!matcher.find()) {
+
+        Pattern pattern2 = Pattern.compile("^http://code.oyao.com/index/fw\\?f=(\\d{12})$");
+        Matcher matcher2 = pattern2.matcher(productKey);
+
+        if (matcher.find()){
+            result = matcher.group(matcher.groupCount());
+        }else if (matcher2.find()){
+            result = matcher2.group(matcher2.groupCount());
+        }else {
             throw new NotVerifyException("扫码非官方认证产品码");
         }
-        return matcher.group(matcher.groupCount());
+
+        return result;
     }
 
     public  String verifyPackageKey(String packKey) throws NotVerifyException{

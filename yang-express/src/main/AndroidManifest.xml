@@ -39,7 +39,7 @@
 
         <meta-data
             android:name="business_folder"
-            android:value="express"/>
+            android:value="快递文件"/>
 
         <activity
             android:name=".PackScanActivity"
