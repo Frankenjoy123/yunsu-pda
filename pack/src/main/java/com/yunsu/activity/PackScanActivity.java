@@ -390,26 +390,17 @@ public class PackScanActivity extends BaseActivity {
                     try {
                         long packId=packService.addPack(pack);
 
-                        StringBuilder productStringBuilder = new StringBuilder();
                         List<Product> productList=new ArrayList<Product>();
                         for(int i=0 ; i<productKeyList.size();i++){
                             Product product=new Product();
                             product.setProductKey(productKeyList.get(i));
                             product.setPackId(packId);
                             productList.add(product);
-
-                            productStringBuilder.append(productKeyList.get(i));
-                            if (i<productKeyList.size()-1){
-                                productStringBuilder.append(",");
-                            }
                         }
+
                         productService.addProductsInTx(productList);
 
-                        PackProductsEntity entity = new PackProductsEntity();
-                        entity.setPack(pack);
-                        entity.setProductsString(productStringBuilder.toString());
-
-                        FileManager.getInstance().createPackFileOffline(entity);
+                        FileManager.getInstance().createPackFileOffline(pack,productKeyList);
 
                         Message message = Message.obtain();
                         message.what = PACK_SUCCESS_MSG;

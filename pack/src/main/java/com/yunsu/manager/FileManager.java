@@ -13,6 +13,7 @@ import com.yunsu.common.util.Constants;
 import com.yunsu.common.util.StringHelper;
 import com.yunsu.common.util.YSFile;
 import com.yunsu.entity.PackProductsEntity;
+import com.yunsu.greendao.entity.Pack;
 import com.yunsu.sqlite.service.PackService;
 import com.yunsu.sqlite.service.impl.PackServiceImpl;
 
@@ -167,13 +168,18 @@ datetime: 2016-07-20T14:20:30.123Z
 
     }
 
-    public void createPackFileOffline(PackProductsEntity entity){
-        if (entity!=null ){
+    public void createPackFileOffline(Pack pack, List<String> productKeyList) {
+        if (pack!=null && productKeyList!=null && productKeyList.size()>0 ){
             StringBuilder builder = new StringBuilder();
-            builder.append(entity.getPack().getPackKey());
-            builder.append(":");
-            builder.append(entity.getProductsString());
-            builder.append("\r\n");
+
+            for (String s : productKeyList){
+                builder.append(pack.getPackKey());
+                builder.append(",");
+                builder.append(s);
+                builder.append(",");
+                builder.append(productKeyList.size()+"");
+                builder.append("\r\n");
+            }
 
             try {
 
@@ -214,7 +220,6 @@ datetime: 2016-07-20T14:20:30.123Z
             }
 
         }
-
 
     }
 
@@ -395,4 +400,6 @@ datetime: 2016-07-20T14:20:30.123Z
         }
         return true;
     }
+
+
 }
